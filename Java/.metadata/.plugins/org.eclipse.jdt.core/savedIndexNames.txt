@@ -1,0 +1,2 @@
+INDEX VERSION 1.126+D:\Program\MiniWeChat-Server\Java\.metadata\.plugins\org.eclipse.jdt.core
+1567101851.index
