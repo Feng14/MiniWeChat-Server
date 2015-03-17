@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
@@ -24,6 +23,7 @@ public class User implements Serializable {
     private String account;
     private String accountName;
     private String accountPassword;
+    private List<User> friends;
     
     public User(){
         
@@ -64,6 +64,16 @@ public class User implements Serializable {
 		return serialVersionUID;
 	}
     
+	@ManyToMany(targetEntity=User.class)
+	@JoinTable(name = "user_friends", 
+	joinColumns = @JoinColumn(name = "user_account"), 
+	inverseJoinColumns = @JoinColumn(name = "friend_account"))
+	public List<User> getFriends() {
+		return friends;
+	}
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
    
     
 }
