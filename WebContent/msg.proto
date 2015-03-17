@@ -1,0 +1,13 @@
+    package protobuf;  
+      
+    option java_package = "protobuf";  
+    option java_outer_classname = "ProtoBufferPractice";  
+      
+    message msgInfo  {  
+      required int32 ID = 1;  
+      required int64 GoodID = 2;         
+      required string Url = 3;  
+      required string Guid = 4;  
+      required string Type = 5;  
+      required int32 Order = 6;  
+    }  

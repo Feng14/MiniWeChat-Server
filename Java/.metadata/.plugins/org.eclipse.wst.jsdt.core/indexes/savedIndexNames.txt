@@ -1,6 +1,0 @@
-INDEX VERSION 1.122+D:\Program\MiniWeChat-Server\Java\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-602526074.index
-1480064325.index
-3431271478.index
-1567101851.index
-2176682030.index
