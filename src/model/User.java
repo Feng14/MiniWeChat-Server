@@ -36,7 +36,7 @@ public class User implements Serializable {
     }
 
     @Id
-    @Column(name="account")
+    @Column(name="account",columnDefinition = "char(20)  COMMENT 'Œ¢–≈∫≈'")
 	public String getAccount() {
 		return account;
 	}
@@ -44,7 +44,7 @@ public class User implements Serializable {
 		this.account = account;
 	}
 
-	@Column(name="account_name")
+	@Column(name="account_name",columnDefinition = "char(20)  COMMENT 'Í«≥∆'")
 	public String getAccountName() {
 		return accountName;
 	}
@@ -52,7 +52,7 @@ public class User implements Serializable {
 		this.accountName = accountName;
 	}
 
-	@Column(name="account_password")
+	@Column(name="account_password",columnDefinition = "char(20)  COMMENT '√‹¬Î'")
 	public String getAccountPassword() {
 		return accountPassword;
 	}
