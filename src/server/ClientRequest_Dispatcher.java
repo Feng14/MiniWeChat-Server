@@ -15,15 +15,12 @@ public class ClientRequest_Dispatcher {
 
 	// 根据请求的类型分配给不同的处理器
 	public void dispatcher(NetworkMessage networkMessage) {
+		System.out.println("IP" + networkMessage.ioSession.getRemoteAddress());
+		
 		switch (networkMessage.getMessageType().getNumber()) {
+		// Client回复心跳包
 		case ProtoHead.ENetworkMessage.KeepAliveSync_VALUE:
-			try {
-				KeepAliveMsg.KeepAliveSyncPacket packet = KeepAliveMsg.KeepAliveSyncPacket.parseFrom(networkMessage
-						.getMessageObjectBytes());
-
-			} catch (InvalidProtocolBufferException e) {
-				e.printStackTrace();
-			}
+			Server_User.instance.KeepAlive(networkMessage);
 			break;
 		case ProtoHead.ENetworkMessage.RegisterReq_VALUE:
 

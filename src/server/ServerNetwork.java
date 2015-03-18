@@ -83,7 +83,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 			reqOffset += size;
 		} while (reqOffset < byteArray.length);
 
-		new Thread(new check(session)).start();
+//		new Thread(new check(session)).start();
 
 	}
 	class check implements Runnable {
@@ -117,65 +117,72 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	// 用于处理一个请求
 	private void dealRequest(IoSession session, int size, byte[] byteArray) {
-		System.out.println("Size is :" + size);
-		int offset = NetworkMessage.HEAD_INT_SIZE;
-
-		// 类型
-		int typeInt = DataTypeTranslater.bytesToInt(byteArray, 4);
-		// System.out.println("Type Number is " + typeInt);
-
-		ProtoHead.ENetworkMessage messageType = ProtoHead.ENetworkMessage.valueOf(typeInt);
-		System.out.println("Type is :" + messageType.toString());
-		offset += NetworkMessage.HEAD_INT_SIZE;
-
-		// 内容
-		byte[] messageBytes = new byte[size - NetworkMessage.HEAD_INT_SIZE * 2];
-		for (int i = 0; i < messageBytes.length; i++)
-			messageBytes[i] = byteArray[offset + i];
-
-		byte[] responseByteArray = new byte[0];
-		// 反序列化
 		try {
-			KeepAliveMsg.KeepAliveSyncPacket packet = KeepAliveMsg.KeepAliveSyncPacket.parseFrom(messageBytes);
-			System.out.println("收到包：" + "   " + messageType.toString() + "  " + packet.getA() + "   " + packet.getB() + "   "
-					+ packet.getC());
-
-			// 重建--》回复
-			KeepAliveMsg.KeepAliveSyncPacket.Builder keepAliveSyncBuilder = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
-			int i = messageType.LoginRsp.getNumber();
-			keepAliveSyncBuilder.setA(12345678);
-			keepAliveSyncBuilder.setB(!packet.getB());
-			keepAliveSyncBuilder.setC("Holy Shit！！！");
-			responseByteArray = keepAliveSyncBuilder.build().toByteArray();
-
-			// 发送到客户端
-			int returnPacketLength = NetworkMessage.HEAD_INT_SIZE * 2 + responseByteArray.length;
-			IoBuffer responseIoBuffer = IoBuffer.allocate(returnPacketLength);
-			System.out.println("返回数据的长度 = " + returnPacketLength);
-			// 1.size
-			responseIoBuffer.put(DataTypeTranslater.intToByte(returnPacketLength));
-			// 2.ProtoHead
-			System.out.println("返回类型号 = " + messageType.KeepAliveSync.getNumber() + "   名称 = "
-					+ ProtoHead.ENetworkMessage.valueOf(messageType.KeepAliveSync.getNumber()).toString());
-			responseIoBuffer.put(DataTypeTranslater.intToByte(messageType.KeepAliveSync.getNumber()));
-			// 3.Message
-			System.out.println("返回的byte[] :" + responseByteArray);
-			responseIoBuffer.put(responseByteArray);
-
-			// for (int i=0; i<9; i++){
-			// responseIoBuffer.put(DataTypeTranslater.intToByte(returnPacketLength));
-			// responseIoBuffer.put(DataTypeTranslater.intToByte(messageType.KeepAliveSync.getNumber()));
-			// responseIoBuffer.put(responseByteArray);
-			// }
-			responseIoBuffer.flip();
-			session.write(responseIoBuffer);
-			session.write(responseIoBuffer);
-
-			System.out.println("发送完毕！！");
-			System.out.println("请求处理完毕");
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			ServerModel.instance.requestQueue.put(new NetworkMessage(session, byteArray));
+		} catch (InterruptedException e) {
+			System.err.println("往请求队列中添加请求事件异常!");
+			e.printStackTrace();
 		}
+		
+//		System.out.println("Size is :" + size);
+//		int offset = NetworkMessage.HEAD_INT_SIZE;
+//
+//		// 类型
+//		int typeInt = DataTypeTranslater.bytesToInt(byteArray, 4);
+//		// System.out.println("Type Number is " + typeInt);
+//
+//		ProtoHead.ENetworkMessage messageType = ProtoHead.ENetworkMessage.valueOf(typeInt);
+//		System.out.println("Type is :" + messageType.toString());
+//		offset += NetworkMessage.HEAD_INT_SIZE;
+//
+//		// 内容
+//		byte[] messageBytes = new byte[size - NetworkMessage.HEAD_INT_SIZE * 2];
+//		for (int i = 0; i < messageBytes.length; i++)
+//			messageBytes[i] = byteArray[offset + i];
+//
+//		byte[] responseByteArray = new byte[0];
+//		// 反序列化
+//		try {
+//			KeepAliveMsg.KeepAliveSyncPacket packet = KeepAliveMsg.KeepAliveSyncPacket.parseFrom(messageBytes);
+//			System.out.println("收到包：" + "   " + messageType.toString() + "  " + packet.getA() + "   " + packet.getB() + "   "
+//					+ packet.getC());
+//
+//			// 重建--》回复
+//			KeepAliveMsg.KeepAliveSyncPacket.Builder keepAliveSyncBuilder = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
+//			int i = messageType.LoginRsp.getNumber();
+//			keepAliveSyncBuilder.setA(12345678);
+//			keepAliveSyncBuilder.setB(!packet.getB());
+//			keepAliveSyncBuilder.setC("Holy Shit！！！");
+//			responseByteArray = keepAliveSyncBuilder.build().toByteArray();
+//
+//			// 发送到客户端
+//			int returnPacketLength = NetworkMessage.HEAD_INT_SIZE * 2 + responseByteArray.length;
+//			IoBuffer responseIoBuffer = IoBuffer.allocate(returnPacketLength);
+//			System.out.println("返回数据的长度 = " + returnPacketLength);
+//			// 1.size
+//			responseIoBuffer.put(DataTypeTranslater.intToByte(returnPacketLength));
+//			// 2.ProtoHead
+//			System.out.println("返回类型号 = " + messageType.KeepAliveSync.getNumber() + "   名称 = "
+//					+ ProtoHead.ENetworkMessage.valueOf(messageType.KeepAliveSync.getNumber()).toString());
+//			responseIoBuffer.put(DataTypeTranslater.intToByte(messageType.KeepAliveSync.getNumber()));
+//			// 3.Message
+//			System.out.println("返回的byte[] :" + responseByteArray);
+//			responseIoBuffer.put(responseByteArray);
+//
+//			// for (int i=0; i<9; i++){
+//			// responseIoBuffer.put(DataTypeTranslater.intToByte(returnPacketLength));
+//			// responseIoBuffer.put(DataTypeTranslater.intToByte(messageType.KeepAliveSync.getNumber()));
+//			// responseIoBuffer.put(responseByteArray);
+//			// }
+//			responseIoBuffer.flip();
+//			session.write(responseIoBuffer);
+//			session.write(responseIoBuffer);
+//
+//			System.out.println("发送完毕！！");
+//			System.out.println("请求处理完毕");
+//		} catch (Exception e) {
+//			System.err.println(e.getMessage());
+//		}
 	}
 
 	// 由底层决定是否创建一个session

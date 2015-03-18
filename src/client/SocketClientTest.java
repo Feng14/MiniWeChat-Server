@@ -24,6 +24,7 @@ public class SocketClientTest {
 
 		// 为了简单起见，所有的异常都直接往外抛
 		String host = "192.168.45.55"; // 要连接的服务端IP地址
+//		String host = "192.168.45.37"; // 要连接的服务端IP地址
 		int port = 8080; // 要连接的服务端对应的监听端口
 		// 与服务端建立连接
 		try {

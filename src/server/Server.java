@@ -28,7 +28,7 @@ public class Server {
 		ServerNetwork.instance.init();
 		
 		// Æô¶¯Âß¼­²ã
-//		System.out.println("FUcking");
+		ServerModel.instance.init();
 	}
 
 }
