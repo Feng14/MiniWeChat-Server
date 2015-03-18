@@ -59,22 +59,13 @@ public class SocketClientTest {
 				messageBytes[i + offset] = responseByteArray[i];
 
 			System.out.println("Test:");
-//			for (byte b : messageBytes)
-//				System.out.print(b + "  ");
-			// 4.byte[] 转 char[]
-			// Charset cs = Charset.forName("UTF-8");
-			// ByteBuffer bb = ByteBuffer.allocate(messageBytes.length);
-			// bb.put(messageBytes);
-			// bb.flip();
-			// CharBuffer cb = cs.decode(bb);
-			// char[] messageChars = cb.array();
-			//
-			// // writer.write("Hello Server.");
-			// writer.write(messageChars);
-			// writer.
-			// writer.flush();// 写完后要记得flush
 			OutputStream outputStream = socket.getOutputStream();
-			outputStream.write(messageBytes);
+			
+			byte[] second = new byte[messageBytes.length * 2];
+			for (int i=0; i<messageBytes.length*2; i++)
+				second[i] = messageBytes[i % messageBytes.length]; 
+			
+			outputStream.write(second);
 			System.out.println("发送完毕");
 
 			// 接收
@@ -88,34 +79,48 @@ public class SocketClientTest {
 			InputStream in = socket.getInputStream();
 			byte[] byteArray = new byte[200];
 
+			for (int readTimes=0; readTimes<5; readTimes++){
 			System.out.println(in.read(byteArray));
 			// for (int i = 0; i < 4; i++)
 			// System.out.println(in.read());
 //			System.out.println(byteArray);
-			in.close();
-
-			int size = DataTypeTranslater.bytesToInt(byteArray, 0);
-			ProtoHead.ENetworkMessage messageType = ProtoHead.ENetworkMessage
-					.valueOf(DataTypeTranslater.bytesToInt(byteArray, 4));
-			System.out.println("client接收到的数据长度：" + size + " 字节");
-			System.out.println("client接收到的数据类型：" + messageType.toString());
-
-			offset = HEAD_INT_SIZE * 2;
-			int contentLength = size - offset;
-			System.out.println("内容的长度为：" + contentLength + " 字节");
-			byte[] contentbytes = new byte[contentLength];
-			for (int i=0; i<contentLength; i++)
-				contentbytes[i] = byteArray[offset + i];
+//			for (int i=0; i<byteArray.length; i++)
+//				System.err.println(byteArray[i]);
 			
-			KeepAliveMsg.KeepAliveSyncPacket packet = KeepAliveMsg.KeepAliveSyncPacket.parseFrom(contentbytes);
-			System.out.println("client收到包的内容是：" + "   " + messageType.toString() + "  " + packet.getA() + "   " + packet.getB()
-					+ "   " + packet.getC());
+			int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+			int reqOffset = 0;
+			do {
+				
+				ProtoHead.ENetworkMessage messageType = ProtoHead.ENetworkMessage
+						.valueOf(DataTypeTranslater.bytesToInt(byteArray, 4));
+				System.out.println("client接收到的数据长度：" + size + " 字节");
+				System.out.println("client接收到的数据类型：" + messageType.toString());
+				
+				
+				offset = HEAD_INT_SIZE * 2;
+				int contentLength = size - offset;
+				System.out.println("内容的长度为：" + contentLength + " 字节");
+				byte[] contentbytes = new byte[contentLength];
+				for (int i=0; i<contentLength; i++)
+					contentbytes[i] = byteArray[offset + i];
+				
+				KeepAliveMsg.KeepAliveSyncPacket packet = KeepAliveMsg.KeepAliveSyncPacket.parseFrom(contentbytes);
+				System.out.println("client收到包的内容是：" + "   " + messageType.toString() + "  " + packet.getA() + "   " + packet.getB()
+						+ "   " + packet.getC());
+				
+				System.out.println("接收完毕");
+				
+				reqOffset += size;
+				size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
+				System.err.println(size);
+			} while (size > 0);
 
-			System.out.println("接收完毕");
 
 			// 关闭流
 			// br.close();
+			}
 
+			in.close();
 			writer.close();
 			socket.close();
 		} catch (UnknownHostException e) {
@@ -124,4 +129,6 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 	}
+	
+	// 处理服务器回复问题
 }

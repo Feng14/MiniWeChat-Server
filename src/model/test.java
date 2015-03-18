@@ -38,6 +38,7 @@ public class test {
 	    	user3.setAccount("account3");
 	    	user3.setAccountName("accountname3");
 	    	user3.setAccountPassword("123");
+	    	
 	    	List<User> friends = new ArrayList<User>();
 	    	friends.add(user3);
 	    	user2.setFriends(friends);
