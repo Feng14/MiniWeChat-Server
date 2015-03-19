@@ -23,6 +23,7 @@ public class ClientRequest_Dispatcher {
 	 */
 	public void dispatcher(NetworkMessage networkMessage) {
 //		System.out.println("IP" + networkMessage.ioSession.getRemoteAddress());
+		System.out.println("ClientRequest_Dispatcher: Client的请求类型是 " + networkMessage.getMessageType().toString());
 		
 		switch (networkMessage.getMessageType().getNumber()) {
 		// Client回复心跳包

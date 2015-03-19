@@ -19,16 +19,21 @@ public class Server_User {
 	 * @param networkMessage
 	 */
 	public void KeepAlive(NetworkMessage networkMessage){
-		System.out.println("Server_User: 对  用户" + networkMessage.ioSession.getRemoteAddress() + "的心跳包回复  的处理");
+		System.out.println((networkMessage == null) + "      " + (networkMessage.ioSession == null));
+		System.out.println("Server_User: 对  用户" + networkMessage.ioSession.getRemoteAddress() + "  回复的心跳包  的处理");
 //		System.out.println(ServerModel.instance.clientUserTable.keySet().size());
-		System.out.println("fuck   " + networkMessage== null);
+//		System.out.println("fuck   " + networkMessage== null);
 		// 如果ClientUser已经掉线被删除，那么就不管了
-		if (!ServerModel.instance.clientUserTable.containsKey(networkMessage.ioSession.getRemoteAddress())){
+		try {
+			if (!ServerModel.instance.clientUserTable.containsKey(networkMessage.ioSession.getRemoteAddress())){
+				System.out.println("Server_User: 用户" + networkMessage.ioSession.getRemoteAddress() + "已掉线，心跳回复不作处理!");
+				return;
+			}
+			
+			ServerModel.instance.clientUserTable.get(networkMessage.ioSession.getRemoteAddress()).onLine = true;
+		} catch (NullPointerException e) {
 			System.out.println("Server_User: 用户" + networkMessage.ioSession.getRemoteAddress() + "已掉线，心跳回复不作处理!");
-			return;
 		}
-		
-		ServerModel.instance.clientUserTable.get(networkMessage.ioSession.getRemoteAddress()).onLine = true;
 	}
 	
 	// 处理新用户注册事件

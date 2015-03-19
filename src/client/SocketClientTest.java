@@ -34,9 +34,9 @@ public class SocketClientTest {
 		int port = 8080; // 要连接的服务端对应的监听端口
 		// 与服务端建立连接
 		try {
-//			socket = new Socket(host, port);
+			// socket = new Socket(host, port);
 			// 建立连接后就可以往服务端写数据了
-//			Writer writer = new OutputStreamWriter(socket.getOutputStream());
+			// Writer writer = new OutputStreamWriter(socket.getOutputStream());
 
 			// 测
 			KeepAliveMsg.KeepAliveSyncPacket.Builder keepAliveSyncBuilder = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
@@ -66,14 +66,14 @@ public class SocketClientTest {
 				messageBytes[i + offset] = responseByteArray[i];
 
 			System.out.println("Test:");
-//			outputStream = socket.getOutputStream();
+			// outputStream = socket.getOutputStream();
 
 			byte[] second = new byte[messageBytes.length * 2];
 			for (int i = 0; i < messageBytes.length * 2; i++)
 				second[i] = messageBytes[i % messageBytes.length];
 
-//			outputStream.write(second);
-//			System.out.println("发送完毕");
+			// outputStream.write(second);
+			// System.out.println("发送完毕");
 
 			// 接收
 			System.out.println("开始接收");
@@ -126,14 +126,18 @@ public class SocketClientTest {
 			// }
 
 			// in.close();
-//			writer.close();
-//			socket.close();
+			// writer.close();
+			// socket.close();
 			// inputStream = socket.getInputStream();
+			socket = new Socket(host, port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		new Thread(new readThread()).start();
 	}
 
@@ -141,12 +145,18 @@ public class SocketClientTest {
 
 	public byte[] readFromServer(Socket socket) throws IOException {
 
-		inputStream = socket.getInputStream();
+//		inputStream = socket.getInputStream();
 		byte[] byteArray = new byte[200];
 		// System.out.println(in.read(byteArray));
 		inputStream.read(byteArray);
 		// System.out.println("client 收到Server 发来的 ： " + byteArray);
 		return byteArray;
+	}
+	
+	public void writeToServer(byte[] arrayBytes) throws IOException {
+//		outputStream = socket.getOutputStream();
+		outputStream.write(arrayBytes);
+//		outputStream.close();
 	}
 
 	/**
@@ -159,10 +169,20 @@ public class SocketClientTest {
 		@Override
 		public void run() {
 			try {
-				socket = new Socket(host, port);
+//				socket = new Socket(host, port);
 				while (true) {
 					Thread.sleep(1000);
-					System.out.println("client 收到Server 发来的 ： " + readFromServer(socket));
+					byte[] arrayBytes = readFromServer(socket);
+					System.out.println("client 收到Server 发来的 ： " + arrayBytes);
+
+					System.out.println("size:" + DataTypeTranslater.bytesToInt(arrayBytes, 0));
+					System.out.println("Type:"
+							+ ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(arrayBytes, HEAD_INT_SIZE))
+									.toString());
+					
+					//发回去
+					writeToServer(arrayBytes);
+					
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

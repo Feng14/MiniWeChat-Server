@@ -63,7 +63,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
-//		System.out.println("byteArray.length = " + byteArray.length);
+		System.out.println("byteArray.length = " + byteArray.length);
 		// 大小
 		int size;
 		// 分割数据进行单独请求的处理
@@ -71,7 +71,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 		int reqOffset = 0;
 		do {
 			System.out.println("\nServerNetwork: 开始分割一个新的请求!");
-			size = DataTypeTranslater.bytesToInt(byteArray, 0);
+			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
+			System.out.println("size:" + size);
+			if (size == 0)
+				break;
 			oneReqBytes = new byte[size];
 			for (int i = 0; i < size; i++)
 				oneReqBytes[i] = byteArray[reqOffset + i];
@@ -90,34 +93,34 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @author Feng
 	 *
 	 */
-	class check implements Runnable {
-		IoSession mySession;
-		public check(IoSession session) {
-			mySession = session;
-		}
-		@Override
-		public void run() {
-			try {
-				Scanner s = new Scanner(System.in);
-				byte[] chechStr = new String("check online").getBytes();
-				while (true) {
-					System.err.println("shit");
-					String string = s.next();
-//				if (s.equals("s")){
-					System.err.println("input " + string);
-					IoBuffer responseIoBuffer = IoBuffer.allocate(chechStr.length);
-					responseIoBuffer.put(chechStr);
-					responseIoBuffer.flip();
-					mySession.write(chechStr);
-					System.err.println("发送校验");
+//	class check implements Runnable {
+//		IoSession mySession;
+//		public check(IoSession session) {
+//			mySession = session;
+//		}
+//		@Override
+//		public void run() {
+//			try {
+//				Scanner s = new Scanner(System.in);
+//				byte[] chechStr = new String("check online").getBytes();
+//				while (true) {
+//					System.err.println("shit");
+//					String string = s.next();
+////				if (s.equals("s")){
+//					System.err.println("input " + string);
+//					IoBuffer responseIoBuffer = IoBuffer.allocate(chechStr.length);
+//					responseIoBuffer.put(chechStr);
+//					responseIoBuffer.flip();
+//					mySession.write(chechStr);
+//					System.err.println("发送校验");
+////				}
 //				}
-				}
-			} catch (Exception e) {
-				System.err.println("my Exception");
-				// TODO: handle exception
-			}
-		}
-	}
+//			} catch (Exception e) {
+//				System.err.println("my Exception");
+//				// TODO: handle exception
+//			}
+//		}
+//	}
 
 	/**
 	 *  用于处理一个请求
@@ -128,9 +131,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private void dealRequest(IoSession session, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.requestQueue.put(new NetworkMessage(session, byteArray));
-			System.out.println("将Client请求放入待处理队列");
+			System.out.println("ServerNetwork : 将Client请求放入待处理队列");
 		} catch (InterruptedException e) {
-			System.err.println("往请求队列中添加请求事件异常!");
+			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
 			e.printStackTrace();
 		}
 	}
