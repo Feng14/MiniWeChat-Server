@@ -2,12 +2,15 @@ package server;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.mina.core.buffer.IoBuffer;
 
 import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
+import tools.DataTypeTranslater;
 
 /**
  * 网络逻辑层
@@ -22,13 +25,22 @@ public class ServerModel {
 	// 请求队列
 	public LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
 	// 用户列表
-	public HashSet<ClientUser> clientUserSet = new HashSet<ClientUser>();
+	public Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	
 	private ServerModel() {
 		
 	}
+	/**
+	 * 创建一个随机的MessageId
+	 * @return
+	 */
+	public static byte[] createMessageId(){
+		return DataTypeTranslater.floatToBytes((float)Math.random());
+	}
 	
-	// 初始化
+	/**
+	 *  初始化
+	 */
 	public void init() {
 		// 开始新线程
 		new Thread(new DealClientRequest()).start();
@@ -57,7 +69,11 @@ public class ServerModel {
 		}
 	}
 	
-	// 用于定时发送心跳包
+	/**
+	 * 用于定时发送心跳包
+	 * @author Administrator
+	 *
+	 */
 	private class KeepAlivePacketSenser implements Runnable {
 		@Override
 		public void run() {
@@ -73,7 +89,19 @@ public class ServerModel {
 				while (true) {
 					Thread.sleep(KeepAlivePacketTime);
 					
-					for (ClientUser user : clientUserSet) {
+					ClientUser user;
+					String key;
+					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();) {
+						key = (String)it.next();
+						user = clientUserTable.get(key);
+						// 将上次没有回复的干掉，从用户表中删掉
+						if (user.onLine == false) {
+							System.out.println("Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
+							user.ioSession.close(true);
+							clientUserTable.remove(key);
+							continue;
+						}
+						
 						// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True ，表示在线
 						user.onLine = false;
 						user.ioSession.write(messageBytes);

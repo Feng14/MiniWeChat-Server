@@ -30,7 +30,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	}
 
-	// 初始化
+	/**
+	 *  初始化
+	 * @throws IOException
+	 */
 	public void init() throws IOException {
 		// 显示IP地址
 		InetAddress addr;
@@ -50,7 +53,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	private int count = 0;
 
-	// 接收到新的数据
+	/**
+	 *  接收到新的数据
+	 */
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
 		// 接收客户端的数据
@@ -115,7 +120,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 		}
 	}
 
-	// 用于处理一个请求
+	/**
+	 *  用于处理一个请求
+	 * @param session
+	 * @param size
+	 * @param byteArray
+	 */
 	private void dealRequest(IoSession session, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.requestQueue.put(new NetworkMessage(session, byteArray));
@@ -185,7 +195,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 //		}
 	}
 
-	// 由底层决定是否创建一个session
+	/**
+	 *  由底层决定是否创建一个session
+	 */
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
 		System.out.println("sessionCreated");

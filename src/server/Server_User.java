@@ -13,10 +13,14 @@ public class Server_User {
 		
 	}
 	
-	// 对  用户心跳包回复  的处理
+	/**
+	 *  对  用户心跳包回复  的处理
+	 *  将online值设为True
+	 * @param networkMessage
+	 */
 	public void KeepAlive(NetworkMessage networkMessage){
-		System.out.println(" 对  用户心跳包回复  的处理");
-//		ServerModel.instance.clientUserSet[networkMessage.ioSession.getRemoteAddress()]
+		System.out.println(" 对  用户" + networkMessage.ioSession.getRemoteAddress() + "的心跳包回复  的处理");
+		ServerModel.instance.clientUserTable.get(networkMessage.ioSession.getRemoteAddress()).onLine = true;
 	}
 	
 	// 处理新用户注册事件
