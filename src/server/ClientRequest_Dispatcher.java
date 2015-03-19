@@ -5,7 +5,11 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
 
-// 用switch进行请求分发
+/**
+ *  用switch进行请求分发
+ * @author Feng
+ *
+ */
 public class ClientRequest_Dispatcher {
 	public static ClientRequest_Dispatcher instance = new ClientRequest_Dispatcher();
 
@@ -13,9 +17,12 @@ public class ClientRequest_Dispatcher {
 
 	}
 
-	// 根据请求的类型分配给不同的处理器
+	/**
+	 *  根据请求的类型分配给不同的处理器
+	 * @param networkMessage
+	 */
 	public void dispatcher(NetworkMessage networkMessage) {
-		System.out.println("IP" + networkMessage.ioSession.getRemoteAddress());
+//		System.out.println("IP" + networkMessage.ioSession.getRemoteAddress());
 		
 		switch (networkMessage.getMessageType().getNumber()) {
 		// Client回复心跳包

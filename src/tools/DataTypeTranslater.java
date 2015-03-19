@@ -38,13 +38,14 @@ public class DataTypeTranslater {
 	       return value;
 	}
 	
-	private static ByteBuffer bbuf = ByteBuffer.allocate(4);
+	private static ByteBuffer bbuf;
 	/**
 	 * float ת byte[4]
 	 * @param number
 	 * @return
 	 */
 	public static byte[] floatToBytes(float number) {
+		bbuf = ByteBuffer.allocate(4);
 		bbuf.putFloat(number);  
 		return bbuf.array();  
 	}

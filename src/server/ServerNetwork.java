@@ -62,22 +62,15 @@ public class ServerNetwork extends IoHandlerAdapter {
 		IoBuffer ioBuffer = (IoBuffer) message;
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
-		// System.out.println("messageReceived:" + new String(byteArray,
-		// "UTF-8"));
 
-		System.out.println("byteArray.length = " + byteArray.length);
+//		System.out.println("byteArray.length = " + byteArray.length);
 		// 大小
 		int size;
-		// System.out.println("前四个byte为：");
-		// for (int i=0; i<4; i++)
-		// System.err.println(byteArray[i]);
-
 		// 分割数据进行单独请求的处理
 		byte[] oneReqBytes;
 		int reqOffset = 0;
 		do {
-			System.out.println();
-			System.out.println("开始处理一个新的请求!");
+			System.out.println("\nServerNetwork: 开始分割一个新的请求!");
 			size = DataTypeTranslater.bytesToInt(byteArray, 0);
 			oneReqBytes = new byte[size];
 			for (int i = 0; i < size; i++)
@@ -91,6 +84,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 //		new Thread(new check(session)).start();
 
 	}
+	
+	/**
+	 * 测试用
+	 * @author Feng
+	 *
+	 */
 	class check implements Runnable {
 		IoSession mySession;
 		public check(IoSession session) {
@@ -129,70 +128,11 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private void dealRequest(IoSession session, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.requestQueue.put(new NetworkMessage(session, byteArray));
+			System.out.println("将Client请求放入待处理队列");
 		} catch (InterruptedException e) {
 			System.err.println("往请求队列中添加请求事件异常!");
 			e.printStackTrace();
 		}
-		
-//		System.out.println("Size is :" + size);
-//		int offset = NetworkMessage.HEAD_INT_SIZE;
-//
-//		// 类型
-//		int typeInt = DataTypeTranslater.bytesToInt(byteArray, 4);
-//		// System.out.println("Type Number is " + typeInt);
-//
-//		ProtoHead.ENetworkMessage messageType = ProtoHead.ENetworkMessage.valueOf(typeInt);
-//		System.out.println("Type is :" + messageType.toString());
-//		offset += NetworkMessage.HEAD_INT_SIZE;
-//
-//		// 内容
-//		byte[] messageBytes = new byte[size - NetworkMessage.HEAD_INT_SIZE * 2];
-//		for (int i = 0; i < messageBytes.length; i++)
-//			messageBytes[i] = byteArray[offset + i];
-//
-//		byte[] responseByteArray = new byte[0];
-//		// 反序列化
-//		try {
-//			KeepAliveMsg.KeepAliveSyncPacket packet = KeepAliveMsg.KeepAliveSyncPacket.parseFrom(messageBytes);
-//			System.out.println("收到包：" + "   " + messageType.toString() + "  " + packet.getA() + "   " + packet.getB() + "   "
-//					+ packet.getC());
-//
-//			// 重建--》回复
-//			KeepAliveMsg.KeepAliveSyncPacket.Builder keepAliveSyncBuilder = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
-//			int i = messageType.LoginRsp.getNumber();
-//			keepAliveSyncBuilder.setA(12345678);
-//			keepAliveSyncBuilder.setB(!packet.getB());
-//			keepAliveSyncBuilder.setC("Holy Shit！！！");
-//			responseByteArray = keepAliveSyncBuilder.build().toByteArray();
-//
-//			// 发送到客户端
-//			int returnPacketLength = NetworkMessage.HEAD_INT_SIZE * 2 + responseByteArray.length;
-//			IoBuffer responseIoBuffer = IoBuffer.allocate(returnPacketLength);
-//			System.out.println("返回数据的长度 = " + returnPacketLength);
-//			// 1.size
-//			responseIoBuffer.put(DataTypeTranslater.intToByte(returnPacketLength));
-//			// 2.ProtoHead
-//			System.out.println("返回类型号 = " + messageType.KeepAliveSync.getNumber() + "   名称 = "
-//					+ ProtoHead.ENetworkMessage.valueOf(messageType.KeepAliveSync.getNumber()).toString());
-//			responseIoBuffer.put(DataTypeTranslater.intToByte(messageType.KeepAliveSync.getNumber()));
-//			// 3.Message
-//			System.out.println("返回的byte[] :" + responseByteArray);
-//			responseIoBuffer.put(responseByteArray);
-//
-//			// for (int i=0; i<9; i++){
-//			// responseIoBuffer.put(DataTypeTranslater.intToByte(returnPacketLength));
-//			// responseIoBuffer.put(DataTypeTranslater.intToByte(messageType.KeepAliveSync.getNumber()));
-//			// responseIoBuffer.put(responseByteArray);
-//			// }
-//			responseIoBuffer.flip();
-//			session.write(responseIoBuffer);
-//			session.write(responseIoBuffer);
-//
-//			System.out.println("发送完毕！！");
-//			System.out.println("请求处理完毕");
-//		} catch (Exception e) {
-//			System.err.println(e.getMessage());
-//		}
 	}
 
 	/**
@@ -203,13 +143,19 @@ public class ServerNetwork extends IoHandlerAdapter {
 		System.out.println("sessionCreated");
 	}
 
-	// 创建了session 后会回调sessionOpened
+	/**
+	 *  创建了session 后会回调sessionOpened
+	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
 		System.out.println("\n第 " + count + " 个 client 登陆！address： : " + session.getRemoteAddress());
+		System.out.println("ServerNetwork: 检测到一个Client的连接，添加进表中");
+		addClientUserToTable(session);
 	}
 
-	// 发送成功后会回调的方法
+	/**
+	 *  发送成功后会回调的方法
+	 */
 	public void messageSent(IoSession session, Object message) {
 		System.out.println("message send to client");
 	}
@@ -220,17 +166,45 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	}
 
-	// session 空闲的时候调用
+	/**
+	 *  session 空闲的时候调用
+	 */
 	public void sessionIdle(IoSession session, IdleStatus status) {
 		System.out.println("connect idle");
 	}
 
-	// 异常捕捉
+	/**
+	 *  异常捕捉
+	 */
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) {
 		System.out.println("throws exception");
 		System.err.println("sesson.toString() :" + session.toString());
 		System.err.println("cause.toString() :" + cause.toString());
 		System.err.println("报错完毕！！");
+	}
+	
+	/**
+	 * 将新的用户添加到“已连接用户信息表”中
+	 * @param ioSession
+	 */
+	public void addClientUserToTable(IoSession ioSession){
+		// 已有就不加进来了
+		if (ServerModel.instance.clientUserTable.containsKey(ioSession.getRemoteAddress()))
+			return;
+		
+		ServerModel.instance.clientUserTable.put(ioSession.getRemoteAddress().toString(), new ClientUser(ioSession));
+	}
+	
+	/**
+	 * 给客户端发包
+	 * @param ioSession
+	 * @param byteArray
+	 */
+	public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
+		IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
+		responseIoBuffer.put(byteArray);
+		responseIoBuffer.flip();
+		ioSession.write(responseIoBuffer);
 	}
 }
