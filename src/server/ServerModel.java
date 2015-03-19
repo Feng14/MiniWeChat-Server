@@ -77,7 +77,7 @@ public class ServerModel {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				System.out.println("ServerModel: ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器处理！");
+				System.out.println("ServerModel: ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
 				if (networkMessage == null)
 					continue;
 				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
