@@ -10,9 +10,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import antlr.collections.List;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.KeepAliveMsg;
+import protocol.LoginMsg;
 import protocol.ProtoHead;
 import protocol.RegisterMsg;
 import tools.DataTypeTranslater;
@@ -77,29 +80,29 @@ public class Server_User {
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
 			criteria.add(Restrictions.eq("userId", registerObject.getUserId()));
-			if (criteria.list().size() > 0) {	// 已存在
+			if (criteria.list().size() > 0) { // 已存在
 				// 已存在相同账号用户，告诉客户端
 				Debug.log("Server_User", "注册事件：用户" + networkMessage.ioSession.getRemoteAddress() + "  的注册账号重复，返回错误!");
 
-				responseBuilder.setResultCode(RegisterMsg.ResultCode.USER_EXIST);
-			} else {	// 没问题，可以开始注册
+				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.USER_EXIST);
+			} else { // 没问题，可以开始注册
 				User user = new User();
 				user.setUserId(registerObject.getUserId());
 				user.setUserName(registerObject.getUserName());
 				user.setUserPassword(registerObject.getUserPassword());
-				
+
 				session = HibernateSessionFactory.getSession();
 				session.save(user);
 				HibernateSessionFactory.commitSession(session);
-				
+
 				// 成功，设置回包码
 				Debug.log("Server_User", "注册事件：用户" + networkMessage.ioSession.getRemoteAddress() + "  注册成功，返回消息!");
-				responseBuilder.setResultCode(RegisterMsg.ResultCode.SUCCESS);
+				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
 			}
 
 			// 回复客户端
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
-					ProtoHead.ENetworkMessage.RegisterRsp.getNumber(), responseBuilder.build().toByteArray()));
+					ProtoHead.ENetworkMessage.REGISTER_RSP.getNumber(), responseBuilder.build().toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + networkMessage.ioSession.getRemoteAddress() + " 的包时异常！");
 			e.printStackTrace();
@@ -107,7 +110,49 @@ public class Server_User {
 			System.err.println("Server_User : 注册事件： " + networkMessage.ioSession.getRemoteAddress() + " 返回包时异常！");
 			e.printStackTrace();
 		}
-
 	}
 
+	/**
+	 * 处理Client的“登陆请求”
+	 * @param networkMessage
+	 * @author Feng
+	 */
+	public void login(NetworkMessage networkMessage) {
+		Debug.log(new String[]{"Server_User", "login"}, " 对  用户" + networkMessage.ioSession.getRemoteAddress() + "  的登陆事件  的处理");
+
+		try {
+			LoginMsg.LoginReq loginObject = LoginMsg.LoginReq.parseFrom(networkMessage.getMessageObjectBytes());
+			LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
+
+			// 查找是否存在同名用户
+			Session session = HibernateSessionFactory.getSession();
+			Criteria criteria = session.createCriteria(User.class);
+			criteria.add(Restrictions.eq("userId", loginObject.getUserId()));
+			if (criteria.list().size() > 0) { // 已存在
+				// 用户存在，开始校验
+				User user = (User) criteria.list().get(0);
+				if (user.getUserPassword().equals(loginObject.getUserPassword())) {	// 密码正确
+					Debug.log(new String[]{"Server_User", "login"}, "用户" + networkMessage.ioSession.getRemoteAddress() + "  的登陆校验成功!");
+					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
+				} else { // 密码错误
+					Debug.log(new String[]{"Server_User", "login"}, "用户" + networkMessage.ioSession.getRemoteAddress() + "  的登陆密码错误!");
+					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
+				}
+			} else { // 用户不存在
+				Debug.log(new String[]{"Server_User", "login"}, "用户" + networkMessage.ioSession.getRemoteAddress() + "  的用户不存在!");
+				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
+			}
+			session.close();
+
+			// 回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), loginBuilder.build().toByteArray()));
+		} catch (InvalidProtocolBufferException e) {
+			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + networkMessage.ioSession.getRemoteAddress() + " 的包时异常！");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Server_User : 注册事件： " + networkMessage.ioSession.getRemoteAddress() + " 返回包时异常！");
+			e.printStackTrace();
+		}
+	}
 }

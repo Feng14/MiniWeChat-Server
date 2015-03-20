@@ -8,104 +8,6 @@ public final class RegisterMsg {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  /**
-   * Protobuf enum {@code protocol.ResultCode}
-   */
-  public enum ResultCode
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <code>SUCCESS = 1;</code>
-     *
-     * <pre>
-     *表示注册成功
-     * </pre>
-     */
-    SUCCESS(0, 1),
-    /**
-     * <code>USER_EXIST = 2;</code>
-     *
-     * <pre>
-     *表示用户名已存在
-     * </pre>
-     */
-    USER_EXIST(1, 2),
-    ;
-
-    /**
-     * <code>SUCCESS = 1;</code>
-     *
-     * <pre>
-     *表示注册成功
-     * </pre>
-     */
-    public static final int SUCCESS_VALUE = 1;
-    /**
-     * <code>USER_EXIST = 2;</code>
-     *
-     * <pre>
-     *表示用户名已存在
-     * </pre>
-     */
-    public static final int USER_EXIST_VALUE = 2;
-
-
-    public final int getNumber() { return value; }
-
-    public static ResultCode valueOf(int value) {
-      switch (value) {
-        case 1: return SUCCESS;
-        case 2: return USER_EXIST;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
-        internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ResultCode>() {
-            public ResultCode findValueByNumber(int number) {
-              return ResultCode.valueOf(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(index);
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return protocol.RegisterMsg.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final ResultCode[] VALUES = values();
-
-    public static ResultCode valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int index;
-    private final int value;
-
-    private ResultCode(int index, int value) {
-      this.index = index;
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:protocol.ResultCode)
-  }
-
   public interface RegisterReqOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
@@ -916,15 +818,15 @@ public final class RegisterMsg {
   public interface RegisterRspOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ResultCode resultCode = 1;
+    // required .protocol.RegisterRsp.ResultCode resultCode = 1;
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
      */
     boolean hasResultCode();
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
      */
-    protocol.RegisterMsg.ResultCode getResultCode();
+    protocol.RegisterMsg.RegisterRsp.ResultCode getResultCode();
   }
   /**
    * Protobuf type {@code protocol.RegisterRsp}
@@ -979,7 +881,7 @@ public final class RegisterMsg {
             }
             case 8: {
               int rawValue = input.readEnum();
-              protocol.RegisterMsg.ResultCode value = protocol.RegisterMsg.ResultCode.valueOf(rawValue);
+              protocol.RegisterMsg.RegisterRsp.ResultCode value = protocol.RegisterMsg.RegisterRsp.ResultCode.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
@@ -1027,25 +929,123 @@ public final class RegisterMsg {
       return PARSER;
     }
 
-    private int bitField0_;
-    // required .protocol.ResultCode resultCode = 1;
-    public static final int RESULTCODE_FIELD_NUMBER = 1;
-    private protocol.RegisterMsg.ResultCode resultCode_;
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * Protobuf enum {@code protocol.RegisterRsp.ResultCode}
+     */
+    public enum ResultCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>SUCCESS = 0;</code>
+       *
+       * <pre>
+       *表示注册成功
+       * </pre>
+       */
+      SUCCESS(0, 0),
+      /**
+       * <code>USER_EXIST = 1;</code>
+       *
+       * <pre>
+       *表示用户名已存在
+       * </pre>
+       */
+      USER_EXIST(1, 1),
+      ;
+
+      /**
+       * <code>SUCCESS = 0;</code>
+       *
+       * <pre>
+       *表示注册成功
+       * </pre>
+       */
+      public static final int SUCCESS_VALUE = 0;
+      /**
+       * <code>USER_EXIST = 1;</code>
+       *
+       * <pre>
+       *表示用户名已存在
+       * </pre>
+       */
+      public static final int USER_EXIST_VALUE = 1;
+
+
+      public final int getNumber() { return value; }
+
+      public static ResultCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return USER_EXIST;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResultCode>() {
+              public ResultCode findValueByNumber(int number) {
+                return ResultCode.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return protocol.RegisterMsg.RegisterRsp.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final ResultCode[] VALUES = values();
+
+      public static ResultCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private ResultCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:protocol.RegisterRsp.ResultCode)
+    }
+
+    private int bitField0_;
+    // required .protocol.RegisterRsp.ResultCode resultCode = 1;
+    public static final int RESULTCODE_FIELD_NUMBER = 1;
+    private protocol.RegisterMsg.RegisterRsp.ResultCode resultCode_;
+    /**
+     * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
      */
     public boolean hasResultCode() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
      */
-    public protocol.RegisterMsg.ResultCode getResultCode() {
+    public protocol.RegisterMsg.RegisterRsp.ResultCode getResultCode() {
       return resultCode_;
     }
 
     private void initFields() {
-      resultCode_ = protocol.RegisterMsg.ResultCode.SUCCESS;
+      resultCode_ = protocol.RegisterMsg.RegisterRsp.ResultCode.SUCCESS;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1195,7 +1195,7 @@ public final class RegisterMsg {
 
       public Builder clear() {
         super.clear();
-        resultCode_ = protocol.RegisterMsg.ResultCode.SUCCESS;
+        resultCode_ = protocol.RegisterMsg.RegisterRsp.ResultCode.SUCCESS;
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -1279,24 +1279,24 @@ public final class RegisterMsg {
       }
       private int bitField0_;
 
-      // required .protocol.ResultCode resultCode = 1;
-      private protocol.RegisterMsg.ResultCode resultCode_ = protocol.RegisterMsg.ResultCode.SUCCESS;
+      // required .protocol.RegisterRsp.ResultCode resultCode = 1;
+      private protocol.RegisterMsg.RegisterRsp.ResultCode resultCode_ = protocol.RegisterMsg.RegisterRsp.ResultCode.SUCCESS;
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
        */
       public boolean hasResultCode() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
        */
-      public protocol.RegisterMsg.ResultCode getResultCode() {
+      public protocol.RegisterMsg.RegisterRsp.ResultCode getResultCode() {
         return resultCode_;
       }
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
        */
-      public Builder setResultCode(protocol.RegisterMsg.ResultCode value) {
+      public Builder setResultCode(protocol.RegisterMsg.RegisterRsp.ResultCode value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1306,11 +1306,11 @@ public final class RegisterMsg {
         return this;
       }
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.RegisterRsp.ResultCode resultCode = 1;</code>
        */
       public Builder clearResultCode() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        resultCode_ = protocol.RegisterMsg.ResultCode.SUCCESS;
+        resultCode_ = protocol.RegisterMsg.RegisterRsp.ResultCode.SUCCESS;
         onChanged();
         return this;
       }
@@ -1347,10 +1347,10 @@ public final class RegisterMsg {
     java.lang.String[] descriptorData = {
       "\n\021RegisterMsg.proto\022\010protocol\"E\n\013Registe" +
       "rReq\022\016\n\006userId\030\001 \002(\t\022\020\n\010userName\030\002 \002(\t\022\024" +
-      "\n\014userPassword\030\003 \002(\t\"7\n\013RegisterRsp\022(\n\nr" +
-      "esultCode\030\001 \002(\0162\024.protocol.ResultCode*)\n" +
-      "\nResultCode\022\013\n\007SUCCESS\020\001\022\016\n\nUSER_EXIST\020\002" +
-      "B\n\n\010protocol"
+      "\n\014userPassword\030\003 \002(\t\"n\n\013RegisterRsp\0224\n\nr" +
+      "esultCode\030\001 \002(\0162 .protocol.RegisterRsp.R" +
+      "esultCode\")\n\nResultCode\022\013\n\007SUCCESS\020\000\022\016\n\n" +
+      "USER_EXIST\020\001B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

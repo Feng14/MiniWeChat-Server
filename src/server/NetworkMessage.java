@@ -93,7 +93,7 @@ public class NetworkMessage {
 	 * @author Feng
 	 */
 	public static byte[] packMessage(int messageType, byte[] packetBytes) throws IOException {
-		int size = NetworkMessage.HEAD_INT_SIZE * 2 + NetworkMessage.HEAD_FLOAT_SIZE + packetBytes.length;
+		int size = getMessageObjectStartIndex() + packetBytes.length;
 		byte[] messageBytes = new byte[size];
 		
 		// 1.Ìí¼Ósize

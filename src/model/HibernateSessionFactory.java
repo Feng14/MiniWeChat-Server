@@ -42,5 +42,6 @@ public class HibernateSessionFactory {
 	public static void commitSession(Session session) {
         Transaction trans = session.beginTransaction();
         trans.commit();
+        session.close();
 	}
 }

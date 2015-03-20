@@ -8,136 +8,38 @@ public final class LoginMsg {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  /**
-   * Protobuf enum {@code protocol.ResultCode}
-   */
-  public enum ResultCode
-      implements com.google.protobuf.ProtocolMessageEnum {
-    /**
-     * <code>SUCCESS = 1;</code>
-     *
-     * <pre>
-     *表示登录成功
-     * </pre>
-     */
-    SUCCESS(0, 1),
-    /**
-     * <code>FAIL = 2;</code>
-     *
-     * <pre>
-     *表示登录失败
-     * </pre>
-     */
-    FAIL(1, 2),
-    ;
-
-    /**
-     * <code>SUCCESS = 1;</code>
-     *
-     * <pre>
-     *表示登录成功
-     * </pre>
-     */
-    public static final int SUCCESS_VALUE = 1;
-    /**
-     * <code>FAIL = 2;</code>
-     *
-     * <pre>
-     *表示登录失败
-     * </pre>
-     */
-    public static final int FAIL_VALUE = 2;
-
-
-    public final int getNumber() { return value; }
-
-    public static ResultCode valueOf(int value) {
-      switch (value) {
-        case 1: return SUCCESS;
-        case 2: return FAIL;
-        default: return null;
-      }
-    }
-
-    public static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
-        internalGetValueMap() {
-      return internalValueMap;
-    }
-    private static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
-        internalValueMap =
-          new com.google.protobuf.Internal.EnumLiteMap<ResultCode>() {
-            public ResultCode findValueByNumber(int number) {
-              return ResultCode.valueOf(number);
-            }
-          };
-
-    public final com.google.protobuf.Descriptors.EnumValueDescriptor
-        getValueDescriptor() {
-      return getDescriptor().getValues().get(index);
-    }
-    public final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptorForType() {
-      return getDescriptor();
-    }
-    public static final com.google.protobuf.Descriptors.EnumDescriptor
-        getDescriptor() {
-      return protocol.LoginMsg.getDescriptor().getEnumTypes().get(0);
-    }
-
-    private static final ResultCode[] VALUES = values();
-
-    public static ResultCode valueOf(
-        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-      if (desc.getType() != getDescriptor()) {
-        throw new java.lang.IllegalArgumentException(
-          "EnumValueDescriptor is not for this type.");
-      }
-      return VALUES[desc.getIndex()];
-    }
-
-    private final int index;
-    private final int value;
-
-    private ResultCode(int index, int value) {
-      this.index = index;
-      this.value = value;
-    }
-
-    // @@protoc_insertion_point(enum_scope:protocol.ResultCode)
-  }
-
   public interface LoginReqOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required string account = 1;
+    // required string userId = 1;
     /**
-     * <code>required string account = 1;</code>
+     * <code>required string userId = 1;</code>
      */
-    boolean hasAccount();
+    boolean hasUserId();
     /**
-     * <code>required string account = 1;</code>
+     * <code>required string userId = 1;</code>
      */
-    java.lang.String getAccount();
+    java.lang.String getUserId();
     /**
-     * <code>required string account = 1;</code>
+     * <code>required string userId = 1;</code>
      */
     com.google.protobuf.ByteString
-        getAccountBytes();
+        getUserIdBytes();
 
-    // required string accountPassword = 2;
+    // required string userPassword = 2;
     /**
-     * <code>required string accountPassword = 2;</code>
+     * <code>required string userPassword = 2;</code>
      */
-    boolean hasAccountPassword();
+    boolean hasUserPassword();
     /**
-     * <code>required string accountPassword = 2;</code>
+     * <code>required string userPassword = 2;</code>
      */
-    java.lang.String getAccountPassword();
+    java.lang.String getUserPassword();
     /**
-     * <code>required string accountPassword = 2;</code>
+     * <code>required string userPassword = 2;</code>
      */
     com.google.protobuf.ByteString
-        getAccountPasswordBytes();
+        getUserPasswordBytes();
   }
   /**
    * Protobuf type {@code protocol.LoginReq}
@@ -192,12 +94,12 @@ public final class LoginMsg {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              account_ = input.readBytes();
+              userId_ = input.readBytes();
               break;
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              accountPassword_ = input.readBytes();
+              userPassword_ = input.readBytes();
               break;
             }
           }
@@ -240,20 +142,20 @@ public final class LoginMsg {
     }
 
     private int bitField0_;
-    // required string account = 1;
-    public static final int ACCOUNT_FIELD_NUMBER = 1;
-    private java.lang.Object account_;
+    // required string userId = 1;
+    public static final int USERID_FIELD_NUMBER = 1;
+    private java.lang.Object userId_;
     /**
-     * <code>required string account = 1;</code>
+     * <code>required string userId = 1;</code>
      */
-    public boolean hasAccount() {
+    public boolean hasUserId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string account = 1;</code>
+     * <code>required string userId = 1;</code>
      */
-    public java.lang.String getAccount() {
-      java.lang.Object ref = account_;
+    public java.lang.String getUserId() {
+      java.lang.Object ref = userId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -261,42 +163,42 @@ public final class LoginMsg {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          account_ = s;
+          userId_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string account = 1;</code>
+     * <code>required string userId = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getAccountBytes() {
-      java.lang.Object ref = account_;
+        getUserIdBytes() {
+      java.lang.Object ref = userId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        account_ = b;
+        userId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
     }
 
-    // required string accountPassword = 2;
-    public static final int ACCOUNTPASSWORD_FIELD_NUMBER = 2;
-    private java.lang.Object accountPassword_;
+    // required string userPassword = 2;
+    public static final int USERPASSWORD_FIELD_NUMBER = 2;
+    private java.lang.Object userPassword_;
     /**
-     * <code>required string accountPassword = 2;</code>
+     * <code>required string userPassword = 2;</code>
      */
-    public boolean hasAccountPassword() {
+    public boolean hasUserPassword() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string accountPassword = 2;</code>
+     * <code>required string userPassword = 2;</code>
      */
-    public java.lang.String getAccountPassword() {
-      java.lang.Object ref = accountPassword_;
+    public java.lang.String getUserPassword() {
+      java.lang.Object ref = userPassword_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -304,22 +206,22 @@ public final class LoginMsg {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          accountPassword_ = s;
+          userPassword_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string accountPassword = 2;</code>
+     * <code>required string userPassword = 2;</code>
      */
     public com.google.protobuf.ByteString
-        getAccountPasswordBytes() {
-      java.lang.Object ref = accountPassword_;
+        getUserPasswordBytes() {
+      java.lang.Object ref = userPassword_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        accountPassword_ = b;
+        userPassword_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -327,19 +229,19 @@ public final class LoginMsg {
     }
 
     private void initFields() {
-      account_ = "";
-      accountPassword_ = "";
+      userId_ = "";
+      userPassword_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasAccount()) {
+      if (!hasUserId()) {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasAccountPassword()) {
+      if (!hasUserPassword()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -351,10 +253,10 @@ public final class LoginMsg {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getAccountBytes());
+        output.writeBytes(1, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getAccountPasswordBytes());
+        output.writeBytes(2, getUserPasswordBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -367,11 +269,11 @@ public final class LoginMsg {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getAccountBytes());
+          .computeBytesSize(1, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getAccountPasswordBytes());
+          .computeBytesSize(2, getUserPasswordBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -489,9 +391,9 @@ public final class LoginMsg {
 
       public Builder clear() {
         super.clear();
-        account_ = "";
+        userId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        accountPassword_ = "";
+        userPassword_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
@@ -524,11 +426,11 @@ public final class LoginMsg {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.account_ = account_;
+        result.userId_ = userId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.accountPassword_ = accountPassword_;
+        result.userPassword_ = userPassword_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -545,14 +447,14 @@ public final class LoginMsg {
 
       public Builder mergeFrom(protocol.LoginMsg.LoginReq other) {
         if (other == protocol.LoginMsg.LoginReq.getDefaultInstance()) return this;
-        if (other.hasAccount()) {
+        if (other.hasUserId()) {
           bitField0_ |= 0x00000001;
-          account_ = other.account_;
+          userId_ = other.userId_;
           onChanged();
         }
-        if (other.hasAccountPassword()) {
+        if (other.hasUserPassword()) {
           bitField0_ |= 0x00000002;
-          accountPassword_ = other.accountPassword_;
+          userPassword_ = other.userPassword_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -560,11 +462,11 @@ public final class LoginMsg {
       }
 
       public final boolean isInitialized() {
-        if (!hasAccount()) {
+        if (!hasUserId()) {
           
           return false;
         }
-        if (!hasAccountPassword()) {
+        if (!hasUserPassword()) {
           
           return false;
         }
@@ -590,150 +492,150 @@ public final class LoginMsg {
       }
       private int bitField0_;
 
-      // required string account = 1;
-      private java.lang.Object account_ = "";
+      // required string userId = 1;
+      private java.lang.Object userId_ = "";
       /**
-       * <code>required string account = 1;</code>
+       * <code>required string userId = 1;</code>
        */
-      public boolean hasAccount() {
+      public boolean hasUserId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string account = 1;</code>
+       * <code>required string userId = 1;</code>
        */
-      public java.lang.String getAccount() {
-        java.lang.Object ref = account_;
+      public java.lang.String getUserId() {
+        java.lang.Object ref = userId_;
         if (!(ref instanceof java.lang.String)) {
           java.lang.String s = ((com.google.protobuf.ByteString) ref)
               .toStringUtf8();
-          account_ = s;
+          userId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string account = 1;</code>
+       * <code>required string userId = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getAccountBytes() {
-        java.lang.Object ref = account_;
+          getUserIdBytes() {
+        java.lang.Object ref = userId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          account_ = b;
+          userId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string account = 1;</code>
+       * <code>required string userId = 1;</code>
        */
-      public Builder setAccount(
+      public Builder setUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        account_ = value;
+        userId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string account = 1;</code>
+       * <code>required string userId = 1;</code>
        */
-      public Builder clearAccount() {
+      public Builder clearUserId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        account_ = getDefaultInstance().getAccount();
+        userId_ = getDefaultInstance().getUserId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string account = 1;</code>
+       * <code>required string userId = 1;</code>
        */
-      public Builder setAccountBytes(
+      public Builder setUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        account_ = value;
+        userId_ = value;
         onChanged();
         return this;
       }
 
-      // required string accountPassword = 2;
-      private java.lang.Object accountPassword_ = "";
+      // required string userPassword = 2;
+      private java.lang.Object userPassword_ = "";
       /**
-       * <code>required string accountPassword = 2;</code>
+       * <code>required string userPassword = 2;</code>
        */
-      public boolean hasAccountPassword() {
+      public boolean hasUserPassword() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string accountPassword = 2;</code>
+       * <code>required string userPassword = 2;</code>
        */
-      public java.lang.String getAccountPassword() {
-        java.lang.Object ref = accountPassword_;
+      public java.lang.String getUserPassword() {
+        java.lang.Object ref = userPassword_;
         if (!(ref instanceof java.lang.String)) {
           java.lang.String s = ((com.google.protobuf.ByteString) ref)
               .toStringUtf8();
-          accountPassword_ = s;
+          userPassword_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string accountPassword = 2;</code>
+       * <code>required string userPassword = 2;</code>
        */
       public com.google.protobuf.ByteString
-          getAccountPasswordBytes() {
-        java.lang.Object ref = accountPassword_;
+          getUserPasswordBytes() {
+        java.lang.Object ref = userPassword_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          accountPassword_ = b;
+          userPassword_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string accountPassword = 2;</code>
+       * <code>required string userPassword = 2;</code>
        */
-      public Builder setAccountPassword(
+      public Builder setUserPassword(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        accountPassword_ = value;
+        userPassword_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string accountPassword = 2;</code>
+       * <code>required string userPassword = 2;</code>
        */
-      public Builder clearAccountPassword() {
+      public Builder clearUserPassword() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        accountPassword_ = getDefaultInstance().getAccountPassword();
+        userPassword_ = getDefaultInstance().getUserPassword();
         onChanged();
         return this;
       }
       /**
-       * <code>required string accountPassword = 2;</code>
+       * <code>required string userPassword = 2;</code>
        */
-      public Builder setAccountPasswordBytes(
+      public Builder setUserPasswordBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        accountPassword_ = value;
+        userPassword_ = value;
         onChanged();
         return this;
       }
@@ -752,15 +654,15 @@ public final class LoginMsg {
   public interface LoginRspOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ResultCode resultCode = 1;
+    // required .protocol.LoginRsp.ResultCode resultCode = 1;
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
      */
     boolean hasResultCode();
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
      */
-    protocol.LoginMsg.ResultCode getResultCode();
+    protocol.LoginMsg.LoginRsp.ResultCode getResultCode();
   }
   /**
    * Protobuf type {@code protocol.LoginRsp}
@@ -815,7 +717,7 @@ public final class LoginMsg {
             }
             case 8: {
               int rawValue = input.readEnum();
-              protocol.LoginMsg.ResultCode value = protocol.LoginMsg.ResultCode.valueOf(rawValue);
+              protocol.LoginMsg.LoginRsp.ResultCode value = protocol.LoginMsg.LoginRsp.ResultCode.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
@@ -863,25 +765,107 @@ public final class LoginMsg {
       return PARSER;
     }
 
-    private int bitField0_;
-    // required .protocol.ResultCode resultCode = 1;
-    public static final int RESULTCODE_FIELD_NUMBER = 1;
-    private protocol.LoginMsg.ResultCode resultCode_;
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * Protobuf enum {@code protocol.LoginRsp.ResultCode}
+     */
+    public enum ResultCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>SUCCESS = 0;</code>
+       */
+      SUCCESS(0, 0),
+      /**
+       * <code>FAIL = 1;</code>
+       */
+      FAIL(1, 1),
+      ;
+
+      /**
+       * <code>SUCCESS = 0;</code>
+       */
+      public static final int SUCCESS_VALUE = 0;
+      /**
+       * <code>FAIL = 1;</code>
+       */
+      public static final int FAIL_VALUE = 1;
+
+
+      public final int getNumber() { return value; }
+
+      public static ResultCode valueOf(int value) {
+        switch (value) {
+          case 0: return SUCCESS;
+          case 1: return FAIL;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<ResultCode>() {
+              public ResultCode findValueByNumber(int number) {
+                return ResultCode.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return protocol.LoginMsg.LoginRsp.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final ResultCode[] VALUES = values();
+
+      public static ResultCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private ResultCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:protocol.LoginRsp.ResultCode)
+    }
+
+    private int bitField0_;
+    // required .protocol.LoginRsp.ResultCode resultCode = 1;
+    public static final int RESULTCODE_FIELD_NUMBER = 1;
+    private protocol.LoginMsg.LoginRsp.ResultCode resultCode_;
+    /**
+     * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
      */
     public boolean hasResultCode() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .protocol.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
      */
-    public protocol.LoginMsg.ResultCode getResultCode() {
+    public protocol.LoginMsg.LoginRsp.ResultCode getResultCode() {
       return resultCode_;
     }
 
     private void initFields() {
-      resultCode_ = protocol.LoginMsg.ResultCode.SUCCESS;
+      resultCode_ = protocol.LoginMsg.LoginRsp.ResultCode.SUCCESS;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1031,7 +1015,7 @@ public final class LoginMsg {
 
       public Builder clear() {
         super.clear();
-        resultCode_ = protocol.LoginMsg.ResultCode.SUCCESS;
+        resultCode_ = protocol.LoginMsg.LoginRsp.ResultCode.SUCCESS;
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -1115,24 +1099,24 @@ public final class LoginMsg {
       }
       private int bitField0_;
 
-      // required .protocol.ResultCode resultCode = 1;
-      private protocol.LoginMsg.ResultCode resultCode_ = protocol.LoginMsg.ResultCode.SUCCESS;
+      // required .protocol.LoginRsp.ResultCode resultCode = 1;
+      private protocol.LoginMsg.LoginRsp.ResultCode resultCode_ = protocol.LoginMsg.LoginRsp.ResultCode.SUCCESS;
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
        */
       public boolean hasResultCode() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
        */
-      public protocol.LoginMsg.ResultCode getResultCode() {
+      public protocol.LoginMsg.LoginRsp.ResultCode getResultCode() {
         return resultCode_;
       }
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
        */
-      public Builder setResultCode(protocol.LoginMsg.ResultCode value) {
+      public Builder setResultCode(protocol.LoginMsg.LoginRsp.ResultCode value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1142,11 +1126,11 @@ public final class LoginMsg {
         return this;
       }
       /**
-       * <code>required .protocol.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.LoginRsp.ResultCode resultCode = 1;</code>
        */
       public Builder clearResultCode() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        resultCode_ = protocol.LoginMsg.ResultCode.SUCCESS;
+        resultCode_ = protocol.LoginMsg.LoginRsp.ResultCode.SUCCESS;
         onChanged();
         return this;
       }
@@ -1181,11 +1165,11 @@ public final class LoginMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016LoginMsg.proto\022\010protocol\"4\n\010LoginReq\022\017" +
-      "\n\007account\030\001 \002(\t\022\027\n\017accountPassword\030\002 \002(\t" +
-      "\"4\n\010LoginRsp\022(\n\nresultCode\030\001 \002(\0162\024.proto" +
-      "col.ResultCode*#\n\nResultCode\022\013\n\007SUCCESS\020" +
-      "\001\022\010\n\004FAIL\020\002B\n\n\010protocol"
+      "\n\016LoginMsg.proto\022\010protocol\"0\n\010LoginReq\022\016" +
+      "\n\006userId\030\001 \002(\t\022\024\n\014userPassword\030\002 \002(\t\"b\n\010" +
+      "LoginRsp\0221\n\nresultCode\030\001 \002(\0162\035.protocol." +
+      "LoginRsp.ResultCode\"#\n\nResultCode\022\013\n\007SUC" +
+      "CESS\020\000\022\010\n\004FAIL\020\001B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1197,7 +1181,7 @@ public final class LoginMsg {
           internal_static_protocol_LoginReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_LoginReq_descriptor,
-              new java.lang.String[] { "Account", "AccountPassword", });
+              new java.lang.String[] { "UserId", "UserPassword", });
           internal_static_protocol_LoginRsp_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_protocol_LoginRsp_fieldAccessorTable = new

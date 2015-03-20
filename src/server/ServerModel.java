@@ -126,7 +126,7 @@ public class ServerModel {
 				while (true) {
 					Thread.sleep(KEEP_ALIVE_PACKET_TIME);
 
-					messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KeepAliveSync.getNumber(), packetBytes);
+					messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(), packetBytes);
 					responseIoBuffer = IoBuffer.allocate(messageBytes.length);
 					responseIoBuffer.put(messageBytes);
 					responseIoBuffer.flip();

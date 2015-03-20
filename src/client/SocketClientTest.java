@@ -59,7 +59,7 @@ public class SocketClientTest {
 			offset += HEAD_INT_SIZE;
 
 			// 2.≤Â»Î±ÌÕ∑Type
-			byte[] typeBytes = DataTypeTranslater.intToByte(ProtoHead.ENetworkMessage.KeepAliveSync.getNumber());
+			byte[] typeBytes = DataTypeTranslater.intToByte(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber());
 			for (int i = 0; i < HEAD_INT_SIZE; i++)
 				messageBytes[i + offset] = typeBytes[i];
 			offset += HEAD_INT_SIZE;
@@ -212,7 +212,7 @@ public class SocketClientTest {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 			
-			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RegisterReq.getNumber(), builder.build().toByteArray());
+			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build().toByteArray());
 //			outputStream = socket.getOutputStream();
 			writeToServer(byteArray);
 			
@@ -225,14 +225,14 @@ public class SocketClientTest {
 				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray, HEAD_INT_SIZE));
 				System.out.println("Type : " + type.toString());
 				
-				if (type == ProtoHead.ENetworkMessage.RegisterRsp) {
+				if (type == ProtoHead.ENetworkMessage.REGISTER_RSP) {
 					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
 					for (int i=0; i<objBytes.length; i++)
 						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
 					
 					RegisterMsg.RegisterRsp response = RegisterMsg.RegisterRsp.parseFrom(objBytes);
 					
-					System.out.println("Response : " + RegisterMsg.ResultCode.valueOf(response.getResultCode().getNumber()));
+					System.out.println("Response : " + RegisterMsg.RegisterRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
 			}
 			

@@ -14,58 +14,58 @@ public final class ProtoHead {
   public enum ENetworkMessage
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>KeepAliveSync = 0;</code>
+     * <code>KEEP_ALIVE_SYNC = 0;</code>
      */
-    KeepAliveSync(0, 0),
+    KEEP_ALIVE_SYNC(0, 0),
     /**
-     * <code>RegisterReq = 1;</code>
+     * <code>REGISTER_REQ = 1;</code>
      */
-    RegisterReq(1, 1),
+    REGISTER_REQ(1, 1),
     /**
-     * <code>RegisterRsp = 2;</code>
+     * <code>REGISTER_RSP = 2;</code>
      */
-    RegisterRsp(2, 2),
+    REGISTER_RSP(2, 2),
     /**
-     * <code>LoginReq = 3;</code>
+     * <code>LOGIN_REQ = 3;</code>
      */
-    LoginReq(3, 3),
+    LOGIN_REQ(3, 3),
     /**
-     * <code>LoginRsp = 4;</code>
+     * <code>LOGIN_RSP = 4;</code>
      */
-    LoginRsp(4, 4),
+    LOGIN_RSP(4, 4),
     ;
 
     /**
-     * <code>KeepAliveSync = 0;</code>
+     * <code>KEEP_ALIVE_SYNC = 0;</code>
      */
-    public static final int KeepAliveSync_VALUE = 0;
+    public static final int KEEP_ALIVE_SYNC_VALUE = 0;
     /**
-     * <code>RegisterReq = 1;</code>
+     * <code>REGISTER_REQ = 1;</code>
      */
-    public static final int RegisterReq_VALUE = 1;
+    public static final int REGISTER_REQ_VALUE = 1;
     /**
-     * <code>RegisterRsp = 2;</code>
+     * <code>REGISTER_RSP = 2;</code>
      */
-    public static final int RegisterRsp_VALUE = 2;
+    public static final int REGISTER_RSP_VALUE = 2;
     /**
-     * <code>LoginReq = 3;</code>
+     * <code>LOGIN_REQ = 3;</code>
      */
-    public static final int LoginReq_VALUE = 3;
+    public static final int LOGIN_REQ_VALUE = 3;
     /**
-     * <code>LoginRsp = 4;</code>
+     * <code>LOGIN_RSP = 4;</code>
      */
-    public static final int LoginRsp_VALUE = 4;
+    public static final int LOGIN_RSP_VALUE = 4;
 
 
     public final int getNumber() { return value; }
 
     public static ENetworkMessage valueOf(int value) {
       switch (value) {
-        case 0: return KeepAliveSync;
-        case 1: return RegisterReq;
-        case 2: return RegisterRsp;
-        case 3: return LoginReq;
-        case 4: return LoginRsp;
+        case 0: return KEEP_ALIVE_SYNC;
+        case 1: return REGISTER_REQ;
+        case 2: return REGISTER_RSP;
+        case 3: return LOGIN_REQ;
+        case 4: return LOGIN_RSP;
         default: return null;
       }
     }
@@ -126,10 +126,10 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*b\n\017ENetworkM" +
-      "essage\022\021\n\rKeepAliveSync\020\000\022\017\n\013RegisterReq" +
-      "\020\001\022\017\n\013RegisterRsp\020\002\022\014\n\010LoginReq\020\003\022\014\n\010Log" +
-      "inRsp\020\004B\n\n\010protocol"
+      "\n\017ProtoHead.proto\022\010protocol*h\n\017ENetworkM" +
+      "essage\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER_" +
+      "REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022\r" +
+      "\n\tLOGIN_RSP\020\004B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

@@ -29,13 +29,13 @@ public class ClientRequest_Dispatcher {
 		
 		switch (networkMessage.getMessageType().getNumber()) {
 		// Client»Ø¸´ÐÄÌø°ü
-		case ProtoHead.ENetworkMessage.KeepAliveSync_VALUE:
+		case ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE:
 			Server_User.instance.keepAlive(networkMessage);
 			break;
-		case ProtoHead.ENetworkMessage.RegisterReq_VALUE:
+		case ProtoHead.ENetworkMessage.REGISTER_REQ_VALUE:
 			Server_User.instance.register(networkMessage);
 			break;
-		case ProtoHead.ENetworkMessage.LoginReq_VALUE:
+		case ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE:
 
 			break;
 
