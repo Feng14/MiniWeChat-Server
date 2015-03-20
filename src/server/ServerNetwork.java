@@ -16,6 +16,7 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
 import tools.DataTypeTranslater;
+import tools.Debug;
 
 /**
  * 服务器的网络层，负责网络交互
@@ -40,12 +41,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
-			System.out.println("IP地址：" + addr.getHostAddress().toString());
-			System.out.println("本机名称：" + addr.getHostName().toString());
+			Debug.log("IP地址", addr.getHostAddress().toString());
+			Debug.log("本机名称", addr.getHostName().toString());
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		System.out.println("端口号：8080");
+		Debug.log("端口号：8080");
 
 		IoAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);
@@ -65,14 +66,14 @@ public class ServerNetwork extends IoHandlerAdapter {
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
-		System.out.println("byteArray.length = " + byteArray.length);
+		Debug.log("byteArray.length = " + byteArray.length);
 		// 大小
 		int size;
 		// 分割数据进行单独请求的处理
 		byte[] oneReqBytes;
 		int reqOffset = 0;
 		do {
-			System.out.println("\nServerNetwork: 开始分割一个新的请求!");
+			Debug.log("\nServerNetwork: 开始分割一个新的请求!");
 			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
 			System.out.println("size:" + size);
 			if (size == 0)
@@ -134,7 +135,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private void dealRequest(IoSession session, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.requestQueue.put(new NetworkMessage(session, byteArray));
-			System.out.println("ServerNetwork : 将Client请求放入待处理队列");
+			Debug.log("ServerNetwork", "将Client请求放入待处理队列");
 		} catch (InterruptedException e) {
 			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
 			e.printStackTrace();
@@ -147,7 +148,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
-		System.out.println("sessionCreated");
+		Debug.log("sessionCreated");
 	}
 
 	/**
@@ -156,8 +157,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
-		System.out.println("\n第 " + count + " 个 client 登陆！address： : " + session.getRemoteAddress());
-		System.out.println("ServerNetwork: 检测到一个Client的连接，添加进表中");
+		Debug.log("\n第 " + count + " 个 client 登陆！address： : " + session.getRemoteAddress());
+		Debug.log("ServerNetwork", "检测到一个Client的连接，添加进表中");
 		addClientUserToTable(session);
 	}
 
@@ -166,12 +167,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @author Feng
 	 */
 	public void messageSent(IoSession session, Object message) {
-		System.out.println("message send to client");
+		Debug.log("message send to client");
 	}
 
 	@Override
 	public void sessionClosed(IoSession session) throws Exception {
-		System.out.println("sessionClosed");
+		Debug.log("sessionClosed");
 
 	}
 
@@ -180,7 +181,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @author Feng
 	 */
 	public void sessionIdle(IoSession session, IdleStatus status) {
-		System.out.println("connect idle");
+		Debug.log("connect idle");
 	}
 
 	/**
@@ -189,10 +190,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) {
-		System.out.println("throws exception");
-		System.err.println("sesson.toString() :" + session.toString());
-		System.err.println("cause.toString() :" + cause.toString());
-		System.err.println("报错完毕！！");
+		Debug.log("throws exception");
+		Debug.log("sesson.toString()", session.toString());
+		Debug.log("cause.toString()", cause.toString());
+		Debug.log("报错完毕！！");
 	}
 	
 	/**

@@ -77,9 +77,9 @@ public class NetworkMessage {
 	 * @author Feng
 	 */
 	public byte[] getMessageObjectBytes(){
-		byte[] response = new byte[getMessageLength() - HEAD_INT_SIZE * 2];
+		byte[] response = new byte[getMessageLength() - getMessageObjectStartIndex()];
 		for (int i=0; i<response.length; i++)
-			response[i] = arrayBytes[HEAD_INT_SIZE * 2 + i];
+			response[i] = arrayBytes[getMessageObjectStartIndex() + i];
 		
 		return response;
 	}
@@ -120,5 +120,20 @@ public class NetworkMessage {
 			messageBytes[offset + i] = packetBytes[i];
 		
 		return messageBytes;
+	}
+	
+	// 各个数据的开始位
+	public static int getSizeStartIndex(){
+		return 0;
+	}
+	public static int getTypeStartIndex(){
+		return HEAD_INT_SIZE;
+	}
+	public static int getMessageIdStartIndex(){
+		return HEAD_INT_SIZE * 2;
+	}
+	
+	public static int getMessageObjectStartIndex(){
+		return HEAD_INT_SIZE * 2 + HEAD_FLOAT_SIZE;
 	}
 }

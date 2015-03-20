@@ -4,6 +4,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
+import tools.Debug;
 
 /**
  *  用switch进行请求分发
@@ -24,15 +25,15 @@ public class ClientRequest_Dispatcher {
 	 */
 	public void dispatcher(NetworkMessage networkMessage) {
 //		System.out.println("IP" + networkMessage.ioSession.getRemoteAddress());
-		System.out.println("ClientRequest_Dispatcher: Client的请求类型是 " + networkMessage.getMessageType().toString());
+		Debug.log("ClientRequest_Dispatcher", "Client的请求类型是 " + networkMessage.getMessageType().toString());
 		
 		switch (networkMessage.getMessageType().getNumber()) {
 		// Client回复心跳包
 		case ProtoHead.ENetworkMessage.KeepAliveSync_VALUE:
-			Server_User.instance.KeepAlive(networkMessage);
+			Server_User.instance.keepAlive(networkMessage);
 			break;
 		case ProtoHead.ENetworkMessage.RegisterReq_VALUE:
-
+			Server_User.instance.register(networkMessage);
 			break;
 		case ProtoHead.ENetworkMessage.LoginReq_VALUE:
 

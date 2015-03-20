@@ -14,47 +14,47 @@ public final class RegisterMsg {
   public enum ResultCode
       implements com.google.protobuf.ProtocolMessageEnum {
     /**
-     * <code>SUCCESS = 0;</code>
+     * <code>SUCCESS = 1;</code>
      *
      * <pre>
      *表示注册成功
      * </pre>
      */
-    SUCCESS(0, 0),
+    SUCCESS(0, 1),
     /**
-     * <code>USER_EXIST = 1;</code>
+     * <code>USER_EXIST = 2;</code>
      *
      * <pre>
      *表示用户名已存在
      * </pre>
      */
-    USER_EXIST(1, 1),
+    USER_EXIST(1, 2),
     ;
 
     /**
-     * <code>SUCCESS = 0;</code>
+     * <code>SUCCESS = 1;</code>
      *
      * <pre>
      *表示注册成功
      * </pre>
      */
-    public static final int SUCCESS_VALUE = 0;
+    public static final int SUCCESS_VALUE = 1;
     /**
-     * <code>USER_EXIST = 1;</code>
+     * <code>USER_EXIST = 2;</code>
      *
      * <pre>
      *表示用户名已存在
      * </pre>
      */
-    public static final int USER_EXIST_VALUE = 1;
+    public static final int USER_EXIST_VALUE = 2;
 
 
     public final int getNumber() { return value; }
 
     public static ResultCode valueOf(int value) {
       switch (value) {
-        case 0: return SUCCESS;
-        case 1: return USER_EXIST;
+        case 1: return SUCCESS;
+        case 2: return USER_EXIST;
         default: return null;
       }
     }
@@ -1349,7 +1349,7 @@ public final class RegisterMsg {
       "rReq\022\016\n\006userId\030\001 \002(\t\022\020\n\010userName\030\002 \002(\t\022\024" +
       "\n\014userPassword\030\003 \002(\t\"7\n\013RegisterRsp\022(\n\nr" +
       "esultCode\030\001 \002(\0162\024.protocol.ResultCode*)\n" +
-      "\nResultCode\022\013\n\007SUCCESS\020\000\022\016\n\nUSER_EXIST\020\001" +
+      "\nResultCode\022\013\n\007SUCCESS\020\001\022\016\n\nUSER_EXIST\020\002" +
       "B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =

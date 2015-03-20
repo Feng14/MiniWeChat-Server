@@ -10,6 +10,9 @@ import java.net.UnknownHostException;
 
 import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
+import protocol.RegisterMsg;
+import protocol.RegisterMsg.RegisterReq;
+import server.NetworkMessage;
 import tools.DataTypeTranslater;
 
 public class SocketClientTest {
@@ -19,7 +22,7 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	String host = "192.168.45.55"; // 要连接的服务端IP地址
+	String host = "192.168.45.17"; // 要连接的服务端IP地址
 	// String host = "192.168.45.37"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -129,16 +132,17 @@ public class SocketClientTest {
 			// writer.close();
 			// socket.close();
 			// inputStream = socket.getInputStream();
-			socket = new Socket(host, port);
-			inputStream = socket.getInputStream();
-			outputStream = socket.getOutputStream();
+//			socket = new Socket(host, port);
+//			inputStream = socket.getInputStream();
+//			outputStream = socket.getOutputStream();
+			testRegister();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		new Thread(new readThread()).start();
+//		new Thread(new readThread()).start();
 	}
 
 	// 处理服务器回复问题
@@ -191,5 +195,49 @@ public class SocketClientTest {
 			}
 		}
 
+	}
+
+	/**
+	 * 测试注册功能
+	 * @author Feng
+	 */
+	public void testRegister(){
+		RegisterMsg.RegisterReq.Builder builder = RegisterMsg.RegisterReq.newBuilder();
+		builder.setUserId("a");
+		builder.setUserPassword("aa");
+		builder.setUserName("aaa");
+		System.out.println("Start Test Register!");
+		try {
+			socket = new Socket(host, port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			
+			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RegisterReq.getNumber(), builder.build().toByteArray());
+//			outputStream = socket.getOutputStream();
+			writeToServer(byteArray);
+			
+//			inputStream = socket.getInputStream();
+			while (true) {
+				byteArray = readFromServer(socket);
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+				
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray, HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+				
+				if (type == ProtoHead.ENetworkMessage.RegisterRsp) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i=0; i<objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					
+					RegisterMsg.RegisterRsp response = RegisterMsg.RegisterRsp.parseFrom(objBytes);
+					
+					System.out.println("Response : " + RegisterMsg.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

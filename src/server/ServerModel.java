@@ -15,6 +15,7 @@ import com.sun.org.apache.bcel.internal.generic.NEW;
 import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
 import tools.DataTypeTranslater;
+import tools.Debug;
 
 /**
  * 网络逻辑层
@@ -82,7 +83,6 @@ public class ServerModel {
 	 * 
 	 */
 	private class DealClientRequest implements Runnable {
-
 		@Override
 		public void run() {
 			NetworkMessage networkMessage = null;
@@ -93,7 +93,7 @@ public class ServerModel {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				System.out.println("ServerModel: ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
+				Debug.log("ServerModel", "ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
 				if (networkMessage == null)
 					continue;
 				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
@@ -133,17 +133,17 @@ public class ServerModel {
 
 					ClientUser user;
 					String key;
-					System.out.println("ServerModel :开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
+					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
 					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();) {
 						if (it == null)
 							continue;
-						System.out.println("ServerModel : 进入发心跳包循环!");
+						Debug.log("ServerModel", "进入发心跳包循环!");
 						key = (String) it.next();
 						user = clientUserTable.get(key);
 
 						// 将上次没有回复的干掉，从用户表中删掉
 						if (user.onLine == false) {
-							System.out.println("ServerModel :Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
+							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
 //							user.ioSession.close(true);
 
 							clientUserTable.remove(key);
@@ -152,7 +152,7 @@ public class ServerModel {
 
 						// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
 						// ，表示在线
-						System.out.println("ServerModel : 向Client " + user.ioSession.getRemoteAddress() + " 发送心跳包");
+						Debug.log("ServerModel", "向Client " + user.ioSession.getRemoteAddress() + " 发送心跳包");
 						user.onLine = false;
 						user.ioSession.write(responseIoBuffer);
 					}
@@ -193,21 +193,21 @@ public class ServerModel {
 					waitObj = waitClientRepTable.get(key);
 					if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
 						// 超时，重发
+						Debug.log("ServerModel", "等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
 						System.out.println("ServerModel : 等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
 						if (!clientUserTable.get(waitObj.ioSession.getRemoteAddress()).onLine) {
 							// 不在线,删了
-							System.out.println("ServerModel : 客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
+							Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
 							waitClientRepTable.remove(key);
 							continue;
 						}
 						// 重发，重置等待时间
-						System.out.println("ServerModel : 客户端" + waitObj.ioSession.getRemoteAddress() + " 在线，消息将重发！");
+						Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 在线，消息将重发！");
 						ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
 						waitObj.time = currentTime;
 					}
 				}
 			}
 		}
-
 	}
 }
