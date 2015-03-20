@@ -20,44 +20,44 @@ public class User implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    private String account;
-    private String accountName;
-    private String accountPassword;
+    private String userId;
+    private String userName;
+    private String userPassword;
     private List<User> friends;
     
     public User(){
         
     }
     
-    public User(String account,String accountName,String accountPassword){
-        this.account=account;
-        this.accountName=accountName;
-        this.accountPassword=accountPassword;
+    public User(String userId,String userName,String userPassword){
+        this.userId=userId;
+        this.userName=userName;
+        this.userPassword=userPassword;
     }
 
     @Id
-    @Column(name="account",columnDefinition = "char(20)  COMMENT 'Œ¢–≈∫≈'")
-	public String getAccount() {
-		return account;
+    @Column(name="user_id",columnDefinition = "char(20)  COMMENT 'Œ¢–≈∫≈'")
+	public String getUserId() {
+		return userId;
 	}
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	@Column(name="account_name",columnDefinition = "char(20)  COMMENT 'Í«≥∆'")
-	public String getAccountName() {
-		return accountName;
-	}
-	public void setAccountName(String accountName) {
-		this.accountName = accountName;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	@Column(name="account_password",columnDefinition = "char(20)  COMMENT '√‹¬Î'")
-	public String getAccountPassword() {
-		return accountPassword;
+	@Column(name="user_name",columnDefinition = "char(20)  COMMENT 'Í«≥∆'")
+	public String getUserName() {
+		return userName;
 	}
-	public void setAccountPassword(String accountPassword) {
-		this.accountPassword = accountPassword;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	@Column(name="user_password",columnDefinition = "char(20)  COMMENT '√‹¬Î'")
+	public String getUserPassword() {
+		return userPassword;
+	}
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 
 	public static long getSerialversionuid() {
@@ -66,8 +66,8 @@ public class User implements Serializable {
     
 	@ManyToMany(targetEntity=User.class)
 	@JoinTable(name = "user_friends", 
-	joinColumns = @JoinColumn(name = "user_account"), 
-	inverseJoinColumns = @JoinColumn(name = "friend_account"))
+	joinColumns = @JoinColumn(name = "user_id"), 
+	inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	public List<User> getFriends() {
 		return friends;
 	}

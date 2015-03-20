@@ -1,0 +1,17 @@
+package protocol;
+
+option java_package = "protocol";
+
+enum ResultCode{
+          SUCCESS = 1;  //表示注册成功
+          USER_EXIST = 2;   //表示用户名已存在
+      }
+message RegisterReq{
+	required string userId = 1;
+	required string userName = 2;
+	required string userPassword = 3;
+	}
+	
+message RegisterRsp {
+    required ResultCode resultCode = 1;        
+     }
