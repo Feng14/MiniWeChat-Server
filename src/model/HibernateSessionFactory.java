@@ -33,4 +33,14 @@ public class HibernateSessionFactory {
 		}
 		return session;
 	}
+	
+	/**
+	 * Ã·ΩªSession
+	 * @param session
+	 * @author Feng
+	 */
+	public static void commitSession(Session session) {
+        Transaction trans = session.beginTransaction();
+        trans.commit();
+	}
 }

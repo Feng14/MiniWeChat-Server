@@ -11,9 +11,7 @@ import tools.DataTypeTranslater;
 
 /**
  * 存放网络通信每一个请求的对象（将放入队列）
- * 
- * @author Administrator
- * 
+ * @author Feng
  */
 public class NetworkMessage {
 	// 信息中的int所占的字节数
@@ -32,6 +30,7 @@ public class NetworkMessage {
 	/**
 	 *  获取请求的长度
 	 * @return int
+	 * @author Feng
 	 */
 	public int getMessageLength() {
 		return arrayBytes.length;
@@ -44,6 +43,7 @@ public class NetworkMessage {
 	/**
 	 *  获取请求类型
 	 * @return ProtoHead.ENetworkMessage
+	 * @author Feng
 	 */
 	public ProtoHead.ENetworkMessage getMessageType() {
 		return getMessageType(arrayBytes);
@@ -56,6 +56,7 @@ public class NetworkMessage {
 	/**
 	 * 获取MessageId
 	 * @return byte[]
+	 * @author Feng
 	 */
 	public byte[] getMessageID(){
 		return getMessageID(arrayBytes);
@@ -73,6 +74,7 @@ public class NetworkMessage {
 	/**
 	 *  获取消息的对象byte数组
 	 * @return byte[]
+	 * @author Feng
 	 */
 	public byte[] getMessageObjectBytes(){
 		byte[] response = new byte[getMessageLength() - HEAD_INT_SIZE * 2];
@@ -88,6 +90,7 @@ public class NetworkMessage {
 	 * @param packetBytes
 	 * @return byte[]
 	 * @throws IOException
+	 * @author Feng
 	 */
 	public static byte[] packMessage(int messageType, byte[] packetBytes) throws IOException {
 		int size = NetworkMessage.HEAD_INT_SIZE * 2 + NetworkMessage.HEAD_FLOAT_SIZE + packetBytes.length;

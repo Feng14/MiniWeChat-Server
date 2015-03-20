@@ -20,6 +20,7 @@ public class ClientRequest_Dispatcher {
 	/**
 	 *  根据请求的类型分配给不同的处理器
 	 * @param networkMessage
+	 * @author Feng
 	 */
 	public void dispatcher(NetworkMessage networkMessage) {
 //		System.out.println("IP" + networkMessage.ioSession.getRemoteAddress());

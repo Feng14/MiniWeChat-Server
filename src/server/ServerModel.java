@@ -1,13 +1,14 @@
 package server;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.session.IoSession;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
@@ -35,7 +36,7 @@ public class ServerModel {
 	// 用户列表
 	public Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	// 监听客户端回复的表
-	public Hashtable<Byte[], WaitClientResponse> waitClientRepTable = new Hashtable<Byte[], WaitClientResponse>();
+	public Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
 
 	private ServerModel() {
 
@@ -43,7 +44,7 @@ public class ServerModel {
 
 	/**
 	 * 创建一个随机的MessageId
-	 * 
+	 * @author Feng
 	 * @return
 	 */
 	public static byte[] createMessageId() {
@@ -52,13 +53,28 @@ public class ServerModel {
 
 	/**
 	 * 初始化
+	 * @author Feng
 	 */
 	public void init() {
 		// 开始新线程
 		new Thread(new DealClientRequest()).start();
 		new Thread(new KeepAlivePacketSenser()).start();
+		new Thread(new CheckWaitClientResponseThread()).start();
 	}
 
+	/**
+	 * 添加一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * @param ioSession
+	 * @param key
+	 * @param messageHasSent
+	 */
+	public void addClientResponseListener(IoSession ioSession, byte[] key, byte[] messageHasSent) {
+		WaitClientResponse waitClientResponse = new WaitClientResponse(ioSession, messageHasSent);
+		waitClientResponse.time = new Date().getTime();
+		// 加入到“等待回复表”中，由CheckWaitClientResponseThread 线程进行轮询
+		waitClientRepTable.put(key, waitClientResponse);
+	}
+	
 	/**
 	 * 用于处理用户请求的线程
 	 * 
@@ -95,7 +111,12 @@ public class ServerModel {
 	private class KeepAlivePacketSenser implements Runnable {
 		@Override
 		public void run() {
-			byte[] packetBytes = KeepAliveMsg.KeepAliveSyncPacket.newBuilder().build().toByteArray();
+//			byte[] packetBytes = KeepAliveMsg.KeepAliveSyncPacket.newBuilder().build().toByteArray();
+			KeepAliveMsg.KeepAliveSyncPacket.Builder packet = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
+//			packet.setA(123);
+//			packet.setB(true);
+			packet.setC("Fuck");
+			byte[] packetBytes = packet.build().toByteArray();
 			try {
 				// 创建心跳包
 				byte[] messageBytes;
@@ -152,7 +173,7 @@ public class ServerModel {
 	 * @author Feng
 	 * 
 	 */
-	class CheckWaitClientResponseThread implements Runnable {
+	private class CheckWaitClientResponseThread implements Runnable {
 		@Override
 		public void run() {
 			long currentTime;
@@ -166,17 +187,21 @@ public class ServerModel {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				// 对每个用户进行检查
 				for (Iterator iterator = waitClientRepTable.keySet().iterator(); iterator.hasNext();) {
 					key = (String) iterator.next();
 					waitObj = waitClientRepTable.get(key);
 					if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
 						// 超时，重发
+						System.out.println("ServerModel : 等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
 						if (!clientUserTable.get(waitObj.ioSession.getRemoteAddress()).onLine) {
 							// 不在线,删了
+							System.out.println("ServerModel : 客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
 							waitClientRepTable.remove(key);
 							continue;
 						}
 						// 重发，重置等待时间
+						System.out.println("ServerModel : 客户端" + waitObj.ioSession.getRemoteAddress() + " 在线，消息将重发！");
 						ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
 						waitObj.time = currentTime;
 					}

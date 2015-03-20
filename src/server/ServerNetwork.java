@@ -33,6 +33,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	/**
 	 *  初始化
 	 * @throws IOException
+	 * @author Feng
 	 */
 	public void init() throws IOException {
 		// 显示IP地址
@@ -55,6 +56,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	/**
 	 *  接收到新的数据
+	 * @author Feng
 	 */
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
@@ -127,6 +129,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param session
 	 * @param size
 	 * @param byteArray
+	 * @author Feng
 	 */
 	private void dealRequest(IoSession session, int size, byte[] byteArray) {
 		try {
@@ -140,6 +143,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	/**
 	 *  由底层决定是否创建一个session
+	 * @author Feng
 	 */
 	@Override
 	public void sessionCreated(IoSession session) throws Exception {
@@ -148,6 +152,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	/**
 	 *  创建了session 后会回调sessionOpened
+	 * @author Feng
 	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
@@ -158,6 +163,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	/**
 	 *  发送成功后会回调的方法
+	 * @author Feng
 	 */
 	public void messageSent(IoSession session, Object message) {
 		System.out.println("message send to client");
@@ -171,6 +177,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	/**
 	 *  session 空闲的时候调用
+	 * @author Feng
 	 */
 	public void sessionIdle(IoSession session, IdleStatus status) {
 		System.out.println("connect idle");
@@ -178,6 +185,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	/**
 	 *  异常捕捉
+	 * @author Feng
 	 */
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) {
@@ -190,6 +198,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	/**
 	 * 将新的用户添加到“已连接用户信息表”中
 	 * @param ioSession
+	 * @author Feng
 	 */
 	public void addClientUserToTable(IoSession ioSession){
 		// 已有就不加进来了
@@ -203,6 +212,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * 给客户端发包
 	 * @param ioSession
 	 * @param byteArray
+	 * @author Feng
 	 */
 	public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
 		IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
