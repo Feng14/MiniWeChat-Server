@@ -36,7 +36,7 @@ public class ClientRequest_Dispatcher {
 			Server_User.instance.register(networkMessage);
 			break;
 		case ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE:
-
+			Server_User.instance.login(networkMessage);
 			break;
 
 		default:

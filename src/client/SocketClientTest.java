@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import protocol.KeepAliveMsg;
+import protocol.LoginMsg;
 import protocol.ProtoHead;
 import protocol.RegisterMsg;
 import protocol.RegisterMsg.RegisterReq;
@@ -135,7 +136,10 @@ public class SocketClientTest {
 //			socket = new Socket(host, port);
 //			inputStream = socket.getInputStream();
 //			outputStream = socket.getOutputStream();
-			testRegister();
+			// ²â×¢²á
+//			testRegister();
+			// ²âµÇÂ½
+			testLogin();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -233,6 +237,49 @@ public class SocketClientTest {
 					RegisterMsg.RegisterRsp response = RegisterMsg.RegisterRsp.parseFrom(objBytes);
 					
 					System.out.println("Response : " + RegisterMsg.RegisterRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * ²âÊÔµÇÂ½¹¦ÄÜ
+	 */
+	public void testLogin(){
+
+		LoginMsg.LoginReq.Builder builder = LoginMsg.LoginReq.newBuilder();
+		builder.setUserId("aa");
+		builder.setUserPassword("aa");
+		System.out.println("Start Test Login!");
+		try {
+			socket = new Socket(host, port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			
+			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build().toByteArray());
+//			outputStream = socket.getOutputStream();
+			writeToServer(byteArray);
+			
+//			inputStream = socket.getInputStream();
+			while (true) {
+				byteArray = readFromServer(socket);
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+				
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray, HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+				
+				if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i=0; i<objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					
+					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
+					
+					System.out.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
 			}
 			

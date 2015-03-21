@@ -33,11 +33,11 @@ public class ServerModel {
 
 	public static ServerModel instance = new ServerModel();
 	// 请求队列
-	public LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
+	private LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
 	// 用户列表
-	public Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
+	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	// 监听客户端回复的表
-	public Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
+	private Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
 
 	private ServerModel() {
 
@@ -64,16 +64,49 @@ public class ServerModel {
 	}
 
 	/**
+	 *  往客户端请求列表中加入一条请求
+	 * @param ioSession
+	 * @param arrayBytes
+	 * @author Feng
+	 */
+	public void addClientRequestToQueue(IoSession ioSession, byte[] arrayBytes) {
+		
+	}
+	
+	/**
 	 * 添加一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
 	 * @param ioSession
 	 * @param key
 	 * @param messageHasSent
+	 * @author Feng
 	 */
 	public void addClientResponseListener(IoSession ioSession, byte[] key, byte[] messageHasSent) {
 		WaitClientResponse waitClientResponse = new WaitClientResponse(ioSession, messageHasSent);
 		waitClientResponse.time = new Date().getTime();
 		// 加入到“等待回复表”中，由CheckWaitClientResponseThread 线程进行轮询
 		waitClientRepTable.put(key, waitClientResponse);
+	}
+
+	/**
+	 * 删除一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * @param ioSession
+	 * @param key
+	 * @param messageHasSent
+	 * @author Feng
+	 */
+	public void removeClientResponseListener(byte[] key) {
+		waitClientRepTable.remove(key);
+	}
+
+	/**
+	 * 查找一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * @param ioSession
+	 * @param key
+	 * @param messageHasSent
+	 * @author Feng
+	 */
+	public WaitClientResponse getClientResponseListener(byte[] key) {
+		return waitClientRepTable.get(key);
 	}
 	
 	/**

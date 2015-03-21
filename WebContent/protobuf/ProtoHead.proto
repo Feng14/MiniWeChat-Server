@@ -1,0 +1,11 @@
+package protocol;
+
+option java_package = "protocol";
+
+enum ENetworkMessage{
+    KEEP_ALIVE_SYNC=0;
+    REGISTER_REQ=1;
+    REGISTER_RSP=2;
+    LOGIN_REQ=3;
+    LOGIN_RSP=4;
+}

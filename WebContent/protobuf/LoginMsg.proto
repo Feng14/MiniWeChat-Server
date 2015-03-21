@@ -2,14 +2,15 @@ package protocol;
 
 option java_package = "protocol";
 
-enum ResultCode{
-	SUCCESS = 1;//表示登录成功
-	FAIL = 2;//表示登录失败
-	}
 message LoginReq{
-	required string account = 1;
-	required string accountPassword = 2;
-	}
+	required string userId= 1;
+	required string userPassword= 2;
+}
 message LoginRsp{
+	enum ResultCode{
+    	SUCCESS = 0;
+		FAIL = 1;
+	}
+
 	required ResultCode resultCode = 1;
 }
