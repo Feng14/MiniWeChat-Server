@@ -25,8 +25,8 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-//	String host = "192.168.45.11"; // 要连接的服务端IP地址
-	 String host = "172.18.244.4"; // 要连接的服务端IP地址
+	String host = "192.168.45.11"; // 要连接的服务端IP地址
+//	 String host = "192.168.45.17"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
 	public static void main(String args[]) throws IOException {
@@ -139,10 +139,10 @@ public class SocketClientTest {
 //			inputStream = socket.getInputStream();
 //			outputStream = socket.getOutputStream();
 //			测心跳
-			testKeepAlive();
+//			testKeepAlive();
 			
 			// 测注册
-			//testRegister();
+			testRegister();
 			
 			// 测登陆
 //			testLogin();

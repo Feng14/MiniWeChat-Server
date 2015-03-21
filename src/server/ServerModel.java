@@ -200,6 +200,7 @@ public class ServerModel {
 							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
 //							user.ioSession.close(true);
 
+//							user.ioSession.close(true);
 							clientUserTable.remove(key);
 							continue;
 						}
