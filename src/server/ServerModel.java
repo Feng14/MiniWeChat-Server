@@ -32,9 +32,9 @@ public class ServerModel {
 	public static final long WAIT_CLIENT_RESPONSE_TIMEOUT = 3000;
 
 	public static ServerModel instance = new ServerModel();
-	// 请求队列
+	// Client请求队列
 	private LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
-	// 用户列表
+	// 已连接用户信息表
 	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	// 监听客户端回复的表
 	private Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
@@ -68,9 +68,30 @@ public class ServerModel {
 	 * @param ioSession
 	 * @param arrayBytes
 	 * @author Feng
+	 * @throws InterruptedException 
 	 */
-	public void addClientRequestToQueue(IoSession ioSession, byte[] arrayBytes) {
-		
+	public void addClientRequestToQueue(IoSession ioSession, byte[] byteArray) throws InterruptedException {
+		requestQueue.put(new NetworkMessage(ioSession, byteArray));
+	}
+	
+	/**
+	 * 往“已连接用户信息表”中添加一个新用户
+	 * @param key
+	 * @param clientUser
+	 * @author Feng
+	 */
+	public void addClientUserToTable(String key, ClientUser clientUser) {
+		clientUserTable.put(key, clientUser);
+	}
+	
+	/**
+	 * 从“已连接用户信息表”中获取用户
+	 * @param key
+	 * @return ClientUser
+	 * @author Feng
+	 */
+	public ClientUser getClientUserFromTable(String key) {
+		return clientUserTable.get(key);
 	}
 	
 	/**

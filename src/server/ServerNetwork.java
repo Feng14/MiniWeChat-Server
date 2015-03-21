@@ -132,9 +132,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-	private void dealRequest(IoSession session, int size, byte[] byteArray) {
+	private void dealRequest(IoSession ioSession, int size, byte[] byteArray) {
 		try {
-			ServerModel.instance.requestQueue.put(new NetworkMessage(session, byteArray));
+			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
 			Debug.log("ServerNetwork", "将Client请求放入待处理队列");
 		} catch (InterruptedException e) {
 			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
@@ -203,10 +203,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	public void addClientUserToTable(IoSession ioSession){
 		// 已有就不加进来了
-		if (ServerModel.instance.clientUserTable.containsKey(ioSession.getRemoteAddress()))
+		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null)
 			return;
 		
-		ServerModel.instance.clientUserTable.put(ioSession.getRemoteAddress().toString(), new ClientUser(ioSession));
+		ServerModel.instance.addClientUserToTable(ioSession.getRemoteAddress().toString(), new ClientUser(ioSession));
 	}
 	
 	/**

@@ -49,14 +49,14 @@ public class Server_User {
 		// ServerModel.instance.clientUserTable.containsKey(networkMessage.ioSession.getRemoteAddress().toString()));
 		// 如果ClientUser已经掉线被删除，那么就不管了
 		try {
-			if (!ServerModel.instance.clientUserTable.containsKey(networkMessage.ioSession.getRemoteAddress().toString())) {
+			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()) != null) {
 				System.out.println("Server_User: 用户表(ClientUserTalbe)中找不到 用户" + networkMessage.ioSession.getRemoteAddress()
 						+ "，心跳回复不作处理!");
 				return;
 			}
 			System.err.println("a");
 
-			ServerModel.instance.clientUserTable.get(networkMessage.ioSession.getRemoteAddress().toString()).onLine = true;
+			ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()).onLine = true;
 		} catch (NullPointerException e) {
 			System.out.println("Server_User: 异常，用户" + networkMessage.ioSession.getRemoteAddress() + "已掉线，心跳回复不作处理!");
 			e.printStackTrace();
