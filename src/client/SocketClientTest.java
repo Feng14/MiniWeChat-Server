@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 import protocol.KeepAliveMsg;
 import protocol.LoginMsg;
+import protocol.PersonalSettingsMsg;
 import protocol.ProtoHead;
 import protocol.RegisterMsg;
 import protocol.RegisterMsg.RegisterReq;
@@ -23,7 +24,7 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 	// String host = "192.168.45.37"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -137,9 +138,13 @@ public class SocketClientTest {
 //			inputStream = socket.getInputStream();
 //			outputStream = socket.getOutputStream();
 			// 测注册
-//			testRegister();
+			
+			//testRegister();
+			
 			// 测登陆
-			testLogin();
+			//testLogin();
+			//测试个人设置
+			testPersonalSettings();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -280,6 +285,44 @@ public class SocketClientTest {
 					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
 					
 					System.out.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void  testPersonalSettings(){
+		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
+		builder.setUserId("Fuck");
+		//builder.setUserName("ssss");
+		//builder.setUserPassword("s123");
+		builder.setHeadIndex(1);
+		System.out.println("start personalSettings test!");
+		try{
+			Socket socket = new Socket(host,port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			
+			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder.build().toByteArray());
+			writeToServer(byteArray);
+			while (true) {
+				byteArray = readFromServer(socket);
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+				
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray, HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+				
+				if (type == ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i=0; i<objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					
+					PersonalSettingsMsg.PersonalSettingsRsp response = PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(objBytes);
+					
+					System.out.println("Response : " + PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
 			}
 			

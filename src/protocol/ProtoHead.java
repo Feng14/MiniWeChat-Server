@@ -33,6 +33,14 @@ public final class ProtoHead {
      * <code>LOGIN_RSP = 4;</code>
      */
     LOGIN_RSP(4, 4),
+    /**
+     * <code>PERSONALSETTINGS_REQ = 5;</code>
+     */
+    PERSONALSETTINGS_REQ(5, 5),
+    /**
+     * <code>PERSONALSETTINGS_RSP = 6;</code>
+     */
+    PERSONALSETTINGS_RSP(6, 6),
     ;
 
     /**
@@ -55,6 +63,14 @@ public final class ProtoHead {
      * <code>LOGIN_RSP = 4;</code>
      */
     public static final int LOGIN_RSP_VALUE = 4;
+    /**
+     * <code>PERSONALSETTINGS_REQ = 5;</code>
+     */
+    public static final int PERSONALSETTINGS_REQ_VALUE = 5;
+    /**
+     * <code>PERSONALSETTINGS_RSP = 6;</code>
+     */
+    public static final int PERSONALSETTINGS_RSP_VALUE = 6;
 
 
     public final int getNumber() { return value; }
@@ -66,6 +82,8 @@ public final class ProtoHead {
         case 2: return REGISTER_RSP;
         case 3: return LOGIN_REQ;
         case 4: return LOGIN_RSP;
+        case 5: return PERSONALSETTINGS_REQ;
+        case 6: return PERSONALSETTINGS_RSP;
         default: return null;
       }
     }
@@ -126,10 +144,11 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*h\n\017ENetworkM" +
-      "essage\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER_" +
-      "REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022\r" +
-      "\n\tLOGIN_RSP\020\004B\n\n\010protocol"
+      "\n\017ProtoHead.proto\022\010protocol*\234\001\n\017ENetwork" +
+      "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
+      "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
+      "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
+      "\022\030\n\024PERSONALSETTINGS_RSP\020\006B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

@@ -38,6 +38,9 @@ public class ClientRequest_Dispatcher {
 		case ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE:
 			Server_User.instance.login(networkMessage);
 			break;
+		case ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ_VALUE:
+			Server_User.instance.personalSettings(networkMessage);
+			break;
 
 		default:
 			break;
