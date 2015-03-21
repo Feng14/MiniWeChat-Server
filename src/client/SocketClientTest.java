@@ -16,6 +16,7 @@ import protocol.RegisterMsg;
 import protocol.RegisterMsg.RegisterReq;
 import server.NetworkMessage;
 import tools.DataTypeTranslater;
+import tools.Debug;
 
 public class SocketClientTest {
 
@@ -24,8 +25,8 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	String host = "192.168.45.34"; // 要连接的服务端IP地址
-	// String host = "192.168.45.37"; // 要连接的服务端IP地址
+//	String host = "192.168.45.11"; // 要连接的服务端IP地址
+	 String host = "172.18.244.4"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
 	public static void main(String args[]) throws IOException {
@@ -137,14 +138,16 @@ public class SocketClientTest {
 //			socket = new Socket(host, port);
 //			inputStream = socket.getInputStream();
 //			outputStream = socket.getOutputStream();
-			// 测注册
+//			测心跳
+			testKeepAlive();
 			
+			// 测注册
 			//testRegister();
 			
 			// 测登陆
-			//testLogin();
+//			testLogin();
 			//测试个人设置
-			testPersonalSettings();
+//			testPersonalSettings();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -206,6 +209,44 @@ public class SocketClientTest {
 
 	}
 
+	/**
+	 * 测试心跳功能 
+	 */
+	public void testKeepAlive(){
+		System.out.println("Start Test KeepAliveSyc!");
+		try {
+			socket = new Socket(host, port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			
+			byte[] byteArray1, byteArray2;
+//			outputStream = socket.getOutputStream();
+//			writeToServer(byteArray);
+			
+//			inputStream = socket.getInputStream();
+			while (true) {
+				byteArray1 = readFromServer(socket);
+				int size = DataTypeTranslater.bytesToInt(byteArray1, 0);
+				System.out.println("size: " + size);
+				
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray1, HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+				
+				if (type == ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC) {
+					byteArray2 = new byte[size];
+					for (int i=0; i<size; i++)
+						byteArray2[i] = byteArray1[i]; 
+
+					Debug.log("回复心跳包");
+					writeToServer(byteArray2);
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 测试注册功能
 	 * @author Feng

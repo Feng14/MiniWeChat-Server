@@ -203,9 +203,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	public void addClientUserToTable(IoSession ioSession){
 		// 已有就不加进来了
-		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null)
+		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null){
+			System.err.println("添加时用户已存在");
 			return;
+		}
 		
+		Debug.log("ServerNetwork", "发现新的用户" + ioSession.getRemoteAddress() + "连接，加入用户表");
 		ServerModel.instance.addClientUserToTable(ioSession.getRemoteAddress().toString(), new ClientUser(ioSession));
 	}
 	

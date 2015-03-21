@@ -9,22 +9,17 @@ import javax.imageio.ImageIO;
 import model.HibernateSessionFactory;
 import model.User;
 
-import org.apache.mina.core.session.IoSession;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import antlr.collections.List;
-
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import protocol.KeepAliveMsg;
 import protocol.LoginMsg;
 import protocol.PersonalSettingsMsg;
 import protocol.ProtoHead;
 import protocol.RegisterMsg;
-import tools.DataTypeTranslater;
 import tools.Debug;
 
 /**
@@ -49,18 +44,17 @@ public class Server_User {
 	public void keepAlive(NetworkMessage networkMessage) {
 		// System.out.println((networkMessage == null) + "      " +
 		// (networkMessage.ioSession == null));
-		System.out.println("Server_User: 对  用户" + networkMessage.ioSession.getRemoteAddress() + "  回复的心跳包  的处理");
+		Debug.log("Server_User", "对  用户" + networkMessage.ioSession.getRemoteAddress() + "  回复的心跳包  的处理");
 		// System.out.println(ServerModel.instance.clientUserTable.keySet().size());
 		// System.out.println("fuck   " +
 		// ServerModel.instance.clientUserTable.containsKey(networkMessage.ioSession.getRemoteAddress().toString()));
 		// 如果ClientUser已经掉线被删除，那么就不管了
 		try {
-			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()) != null) {
-				System.out.println("Server_User: 用户表(ClientUserTalbe)中找不到 用户" + networkMessage.ioSession.getRemoteAddress()
+			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()) == null) {
+				Debug.log("Server_User", "用户表(ClientUserTalbe)中找不到 用户" + networkMessage.ioSession.getRemoteAddress()
 						+ "，心跳回复不作处理!");
 				return;
 			}
-			System.err.println("a");
 
 			ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()).onLine = true;
 		} catch (NullPointerException e) {
