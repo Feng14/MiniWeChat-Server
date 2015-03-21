@@ -3,10 +3,9 @@ package protocol;
 option java_package = "protocol";
 
 message PersonalSettingsReq{
-	required string userId = 1;
-	optional string userName = 2 [default = ""];
-	optional string userPassword = 3 [default = ""];
-	optional int32 headIndex = 4 [default = 0];
+	optional string userName = 1 [default = ""];
+	optional string userPassword = 2 [default = ""];
+	optional int32 headIndex = 3 [default = 0];
 }
 
 message PersonalSettingsRsp{
