@@ -137,6 +137,12 @@ public class Server_User {
 				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // 密码正确
 					Debug.log(new String[] { "Server_User", "login" }, "用户" + networkMessage.ioSession.getRemoteAddress()
 							+ "  的登陆校验成功!");
+					//记录到表中
+					ClientUser clientUser = ServerModel.instance.getClientUserFromTable(loginObject.getUserId());
+					if (clientUser != null)
+						clientUser.userId = loginObject.getUserId();
+					
+					// 记录回复位
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
 				} else { // 密码错误
 					Debug.log(new String[] { "Server_User", "login" }, "用户" + networkMessage.ioSession.getRemoteAddress()

@@ -10,6 +10,7 @@ import org.apache.mina.core.session.IoSession;
 public class ClientUser {
 	public IoSession ioSession;
 	public boolean onLine = true;
+	public String userId;
 	
 	public ClientUser(IoSession ioSession){
 		this.ioSession = ioSession;

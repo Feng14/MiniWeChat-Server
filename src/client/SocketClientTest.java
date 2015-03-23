@@ -245,6 +245,10 @@ public class SocketClientTest {
 		}
 	}
 
+	/**
+	 * 测试个人设置功能
+	 * @author WangFei
+	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
 		builder.setUserId("Fuck");
