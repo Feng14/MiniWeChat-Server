@@ -60,6 +60,12 @@ public class SocketClientTest {
 		// new Thread(new readThread()).start();
 	}
 
+	/**
+	 * 连接服务器
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @author Feng
+	 */
 	public void link() throws UnknownHostException, IOException {
 		socket = new Socket(host, port);
 		inputStream = socket.getInputStream();
