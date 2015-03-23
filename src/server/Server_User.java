@@ -187,7 +187,8 @@ public class Server_User {
 
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userId", personalSettingsObject.getUserId()));
+			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString());
+			criteria.add(Restrictions.eq("userId", clientUser.userId));
 			if (criteria.list().size() > 0) {
 				User user = (User) criteria.list().get(0);
 				// 修改昵称
@@ -223,7 +224,7 @@ public class Server_User {
 							file.mkdir();
 						}
 						// 保存获取的默认头像到头像文件夹
-						File saveFile = new File(ResourcePath.headPath + personalSettingsObject.getUserId() + ".png");
+						File saveFile = new File(ResourcePath.headPath + clientUser.userId + ".png");
 						ImageIO.write(image, "png", saveFile);
 						personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
 					} catch (IOException e) {

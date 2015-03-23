@@ -251,8 +251,8 @@ public class SocketClientTest {
 	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
-		builder.setUserId("Fuck");
-		// builder.setUserName("ssss");
+		//builder.setUserId("Fuck");
+		builder.setUserName("ssss");
 		// builder.setUserPassword("s123");
 		builder.setHeadIndex(1);
 		System.out.println("start personalSettings test!");
