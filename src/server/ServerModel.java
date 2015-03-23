@@ -45,6 +45,7 @@ public class ServerModel {
 
 	/**
 	 * 创建一个随机的MessageId
+	 * 
 	 * @author Feng
 	 * @return
 	 */
@@ -54,6 +55,7 @@ public class ServerModel {
 
 	/**
 	 * 初始化
+	 * 
 	 * @author Feng
 	 */
 	public void init() {
@@ -64,18 +66,20 @@ public class ServerModel {
 	}
 
 	/**
-	 *  往客户端请求列表中加入一条请求
+	 * 往客户端请求列表中加入一条请求
+	 * 
 	 * @param ioSession
 	 * @param arrayBytes
 	 * @author Feng
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public void addClientRequestToQueue(IoSession ioSession, byte[] byteArray) throws InterruptedException {
 		requestQueue.put(new NetworkMessage(ioSession, byteArray));
 	}
-	
+
 	/**
 	 * 往“已连接用户信息表”中添加一个新用户
+	 * 
 	 * @param key
 	 * @param clientUser
 	 * @author Feng
@@ -83,9 +87,10 @@ public class ServerModel {
 	public void addClientUserToTable(String key, ClientUser clientUser) {
 		clientUserTable.put(key, clientUser);
 	}
-	
+
 	/**
 	 * 从“已连接用户信息表”中获取用户
+	 * 
 	 * @param key
 	 * @return ClientUser
 	 * @author Feng
@@ -93,9 +98,10 @@ public class ServerModel {
 	public ClientUser getClientUserFromTable(String key) {
 		return clientUserTable.get(key);
 	}
-	
+
 	/**
 	 * 添加一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * 
 	 * @param ioSession
 	 * @param key
 	 * @param messageHasSent
@@ -110,6 +116,7 @@ public class ServerModel {
 
 	/**
 	 * 删除一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * 
 	 * @param ioSession
 	 * @param key
 	 * @param messageHasSent
@@ -121,6 +128,7 @@ public class ServerModel {
 
 	/**
 	 * 查找一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * 
 	 * @param ioSession
 	 * @param key
 	 * @param messageHasSent
@@ -129,7 +137,7 @@ public class ServerModel {
 	public WaitClientResponse getClientResponseListener(byte[] key) {
 		return waitClientRepTable.get(key);
 	}
-	
+
 	/**
 	 * 用于处理用户请求的线程
 	 * 
@@ -165,19 +173,20 @@ public class ServerModel {
 	private class KeepAlivePacketSenser implements Runnable {
 		@Override
 		public void run() {
-//			byte[] packetBytes = KeepAliveMsg.KeepAliveSyncPacket.newBuilder().build().toByteArray();
+			// byte[] packetBytes =
+			// KeepAliveMsg.KeepAliveSyncPacket.newBuilder().build().toByteArray();
 			KeepAliveMsg.KeepAliveSyncPacket.Builder packet = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
-//			packet.setA(123);
-//			packet.setB(true);
+			// packet.setA(123);
+			// packet.setB(true);
 			packet.setC("Fuck");
 			byte[] packetBytes = packet.build().toByteArray();
-			try {
-				// 创建心跳包
-				byte[] messageBytes;
+			// 创建心跳包
+			byte[] messageBytes;
 
-				IoBuffer responseIoBuffer;
+			IoBuffer responseIoBuffer;
 
-				while (true) {
+			while (true) {
+				try {
 					Thread.sleep(KEEP_ALIVE_PACKET_TIME);
 
 					messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(), packetBytes);
@@ -198,9 +207,9 @@ public class ServerModel {
 						// 将上次没有回复的干掉，从用户表中删掉
 						if (user.onLine == false) {
 							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
-//							user.ioSession.close(true);
+//							 user.ioSession.getHandler().;
 
-//							user.ioSession.close(true);
+							// user.ioSession.close(true);
 							clientUserTable.remove(key);
 							continue;
 						}
@@ -211,13 +220,13 @@ public class ServerModel {
 						user.onLine = false;
 						user.ioSession.write(responseIoBuffer);
 					}
+				} catch (IOException e) {
+					System.err.println("发行心跳包线程异常!");
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					System.err.println("发行心跳包线程异常! -----睡眠模块");
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				System.err.println("发行心跳包线程异常!");
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				System.err.println("发行心跳包线程异常! -----睡眠模块");
-				e.printStackTrace();
 			}
 		}
 	}

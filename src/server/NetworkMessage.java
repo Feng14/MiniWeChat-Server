@@ -77,9 +77,13 @@ public class NetworkMessage {
 	 * @author Feng
 	 */
 	public byte[] getMessageObjectBytes(){
-		byte[] response = new byte[getMessageLength() - getMessageObjectStartIndex()];
+		return getMessageObjectBytes(arrayBytes);
+	}
+	
+	public static byte[] getMessageObjectBytes(byte[] array){
+		byte[] response = new byte[getMessageLength(array) - getMessageObjectStartIndex()];
 		for (int i=0; i<response.length; i++)
-			response[i] = arrayBytes[getMessageObjectStartIndex() + i];
+			response[i] = array[getMessageObjectStartIndex() + i];
 		
 		return response;
 	}
@@ -93,6 +97,10 @@ public class NetworkMessage {
 	 * @author Feng
 	 */
 	public static byte[] packMessage(int messageType, byte[] packetBytes) throws IOException {
+		return packMessage(messageType, ServerModel.createMessageId(), packetBytes);
+	}
+
+	public static byte[] packMessage(int messageType, byte[] messageIdBytes, byte[] packetBytes) throws IOException {
 		int size = getMessageObjectStartIndex() + packetBytes.length;
 		byte[] messageBytes = new byte[size];
 		
@@ -102,22 +110,17 @@ public class NetworkMessage {
 			messageBytes[i] = sizeBytes[i];
 		
 		// 2.加入类型
-		int offset = sizeBytes.length;
 		byte[] typeBytes = DataTypeTranslater.intToByte(messageType);
 		for (int i=0; i<typeBytes.length; i++)
-			messageBytes[offset + i] = typeBytes[i];
-		offset += typeBytes.length;
+			messageBytes[getTypeStartIndex() + i] = typeBytes[i];
 		
 		// 3.添加MessageId
-		byte[] messageIdBytes = ServerModel.createMessageId();
 		for (int i=0; i<messageIdBytes.length; i++)
-			messageBytes[offset + i] = messageIdBytes[i];
-		offset += messageIdBytes.length;
-		
+			messageBytes[getMessageIdStartIndex() + i] = messageIdBytes[i];
 		
 		// 4.加入数据包
 		for (int i=0; i<packetBytes.length; i++)
-			messageBytes[offset + i] = packetBytes[i];
+			messageBytes[getMessageObjectStartIndex() + i] = packetBytes[i];
 		
 		return messageBytes;
 	}
@@ -130,10 +133,10 @@ public class NetworkMessage {
 		return HEAD_INT_SIZE;
 	}
 	public static int getMessageIdStartIndex(){
-		return HEAD_INT_SIZE * 2;
+		return getTypeStartIndex() + HEAD_INT_SIZE;
 	}
 	
 	public static int getMessageObjectStartIndex(){
-		return HEAD_INT_SIZE * 2 + HEAD_FLOAT_SIZE;
+		return getMessageIdStartIndex() + HEAD_FLOAT_SIZE;
 	}
 }
