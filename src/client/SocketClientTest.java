@@ -28,7 +28,7 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-//	 String host = "192.168.45.11"; // 要连接的服务端IP地址
+	// String host = "192.168.45.11"; // 要连接的服务端IP地址
 	String host = "192.168.45.17"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -44,28 +44,28 @@ public class SocketClientTest {
 		// 与服务端建立连接
 		// 测心跳
 		// testKeepAlive();
-//		socket = new Socket(host, port);
-//		inputStream = socket.getInputStream();
-//		outputStream = socket.getOutputStream();
+		// socket = new Socket(host, port);
+		// inputStream = socket.getInputStream();
+		// outputStream = socket.getOutputStream();
 
 		// 测心跳
-		testKeepAlive();
+		// testKeepAlive();
 		// 测注册
-//		testRegister();
+		// testRegister();
 		// 测登陆
-		// testLogin();
+//		 testLogin();
 		// 测试个人设置
 		// testPersonalSettings();
 
 		// new Thread(new readThread()).start();
 	}
 
-	public void link() throws UnknownHostException, IOException{
+	public void link() throws UnknownHostException, IOException {
 		socket = new Socket(host, port);
 		inputStream = socket.getInputStream();
 		outputStream = socket.getOutputStream();
 	}
-	
+
 	// 处理服务器回复问题
 
 	public byte[] readFromServer(Socket socket) throws IOException {
@@ -75,10 +75,10 @@ public class SocketClientTest {
 		// System.out.println(in.read(byteArray));
 		inputStream.read(byteArray);
 		// System.out.println("client 收到Server 发来的 ： " + byteArray);
-//		inputStream.close();
+		// inputStream.close();
 		return byteArray;
 	}
-	
+
 	public byte[] readFromServer(InputStream inputStream) throws IOException {
 		byte[] byteArray = new byte[200];
 		inputStream.read(byteArray);
@@ -169,7 +169,7 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 测试注册功能
 	 * 
@@ -190,7 +190,7 @@ public class SocketClientTest {
 					.toByteArray());
 			System.out.println("MessageID : " + NetworkMessage.getMessageID(byteArray));
 			writeToServer(byteArray);
-			
+
 			while (true) {
 				byteArray = readFromServer(socket);
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
@@ -220,38 +220,71 @@ public class SocketClientTest {
 
 	/**
 	 * 测试注册功能(由JUnit调用)
+	 * 
 	 * @author Feng
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	public byte[] testRegisterCase(String userId, String userPassword, String userName) throws IOException{
+	public byte[] testRegister_JUint(String userId, String userPassword, String userName) throws IOException {
 		RegisterMsg.RegisterReq.Builder builder = RegisterMsg.RegisterReq.newBuilder();
 		builder.setUserId(userId);
 		builder.setUserPassword(userPassword);
 		builder.setUserName(userName);
-		
 
 		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
 				.toByteArray());
-//		System.out.println("MessageID : " + NetworkMessage.getMessageID(byteArray));
+		// System.out.println("MessageID : " +
+		// NetworkMessage.getMessageID(byteArray));
 		writeToServer(outputStream, byteArray);
-		
-		while(true) {
+
+		while (true) {
 			byteArray = readFromServer(inputStream);
 			if (NetworkMessage.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
 				continue;
-			
+
 			return cutResult(byteArray);
 		}
 	}
-	
+
+	/**
+	 * 测试登陆功能(由JUnit调用)
+	 * 
+	 * @param userId
+	 * @param userPassword
+	 * @return
+	 * @throws IOException 
+	 * @throws UnknownHostException 
+	 */
+	public byte[] testLogin_JUint(String userId, String userPassword) throws UnknownHostException, IOException {
+		LoginMsg.LoginReq.Builder builder = LoginMsg.LoginReq.newBuilder();
+		builder.setUserId(userId);
+		builder.setUserPassword(userPassword);
+
+		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
+				.toByteArray());
+		// outputStream = socket.getOutputStream();
+		writeToServer(byteArray);
+
+		// inputStream = socket.getInputStream();
+		while (true) {
+			byteArray = readFromServer(socket);
+
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+					HEAD_INT_SIZE));
+
+			if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
+				return byteArray;
+			}
+		}
+	}
+
 	/**
 	 * 测试登陆功能
 	 */
 	public void testLogin() {
 
 		LoginMsg.LoginReq.Builder builder = LoginMsg.LoginReq.newBuilder();
-		builder.setUserId("aa");
+		builder.setUserId("a");
 		builder.setUserPassword("aa");
 		System.out.println("Start Test Login!");
 		try {
@@ -293,11 +326,12 @@ public class SocketClientTest {
 
 	/**
 	 * 测试个人设置功能
+	 * 
 	 * @author WangFei
 	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
-		//builder.setUserId("Fuck");
+		// builder.setUserId("Fuck");
 		builder.setUserName("ssss");
 		// builder.setUserPassword("s123");
 		builder.setHeadIndex(1);
@@ -337,18 +371,18 @@ public class SocketClientTest {
 		}
 	}
 
-
 	/**
 	 * 用于剪切从服务器发过来的byte[]
+	 * 
 	 * @param byteArray
 	 * @return
 	 */
 	public byte[] cutResult(byte[] byteArray) {
 		int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 		byte[] result = new byte[size];
-		for (int i=0; i<size; i++)
+		for (int i = 0; i < size; i++)
 			result[i] = byteArray[i];
-		
+
 		return result;
 	}
 }

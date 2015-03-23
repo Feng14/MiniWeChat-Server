@@ -44,21 +44,21 @@ public class Server_User {
 	public void keepAlive(NetworkMessage networkMessage) {
 		// System.out.println((networkMessage == null) + "      " +
 		// (networkMessage.ioSession == null));
-		Debug.log("Server_User", "对  用户" + networkMessage.ioSession.getRemoteAddress() + "  回复的心跳包  的处理");
+		Debug.log("Server_User", "对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  回复的心跳包  的处理");
 		// System.out.println(ServerModel.instance.clientUserTable.keySet().size());
 		// System.out.println("fuck   " +
-		// ServerModel.instance.clientUserTable.containsKey(networkMessage.ioSession.getRemoteAddress().toString()));
+		// ServerModel.instance.clientUserTable.containsKey(ServerModel.getIoSessionKey(networkMessage.ioSession)));
 		// 如果ClientUser已经掉线被删除，那么就不管了
 		try {
-			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()) == null) {
-				Debug.log("Server_User", "用户表(ClientUserTalbe)中找不到 用户" + networkMessage.ioSession.getRemoteAddress()
+			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession) == null) {
+				Debug.log("Server_User", "用户表(ClientUserTalbe)中找不到 用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 						+ "，心跳回复不作处理!");
 				return;
 			}
 
-			ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString()).onLine = true;
+			ServerModel.instance.getClientUserFromTable(networkMessage.ioSession).onLine = true;
 		} catch (NullPointerException e) {
-			System.out.println("Server_User: 异常，用户" + networkMessage.ioSession.getRemoteAddress() + "已掉线，心跳回复不作处理!");
+			System.out.println("Server_User: 异常，用户" + networkMessage.ioSession + "已掉线，心跳回复不作处理!");
 			e.printStackTrace();
 		}
 	}
@@ -70,7 +70,7 @@ public class Server_User {
 	 * @author Feng
 	 */
 	public void register(NetworkMessage networkMessage) {
-		Debug.log("Server_User", "注册事件： 对  用户" + networkMessage.ioSession.getRemoteAddress() + "  的注册事件  的处理");
+		Debug.log("Server_User", "注册事件： 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的注册事件  的处理");
 
 		try {
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(networkMessage.getMessageObjectBytes());
@@ -82,8 +82,8 @@ public class Server_User {
 			criteria.add(Restrictions.eq("userId", registerObject.getUserId()));
 			if (criteria.list().size() > 0) { // 已存在
 				// 已存在相同账号用户，告诉客户端
-				System.out.println("什么鬼？");
-				Debug.log("Server_User", "注册事件：用户" + networkMessage.ioSession.getRemoteAddress() + "  的注册账号重复，返回错误!");
+//				System.out.println("什么鬼？");
+				Debug.log("Server_User", "注册事件：用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的注册账号重复，返回错误!");
 
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.USER_EXIST);
 			} else { // 没问题，可以开始注册
@@ -97,7 +97,7 @@ public class Server_User {
 				HibernateSessionFactory.commitSession(session);
 
 				// 成功，设置回包码
-				Debug.log("Server_User", "注册事件：用户" + networkMessage.ioSession.getRemoteAddress() + "  注册成功，返回消息!");
+				Debug.log("Server_User", "注册事件：用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  注册成功，返回消息!");
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
 			}
 
@@ -106,10 +106,10 @@ public class Server_User {
 					ProtoHead.ENetworkMessage.REGISTER_RSP.getNumber(), networkMessage.getMessageID(), responseBuilder.build()
 							.toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + networkMessage.ioSession.getRemoteAddress() + " 的包时异常！");
+			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 的包时异常！");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Server_User : 注册事件： " + networkMessage.ioSession.getRemoteAddress() + " 返回包时异常！");
+			System.err.println("Server_User : 注册事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
 			e.printStackTrace();
 		}
 	}
@@ -121,7 +121,7 @@ public class Server_User {
 	 * @author Feng
 	 */
 	public void login(NetworkMessage networkMessage) {
-		Debug.log(new String[] { "Server_User", "login" }, " 对  用户" + networkMessage.ioSession.getRemoteAddress()
+		Debug.log(new String[] { "Server_User", "login" }, " 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 				+ "  的登陆事件  的处理");
 
 		try {
@@ -136,22 +136,23 @@ public class Server_User {
 				// 用户存在，开始校验
 				User user = (User) criteria.list().get(0);
 				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // 密码正确
-					Debug.log(new String[] { "Server_User", "login" }, "用户" + networkMessage.ioSession.getRemoteAddress()
+					Debug.log(new String[] { "Server_User", "login" }, "用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 							+ "  的登陆校验成功!");
 					//记录到表中
-					ClientUser clientUser = ServerModel.instance.getClientUserFromTable(loginObject.getUserId());
+					ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 					if (clientUser != null)
 						clientUser.userId = loginObject.getUserId();
+					System.err.println(ServerModel.instance.getClientUserFromTable(networkMessage.ioSession).userId);
 					
 					// 记录回复位
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
 				} else { // 密码错误
-					Debug.log(new String[] { "Server_User", "login" }, "用户" + networkMessage.ioSession.getRemoteAddress()
+					Debug.log(new String[] { "Server_User", "login" }, "用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 							+ "  的登陆密码错误!");
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 				}
 			} else { // 用户不存在
-				Debug.log(new String[] { "Server_User", "login" }, "用户" + networkMessage.ioSession.getRemoteAddress()
+				Debug.log(new String[] { "Server_User", "login" }, "用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 						+ "  的用户不存在!");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			}
@@ -162,10 +163,10 @@ public class Server_User {
 					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
 							.toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + networkMessage.ioSession.getRemoteAddress() + " 的包时异常！");
+			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 的包时异常！");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Server_User : 注册事件： " + networkMessage.ioSession.getRemoteAddress() + " 返回包时异常！");
+			System.err.println("Server_User : 注册事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
 			e.printStackTrace();
 		}
 	}
@@ -178,7 +179,7 @@ public class Server_User {
 	 * @time 2015-03-21
 	 */
 	public void personalSettings(NetworkMessage networkMessage) {
-		Debug.log(new String[] { "Server_User", "personalSettings" }, " 对  用户" + networkMessage.ioSession.getRemoteAddress()
+		Debug.log(new String[] { "Server_User", "personalSettings" }, " 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 				+ "  的个人设置事件  的处理");
 		try {
 			PersonalSettingsMsg.PersonalSettingsReq personalSettingsObject = PersonalSettingsMsg.PersonalSettingsReq
@@ -188,7 +189,7 @@ public class Server_User {
 
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
-			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString());
+			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 			criteria.add(Restrictions.eq("userId", clientUser.userId));
 			if (criteria.list().size() > 0) {
 				User user = (User) criteria.list().get(0);
@@ -237,7 +238,7 @@ public class Server_User {
 
 			} else {
 				// 用户不存在
-				Debug.log(new String[] { "Server_User", "personalSettings" }, "用户" + networkMessage.ioSession.getRemoteAddress()
+				Debug.log(new String[] { "Server_User", "personalSettings" }, "用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 						+ "  的用户不存在!");
 				personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			}
@@ -249,10 +250,10 @@ public class Server_User {
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
 							networkMessage.getMessageID(), personalSettingsBuilder.build().toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : 个人设置事件： 用Protobuf反序列化 " + networkMessage.ioSession.getRemoteAddress() + " 的包时异常！");
+			System.err.println("Server_User : 个人设置事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 的包时异常！");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Server_User : 个人设置事件： " + networkMessage.ioSession.getRemoteAddress() + " 返回包时异常！");
+			System.err.println("Server_User : 个人设置事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
 			e.printStackTrace();
 		}
 	}

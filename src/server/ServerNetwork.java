@@ -175,7 +175,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 		}
 		
 		Debug.log("ServerNetwork", "发现新的用户" + ioSession.getRemoteAddress() + "连接，加入用户表");
-		ServerModel.instance.addClientUserToTable(ioSession.getRemoteAddress().toString(), new ClientUser(ioSession));
+		ServerModel.instance.addClientUserToTable(ioSession, new ClientUser(ioSession));
 	}
 	
 	/**

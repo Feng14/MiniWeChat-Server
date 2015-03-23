@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -35,7 +36,7 @@ public class ServerModel {
 	public static ServerModel instance = new ServerModel();
 	// Client请求队列
 	private LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
-	// 已连接用户信息表
+	// 已连接用户信息表(Key 为IoSession.getRemoteAddress().toString)
 	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	// 监听客户端回复的表
 	private Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
@@ -85,10 +86,20 @@ public class ServerModel {
 	 * @param clientUser
 	 * @author Feng
 	 */
-	public void addClientUserToTable(String key, ClientUser clientUser) {
-		clientUserTable.put(key, clientUser);
+	public void addClientUserToTable(IoSession ioSession, ClientUser clientUser) {
+		clientUser.onLine = true;
+		clientUserTable.put(getIoSessionKey(ioSession), clientUser);
 	}
-
+	
+	/**
+	 * 从iosession生成Key
+	 * @param ioSession
+	 * @return
+	 */
+	public static String getIoSessionKey(IoSession ioSession) {
+		return ((InetSocketAddress)ioSession.getRemoteAddress()).getAddress().toString() + ":" + ((InetSocketAddress)ioSession.getRemoteAddress()).getPort();
+	}
+	
 	/**
 	 * 从“已连接用户信息表”中获取用户
 	 * 
@@ -98,6 +109,10 @@ public class ServerModel {
 	 */
 	public ClientUser getClientUserFromTable(String key) {
 		return clientUserTable.get(key);
+	}
+	
+	public ClientUser getClientUserFromTable(IoSession ioSession) {
+		return getClientUserFromTable(getIoSessionKey(ioSession));
 	}
 
 	/**
@@ -190,18 +205,25 @@ public class ServerModel {
 					Thread.sleep(KEEP_ALIVE_PACKET_TIME);
 
 					ClientUser user;
-//					String key;
+					Iterator iterator = clientUserTable.keySet().iterator();
+					String key;
 					
-					System.out.println(clientUserTable.size());
-					keyIterators = new ArrayList<String>(clientUserTable.size());
-					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();){
-						keyIterators.add(it.next().toString());
-					}
+//					System.out.println(clientUserTable.size());
+//					keyIterators = new ArrayList<String>(clientUserTable.size());
+//					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();){
+//						keyIterators.add(it.next().toString());
+//						
+//					}
 					
 					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
-					for (String key : keyIterators) {
+					while (iterator.hasNext()) {
+//					for (String key : keyIterators) {
 						Debug.log("ServerModel", "进入发心跳包循环!");
 						
+						key = iterator.next().toString();
+						
+						if (!clientUserTable.containsKey(key))
+							continue;
 						user = clientUserTable.get(key);
 
 						// 将上次没有回复的干掉，从用户表中删掉
@@ -209,7 +231,9 @@ public class ServerModel {
 							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
 
 							// user.ioSession.close(true);
-							clientUserTable.remove(key);
+							
+//							clientUserTable.remove(key);
+							iterator.remove();
 							continue;
 						}
 						

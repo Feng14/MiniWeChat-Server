@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
+import protocol.LoginMsg;
 import protocol.RegisterMsg;
 import server.NetworkMessage;
 
@@ -31,6 +32,9 @@ public class TestClient {
 		outputStream = socket.getOutputStream();
 	}
 
+	/**
+	 * ²âÊÔ×¢²á¹¦ÄÜ
+	 */
 	@Test
 	public void testRegister() {
 		try {
@@ -38,12 +42,12 @@ public class TestClient {
 			client.link();
 			
 			String randomData = (((int)(Math.random() * 100000)) + "").substring(0, 5);
-			byte[] resultBytes = client.testRegisterCase(randomData, randomData, randomData);
+			byte[] resultBytes = client.testRegister_JUint(randomData, randomData, randomData);
 			RegisterMsg.RegisterRsp responseObject = RegisterMsg.RegisterRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 			
 			assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());
 			
-			resultBytes = client.testRegisterCase(randomData, randomData, randomData);
+			resultBytes = client.testRegister_JUint(randomData, randomData, randomData);
 			responseObject = RegisterMsg.RegisterRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 			assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.USER_EXIST.toString());
 //			assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());
@@ -55,23 +59,25 @@ public class TestClient {
 		}
 	}
 
+	/**
+	 * ²âÊÔµÇÂ½¹¦ÄÜ
+	 */
 	@Test
 	public void testLogin() {
 		try {
 			client = new SocketClientTest();
 			client.link();
 			
-			String randomData = (((int)(Math.random() * 100000)) + "").substring(0, 5);
-			byte[] resultBytes = client.testRegisterCase(randomData, randomData, randomData);
-			RegisterMsg.RegisterRsp responseObject = RegisterMsg.RegisterRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+			byte[] resultBytes = client.testLogin_JUint("a", "aa");
+			LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 			
-			assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());
+			assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS);
 			
-			resultBytes = client.testRegisterCase(randomData, randomData, randomData);
-			responseObject = RegisterMsg.RegisterRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
-			assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.USER_EXIST.toString());
-//			assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());
-//			String resutString = resultBytes
+			resultBytes = client.testLogin_JUint("aa", "aa");
+			assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.FAIL);
+			
+			resultBytes = client.testLogin_JUint("a", "aaa");
+			assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.FAIL);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
