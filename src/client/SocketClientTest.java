@@ -10,12 +10,11 @@ import java.net.UnknownHostException;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import protocol.KeepAliveMsg;
-import protocol.LoginMsg;
-import protocol.PersonalSettingsMsg;
 import protocol.ProtoHead;
-import protocol.RegisterMsg;
-import protocol.RegisterMsg.RegisterReq;
+import protocol.Msg.GetUserInfoMsg;
+import protocol.Msg.LoginMsg;
+import protocol.Msg.PersonalSettingsMsg;
+import protocol.Msg.RegisterMsg;
 import server.NetworkMessage;
 import server.ServerModel;
 import tools.DataTypeTranslater;
@@ -28,40 +27,66 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	// String host = "192.168.45.11"; // ÒªÁ¬½ÓµÄ·şÎñ¶ËIPµØÖ·
-	String host = "192.168.45.17"; // ÒªÁ¬½ÓµÄ·şÎñ¶ËIPµØÖ·
-	int port = 8080; // ÒªÁ¬½ÓµÄ·şÎñ¶Ë¶ÔÓ¦µÄ¼àÌı¶Ë¿Ú
+
+	// String host = "192.168.45.11"; // Òªï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½Ö·
+	String host = "192.168.45.17"; // Òªï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½Ö·
+	int port = 8080; // Òªï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½Ë¶ï¿½Ó¦ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½
+
+
+	//String host = "192.168.45.11"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+	//String host = "192.168.45.17"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+
+	// String host = "192.168.45.11"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+	//String host = "192.168.45.34"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+
+	//int port = 8080; // è¦è¿æ¥çš„æœåŠ¡ç«¯å¯¹åº”çš„ç›‘å¬ç«¯å£
+
 
 	public static void main(String args[]) throws IOException {
 		new SocketClientTest();
 	}
 
 	public SocketClientTest() throws UnknownHostException, IOException {
-		// ÎªÁË¼òµ¥Æğ¼û£¬ËùÓĞµÄÒì³£¶¼Ö±½ÓÍùÍâÅ×
-		String host = "192.168.45.55"; // ÒªÁ¬½ÓµÄ·şÎñ¶ËIPµØÖ·
-		// String host = "192.168.45.37"; // ÒªÁ¬½ÓµÄ·şÎñ¶ËIPµØÖ·
-		int port = 8080; // ÒªÁ¬½ÓµÄ·şÎñ¶Ë¶ÔÓ¦µÄ¼àÌı¶Ë¿Ú
-		// Óë·şÎñ¶Ë½¨Á¢Á¬½Ó
-		// ²âĞÄÌø
+		// ä¸ºäº†ç®€å•èµ·è§ï¼Œæ‰€æœ‰çš„å¼‚å¸¸éƒ½ç›´æ¥å¾€å¤–æŠ›
+		String host = "192.168.45.34"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+		// String host = "192.168.45.37"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+		int port = 8080; // è¦è¿æ¥çš„æœåŠ¡ç«¯å¯¹åº”çš„ç›‘å¬ç«¯å£
+		// ä¸æœåŠ¡ç«¯å»ºç«‹è¿æ¥
+		// æµ‹å¿ƒè·³
 		// testKeepAlive();
 		// socket = new Socket(host, port);
 		// inputStream = socket.getInputStream();
 		// outputStream = socket.getOutputStream();
 
-		// ²âĞÄÌø
+
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		// testKeepAlive();
-		// ²â×¢²á
+		// ï¿½ï¿½×¢ï¿½ï¿½
 		// testRegister();
-		// ²âµÇÂ½
+		// ï¿½ï¿½ï¿½Â½
 //		 testLogin();
-		// ²âÊÔ¸öÈËÉèÖÃ
+		// ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		// testPersonalSettings();
+
+		// æµ‹å¿ƒè·³
+		//testKeepAlive();
+		// æµ‹æ³¨å†Œ
+
+//		testRegister();
+
+		//testRegister();
+		
+		// æµ‹ç™»é™†
+		//testLogin();
+		// æµ‹è¯•ä¸ªäººè®¾ç½®
+		testPersonalSettings();
+
 
 		// new Thread(new readThread()).start();
 	}
 
 	/**
-	 * Á¬½Ó·şÎñÆ÷
+	 * ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 * @author Feng
@@ -72,7 +97,12 @@ public class SocketClientTest {
 		outputStream = socket.getOutputStream();
 	}
 
-	// ´¦Àí·şÎñÆ÷»Ø¸´ÎÊÌâ
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½
+
+	
+	// å¤„ç†æœåŠ¡å™¨å›å¤é—®é¢˜
+
 
 	public byte[] readFromServer(Socket socket) throws IOException {
 
@@ -80,8 +110,13 @@ public class SocketClientTest {
 		byte[] byteArray = new byte[200];
 		// System.out.println(in.read(byteArray));
 		inputStream.read(byteArray);
-		// System.out.println("client ÊÕµ½Server ·¢À´µÄ £º " + byteArray);
+
+		// System.out.println("client ï¿½Õµï¿½Server ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ " + byteArray);
 		// inputStream.close();
+
+		// System.out.println("client æ”¶åˆ°Server å‘æ¥çš„ ï¼š " + byteArray);
+//		inputStream.close();
+
 		return byteArray;
 	}
 
@@ -104,7 +139,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ÓÀ¾Ã¶ÁÏß³Ì
+	 * æ°¸ä¹…è¯»çº¿ç¨‹
 	 * 
 	 * @author Feng
 	 * 
@@ -117,14 +152,14 @@ public class SocketClientTest {
 				while (true) {
 					Thread.sleep(1000);
 					byte[] arrayBytes = readFromServer(socket);
-					System.out.println("client ÊÕµ½Server ·¢À´µÄ £º " + arrayBytes);
+					System.out.println("client æ”¶åˆ°Server å‘æ¥çš„ ï¼š " + arrayBytes);
 
 					System.out.println("size:" + DataTypeTranslater.bytesToInt(arrayBytes, 0));
 					System.out.println("Type:"
 							+ ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(arrayBytes, HEAD_INT_SIZE))
 									.toString());
 
-					// ·¢»ØÈ¥
+					// å‘å›å»
 					writeToServer(arrayBytes);
 
 				}
@@ -138,7 +173,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ²âÊÔĞÄÌø¹¦ÄÜ
+	 * æµ‹è¯•å¿ƒè·³åŠŸèƒ½
 	 */
 	public void testKeepAlive() {
 		System.out.println("Start Test KeepAliveSyc!");
@@ -166,7 +201,7 @@ public class SocketClientTest {
 					for (int i = 0; i < size; i++)
 						byteArray2[i] = byteArray1[i];
 
-					Debug.log("»Ø¸´ĞÄÌø°ü");
+					Debug.log("å›å¤å¿ƒè·³åŒ…");
 					writeToServer(byteArray2);
 				}
 			}
@@ -177,7 +212,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ²âÊÔ×¢²á¹¦ÄÜ
+	 * æµ‹è¯•æ³¨å†ŒåŠŸèƒ½
 	 * 
 	 * @author Feng
 	 */
@@ -225,8 +260,12 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ²âÊÔ×¢²á¹¦ÄÜ(ÓÉJUnitµ÷ÓÃ)
+<<<<<<< HEAD
+	 * ï¿½ï¿½ï¿½ï¿½×¢ï¿½á¹¦ï¿½ï¿½(ï¿½ï¿½JUnitï¿½ï¿½ï¿½ï¿½)
 	 * 
+=======
+	 * æµ‹è¯•æ³¨å†ŒåŠŸèƒ½(ç”±JUnitè°ƒç”¨)
+>>>>>>> ã€æ–°åŠŸèƒ½ã€‘æœç´¢ç”¨æˆ·
 	 * @author Feng
 	 * @return
 	 * @throws IOException
@@ -253,7 +292,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ²âÊÔµÇÂ½¹¦ÄÜ(ÓÉJUnitµ÷ÓÃ)
+	 * ï¿½ï¿½ï¿½Ôµï¿½Â½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½JUnitï¿½ï¿½ï¿½ï¿½)
 	 * 
 	 * @param userId
 	 * @param userPassword
@@ -285,7 +324,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ²âÊÔµÇÂ½¹¦ÄÜ
+	 * æµ‹è¯•ç™»é™†åŠŸèƒ½
 	 */
 	public void testLogin() {
 
@@ -322,7 +361,9 @@ public class SocketClientTest {
 
 					System.out
 							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+					return;
 				}
+				
 			}
 
 		} catch (IOException e) {
@@ -331,22 +372,38 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ²âÊÔ¸öÈËÉèÖÃ¹¦ÄÜ
+<<<<<<< HEAD
+	 * ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¹ï¿½ï¿½ï¿½
 	 * 
+=======
+	 * æµ‹è¯•ä¸ªäººè®¾ç½®åŠŸèƒ½
+>>>>>>> ã€æ–°åŠŸèƒ½ã€‘æœç´¢ç”¨æˆ·
 	 * @author WangFei
 	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
+
 		// builder.setUserId("Fuck");
 		builder.setUserName("ssss");
+
+		//builder.setUserId("Fuck");
+		builder.setUserName("bbbss");
+
 		// builder.setUserPassword("s123");
 		builder.setHeadIndex(1);
-		System.out.println("start personalSettings test!");
+		System.out.println("start personalSettings test! ----------------------------");
 		try {
 			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
-
+			
+			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
+			loginBuilder.setUserId("a");
+			loginBuilder.setUserPassword("aa");
+			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
+					.toByteArray());
+			writeToServer(loginByteArray);
+			
 			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
 					.build().toByteArray());
 			writeToServer(byteArray);
@@ -378,8 +435,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ÓÃÓÚ¼ôÇĞ´Ó·şÎñÆ÷·¢¹ıÀ´µÄbyte[]
-	 * 
+	 * ç”¨äºå‰ªåˆ‡ä»æœåŠ¡å™¨å‘è¿‡æ¥çš„byte[]
 	 * @param byteArray
 	 * @return
 	 */
@@ -390,5 +446,47 @@ public class SocketClientTest {
 			result[i] = byteArray[i];
 
 		return result;
+	}
+	
+	//æµ‹è¯•æœç´¢ç”¨æˆ·åŠŸèƒ½
+	public void testSearchUser(){
+		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
+		builder.setSearchUserId("");
+		System.out.println("start test SearchUser! -----------------------");
+		try{
+			Socket socket = new Socket(host,port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_REQ.getNumber(), 
+					builder.build().toByteArray());
+			
+			writeToServer(byteArray);
+			while(true){
+				byteArray = readFromServer(socket);
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+
+				if (type == ProtoHead.ENetworkMessage.GETUSERINFO_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+
+					GetUserInfoMsg.GetUserInfoRsp response = GetUserInfoMsg.GetUserInfoRsp.parseFrom(objBytes);
+
+					System.out.println("Response : "
+							+ GetUserInfoMsg.GetUserInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+					if(response.getResultCode().equals(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS)){
+						System.out.println("searchResult UserId:"+response.getUserItem(0).getUserId()+"  UserName:"+response.getUserItem(0).getUserName());
+					}
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 }

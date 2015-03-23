@@ -16,10 +16,10 @@ import org.hibernate.criterion.Restrictions;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import protocol.LoginMsg;
-import protocol.PersonalSettingsMsg;
 import protocol.ProtoHead;
-import protocol.RegisterMsg;
+import protocol.Msg.LoginMsg;
+import protocol.Msg.PersonalSettingsMsg;
+import protocol.Msg.RegisterMsg;
 import tools.Debug;
 
 /**
@@ -142,8 +142,12 @@ public class Server_User {
 					ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 					if (clientUser != null)
 						clientUser.userId = loginObject.getUserId();
+
 					System.err.println(ServerModel.instance.getClientUserFromTable(networkMessage.ioSession).userId);
 					
+
+					System.out.println(clientUser.userId);
+
 					// ¼ÇÂ¼»Ø¸´Î»
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
 				} else { // ÃÜÂë´íÎó
@@ -189,7 +193,12 @@ public class Server_User {
 
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
+
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
+
+			//ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString());
+			System.out.println("get userId that have been login:"+clientUser.userId);
+
 			criteria.add(Restrictions.eq("userId", clientUser.userId));
 			if (criteria.list().size() > 0) {
 				User user = (User) criteria.list().get(0);

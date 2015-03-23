@@ -14,8 +14,8 @@ import org.apache.mina.core.session.IoSession;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
-import protocol.KeepAliveMsg;
 import protocol.ProtoHead;
+import protocol.Msg.KeepAliveMsg;
 import tools.DataTypeTranslater;
 import tools.Debug;
 

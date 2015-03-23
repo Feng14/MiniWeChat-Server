@@ -2,7 +2,7 @@ package server;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import protocol.KeepAliveMsg;
+
 import protocol.ProtoHead;
 import tools.Debug;
 
@@ -40,6 +40,15 @@ public class ClientRequest_Dispatcher {
 			break;
 		case ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ_VALUE:
 			Server_User.instance.personalSettings(networkMessage);
+			break;
+		case ProtoHead.ENetworkMessage.GETUSERINFO_REQ_VALUE:
+			Server_Friend.instance.searchUser(networkMessage);
+			break;
+		case ProtoHead.ENetworkMessage.ADDFRIEND_REQ_VALUE:
+			Server_Friend.instance.addFriend(networkMessage);
+			break;
+		case ProtoHead.ENetworkMessage.DELETEFRIEND_REQ_VALUE:
+			Server_Friend.instance.deleteFriend(networkMessage);
 			break;
 
 		default:
