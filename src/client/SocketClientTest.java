@@ -28,8 +28,8 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	// String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.1.103"; // 要连接的服务端IP地址
+//	 String host = "192.168.45.11"; // 要连接的服务端IP地址
+	String host = "192.168.45.17"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
 	public static void main(String args[]) throws IOException {
@@ -48,9 +48,10 @@ public class SocketClientTest {
 //		inputStream = socket.getInputStream();
 //		outputStream = socket.getOutputStream();
 
+		// 测心跳
+		testKeepAlive();
 		// 测注册
-		testRegister();
-		
+//		testRegister();
 		// 测登陆
 		// testLogin();
 		// 测试个人设置
@@ -59,6 +60,12 @@ public class SocketClientTest {
 		// new Thread(new readThread()).start();
 	}
 
+	public void link() throws UnknownHostException, IOException{
+		socket = new Socket(host, port);
+		inputStream = socket.getInputStream();
+		outputStream = socket.getOutputStream();
+	}
+	
 	// 处理服务器回复问题
 
 	public byte[] readFromServer(Socket socket) throws IOException {
@@ -71,8 +78,20 @@ public class SocketClientTest {
 //		inputStream.close();
 		return byteArray;
 	}
+	
+	public byte[] readFromServer(InputStream inputStream) throws IOException {
+		byte[] byteArray = new byte[200];
+		inputStream.read(byteArray);
+		return byteArray;
+	}
 
 	public void writeToServer(byte[] arrayBytes) throws IOException {
+		// outputStream = socket.getOutputStream();
+		outputStream.write(arrayBytes);
+		// outputStream.close();
+	}
+
+	public void writeToServer(OutputStream outputStreams, byte[] arrayBytes) throws IOException {
 		// outputStream = socket.getOutputStream();
 		outputStream.write(arrayBytes);
 		// outputStream.close();
@@ -150,7 +169,7 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * 测试注册功能
 	 * 
@@ -158,7 +177,7 @@ public class SocketClientTest {
 	 */
 	public void testRegister() {
 		RegisterMsg.RegisterReq.Builder builder = RegisterMsg.RegisterReq.newBuilder();
-		builder.setUserId("a");
+		builder.setUserId("a2");
 		builder.setUserPassword("aa");
 		builder.setUserName("aaa");
 		System.out.println("Start Test Register!");
@@ -199,6 +218,33 @@ public class SocketClientTest {
 		}
 	}
 
+	/**
+	 * 测试注册功能(由JUnit调用)
+	 * @author Feng
+	 * @return
+	 * @throws IOException 
+	 */
+	public byte[] testRegisterCase(String userId, String userPassword, String userName) throws IOException{
+		RegisterMsg.RegisterReq.Builder builder = RegisterMsg.RegisterReq.newBuilder();
+		builder.setUserId(userId);
+		builder.setUserPassword(userPassword);
+		builder.setUserName(userName);
+		
+
+		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
+				.toByteArray());
+//		System.out.println("MessageID : " + NetworkMessage.getMessageID(byteArray));
+		writeToServer(outputStream, byteArray);
+		
+		while(true) {
+			byteArray = readFromServer(inputStream);
+			if (NetworkMessage.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
+				continue;
+			
+			return cutResult(byteArray);
+		}
+	}
+	
 	/**
 	 * 测试登陆功能
 	 */
@@ -289,5 +335,20 @@ public class SocketClientTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	/**
+	 * 用于剪切从服务器发过来的byte[]
+	 * @param byteArray
+	 * @return
+	 */
+	public byte[] cutResult(byte[] byteArray) {
+		int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+		byte[] result = new byte[size];
+		for (int i=0; i<size; i++)
+			result[i] = byteArray[i];
+		
+		return result;
 	}
 }

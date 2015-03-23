@@ -178,7 +178,7 @@ public class ServerModel {
 			KeepAliveMsg.KeepAliveSyncPacket.Builder packet = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
 			// packet.setA(123);
 			// packet.setB(true);
-			packet.setC("Fuck");
+//			packet.setC("Fuck");
 			byte[] packetBytes = packet.build().toByteArray();
 			// 创建心跳包
 			byte[] messageBytes;
@@ -196,11 +196,13 @@ public class ServerModel {
 
 					ClientUser user;
 					String key;
-					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
+//					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
 					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();) {
 						if (it == null)
 							continue;
 						Debug.log("ServerModel", "进入发心跳包循环!");
+						if (!it.hasNext())
+							continue;
 						key = (String) it.next();
 						user = clientUserTable.get(key);
 

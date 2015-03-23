@@ -82,6 +82,7 @@ public class Server_User {
 			criteria.add(Restrictions.eq("userId", registerObject.getUserId()));
 			if (criteria.list().size() > 0) { // 已存在
 				// 已存在相同账号用户，告诉客户端
+				System.out.println("什么鬼？");
 				Debug.log("Server_User", "注册事件：用户" + networkMessage.ioSession.getRemoteAddress() + "  的注册账号重复，返回错误!");
 
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.USER_EXIST);

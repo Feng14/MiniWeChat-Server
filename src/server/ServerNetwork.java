@@ -92,40 +92,6 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 	
 	/**
-	 * 测试用
-	 * @author Feng
-	 *
-	 */
-//	class check implements Runnable {
-//		IoSession mySession;
-//		public check(IoSession session) {
-//			mySession = session;
-//		}
-//		@Override
-//		public void run() {
-//			try {
-//				Scanner s = new Scanner(System.in);
-//				byte[] chechStr = new String("check online").getBytes();
-//				while (true) {
-//					System.err.println("shit");
-//					String string = s.next();
-////				if (s.equals("s")){
-//					System.err.println("input " + string);
-//					IoBuffer responseIoBuffer = IoBuffer.allocate(chechStr.length);
-//					responseIoBuffer.put(chechStr);
-//					responseIoBuffer.flip();
-//					mySession.write(chechStr);
-//					System.err.println("发送校验");
-////				}
-//				}
-//			} catch (Exception e) {
-//				System.err.println("my Exception");
-//				// TODO: handle exception
-//			}
-//		}
-//	}
-
-	/**
 	 *  用于处理一个请求
 	 * @param session
 	 * @param size
