@@ -4,7 +4,7 @@ option java_package = "protocol.Msg";
 import "UserData.proto";
 
 message GetUserInfoReq{
-	required string searchUserId = 1 ;
+	required string targetUserId = 1 ;
 }
 
 message GetUserInfoRsp{

@@ -36,7 +36,7 @@ public class Server_Friend {
 	 * @author wangfei
 	 * @time 2015-03-23
 	 */
-	public void searchUser(NetworkMessage networkMessage){
+	public void getUserInfo(NetworkMessage networkMessage){
 		try {
 			GetUserInfoMsg.GetUserInfoReq getUserInfoObject =GetUserInfoMsg.GetUserInfoReq.parseFrom(networkMessage.getMessageObjectBytes());
 			GetUserInfoMsg.GetUserInfoRsp.Builder getUserInfoBuilder = GetUserInfoMsg.GetUserInfoRsp.newBuilder();
@@ -44,15 +44,16 @@ public class Server_Friend {
 			
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userId", getUserInfoObject.getSearchUserId()));
+			criteria.add(Restrictions.eq("userId", getUserInfoObject.getTargetUserId()));
 			if(criteria.list().size()>0){
+				//不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
 				User user = (User)criteria.list().get(0);
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
 				
 				UserData.UserItem.Builder userBuilder = UserData.UserItem.newBuilder();
 				userBuilder.setUserId(user.getUserId());
 				userBuilder.setUserName(user.getUserName());
-				getUserInfoBuilder.setUserItem(0, userBuilder);
+				getUserInfoBuilder.addUserItem(userBuilder);
 				
 			}
 			else{

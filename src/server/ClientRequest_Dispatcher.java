@@ -42,7 +42,7 @@ public class ClientRequest_Dispatcher {
 			Server_User.instance.personalSettings(networkMessage);
 			break;
 		case ProtoHead.ENetworkMessage.GETUSERINFO_REQ_VALUE:
-			Server_Friend.instance.searchUser(networkMessage);
+			Server_Friend.instance.getUserInfo(networkMessage);
 			break;
 		case ProtoHead.ENetworkMessage.ADDFRIEND_REQ_VALUE:
 			Server_Friend.instance.addFriend(networkMessage);

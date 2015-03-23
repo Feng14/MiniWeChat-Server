@@ -27,19 +27,12 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-
-	// String host = "192.168.45.11"; // Ҫ���ӵķ����IP��ַ
-	String host = "192.168.45.17"; // Ҫ���ӵķ����IP��ַ
-	int port = 8080; // Ҫ���ӵķ���˶�Ӧ�ļ����˿�
-
-
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
 	//String host = "192.168.45.17"; // 要连接的服务端IP地址
-
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
-	//String host = "192.168.45.34"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
-	//int port = 8080; // 要连接的服务端对应的监听端口
+	int port = 8080; // 要连接的服务端对应的监听端口
 
 
 	public static void main(String args[]) throws IOException {
@@ -79,7 +72,9 @@ public class SocketClientTest {
 		// 测登陆
 		//testLogin();
 		// 测试个人设置
-		testPersonalSettings();
+		//testPersonalSettings();
+		//测查看用户个人信息
+		testGetUserInfo();
 
 
 		// new Thread(new readThread()).start();
@@ -98,12 +93,7 @@ public class SocketClientTest {
 	}
 
 
-	// ����������ظ�����
-
-	
 	// 处理服务器回复问题
-
-
 	public byte[] readFromServer(Socket socket) throws IOException {
 
 		// inputStream = socket.getInputStream();
@@ -260,12 +250,7 @@ public class SocketClientTest {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * ����ע�Ṧ��(��JUnit����)
-	 * 
-=======
 	 * 测试注册功能(由JUnit调用)
->>>>>>> 【新功能】搜索用户
 	 * @author Feng
 	 * @return
 	 * @throws IOException
@@ -372,25 +357,14 @@ public class SocketClientTest {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * ���Ը������ù���
-	 * 
-=======
 	 * 测试个人设置功能
->>>>>>> 【新功能】搜索用户
 	 * @author WangFei
 	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
-
-		// builder.setUserId("Fuck");
-		builder.setUserName("ssss");
-
-		//builder.setUserId("Fuck");
 		builder.setUserName("bbbss");
-
 		// builder.setUserPassword("s123");
-		builder.setHeadIndex(1);
+		//builder.setHeadIndex(1);
 		System.out.println("start personalSettings test! ----------------------------");
 		try {
 			Socket socket = new Socket(host, port);
@@ -449,14 +423,21 @@ public class SocketClientTest {
 	}
 	
 	//测试搜索用户功能
-	public void testSearchUser(){
+	public void testGetUserInfo(){
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
-		builder.setSearchUserId("");
+		builder.setTargetUserId("Fuck");
 		System.out.println("start test SearchUser! -----------------------");
 		try{
 			Socket socket = new Socket(host,port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
+			
+			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
+			loginBuilder.setUserId("a");
+			loginBuilder.setUserPassword("aa");
+			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
+					.toByteArray());
+			writeToServer(loginByteArray);
 			
 			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_REQ.getNumber(), 
 					builder.build().toByteArray());

@@ -11,20 +11,20 @@ public final class GetUserInfoMsg {
   public interface GetUserInfoReqOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required string searchUserId = 1;
+    // required string targetUserId = 1;
     /**
-     * <code>required string searchUserId = 1;</code>
+     * <code>required string targetUserId = 1;</code>
      */
-    boolean hasSearchUserId();
+    boolean hasTargetUserId();
     /**
-     * <code>required string searchUserId = 1;</code>
+     * <code>required string targetUserId = 1;</code>
      */
-    java.lang.String getSearchUserId();
+    java.lang.String getTargetUserId();
     /**
-     * <code>required string searchUserId = 1;</code>
+     * <code>required string targetUserId = 1;</code>
      */
     com.google.protobuf.ByteString
-        getSearchUserIdBytes();
+        getTargetUserIdBytes();
   }
   /**
    * Protobuf type {@code protocol.GetUserInfoReq}
@@ -79,7 +79,7 @@ public final class GetUserInfoMsg {
             }
             case 10: {
               bitField0_ |= 0x00000001;
-              searchUserId_ = input.readBytes();
+              targetUserId_ = input.readBytes();
               break;
             }
           }
@@ -122,20 +122,20 @@ public final class GetUserInfoMsg {
     }
 
     private int bitField0_;
-    // required string searchUserId = 1;
-    public static final int SEARCHUSERID_FIELD_NUMBER = 1;
-    private java.lang.Object searchUserId_;
+    // required string targetUserId = 1;
+    public static final int TARGETUSERID_FIELD_NUMBER = 1;
+    private java.lang.Object targetUserId_;
     /**
-     * <code>required string searchUserId = 1;</code>
+     * <code>required string targetUserId = 1;</code>
      */
-    public boolean hasSearchUserId() {
+    public boolean hasTargetUserId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string searchUserId = 1;</code>
+     * <code>required string targetUserId = 1;</code>
      */
-    public java.lang.String getSearchUserId() {
-      java.lang.Object ref = searchUserId_;
+    public java.lang.String getTargetUserId() {
+      java.lang.Object ref = targetUserId_;
       if (ref instanceof java.lang.String) {
         return (java.lang.String) ref;
       } else {
@@ -143,22 +143,22 @@ public final class GetUserInfoMsg {
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
         if (bs.isValidUtf8()) {
-          searchUserId_ = s;
+          targetUserId_ = s;
         }
         return s;
       }
     }
     /**
-     * <code>required string searchUserId = 1;</code>
+     * <code>required string targetUserId = 1;</code>
      */
     public com.google.protobuf.ByteString
-        getSearchUserIdBytes() {
-      java.lang.Object ref = searchUserId_;
+        getTargetUserIdBytes() {
+      java.lang.Object ref = targetUserId_;
       if (ref instanceof java.lang.String) {
         com.google.protobuf.ByteString b = 
             com.google.protobuf.ByteString.copyFromUtf8(
                 (java.lang.String) ref);
-        searchUserId_ = b;
+        targetUserId_ = b;
         return b;
       } else {
         return (com.google.protobuf.ByteString) ref;
@@ -166,14 +166,14 @@ public final class GetUserInfoMsg {
     }
 
     private void initFields() {
-      searchUserId_ = "";
+      targetUserId_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasSearchUserId()) {
+      if (!hasTargetUserId()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -185,7 +185,7 @@ public final class GetUserInfoMsg {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getSearchUserIdBytes());
+        output.writeBytes(1, getTargetUserIdBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -198,7 +198,7 @@ public final class GetUserInfoMsg {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getSearchUserIdBytes());
+          .computeBytesSize(1, getTargetUserIdBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -316,7 +316,7 @@ public final class GetUserInfoMsg {
 
       public Builder clear() {
         super.clear();
-        searchUserId_ = "";
+        targetUserId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -349,7 +349,7 @@ public final class GetUserInfoMsg {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.searchUserId_ = searchUserId_;
+        result.targetUserId_ = targetUserId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -366,9 +366,9 @@ public final class GetUserInfoMsg {
 
       public Builder mergeFrom(protocol.Msg.GetUserInfoMsg.GetUserInfoReq other) {
         if (other == protocol.Msg.GetUserInfoMsg.GetUserInfoReq.getDefaultInstance()) return this;
-        if (other.hasSearchUserId()) {
+        if (other.hasTargetUserId()) {
           bitField0_ |= 0x00000001;
-          searchUserId_ = other.searchUserId_;
+          targetUserId_ = other.targetUserId_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -376,7 +376,7 @@ public final class GetUserInfoMsg {
       }
 
       public final boolean isInitialized() {
-        if (!hasSearchUserId()) {
+        if (!hasTargetUserId()) {
           
           return false;
         }
@@ -402,76 +402,76 @@ public final class GetUserInfoMsg {
       }
       private int bitField0_;
 
-      // required string searchUserId = 1;
-      private java.lang.Object searchUserId_ = "";
+      // required string targetUserId = 1;
+      private java.lang.Object targetUserId_ = "";
       /**
-       * <code>required string searchUserId = 1;</code>
+       * <code>required string targetUserId = 1;</code>
        */
-      public boolean hasSearchUserId() {
+      public boolean hasTargetUserId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string searchUserId = 1;</code>
+       * <code>required string targetUserId = 1;</code>
        */
-      public java.lang.String getSearchUserId() {
-        java.lang.Object ref = searchUserId_;
+      public java.lang.String getTargetUserId() {
+        java.lang.Object ref = targetUserId_;
         if (!(ref instanceof java.lang.String)) {
           java.lang.String s = ((com.google.protobuf.ByteString) ref)
               .toStringUtf8();
-          searchUserId_ = s;
+          targetUserId_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string searchUserId = 1;</code>
+       * <code>required string targetUserId = 1;</code>
        */
       public com.google.protobuf.ByteString
-          getSearchUserIdBytes() {
-        java.lang.Object ref = searchUserId_;
+          getTargetUserIdBytes() {
+        java.lang.Object ref = targetUserId_;
         if (ref instanceof String) {
           com.google.protobuf.ByteString b = 
               com.google.protobuf.ByteString.copyFromUtf8(
                   (java.lang.String) ref);
-          searchUserId_ = b;
+          targetUserId_ = b;
           return b;
         } else {
           return (com.google.protobuf.ByteString) ref;
         }
       }
       /**
-       * <code>required string searchUserId = 1;</code>
+       * <code>required string targetUserId = 1;</code>
        */
-      public Builder setSearchUserId(
+      public Builder setTargetUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        searchUserId_ = value;
+        targetUserId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string searchUserId = 1;</code>
+       * <code>required string targetUserId = 1;</code>
        */
-      public Builder clearSearchUserId() {
+      public Builder clearTargetUserId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        searchUserId_ = getDefaultInstance().getSearchUserId();
+        targetUserId_ = getDefaultInstance().getTargetUserId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string searchUserId = 1;</code>
+       * <code>required string targetUserId = 1;</code>
        */
-      public Builder setSearchUserIdBytes(
+      public Builder setTargetUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000001;
-        searchUserId_ = value;
+        targetUserId_ = value;
         onChanged();
         return this;
       }
@@ -1392,7 +1392,7 @@ public final class GetUserInfoMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\024GetUserInfoMsg.proto\022\010protocol\032\016UserDa" +
-      "ta.proto\"&\n\016GetUserInfoReq\022\024\n\014searchUser" +
+      "ta.proto\"&\n\016GetUserInfoReq\022\024\n\014targetUser" +
       "Id\030\001 \002(\t\"\224\001\n\016GetUserInfoRsp\0227\n\nresultCod" +
       "e\030\001 \002(\0162#.protocol.GetUserInfoRsp.Result" +
       "Code\022$\n\010userItem\030\002 \003(\0132\022.protocol.UserIt" +
@@ -1409,7 +1409,7 @@ public final class GetUserInfoMsg {
           internal_static_protocol_GetUserInfoReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_GetUserInfoReq_descriptor,
-              new java.lang.String[] { "SearchUserId", });
+              new java.lang.String[] { "TargetUserId", });
           internal_static_protocol_GetUserInfoRsp_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_protocol_GetUserInfoRsp_fieldAccessorTable = new
