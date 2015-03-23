@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -173,8 +174,6 @@ public class ServerModel {
 	private class KeepAlivePacketSenser implements Runnable {
 		@Override
 		public void run() {
-			// byte[] packetBytes =
-			// KeepAliveMsg.KeepAliveSyncPacket.newBuilder().build().toByteArray();
 			KeepAliveMsg.KeepAliveSyncPacket.Builder packet = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
 			// packet.setA(123);
 			// packet.setB(true);
@@ -184,37 +183,40 @@ public class ServerModel {
 			byte[] messageBytes;
 
 			IoBuffer responseIoBuffer;
+			ArrayList<String> keyIterators;
 
 			while (true) {
 				try {
 					Thread.sleep(KEEP_ALIVE_PACKET_TIME);
 
-					messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(), packetBytes);
-					responseIoBuffer = IoBuffer.allocate(messageBytes.length);
-					responseIoBuffer.put(messageBytes);
-					responseIoBuffer.flip();
-
 					ClientUser user;
-					String key;
-//					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
-					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();) {
-						if (it == null)
-							continue;
+//					String key;
+					
+					System.out.println(clientUserTable.size());
+					keyIterators = new ArrayList<String>(clientUserTable.size());
+					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();){
+						keyIterators.add(it.next().toString());
+					}
+					
+					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
+					for (String key : keyIterators) {
 						Debug.log("ServerModel", "进入发心跳包循环!");
-						if (!it.hasNext())
-							continue;
-						key = (String) it.next();
+						
 						user = clientUserTable.get(key);
 
 						// 将上次没有回复的干掉，从用户表中删掉
 						if (user.onLine == false) {
 							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
-//							 user.ioSession.getHandler().;
 
 							// user.ioSession.close(true);
 							clientUserTable.remove(key);
 							continue;
 						}
+						
+						messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(), packetBytes);
+						responseIoBuffer = IoBuffer.allocate(messageBytes.length);
+						responseIoBuffer.put(messageBytes);
+						responseIoBuffer.flip();
 
 						// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
 						// ，表示在线
