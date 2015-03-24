@@ -11,6 +11,7 @@ import java.net.UnknownHostException;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.ProtoHead;
+import protocol.Msg.AddFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.PersonalSettingsMsg;
@@ -65,7 +66,7 @@ public class SocketClientTest {
 		//testKeepAlive();
 		// 测注册
 
-//		testRegister();
+		//testRegister();
 
 		//testRegister();
 		
@@ -74,8 +75,9 @@ public class SocketClientTest {
 		// 测试个人设置
 		//testPersonalSettings();
 		//测查看用户个人信息
-		testGetUserInfo();
-
+		//testGetUserInfo();
+		//测添加好友
+		testAddFriend();
 
 		// new Thread(new readThread()).start();
 	}
@@ -208,9 +210,9 @@ public class SocketClientTest {
 	 */
 	public void testRegister() {
 		RegisterMsg.RegisterReq.Builder builder = RegisterMsg.RegisterReq.newBuilder();
-		builder.setUserId("a2");
+		builder.setUserId("a3");
 		builder.setUserPassword("aa");
-		builder.setUserName("aaa");
+		builder.setUserName("aaa3");
 		System.out.println("Start Test Register!");
 		try {
 			socket = new Socket(host, port);
@@ -470,4 +472,51 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 	}
+	
+	//测添加好友功能
+	public void testAddFriend(){
+		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
+		builder.setFriendUserId("a3");
+		System.out.println("start test AddFriend! -----------------------");
+		try{
+			Socket socket = new Socket(host,port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			
+			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
+			loginBuilder.setUserId("a2");
+			loginBuilder.setUserPassword("aa");
+			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
+					.toByteArray());
+			writeToServer(loginByteArray);
+			
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADDFRIEND_REQ.getNumber(), 
+					builder.build().toByteArray());
+			
+			writeToServer(byteArray);
+			while(true){
+				byteArray = readFromServer(socket);
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+
+				if (type == ProtoHead.ENetworkMessage.ADDFRIEND_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					AddFriendMsg.AddFriendRsp response = AddFriendMsg.AddFriendRsp.parseFrom(objBytes);
+
+					System.out.println("Response : "
+							+ AddFriendMsg.AddFriendRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
