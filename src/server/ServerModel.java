@@ -116,6 +116,38 @@ public class ServerModel {
 	}
 
 	/**
+	 * 根据userId从“已连接用户信息表”中获取用户
+	 * @param userId
+	 * @return
+	 */
+	public ClientUser getClientUserByUserId(String userId) {
+		Iterator iterator = clientUserTable.keySet().iterator();
+		String key;
+		ClientUser user;
+		
+		while (iterator.hasNext()) {
+
+			key = iterator.next().toString();
+			
+			if (!clientUserTable.containsKey(key))
+				continue;
+			user = clientUserTable.get(key);
+			if (user.userId.equals(userId))
+				return user;
+		}
+		return null;
+	}
+	
+	/**
+	 * 从在线用户信息表删除一个用户
+	 * @param key
+	 */
+	synchronized
+	public void removeClientUserFromTable(String key) {
+		clientUserTable.remove(key);
+	}
+	
+	/**
 	 * 添加一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
 	 * 
 	 * @param ioSession
@@ -207,13 +239,6 @@ public class ServerModel {
 					ClientUser user;
 					Iterator iterator = clientUserTable.keySet().iterator();
 					String key;
-					
-//					System.out.println(clientUserTable.size());
-//					keyIterators = new ArrayList<String>(clientUserTable.size());
-//					for (Iterator it = clientUserTable.keySet().iterator(); it.hasNext();){
-//						keyIterators.add(it.next().toString());
-//						
-//					}
 					
 					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
 					while (iterator.hasNext()) {

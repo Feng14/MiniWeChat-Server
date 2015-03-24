@@ -3,6 +3,7 @@ package server;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
@@ -18,6 +19,8 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.ProtoHead;
 import protocol.Msg.LoginMsg;
+import protocol.Msg.OffLineMsg;
+import protocol.Msg.OffLineMsg.OffLine;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
 import tools.Debug;
@@ -175,6 +178,24 @@ public class Server_User {
 		}
 	}
 
+	/**
+	 * 检查是否有另一个同账号的用户登陆，有的话踢下去
+	 * @param networkMessage
+	 * @return
+	 */
+	public boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) {
+		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
+		if (user != null) {
+			// 发送由他人登陆消息
+			OffLineMsg.OffLine.Builder offLineMessage = OffLineMsg.OffLine.newBuilder();
+//			byte[] message = NetworkMessage.packMessage(ProtoHead.ENetworkMessage., packetBytes)
+			
+			user.onLine = false;
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * 处理个人设置请求
 	 * 
