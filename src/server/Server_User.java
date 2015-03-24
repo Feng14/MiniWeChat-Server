@@ -3,7 +3,6 @@ package server;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
@@ -20,7 +19,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.OffLineMsg;
-import protocol.Msg.OffLineMsg.OffLine;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
 import tools.Debug;
@@ -190,13 +188,14 @@ public class Server_User {
 		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
 		if (user != null) {
 			// 发送由他人登陆消息
-			OffLineMsg.OffLine.Builder offLineMessage = OffLineMsg.OffLine.newBuilder();
+			OffLineMsg.OffLineReq.Builder offLineMessage = OffLineMsg.OffLineReq.newBuilder();
+			offLineMessage.setCauseCode(OffLineMsg.OffLineReq.CauseCode.ANOTHER_LOGIN);
 			byte[] objectBytes = offLineMessage.build().toByteArray();
 
 			Debug.log(new String[] { "Server_User", "checkAnotherOnline" },
 					"用户 " + user.userId + "在其他设备登陆，" + ServerModel.getIoSessionKey(user.ioSession) + "被踢下线！");
 			// 向客户端发送消息
-			byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE.getNumber(), objectBytes);
+			byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_REQ.getNumber(), objectBytes);
 			ServerNetwork.instance.sendMessageToClient(user.ioSession, messageBytes);
 
 			// 添加等待回复

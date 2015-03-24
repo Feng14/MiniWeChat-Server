@@ -51,7 +51,7 @@ public class ClientRequest_Dispatcher {
 			Server_Friend.instance.deleteFriend(networkMessage);
 			break;
 		// 另一个人登陆，本用户被踢下的通知的回复	
-		case ProtoHead.ENetworkMessage.OFFLINE_VALUE:
+		case ProtoHead.ENetworkMessage.OFFLINE_RSP_VALUE:
 			Server_User.instance.clientOfflineResponse(networkMessage);
 			break;
 			

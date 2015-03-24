@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import protocol.ProtoHead;
 import protocol.Msg.LoginMsg;
+import protocol.Msg.OffLineMsg;
 import server.NetworkMessage;
 import tools.DataTypeTranslater;
 
@@ -48,13 +49,14 @@ public class TestDoubleLogin {
 		for (int i = 0; i < 2; i++) {
 			resultBytes = client1.readFromServer();
 			// 其他消息，不管
-			if (ProtoHead.ENetworkMessage.OFFLINE != NetworkMessage.getMessageType(resultBytes))
+			if (ProtoHead.ENetworkMessage.OFFLINE_REQ != NetworkMessage.getMessageType(resultBytes))
 				continue;
-//			System.err.println(NetworkMessage.getMessageType(resultBytes));
-			
+			// System.err.println(NetworkMessage.getMessageType(resultBytes));
+
 			// 回复服务器
-			client1.writeToServer(resultBytes);
-			
+			client1.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_RSP_VALUE,
+					NetworkMessage.getMessageID(resultBytes), OffLineMsg.OffLineRsp.newBuilder().build().toByteArray()));
+
 			// 踢人通知
 			assertTrue(true);
 			return;
