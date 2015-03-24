@@ -258,20 +258,11 @@ public class Server_User {
 				if (personalSettingsObject.getUserPassword() != null && personalSettingsObject.getUserPassword() != "") {
 					user.setUserPassword(personalSettingsObject.getUserPassword());
 				}
-				// 数据库修改昵称或密码
-				try {
-					Transaction trans = session.beginTransaction();
-					session.update(user);
-					trans.commit();
-					personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
-				} catch (Exception e) {
-					personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
-					e.printStackTrace();
-				}
-
+				
 				// 修改头像
 				if (personalSettingsObject.getHeadIndex() >= 1 && personalSettingsObject.getHeadIndex() <= 6) {
 					BufferedImage image = null;
+					user.setHeadIndex(personalSettingsObject.getHeadIndex());
 					try {
 						// 从默认头像文件夹获取图片
 						image = ImageIO.read(new File(ResourcePath.headDefaultPath + personalSettingsObject.getHeadIndex()
@@ -292,6 +283,19 @@ public class Server_User {
 						e.printStackTrace();
 					}
 				}
+				
+				// 数据库修改昵称或密码
+				try {
+					Transaction trans = session.beginTransaction();
+					session.update(user);
+					trans.commit();
+					personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
+				} catch (Exception e) {
+					personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
+					e.printStackTrace();
+				}
+
+				
 
 			} else {
 				// 用户不存在

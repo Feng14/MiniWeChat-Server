@@ -3,13 +3,8 @@ package client;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
@@ -18,7 +13,6 @@ import protocol.Msg.LoginMsg;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
 import server.NetworkMessage;
-import server.ServerModel;
 import tools.DataTypeTranslater;
 import tools.Debug;
 
@@ -30,7 +24,7 @@ public class SocketClientTest {
 	public OutputStream outputStream;
 
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
 //	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
@@ -66,10 +60,7 @@ public class SocketClientTest {
 		// 测心跳
 		//testKeepAlive();
 		// 测注册
-
-		//testRegister();
-
-		//testRegister();
+		testRegister();
 		
 		// 测登陆
 		//testLogin();
@@ -84,7 +75,7 @@ public class SocketClientTest {
 
 		//testAddFriend();
 		//测删除好友
-		testDeleteFriend();
+		//testDeleteFriend();
 
 		// new Thread(new readThread()).start();
 	}

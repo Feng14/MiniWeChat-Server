@@ -23,6 +23,7 @@ public class User implements Serializable {
     private String userId;
     private String userName;
     private String userPassword;
+    private int headIndex;
     private List<User> friends;
     
     public User(){
@@ -58,6 +59,16 @@ public class User implements Serializable {
 	}
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
+	}
+	
+	
+	@Column(name="user_headIndex",columnDefinition = "int(4) COMMENT 'Í·Ïñ±àºÅ'")
+	public int getHeadIndex() {
+		return headIndex;
+	}
+
+	public void setHeadIndex(int headIndex) {
+		this.headIndex = headIndex;
 	}
 
 	public static long getSerialversionuid() {

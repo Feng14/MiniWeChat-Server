@@ -40,6 +40,16 @@ public final class UserData {
      */
     com.google.protobuf.ByteString
         getUserNameBytes();
+
+    // optional int32 headIndex = 3;
+    /**
+     * <code>optional int32 headIndex = 3;</code>
+     */
+    boolean hasHeadIndex();
+    /**
+     * <code>optional int32 headIndex = 3;</code>
+     */
+    int getHeadIndex();
   }
   /**
    * Protobuf type {@code protocol.UserItem}
@@ -100,6 +110,11 @@ public final class UserData {
             case 18: {
               bitField0_ |= 0x00000002;
               userName_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              headIndex_ = input.readInt32();
               break;
             }
           }
@@ -228,9 +243,26 @@ public final class UserData {
       }
     }
 
+    // optional int32 headIndex = 3;
+    public static final int HEADINDEX_FIELD_NUMBER = 3;
+    private int headIndex_;
+    /**
+     * <code>optional int32 headIndex = 3;</code>
+     */
+    public boolean hasHeadIndex() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional int32 headIndex = 3;</code>
+     */
+    public int getHeadIndex() {
+      return headIndex_;
+    }
+
     private void initFields() {
       userId_ = "";
       userName_ = "";
+      headIndex_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -258,6 +290,9 @@ public final class UserData {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getUserNameBytes());
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, headIndex_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -274,6 +309,10 @@ public final class UserData {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getUserNameBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, headIndex_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -395,6 +434,8 @@ public final class UserData {
         bitField0_ = (bitField0_ & ~0x00000001);
         userName_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        headIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -431,6 +472,10 @@ public final class UserData {
           to_bitField0_ |= 0x00000002;
         }
         result.userName_ = userName_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.headIndex_ = headIndex_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -456,6 +501,9 @@ public final class UserData {
           bitField0_ |= 0x00000002;
           userName_ = other.userName_;
           onChanged();
+        }
+        if (other.hasHeadIndex()) {
+          setHeadIndex(other.getHeadIndex());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -640,6 +688,39 @@ public final class UserData {
         return this;
       }
 
+      // optional int32 headIndex = 3;
+      private int headIndex_ ;
+      /**
+       * <code>optional int32 headIndex = 3;</code>
+       */
+      public boolean hasHeadIndex() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional int32 headIndex = 3;</code>
+       */
+      public int getHeadIndex() {
+        return headIndex_;
+      }
+      /**
+       * <code>optional int32 headIndex = 3;</code>
+       */
+      public Builder setHeadIndex(int value) {
+        bitField0_ |= 0x00000004;
+        headIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 headIndex = 3;</code>
+       */
+      public Builder clearHeadIndex() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        headIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:protocol.UserItem)
     }
 
@@ -665,9 +746,9 @@ public final class UserData {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016UserData.proto\022\010protocol\",\n\010UserItem\022\016" +
-      "\n\006userId\030\001 \002(\t\022\020\n\010userName\030\002 \002(\tB\017\n\rprot" +
-      "ocol.Data"
+      "\n\016UserData.proto\022\010protocol\"?\n\010UserItem\022\016" +
+      "\n\006userId\030\001 \002(\t\022\020\n\010userName\030\002 \002(\t\022\021\n\thead" +
+      "Index\030\003 \001(\005B\017\n\rprotocol.Data"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -679,7 +760,7 @@ public final class UserData {
           internal_static_protocol_UserItem_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_UserItem_descriptor,
-              new java.lang.String[] { "UserId", "UserName", });
+              new java.lang.String[] { "UserId", "UserName", "HeadIndex", });
           return null;
         }
       };

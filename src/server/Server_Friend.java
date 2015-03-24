@@ -57,6 +57,7 @@ public class Server_Friend {
 				UserData.UserItem.Builder userBuilder = UserData.UserItem.newBuilder();
 				userBuilder.setUserId(user.getUserId());
 				userBuilder.setUserName(user.getUserName());
+				userBuilder.setHeadIndex(user.getHeadIndex());
 				getUserInfoBuilder.setUserItem(userBuilder);
 				
 			}
