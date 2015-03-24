@@ -462,7 +462,7 @@ public class SocketClientTest {
 					System.out.println("Response : "
 							+ GetUserInfoMsg.GetUserInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 					if(response.getResultCode().equals(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS)){
-						System.out.println("searchResult UserId:"+response.getUserItem(0).getUserId()+"  UserName:"+response.getUserItem(0).getUserName());
+						System.out.println("searchResult UserId:"+response.getUserItem().getUserId()+"  UserName:"+response.getUserItem().getUserName());
 					}
 				}
 			}

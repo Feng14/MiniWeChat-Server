@@ -500,30 +500,19 @@ public final class GetUserInfoMsg {
      */
     protocol.Msg.GetUserInfoMsg.GetUserInfoRsp.ResultCode getResultCode();
 
-    // repeated .protocol.UserItem userItem = 2;
+    // optional .protocol.UserItem userItem = 2;
     /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
+     * <code>optional .protocol.UserItem userItem = 2;</code>
      */
-    java.util.List<protocol.Data.UserData.UserItem> 
-        getUserItemList();
+    boolean hasUserItem();
     /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
+     * <code>optional .protocol.UserItem userItem = 2;</code>
      */
-    protocol.Data.UserData.UserItem getUserItem(int index);
+    protocol.Data.UserData.UserItem getUserItem();
     /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
+     * <code>optional .protocol.UserItem userItem = 2;</code>
      */
-    int getUserItemCount();
-    /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
-     */
-    java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-        getUserItemOrBuilderList();
-    /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
-     */
-    protocol.Data.UserData.UserItemOrBuilder getUserItemOrBuilder(
-        int index);
+    protocol.Data.UserData.UserItemOrBuilder getUserItemOrBuilder();
   }
   /**
    * Protobuf type {@code protocol.GetUserInfoRsp}
@@ -588,11 +577,16 @@ public final class GetUserInfoMsg {
               break;
             }
             case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                userItem_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>();
-                mutable_bitField0_ |= 0x00000002;
+              protocol.Data.UserData.UserItem.Builder subBuilder = null;
+              if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                subBuilder = userItem_.toBuilder();
               }
-              userItem_.add(input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry));
+              userItem_ = input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(userItem_);
+                userItem_ = subBuilder.buildPartial();
+              }
+              bitField0_ |= 0x00000002;
               break;
             }
           }
@@ -603,9 +597,6 @@ public final class GetUserInfoMsg {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          userItem_ = java.util.Collections.unmodifiableList(userItem_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -752,45 +743,31 @@ public final class GetUserInfoMsg {
       return resultCode_;
     }
 
-    // repeated .protocol.UserItem userItem = 2;
+    // optional .protocol.UserItem userItem = 2;
     public static final int USERITEM_FIELD_NUMBER = 2;
-    private java.util.List<protocol.Data.UserData.UserItem> userItem_;
+    private protocol.Data.UserData.UserItem userItem_;
     /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
+     * <code>optional .protocol.UserItem userItem = 2;</code>
      */
-    public java.util.List<protocol.Data.UserData.UserItem> getUserItemList() {
+    public boolean hasUserItem() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional .protocol.UserItem userItem = 2;</code>
+     */
+    public protocol.Data.UserData.UserItem getUserItem() {
       return userItem_;
     }
     /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
+     * <code>optional .protocol.UserItem userItem = 2;</code>
      */
-    public java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-        getUserItemOrBuilderList() {
+    public protocol.Data.UserData.UserItemOrBuilder getUserItemOrBuilder() {
       return userItem_;
-    }
-    /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
-     */
-    public int getUserItemCount() {
-      return userItem_.size();
-    }
-    /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
-     */
-    public protocol.Data.UserData.UserItem getUserItem(int index) {
-      return userItem_.get(index);
-    }
-    /**
-     * <code>repeated .protocol.UserItem userItem = 2;</code>
-     */
-    public protocol.Data.UserData.UserItemOrBuilder getUserItemOrBuilder(
-        int index) {
-      return userItem_.get(index);
     }
 
     private void initFields() {
       resultCode_ = protocol.Msg.GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS;
-      userItem_ = java.util.Collections.emptyList();
+      userItem_ = protocol.Data.UserData.UserItem.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -801,8 +778,8 @@ public final class GetUserInfoMsg {
         memoizedIsInitialized = 0;
         return false;
       }
-      for (int i = 0; i < getUserItemCount(); i++) {
-        if (!getUserItem(i).isInitialized()) {
+      if (hasUserItem()) {
+        if (!getUserItem().isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -817,8 +794,8 @@ public final class GetUserInfoMsg {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeEnum(1, resultCode_.getNumber());
       }
-      for (int i = 0; i < userItem_.size(); i++) {
-        output.writeMessage(2, userItem_.get(i));
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, userItem_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -833,9 +810,9 @@ public final class GetUserInfoMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(1, resultCode_.getNumber());
       }
-      for (int i = 0; i < userItem_.size(); i++) {
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, userItem_.get(i));
+          .computeMessageSize(2, userItem_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -957,11 +934,11 @@ public final class GetUserInfoMsg {
         resultCode_ = protocol.Msg.GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS;
         bitField0_ = (bitField0_ & ~0x00000001);
         if (userItemBuilder_ == null) {
-          userItem_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          userItem_ = protocol.Data.UserData.UserItem.getDefaultInstance();
         } else {
           userItemBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -994,11 +971,10 @@ public final class GetUserInfoMsg {
           to_bitField0_ |= 0x00000001;
         }
         result.resultCode_ = resultCode_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
         if (userItemBuilder_ == null) {
-          if (((bitField0_ & 0x00000002) == 0x00000002)) {
-            userItem_ = java.util.Collections.unmodifiableList(userItem_);
-            bitField0_ = (bitField0_ & ~0x00000002);
-          }
           result.userItem_ = userItem_;
         } else {
           result.userItem_ = userItemBuilder_.build();
@@ -1022,31 +998,8 @@ public final class GetUserInfoMsg {
         if (other.hasResultCode()) {
           setResultCode(other.getResultCode());
         }
-        if (userItemBuilder_ == null) {
-          if (!other.userItem_.isEmpty()) {
-            if (userItem_.isEmpty()) {
-              userItem_ = other.userItem_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-            } else {
-              ensureUserItemIsMutable();
-              userItem_.addAll(other.userItem_);
-            }
-            onChanged();
-          }
-        } else {
-          if (!other.userItem_.isEmpty()) {
-            if (userItemBuilder_.isEmpty()) {
-              userItemBuilder_.dispose();
-              userItemBuilder_ = null;
-              userItem_ = other.userItem_;
-              bitField0_ = (bitField0_ & ~0x00000002);
-              userItemBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getUserItemFieldBuilder() : null;
-            } else {
-              userItemBuilder_.addAllMessages(other.userItem_);
-            }
-          }
+        if (other.hasUserItem()) {
+          mergeUserItem(other.getUserItem());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -1057,8 +1010,8 @@ public final class GetUserInfoMsg {
           
           return false;
         }
-        for (int i = 0; i < getUserItemCount(); i++) {
-          if (!getUserItem(i).isInitialized()) {
+        if (hasUserItem()) {
+          if (!getUserItem().isInitialized()) {
             
             return false;
           }
@@ -1121,239 +1074,116 @@ public final class GetUserInfoMsg {
         return this;
       }
 
-      // repeated .protocol.UserItem userItem = 2;
-      private java.util.List<protocol.Data.UserData.UserItem> userItem_ =
-        java.util.Collections.emptyList();
-      private void ensureUserItemIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          userItem_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>(userItem_);
-          bitField0_ |= 0x00000002;
-         }
-      }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
+      // optional .protocol.UserItem userItem = 2;
+      private protocol.Data.UserData.UserItem userItem_ = protocol.Data.UserData.UserItem.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
           protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> userItemBuilder_;
-
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
-      public java.util.List<protocol.Data.UserData.UserItem> getUserItemList() {
+      public boolean hasUserItem() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional .protocol.UserItem userItem = 2;</code>
+       */
+      public protocol.Data.UserData.UserItem getUserItem() {
         if (userItemBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(userItem_);
+          return userItem_;
         } else {
-          return userItemBuilder_.getMessageList();
+          return userItemBuilder_.getMessage();
         }
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
-      public int getUserItemCount() {
+      public Builder setUserItem(protocol.Data.UserData.UserItem value) {
         if (userItemBuilder_ == null) {
-          return userItem_.size();
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          userItem_ = value;
+          onChanged();
         } else {
-          return userItemBuilder_.getCount();
+          userItemBuilder_.setMessage(value);
         }
+        bitField0_ |= 0x00000002;
+        return this;
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public protocol.Data.UserData.UserItem getUserItem(int index) {
-        if (userItemBuilder_ == null) {
-          return userItem_.get(index);
-        } else {
-          return userItemBuilder_.getMessage(index);
-        }
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
       public Builder setUserItem(
-          int index, protocol.Data.UserData.UserItem value) {
-        if (userItemBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureUserItemIsMutable();
-          userItem_.set(index, value);
-          onChanged();
-        } else {
-          userItemBuilder_.setMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public Builder setUserItem(
-          int index, protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (userItemBuilder_ == null) {
-          ensureUserItemIsMutable();
-          userItem_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          userItemBuilder_.setMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public Builder addUserItem(protocol.Data.UserData.UserItem value) {
-        if (userItemBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureUserItemIsMutable();
-          userItem_.add(value);
-          onChanged();
-        } else {
-          userItemBuilder_.addMessage(value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public Builder addUserItem(
-          int index, protocol.Data.UserData.UserItem value) {
-        if (userItemBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureUserItemIsMutable();
-          userItem_.add(index, value);
-          onChanged();
-        } else {
-          userItemBuilder_.addMessage(index, value);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public Builder addUserItem(
           protocol.Data.UserData.UserItem.Builder builderForValue) {
         if (userItemBuilder_ == null) {
-          ensureUserItemIsMutable();
-          userItem_.add(builderForValue.build());
+          userItem_ = builderForValue.build();
           onChanged();
         } else {
-          userItemBuilder_.addMessage(builderForValue.build());
+          userItemBuilder_.setMessage(builderForValue.build());
         }
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
-      public Builder addUserItem(
-          int index, protocol.Data.UserData.UserItem.Builder builderForValue) {
+      public Builder mergeUserItem(protocol.Data.UserData.UserItem value) {
         if (userItemBuilder_ == null) {
-          ensureUserItemIsMutable();
-          userItem_.add(index, builderForValue.build());
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              userItem_ != protocol.Data.UserData.UserItem.getDefaultInstance()) {
+            userItem_ =
+              protocol.Data.UserData.UserItem.newBuilder(userItem_).mergeFrom(value).buildPartial();
+          } else {
+            userItem_ = value;
+          }
           onChanged();
         } else {
-          userItemBuilder_.addMessage(index, builderForValue.build());
+          userItemBuilder_.mergeFrom(value);
         }
+        bitField0_ |= 0x00000002;
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public Builder addAllUserItem(
-          java.lang.Iterable<? extends protocol.Data.UserData.UserItem> values) {
-        if (userItemBuilder_ == null) {
-          ensureUserItemIsMutable();
-          super.addAll(values, userItem_);
-          onChanged();
-        } else {
-          userItemBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
       public Builder clearUserItem() {
         if (userItemBuilder_ == null) {
-          userItem_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000002);
+          userItem_ = protocol.Data.UserData.UserItem.getDefaultInstance();
           onChanged();
         } else {
           userItemBuilder_.clear();
         }
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
-      public Builder removeUserItem(int index) {
-        if (userItemBuilder_ == null) {
-          ensureUserItemIsMutable();
-          userItem_.remove(index);
-          onChanged();
-        } else {
-          userItemBuilder_.remove(index);
-        }
-        return this;
+      public protocol.Data.UserData.UserItem.Builder getUserItemBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getUserItemFieldBuilder().getBuilder();
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
-      public protocol.Data.UserData.UserItem.Builder getUserItemBuilder(
-          int index) {
-        return getUserItemFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public protocol.Data.UserData.UserItemOrBuilder getUserItemOrBuilder(
-          int index) {
-        if (userItemBuilder_ == null) {
-          return userItem_.get(index);  } else {
-          return userItemBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-           getUserItemOrBuilderList() {
+      public protocol.Data.UserData.UserItemOrBuilder getUserItemOrBuilder() {
         if (userItemBuilder_ != null) {
-          return userItemBuilder_.getMessageOrBuilderList();
+          return userItemBuilder_.getMessageOrBuilder();
         } else {
-          return java.util.Collections.unmodifiableList(userItem_);
+          return userItem_;
         }
       }
       /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
+       * <code>optional .protocol.UserItem userItem = 2;</code>
        */
-      public protocol.Data.UserData.UserItem.Builder addUserItemBuilder() {
-        return getUserItemFieldBuilder().addBuilder(
-            protocol.Data.UserData.UserItem.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public protocol.Data.UserData.UserItem.Builder addUserItemBuilder(
-          int index) {
-        return getUserItemFieldBuilder().addBuilder(
-            index, protocol.Data.UserData.UserItem.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .protocol.UserItem userItem = 2;</code>
-       */
-      public java.util.List<protocol.Data.UserData.UserItem.Builder> 
-           getUserItemBuilderList() {
-        return getUserItemFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
+      private com.google.protobuf.SingleFieldBuilder<
           protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> 
           getUserItemFieldBuilder() {
         if (userItemBuilder_ == null) {
-          userItemBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          userItemBuilder_ = new com.google.protobuf.SingleFieldBuilder<
               protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder>(
                   userItem_,
-                  ((bitField0_ & 0x00000002) == 0x00000002),
                   getParentForChildren(),
                   isClean());
           userItem_ = null;
@@ -1395,7 +1225,7 @@ public final class GetUserInfoMsg {
       "ta.proto\"&\n\016GetUserInfoReq\022\024\n\014targetUser" +
       "Id\030\001 \002(\t\"\224\001\n\016GetUserInfoRsp\0227\n\nresultCod" +
       "e\030\001 \002(\0162#.protocol.GetUserInfoRsp.Result" +
-      "Code\022$\n\010userItem\030\002 \003(\0132\022.protocol.UserIt" +
+      "Code\022$\n\010userItem\030\002 \001(\0132\022.protocol.UserIt" +
       "em\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001B" +
       "\016\n\014protocol.Msg"
     };
