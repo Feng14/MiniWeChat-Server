@@ -2,6 +2,16 @@ package protocol;
 
 option java_package = "protocol.Msg";
 
-message OffLine{
+message OffLineReq{
+	//下线原因
+	enum CauseCode{
+		CHANGE_PASSWORD=0;//修改密码
+		ANOTHER_LOGIN=1;//其他设备登录
+	}
+	required CauseCode causeCode =1;
 	
+}
+
+message OffLineRsp{
+
 }

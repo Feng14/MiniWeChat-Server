@@ -8,28 +8,38 @@ public final class OffLineMsg {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface OffLineOrBuilder
+  public interface OffLineReqOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
+
+    // required .protocol.OffLineReq.CauseCode causeCode = 1;
+    /**
+     * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+     */
+    boolean hasCauseCode();
+    /**
+     * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+     */
+    protocol.Msg.OffLineMsg.OffLineReq.CauseCode getCauseCode();
   }
   /**
-   * Protobuf type {@code protocol.OffLine}
+   * Protobuf type {@code protocol.OffLineReq}
    */
-  public static final class OffLine extends
+  public static final class OffLineReq extends
       com.google.protobuf.GeneratedMessage
-      implements OffLineOrBuilder {
-    // Use OffLine.newBuilder() to construct.
-    private OffLine(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements OffLineReqOrBuilder {
+    // Use OffLineReq.newBuilder() to construct.
+    private OffLineReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private OffLine(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private OffLineReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final OffLine defaultInstance;
-    public static OffLine getDefaultInstance() {
+    private static final OffLineReq defaultInstance;
+    public static OffLineReq getDefaultInstance() {
       return defaultInstance;
     }
 
-    public OffLine getDefaultInstanceForType() {
+    public OffLineReq getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -39,7 +49,512 @@ public final class OffLineMsg {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private OffLine(
+    private OffLineReq(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              protocol.Msg.OffLineMsg.OffLineReq.CauseCode value = protocol.Msg.OffLineMsg.OffLineReq.CauseCode.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                causeCode_ = value;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineReq_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineReq_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              protocol.Msg.OffLineMsg.OffLineReq.class, protocol.Msg.OffLineMsg.OffLineReq.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<OffLineReq> PARSER =
+        new com.google.protobuf.AbstractParser<OffLineReq>() {
+      public OffLineReq parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OffLineReq(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OffLineReq> getParserForType() {
+      return PARSER;
+    }
+
+    /**
+     * Protobuf enum {@code protocol.OffLineReq.CauseCode}
+     *
+     * <pre>
+     *下线原因
+     * </pre>
+     */
+    public enum CauseCode
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>CHANGE_PASSWORD = 0;</code>
+       *
+       * <pre>
+       *修改密码
+       * </pre>
+       */
+      CHANGE_PASSWORD(0, 0),
+      /**
+       * <code>ANOTHER_LOGIN = 1;</code>
+       *
+       * <pre>
+       *其他设备登录
+       * </pre>
+       */
+      ANOTHER_LOGIN(1, 1),
+      ;
+
+      /**
+       * <code>CHANGE_PASSWORD = 0;</code>
+       *
+       * <pre>
+       *修改密码
+       * </pre>
+       */
+      public static final int CHANGE_PASSWORD_VALUE = 0;
+      /**
+       * <code>ANOTHER_LOGIN = 1;</code>
+       *
+       * <pre>
+       *其他设备登录
+       * </pre>
+       */
+      public static final int ANOTHER_LOGIN_VALUE = 1;
+
+
+      public final int getNumber() { return value; }
+
+      public static CauseCode valueOf(int value) {
+        switch (value) {
+          case 0: return CHANGE_PASSWORD;
+          case 1: return ANOTHER_LOGIN;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<CauseCode>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<CauseCode>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<CauseCode>() {
+              public CauseCode findValueByNumber(int number) {
+                return CauseCode.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return protocol.Msg.OffLineMsg.OffLineReq.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final CauseCode[] VALUES = values();
+
+      public static CauseCode valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private CauseCode(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:protocol.OffLineReq.CauseCode)
+    }
+
+    private int bitField0_;
+    // required .protocol.OffLineReq.CauseCode causeCode = 1;
+    public static final int CAUSECODE_FIELD_NUMBER = 1;
+    private protocol.Msg.OffLineMsg.OffLineReq.CauseCode causeCode_;
+    /**
+     * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+     */
+    public boolean hasCauseCode() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+     */
+    public protocol.Msg.OffLineMsg.OffLineReq.CauseCode getCauseCode() {
+      return causeCode_;
+    }
+
+    private void initFields() {
+      causeCode_ = protocol.Msg.OffLineMsg.OffLineReq.CauseCode.CHANGE_PASSWORD;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasCauseCode()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, causeCode_.getNumber());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, causeCode_.getNumber());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static protocol.Msg.OffLineMsg.OffLineReq parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(protocol.Msg.OffLineMsg.OffLineReq prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protocol.OffLineReq}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements protocol.Msg.OffLineMsg.OffLineReqOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineReq_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineReq_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                protocol.Msg.OffLineMsg.OffLineReq.class, protocol.Msg.OffLineMsg.OffLineReq.Builder.class);
+      }
+
+      // Construct using protocol.Msg.OffLineMsg.OffLineReq.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        causeCode_ = protocol.Msg.OffLineMsg.OffLineReq.CauseCode.CHANGE_PASSWORD;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineReq_descriptor;
+      }
+
+      public protocol.Msg.OffLineMsg.OffLineReq getDefaultInstanceForType() {
+        return protocol.Msg.OffLineMsg.OffLineReq.getDefaultInstance();
+      }
+
+      public protocol.Msg.OffLineMsg.OffLineReq build() {
+        protocol.Msg.OffLineMsg.OffLineReq result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public protocol.Msg.OffLineMsg.OffLineReq buildPartial() {
+        protocol.Msg.OffLineMsg.OffLineReq result = new protocol.Msg.OffLineMsg.OffLineReq(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.causeCode_ = causeCode_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof protocol.Msg.OffLineMsg.OffLineReq) {
+          return mergeFrom((protocol.Msg.OffLineMsg.OffLineReq)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(protocol.Msg.OffLineMsg.OffLineReq other) {
+        if (other == protocol.Msg.OffLineMsg.OffLineReq.getDefaultInstance()) return this;
+        if (other.hasCauseCode()) {
+          setCauseCode(other.getCauseCode());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasCauseCode()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        protocol.Msg.OffLineMsg.OffLineReq parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (protocol.Msg.OffLineMsg.OffLineReq) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .protocol.OffLineReq.CauseCode causeCode = 1;
+      private protocol.Msg.OffLineMsg.OffLineReq.CauseCode causeCode_ = protocol.Msg.OffLineMsg.OffLineReq.CauseCode.CHANGE_PASSWORD;
+      /**
+       * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+       */
+      public boolean hasCauseCode() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+       */
+      public protocol.Msg.OffLineMsg.OffLineReq.CauseCode getCauseCode() {
+        return causeCode_;
+      }
+      /**
+       * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+       */
+      public Builder setCauseCode(protocol.Msg.OffLineMsg.OffLineReq.CauseCode value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        causeCode_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .protocol.OffLineReq.CauseCode causeCode = 1;</code>
+       */
+      public Builder clearCauseCode() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        causeCode_ = protocol.Msg.OffLineMsg.OffLineReq.CauseCode.CHANGE_PASSWORD;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:protocol.OffLineReq)
+    }
+
+    static {
+      defaultInstance = new OffLineReq(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:protocol.OffLineReq)
+  }
+
+  public interface OffLineRspOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code protocol.OffLineRsp}
+   */
+  public static final class OffLineRsp extends
+      com.google.protobuf.GeneratedMessage
+      implements OffLineRspOrBuilder {
+    // Use OffLineRsp.newBuilder() to construct.
+    private OffLineRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private OffLineRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final OffLineRsp defaultInstance;
+    public static OffLineRsp getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public OffLineRsp getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OffLineRsp(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -75,28 +590,28 @@ public final class OffLineMsg {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return protocol.Msg.OffLineMsg.internal_static_protocol_OffLine_descriptor;
+      return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return protocol.Msg.OffLineMsg.internal_static_protocol_OffLine_fieldAccessorTable
+      return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              protocol.Msg.OffLineMsg.OffLine.class, protocol.Msg.OffLineMsg.OffLine.Builder.class);
+              protocol.Msg.OffLineMsg.OffLineRsp.class, protocol.Msg.OffLineMsg.OffLineRsp.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<OffLine> PARSER =
-        new com.google.protobuf.AbstractParser<OffLine>() {
-      public OffLine parsePartialFrom(
+    public static com.google.protobuf.Parser<OffLineRsp> PARSER =
+        new com.google.protobuf.AbstractParser<OffLineRsp>() {
+      public OffLineRsp parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OffLine(input, extensionRegistry);
+        return new OffLineRsp(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<OffLine> getParserForType() {
+    public com.google.protobuf.Parser<OffLineRsp> getParserForType() {
       return PARSER;
     }
 
@@ -135,53 +650,53 @@ public final class OffLineMsg {
       return super.writeReplace();
     }
 
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(byte[] data)
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(java.io.InputStream input)
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseDelimitedFrom(java.io.InputStream input)
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseDelimitedFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.OffLineMsg.OffLine parseFrom(
+    public static protocol.Msg.OffLineMsg.OffLineRsp parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -190,7 +705,7 @@ public final class OffLineMsg {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(protocol.Msg.OffLineMsg.OffLine prototype) {
+    public static Builder newBuilder(protocol.Msg.OffLineMsg.OffLineRsp prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -202,24 +717,24 @@ public final class OffLineMsg {
       return builder;
     }
     /**
-     * Protobuf type {@code protocol.OffLine}
+     * Protobuf type {@code protocol.OffLineRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Msg.OffLineMsg.OffLineOrBuilder {
+       implements protocol.Msg.OffLineMsg.OffLineRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLine_descriptor;
+        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLine_fieldAccessorTable
+        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                protocol.Msg.OffLineMsg.OffLine.class, protocol.Msg.OffLineMsg.OffLine.Builder.class);
+                protocol.Msg.OffLineMsg.OffLineRsp.class, protocol.Msg.OffLineMsg.OffLineRsp.Builder.class);
       }
 
-      // Construct using protocol.Msg.OffLineMsg.OffLine.newBuilder()
+      // Construct using protocol.Msg.OffLineMsg.OffLineRsp.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -248,38 +763,38 @@ public final class OffLineMsg {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLine_descriptor;
+        return protocol.Msg.OffLineMsg.internal_static_protocol_OffLineRsp_descriptor;
       }
 
-      public protocol.Msg.OffLineMsg.OffLine getDefaultInstanceForType() {
-        return protocol.Msg.OffLineMsg.OffLine.getDefaultInstance();
+      public protocol.Msg.OffLineMsg.OffLineRsp getDefaultInstanceForType() {
+        return protocol.Msg.OffLineMsg.OffLineRsp.getDefaultInstance();
       }
 
-      public protocol.Msg.OffLineMsg.OffLine build() {
-        protocol.Msg.OffLineMsg.OffLine result = buildPartial();
+      public protocol.Msg.OffLineMsg.OffLineRsp build() {
+        protocol.Msg.OffLineMsg.OffLineRsp result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public protocol.Msg.OffLineMsg.OffLine buildPartial() {
-        protocol.Msg.OffLineMsg.OffLine result = new protocol.Msg.OffLineMsg.OffLine(this);
+      public protocol.Msg.OffLineMsg.OffLineRsp buildPartial() {
+        protocol.Msg.OffLineMsg.OffLineRsp result = new protocol.Msg.OffLineMsg.OffLineRsp(this);
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof protocol.Msg.OffLineMsg.OffLine) {
-          return mergeFrom((protocol.Msg.OffLineMsg.OffLine)other);
+        if (other instanceof protocol.Msg.OffLineMsg.OffLineRsp) {
+          return mergeFrom((protocol.Msg.OffLineMsg.OffLineRsp)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(protocol.Msg.OffLineMsg.OffLine other) {
-        if (other == protocol.Msg.OffLineMsg.OffLine.getDefaultInstance()) return this;
+      public Builder mergeFrom(protocol.Msg.OffLineMsg.OffLineRsp other) {
+        if (other == protocol.Msg.OffLineMsg.OffLineRsp.getDefaultInstance()) return this;
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -292,11 +807,11 @@ public final class OffLineMsg {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        protocol.Msg.OffLineMsg.OffLine parsedMessage = null;
+        protocol.Msg.OffLineMsg.OffLineRsp parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (protocol.Msg.OffLineMsg.OffLine) e.getUnfinishedMessage();
+          parsedMessage = (protocol.Msg.OffLineMsg.OffLineRsp) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -306,22 +821,27 @@ public final class OffLineMsg {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:protocol.OffLine)
+      // @@protoc_insertion_point(builder_scope:protocol.OffLineRsp)
     }
 
     static {
-      defaultInstance = new OffLine(true);
+      defaultInstance = new OffLineRsp(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:protocol.OffLine)
+    // @@protoc_insertion_point(class_scope:protocol.OffLineRsp)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_protocol_OffLine_descriptor;
+    internal_static_protocol_OffLineReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_protocol_OffLine_fieldAccessorTable;
+      internal_static_protocol_OffLineReq_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_protocol_OffLineRsp_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_protocol_OffLineRsp_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -331,19 +851,28 @@ public final class OffLineMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020OffLineMsg.proto\022\010protocol\"\t\n\007OffLineB" +
-      "\016\n\014protocol.Msg"
+      "\n\020OffLineMsg.proto\022\010protocol\"t\n\nOffLineR" +
+      "eq\0221\n\tcauseCode\030\001 \002(\0162\036.protocol.OffLine" +
+      "Req.CauseCode\"3\n\tCauseCode\022\023\n\017CHANGE_PAS" +
+      "SWORD\020\000\022\021\n\rANOTHER_LOGIN\020\001\"\014\n\nOffLineRsp" +
+      "B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_protocol_OffLine_descriptor =
+          internal_static_protocol_OffLineReq_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_protocol_OffLine_fieldAccessorTable = new
+          internal_static_protocol_OffLineReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_protocol_OffLine_descriptor,
+              internal_static_protocol_OffLineReq_descriptor,
+              new java.lang.String[] { "CauseCode", });
+          internal_static_protocol_OffLineRsp_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_protocol_OffLineRsp_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_protocol_OffLineRsp_descriptor,
               new java.lang.String[] { });
           return null;
         }
