@@ -33,11 +33,13 @@ public class NetworkMessage {
 	 * @author Feng
 	 */
 	public int getMessageLength() {
-		return arrayBytes.length;
+//		return arrayBytes.length;
+		return getMessageLength(arrayBytes);
 	}
 
 	public static int getMessageLength(byte[] array) {
-		return array.length;
+//		return array.length;
+		return DataTypeTranslater.bytesToInt(array, getSizeStartIndex());
 	}
 
 	/**
