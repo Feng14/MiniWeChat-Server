@@ -11,10 +11,10 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 
+import protocol.Msg.RegisterMsg;
+
 import com.google.protobuf.InvalidProtocolBufferException;
 
-import protocol.LoginMsg;
-import protocol.RegisterMsg;
 import server.NetworkMessage;
 
 import client.SocketClientTest;
