@@ -18,6 +18,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Data.UserData;
 import protocol.Msg.AddFriendMsg;
+import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 
 
@@ -92,6 +93,7 @@ public class Server_Friend {
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			try{
+				//双方互加好友
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
 				Criteria criteria2 = session.createCriteria(User.class);
@@ -136,7 +138,58 @@ public class Server_Friend {
 	 * @time 2015-03-24
 	 */
 	public void deleteFriend(NetworkMessage networkMessage){
-		
+		try {
+			DeleteFriendMsg.DeleteFriendReq deleteFriendObject = DeleteFriendMsg.DeleteFriendReq.
+					parseFrom(networkMessage.getMessageObjectBytes());
+			DeleteFriendMsg.DeleteFriendRsp.Builder DeleteFriendBuilder = DeleteFriendMsg.DeleteFriendRsp.newBuilder();
+			
+			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
+					networkMessage.ioSession.getRemoteAddress().toString());
+			try{
+				//双方互加好友
+				Session session = HibernateSessionFactory.getSession();
+				Criteria criteria = session.createCriteria(User.class);
+				Criteria criteria2 = session.createCriteria(User.class);
+				criteria.add(Restrictions.eq("userId", clientUser.userId));
+				User u = (User) criteria.list().get(0);
+				criteria2.add(Restrictions.eq("userId", deleteFriendObject.getFriendUserId()));
+				User friend = (User) criteria2.list().get(0);
+				User x=null,y=null;
+				for(User a:u.getFriends()){
+					if(a.getUserId().equals(friend.getUserId()))
+						x=a;
+				}
+				for(User b:friend.getFriends()){
+					if(b.getUserId().equals(u.getUserId()))
+						y=b;
+				}
+				u.getFriends().remove(x);
+				friend.getFriends().remove(y);
+			
+				Transaction trans = session.beginTransaction();
+			    session.update(u);
+			    session.update(friend);
+			    trans.commit();
+			    
+			    DeleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.SUCCESS);
+			}catch(Exception e){
+				DeleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
+				e.printStackTrace();
+			}
+			
+
+			//回复客户端
+			ServerNetwork.instance.sendMessageToClient(
+					networkMessage.ioSession,
+					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_RSP.getNumber(),
+							networkMessage.getMessageID(), DeleteFriendBuilder.build().toByteArray()));
+			
+		} catch (InvalidProtocolBufferException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
 }

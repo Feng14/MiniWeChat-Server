@@ -12,6 +12,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
+import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.PersonalSettingsMsg;
@@ -77,7 +78,13 @@ public class SocketClientTest {
 		//测查看用户个人信息
 		//testGetUserInfo();
 		//测添加好友
+
 //		testAddFriend();
+
+
+		//testAddFriend();
+		//测删除好友
+		testDeleteFriend();
 
 		// new Thread(new readThread()).start();
 	}
@@ -410,6 +417,11 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 	}
+	
+	public byte[] testPersonalSettings_JUnit(String userName,String userPassword){
+		return null;
+		
+	}
 
 	/**
 	 * 用于剪切从服务器发过来的byte[]
@@ -425,7 +437,10 @@ public class SocketClientTest {
 		return result;
 	}
 	
-	//测试搜索用户功能
+	/**
+	 * 测试获取用户信息功能
+	 * @author wangfei
+	 */
 	public void testGetUserInfo(){
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
 		builder.setTargetUserId("Fuck");
@@ -474,7 +489,15 @@ public class SocketClientTest {
 		}
 	}
 	
-	//测添加好友功能
+	public byte[] testGetUserInfo_JUnit(String targetUserId){
+		return null;
+		
+	}
+	
+	/**
+	 * 测试添加好友功能
+	 * @author wangfei
+	 */
 	public void testAddFriend(){
 		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
 		builder.setFriendUserId("a3");
@@ -519,5 +542,58 @@ public class SocketClientTest {
 		}
 	}
 	
+	public byte[] testAddFriend(String friendUserId){
+		return null;
+	}
+	
+	/**
+	 * 测试删除好友功能
+	 * @author wangfei
+	 */
+	public void testDeleteFriend(){
+		DeleteFriendMsg.DeleteFriendReq.Builder builder = DeleteFriendMsg.DeleteFriendReq.newBuilder();
+		builder.setFriendUserId("a1");
+		System.out.println("start test DeleteFriend! -----------------------");
+		try{				
+			Socket socket = new Socket(host,port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
+			loginBuilder.setUserId("a2");
+			loginBuilder.setUserPassword("aa");
+			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
+					.toByteArray());
+			writeToServer(loginByteArray);
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_REQ.getNumber(), 
+					builder.build().toByteArray());
+		
+			writeToServer(byteArray);
+			while(true){
+				byteArray = readFromServer();
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+
+				if (type == ProtoHead.ENetworkMessage.DELETEFRIEND_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					DeleteFriendMsg.DeleteFriendRsp response = DeleteFriendMsg.DeleteFriendRsp.parseFrom(objBytes);
+
+					System.out.println("Response : "
+							+ DeleteFriendMsg.DeleteFriendRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public byte[] testDeleteFriend_JUnit(){
+		return null;
+	}
 	
 }

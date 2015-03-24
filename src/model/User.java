@@ -66,7 +66,7 @@ public class User implements Serializable {
     
 	@ManyToMany(targetEntity=User.class)
 	@JoinTable(name = "user_friends", 
-	joinColumns = @JoinColumn(name = "user_id"), 
+	joinColumns = @JoinColumn(name = "user_id"), 	
 	inverseJoinColumns = @JoinColumn(name = "friend_id"))
 	public List<User> getFriends() {
 		return friends;

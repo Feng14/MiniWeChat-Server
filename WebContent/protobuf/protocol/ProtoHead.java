@@ -69,6 +69,14 @@ public final class ProtoHead {
      * <code>OFFLINE = 13;</code>
      */
     OFFLINE(13, 13),
+    /**
+     * <code>LOGOUT_REQ = 14;</code>
+     */
+    LOGOUT_REQ(14, 14),
+    /**
+     * <code>LOGOUT_RSP = 15;</code>
+     */
+    LOGOUT_RSP(15, 15),
     ;
 
     /**
@@ -127,6 +135,14 @@ public final class ProtoHead {
      * <code>OFFLINE = 13;</code>
      */
     public static final int OFFLINE_VALUE = 13;
+    /**
+     * <code>LOGOUT_REQ = 14;</code>
+     */
+    public static final int LOGOUT_REQ_VALUE = 14;
+    /**
+     * <code>LOGOUT_RSP = 15;</code>
+     */
+    public static final int LOGOUT_RSP_VALUE = 15;
 
 
     public final int getNumber() { return value; }
@@ -147,6 +163,8 @@ public final class ProtoHead {
         case 11: return DELETEFRIEND_REQ;
         case 12: return DELETEFRIEND_RSP;
         case 13: return OFFLINE;
+        case 14: return LOGOUT_REQ;
+        case 15: return LOGOUT_RSP;
         default: return null;
       }
     }
@@ -207,7 +225,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\245\002\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\305\002\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -215,7 +233,8 @@ public final class ProtoHead {
       "O_REQ\020\007\022\023\n\017GETUSERINFO_RSP\020\010\022\021\n\rADDFRIEN" +
       "D_REQ\020\t\022\021\n\rADDFRIEND_RSP\020\n\022\024\n\020DELETEFRIE" +
       "ND_REQ\020\013\022\024\n\020DELETEFRIEND_RSP\020\014\022\013\n\007OFFLIN" +
-      "E\020\rB\n\n\010protocol"
+      "E\020\r\022\016\n\nLOGOUT_REQ\020\016\022\016\n\nLOGOUT_RSP\020\017B\n\n\010p" +
+      "rotocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
