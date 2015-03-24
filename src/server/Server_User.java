@@ -188,7 +188,11 @@ public class Server_User {
 		if (user != null) {
 			// 发送由他人登陆消息
 			OffLineMsg.OffLine.Builder offLineMessage = OffLineMsg.OffLine.newBuilder();
-//			byte[] message = NetworkMessage.packMessage(ProtoHead.ENetworkMessage., packetBytes)
+//			byte[] message = NetworkMessage.packMessage(ProtoHead.ENetworkMessage., offLineMessage);
+			byte[] message = null;
+			networkMessage.ioSession.write(message);
+			
+			// 添加等待回复
 			
 			user.onLine = false;
 			return true;
