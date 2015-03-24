@@ -156,7 +156,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) {
 		Debug.log("throws exception");
-		Debug.log("sesson.toString()", session.toString());
+		Debug.log("session.toString()", session.toString());
 		Debug.log("cause.toString()", cause.toString());
 		Debug.log("±¨´íÍê±Ï£¡£¡");
 	}

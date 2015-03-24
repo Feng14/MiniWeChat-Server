@@ -29,9 +29,9 @@ public class SocketClientTest {
 	public OutputStream outputStream;
 
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
-	//String host = "192.168.45.17"; // 要连接的服务端IP地址
+	String host = "192.168.45.17"; // 要连接的服务端IP地址
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.45.34"; // 要连接的服务端IP地址
+//	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -77,7 +77,7 @@ public class SocketClientTest {
 		//测查看用户个人信息
 		//testGetUserInfo();
 		//测添加好友
-		testAddFriend();
+//		testAddFriend();
 
 		// new Thread(new readThread()).start();
 	}
@@ -96,12 +96,13 @@ public class SocketClientTest {
 
 
 	// 处理服务器回复问题
-	public byte[] readFromServer(Socket socket) throws IOException {
+	public byte[] readFromServer() throws IOException {
 
 		// inputStream = socket.getInputStream();
 		byte[] byteArray = new byte[200];
 		// System.out.println(in.read(byteArray));
 		inputStream.read(byteArray);
+		byteArray = cutResult(byteArray);
 
 		// System.out.println("client �յ�Server ������ �� " + byteArray);
 		// inputStream.close();
@@ -143,7 +144,7 @@ public class SocketClientTest {
 				// socket = new Socket(host, port);
 				while (true) {
 					Thread.sleep(1000);
-					byte[] arrayBytes = readFromServer(socket);
+					byte[] arrayBytes = readFromServer();
 					System.out.println("client 收到Server 发来的 ： " + arrayBytes);
 
 					System.out.println("size:" + DataTypeTranslater.bytesToInt(arrayBytes, 0));
@@ -180,7 +181,7 @@ public class SocketClientTest {
 
 			// inputStream = socket.getInputStream();
 			while (true) {
-				byteArray1 = readFromServer(socket);
+				byteArray1 = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray1, 0);
 				System.out.println("size: " + size);
 
@@ -225,7 +226,7 @@ public class SocketClientTest {
 			writeToServer(byteArray);
 
 			while (true) {
-				byteArray = readFromServer(socket);
+				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
 
@@ -279,7 +280,7 @@ public class SocketClientTest {
 	}
 
 	/**
-	 * ���Ե�½����(��JUnit����)
+	 * 测试登陆功能(由JUnit调用)
 	 * 
 	 * @param userId
 	 * @param userPassword
@@ -299,7 +300,7 @@ public class SocketClientTest {
 
 		// inputStream = socket.getInputStream();
 		while (true) {
-			byteArray = readFromServer(socket);
+			byteArray = readFromServer();
 
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
@@ -331,7 +332,7 @@ public class SocketClientTest {
 
 			// inputStream = socket.getInputStream();
 			while (true) {
-				byteArray = readFromServer(socket);
+				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
 
@@ -384,7 +385,7 @@ public class SocketClientTest {
 					.build().toByteArray());
 			writeToServer(byteArray);
 			while (true) {
-				byteArray = readFromServer(socket);
+				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
 
@@ -446,7 +447,7 @@ public class SocketClientTest {
 			
 			writeToServer(byteArray);
 			while(true){
-				byteArray = readFromServer(socket);
+				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
 
@@ -495,7 +496,7 @@ public class SocketClientTest {
 			
 			writeToServer(byteArray);
 			while(true){
-				byteArray = readFromServer(socket);
+				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
 

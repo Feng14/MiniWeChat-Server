@@ -1,6 +1,6 @@
 package server;
 
-import java.sql.Date;
+import java.util.Date;
 
 import org.apache.mina.core.session.IoSession;
 
@@ -17,5 +17,7 @@ public class WaitClientResponse {
 	public WaitClientResponse(IoSession ioSession, byte[] messageHasSent) {
 		this.ioSession = ioSession;
 		this.messageHasSent = messageHasSent;
+		
+		time = new Date().getTime();
 	}
 }

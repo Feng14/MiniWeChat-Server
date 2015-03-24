@@ -131,7 +131,12 @@ public class ServerModel {
 			
 			if (!clientUserTable.containsKey(key))
 				continue;
+			
 			user = clientUserTable.get(key);
+			
+			if (user.userId == null)
+				continue;
+			
 			if (user.userId.equals(userId))
 				return user;
 		}
@@ -222,9 +227,6 @@ public class ServerModel {
 		@Override
 		public void run() {
 			KeepAliveMsg.KeepAliveSyncPacket.Builder packet = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
-			// packet.setA(123);
-			// packet.setB(true);
-//			packet.setC("Fuck");
 			byte[] packetBytes = packet.build().toByteArray();
 			// 创建心跳包
 			byte[] messageBytes;
@@ -250,14 +252,11 @@ public class ServerModel {
 						if (!clientUserTable.containsKey(key))
 							continue;
 						user = clientUserTable.get(key);
-
-						// 将上次没有回复的干掉，从用户表中删掉
-						if (user.onLine == false) {
+						
+						// 若已死，删除    ;   将上次没有回复的干掉，从用户表中删掉
+						if (user.die || user.onLine == false) {
 							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
-
 							// user.ioSession.close(true);
-							
-//							clientUserTable.remove(key);
 							iterator.remove();
 							continue;
 						}
@@ -305,9 +304,13 @@ public class ServerModel {
 					e.printStackTrace();
 				}
 				// 对每个用户进行检查
-				for (Iterator iterator = waitClientRepTable.keySet().iterator(); iterator.hasNext();) {
-					key = (String) iterator.next();
+				Iterator iterator = waitClientRepTable.keySet().iterator();
+				while (iterator.hasNext()) {
+					key = iterator.next().toString();
 					waitObj = waitClientRepTable.get(key);
+					if (waitObj == null)
+						continue;
+					
 					if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
 						// 超时，重发
 						Debug.log("ServerModel", "等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
