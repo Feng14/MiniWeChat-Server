@@ -18,6 +18,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.ProtoHead;
 import protocol.Msg.LoginMsg;
+import protocol.Msg.LogoutMsg;
 import protocol.Msg.OffLineMsg;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
@@ -318,5 +319,31 @@ public class Server_User {
 			System.err.println("Server_User : 个人设置事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 用户退出登录
+	 * @param networkMessage
+	 * @author wangfei
+	 * @time 2015-03-25
+	 */
+	public void logout(NetworkMessage networkMessage){
+		try {
+			ClientUser user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
+			LogoutMsg.LogoutRsp.Builder logoutBuilder= LogoutMsg.LogoutRsp.newBuilder();
+			Debug.log(new String[] { "Srever_User", "logout" },
+					"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
+			
+			user.userId = null;
+			user.die = true;
+			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
+			
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.LOGOUT_RSP.getNumber(),networkMessage.getMessageID(), logoutBuilder.build().toByteArray()));
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

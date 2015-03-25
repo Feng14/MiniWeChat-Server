@@ -54,7 +54,9 @@ public class ClientRequest_Dispatcher {
 		case ProtoHead.ENetworkMessage.OFFLINE_RSP_VALUE:
 			Server_User.instance.clientOfflineResponse(networkMessage);
 			break;
-			
+		case ProtoHead.ENetworkMessage.LOGOUT_REQ_VALUE:
+			Server_User.instance.logout(networkMessage);
+			break;
 
 		default:
 			break;

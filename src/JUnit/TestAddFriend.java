@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import protocol.Msg.AddFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
@@ -47,6 +48,7 @@ public class TestAddFriend {
 	 * @author wangfei
 	 * @throws IOException
 	 */
+	@Test
 	public void testAddFriend() throws IOException{
 		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
 		

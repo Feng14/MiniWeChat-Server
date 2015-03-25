@@ -10,6 +10,7 @@ import protocol.Msg.AddFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.LoginMsg;
+import protocol.Msg.LogoutMsg;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
 import server.NetworkMessage;
@@ -645,7 +646,7 @@ public class SocketClientTest {
 	}
 	
 	/**
-	 * 测试删除好友
+	 * 测试删除好友--JUnit调用
 	 * @param friendUserId
 	 * @return
 	 * @throws IOException
@@ -662,6 +663,27 @@ public class SocketClientTest {
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
 			if (type == ProtoHead.ENetworkMessage.DELETEFRIEND_RSP) {
+				return byteArray;
+			}
+		}
+	}
+	
+	/**
+	 * 测试退出登录--JUnit调用
+	 * @return
+	 * @throws IOException
+	 * @author wangfei
+	 */
+	public byte[] testLogout_JUnit() throws IOException{
+		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), 
+				builder.build().toByteArray());
+		writeToServer(byteArray);
+		while(true){
+			byteArray = readFromServer();
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+					HEAD_INT_SIZE));
+			if (type == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
 				return byteArray;
 			}
 		}

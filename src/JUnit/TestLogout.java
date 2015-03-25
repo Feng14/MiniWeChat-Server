@@ -11,18 +11,13 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 
-import protocol.Msg.AddFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
+import protocol.Msg.LogoutMsg;
 import server.NetworkMessage;
 
 import client.SocketClientTest;
 
-/**
- * 对删除好友的测试
- * @author wangfei
- *
- */
-public class TestDeleteFriend {
+public class TestLogout {
 	String host = "192.168.45.17"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -44,22 +39,19 @@ public class TestDeleteFriend {
 	}
 	
 	/**
-	 * 测试删除好友
-	 * @author wangfei
+	 * 测试退出登录
 	 * @throws IOException
 	 */
 	@Test
-	public void testDeleteFriend() throws IOException{
-		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
+	public void testLogout() throws IOException{
+		byte[] resultBytes = client.testLogout_JUnit();
+		LogoutMsg.LogoutRsp responseObject = 
+				LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.SUCCESS.toString());
 		
-		byte[] resultBytes = client.testDeleteFriend_JUnit(randomData);
-		DeleteFriendMsg.DeleteFriendRsp responseObject = 
-				DeleteFriendMsg.DeleteFriendRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
-		assertEquals(responseObject.getResultCode().toString(), DeleteFriendMsg.DeleteFriendRsp.ResultCode.SUCCESS.toString());
-
-		resultBytes = client.testDeleteFriend_JUnit(randomData);
-		responseObject =DeleteFriendMsg.DeleteFriendRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
-		assertEquals(responseObject.getResultCode().toString(), DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL.toString());
+		resultBytes = client.testLogout_JUnit();
+		responseObject =LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.FAIL.toString());
 	}
 
 }

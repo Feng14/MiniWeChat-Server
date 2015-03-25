@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.PersonalSettingsMsg;
@@ -48,6 +49,7 @@ public class TestGetUserInfo {
 	 * @author wangfei
 	 * @throws IOException
 	 */
+	@Test
 	public void testGetUserInfo() throws IOException{
 		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
 		
