@@ -26,7 +26,7 @@ import client.SocketClientTest;
  */
 public class TestRegister {
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 	int port = 8080; // 要连接的服务端对应的监听端口
 
 	public Socket socket;

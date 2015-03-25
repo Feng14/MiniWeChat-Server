@@ -356,14 +356,14 @@ public class Server_User {
 				logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
 				Debug.log(new String[] { "Srever_User", "logout" },
 						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
-			} catch (NoIpException e) {
 				
+				user.userId = null;
+				user.die = true;
+				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
+			} catch (NoIpException e) {
+				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
 				e.printStackTrace();
 			}
-
-			user.userId = null;
-			user.die = true;
-			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
 
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
 					ProtoHead.ENetworkMessage.LOGOUT_RSP.getNumber(), networkMessage.getMessageID(), logoutBuilder.build()

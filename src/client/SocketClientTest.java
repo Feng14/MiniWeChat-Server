@@ -24,9 +24,9 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
+	//String host = "192.168.45.17"; // 要连接的服务端IP地址
 //	String host = "192.168.45.11"; // 要连接的服务端IP地址
-//	String host = "192.168.45.34"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -63,19 +63,22 @@ public class SocketClientTest {
 //		testRegister();
 		
 		// 测登陆
-		testLogin();
+		//testLogin();
+		
 		// 测试个人设置
 		//testPersonalSettings();
+		
 		//测查看用户个人信息
 		//testGetUserInfo();
+		
 		//测添加好友
-
-//		testAddFriend();
-
-
 		//testAddFriend();
+
 		//测删除好友
 		//testDeleteFriend();
+		
+		//测退出登录
+		testLogout();
 
 		// new Thread(new readThread()).start();
 	}
@@ -693,6 +696,41 @@ public class SocketClientTest {
 			if (type == ProtoHead.ENetworkMessage.DELETEFRIEND_RSP) {
 				return byteArray;
 			}
+		}
+	}
+	
+	public void testLogout(){
+		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
+		try{
+			Socket socket = new Socket(host,port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
+			loginBuilder.setUserId("a2");
+			loginBuilder.setUserPassword("aa");
+			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
+					.toByteArray());
+			writeToServer(loginByteArray);
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), 
+					builder.build().toByteArray());
+		
+			writeToServer(byteArray);
+			while(true){
+				byteArray = readFromServer();
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+				if (type == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					LogoutMsg.LogoutRsp response = LogoutMsg.LogoutRsp.parseFrom(objBytes);
+					System.out.println("Response : "
+							+ LogoutMsg.LogoutRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+			}
+		}catch(IOException e){
+			e.printStackTrace();
 		}
 	}
 	
