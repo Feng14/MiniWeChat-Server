@@ -37,7 +37,7 @@ public class User implements Serializable {
     }
 
     @Id
-    @Column(name="user_id",columnDefinition = "char(20)  COMMENT 'Î¢ĞÅºÅ'")
+    @Column(name="user_id",columnDefinition = "char(20)  COMMENT 'å¾®ä¿¡å·'")
 	public String getUserId() {
 		return userId;
 	}
@@ -45,7 +45,7 @@ public class User implements Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name="user_name",columnDefinition = "char(20)  COMMENT 'êÇ³Æ'")
+	@Column(name="user_name",columnDefinition = "char(20)  COMMENT 'æ˜µç§°'")
 	public String getUserName() {
 		return userName;
 	}
@@ -53,7 +53,7 @@ public class User implements Serializable {
 		this.userName = userName;
 	}
 
-	@Column(name="user_password",columnDefinition = "char(20)  COMMENT 'ÃÜÂë'")
+	@Column(name="user_password",columnDefinition = "char(20)  COMMENT 'å¯†ç '")
 	public String getUserPassword() {
 		return userPassword;
 	}
@@ -62,7 +62,7 @@ public class User implements Serializable {
 	}
 	
 	
-	@Column(name="user_headIndex",columnDefinition = "int(4) COMMENT 'Í·Ïñ±àºÅ'")
+	@Column(name="user_headIndex",columnDefinition = "int(4) COMMENT 'å¤´åƒç¼–å·'")
 	public int getHeadIndex() {
 		return headIndex;
 	}

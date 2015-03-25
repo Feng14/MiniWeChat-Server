@@ -27,7 +27,7 @@ import protocol.Msg.RegisterMsg;
 import tools.Debug;
 
 /**
- * Ö÷·þÎñÆ÷ÏÂµÄ×Ó·þÎñÆ÷£¬¸ºÔð´¦ÀíÓÃ»§Ïà¹ØÊÂ¼þ
+ * ä¸»æœåŠ¡å™¨ä¸‹çš„å­æœåŠ¡å™¨ï¼Œè´Ÿè´£å¤„ç†ç”¨æˆ·ç›¸å…³äº‹ä»¶
  * 
  * @author Feng
  * 
@@ -40,7 +40,7 @@ public class Server_User {
 	}
 
 	/**
-	 * ¶Ô ÓÃ»§ÐÄÌø°ü»Ø¸´ µÄ´¦Àí ½«onlineÖµÉèÎªTrue
+	 * å¯¹ ç”¨æˆ·å¿ƒè·³åŒ…å›žå¤ çš„å¤„ç† å°†onlineå€¼è®¾ä¸ºTrue
 	 * 
 	 * @param networkMessage
 	 * @author Feng
@@ -51,19 +51,19 @@ public class Server_User {
 		// System.out.println(ServerModel.instance.clientUserTable.keySet().size());
 		// System.out.println("fuck   " +
 		// ServerModel.instance.clientUserTable.containsKey(ServerModel.getIoSessionKey(networkMessage.ioSession)));
-		// Èç¹ûClientUserÒÑ¾­µôÏß±»É¾³ý£¬ÄÇÃ´¾Í²»¹ÜÁË
+		// å¦‚æžœClientUserå·²ç»æŽ‰çº¿è¢«åˆ é™¤ï¼Œé‚£ä¹ˆå°±ä¸ç®¡äº†
 		try {
-			Debug.log("Server_User", "¶Ô  ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  »Ø¸´µÄÐÄÌø°ü  µÄ´¦Àí");
+			Debug.log("Server_User", "å¯¹  ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  å›žå¤çš„å¿ƒè·³åŒ…  çš„å¤„ç†");
 
 			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession) == null) {
-				Debug.log("Server_User", "ÓÃ»§±í(ClientUserTalbe)ÖÐÕÒ²»µ½ ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession)
-						+ "£¬ÐÄÌø»Ø¸´²»×÷´¦Àí!");
+				Debug.log("Server_User", "ç”¨æˆ·è¡¨(ClientUserTalbe)ä¸­æ‰¾ä¸åˆ° ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+						+ "ï¼Œå¿ƒè·³å›žå¤ä¸ä½œå¤„ç†!");
 				return;
 			}
 
 			ServerModel.instance.getClientUserFromTable(networkMessage.ioSession).onLine = true;
 		} catch (NullPointerException e) {
-			System.out.println("Server_User: Òì³££¬ÓÃ»§" + networkMessage.ioSession + "ÒÑµôÏß£¬ÐÄÌø»Ø¸´²»×÷´¦Àí!");
+			System.out.println("Server_User: å¼‚å¸¸ï¼Œç”¨æˆ·" + networkMessage.ioSession + "å·²æŽ‰çº¿ï¼Œå¿ƒè·³å›žå¤ä¸ä½œå¤„ç†!");
 			e.printStackTrace();
 		} catch (NoIpException e) {
 			e.printStackTrace();
@@ -71,7 +71,7 @@ public class Server_User {
 	}
 
 	/**
-	 * ´¦ÀíÐÂÓÃ»§×¢²áÊÂ¼þ
+	 * å¤„ç†æ–°ç”¨æˆ·æ³¨å†Œäº‹ä»¶
 	 * 
 	 * @param networkMessage
 	 * @author Feng
@@ -79,22 +79,22 @@ public class Server_User {
 	 */
 	public void register(NetworkMessage networkMessage) throws NoIpException {
 		try {
-			Debug.log("Server_User", "×¢²áÊÂ¼þ£º ¶Ô  ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  µÄ×¢²áÊÂ¼þ  µÄ´¦Àí");
+			Debug.log("Server_User", "æ³¨å†Œäº‹ä»¶ï¼š å¯¹  ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  çš„æ³¨å†Œäº‹ä»¶  çš„å¤„ç†");
 
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(networkMessage.getMessageObjectBytes());
 			RegisterMsg.RegisterRsp.Builder responseBuilder = RegisterMsg.RegisterRsp.newBuilder();
 
-			// ²éÕÒÊÇ·ñ´æÔÚÍ¬ÃûÓÃ»§
+			// æŸ¥æ‰¾æ˜¯å¦å­˜åœ¨åŒåç”¨æˆ·
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
 			criteria.add(Restrictions.eq("userId", registerObject.getUserId()));
-			if (criteria.list().size() > 0) { // ÒÑ´æÔÚ
-				// ÒÑ´æÔÚÏàÍ¬ÕËºÅÓÃ»§£¬¸æËß¿Í»§¶Ë
-				// System.out.println("Ê²Ã´¹í£¿");
-				Debug.log("Server_User", "×¢²áÊÂ¼þ£ºÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  µÄ×¢²áÕËºÅÖØ¸´£¬·µ»Ø´íÎó!");
+			if (criteria.list().size() > 0) { // å·²å­˜åœ¨
+				// å·²å­˜åœ¨ç›¸åŒè´¦å·ç”¨æˆ·ï¼Œå‘Šè¯‰å®¢æˆ·ç«¯
+				// System.out.println("ä»€ä¹ˆé¬¼ï¼Ÿ");
+				Debug.log("Server_User", "æ³¨å†Œäº‹ä»¶ï¼šç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  çš„æ³¨å†Œè´¦å·é‡å¤ï¼Œè¿”å›žé”™è¯¯!");
 
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.USER_EXIST);
-			} else { // Ã»ÎÊÌâ£¬¿ÉÒÔ¿ªÊ¼×¢²á
+			} else { // æ²¡é—®é¢˜ï¼Œå¯ä»¥å¼€å§‹æ³¨å†Œ
 				User user = new User();
 				user.setUserId(registerObject.getUserId());
 				user.setUserName(registerObject.getUserName());
@@ -104,20 +104,20 @@ public class Server_User {
 				session.save(user);
 				HibernateSessionFactory.commitSession(session);
 
-				// ³É¹¦£¬ÉèÖÃ»Ø°üÂë
-				Debug.log("Server_User", "×¢²áÊÂ¼þ£ºÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  ×¢²á³É¹¦£¬·µ»ØÏûÏ¢!");
+				// æˆåŠŸï¼Œè®¾ç½®å›žåŒ…ç 
+				Debug.log("Server_User", "æ³¨å†Œäº‹ä»¶ï¼šç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  æ³¨å†ŒæˆåŠŸï¼Œè¿”å›žæ¶ˆæ¯!");
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
 			}
 
-			// »Ø¸´¿Í»§¶Ë
+			// å›žå¤å®¢æˆ·ç«¯
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
 					ProtoHead.ENetworkMessage.REGISTER_RSP.getNumber(), networkMessage.getMessageID(), responseBuilder.build()
 							.toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : ×¢²áÊÂ¼þ£º ÓÃProtobuf·´ÐòÁÐ»¯ " + ServerModel.getIoSessionKey(networkMessage.ioSession)
-					+ " µÄ°üÊ±Òì³££¡");
+			System.err.println("Server_User : æ³¨å†Œäº‹ä»¶ï¼š ç”¨Protobufååºåˆ—åŒ– " + ServerModel.getIoSessionKey(networkMessage.ioSession)
+					+ " çš„åŒ…æ—¶å¼‚å¸¸ï¼");
 		} catch (IOException e) {
-			System.err.println("Server_User : ×¢²áÊÂ¼þ£º " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " ·µ»Ø°üÊ±Òì³££¡");
+			System.err.println("Server_User : æ³¨å†Œäº‹ä»¶ï¼š " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " è¿”å›žåŒ…æ—¶å¼‚å¸¸ï¼");
 			e.printStackTrace();
 		} catch (NoIpException e) {
 			e.printStackTrace();
@@ -125,7 +125,7 @@ public class Server_User {
 	}
 
 	/**
-	 * ´¦ÀíClientµÄ¡°µÇÂ½ÇëÇó¡±
+	 * å¤„ç†Clientçš„â€œç™»é™†è¯·æ±‚â€
 	 * 
 	 * @param networkMessage
 	 * @author Feng
@@ -133,55 +133,55 @@ public class Server_User {
 	 */
 	public void login(NetworkMessage networkMessage) throws NoIpException {
 		try {
-			Debug.log(new String[] { "Server_User", "login" }, " ¶Ô  ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession)
-					+ "  µÄµÇÂ½ÊÂ¼þ  µÄ´¦Àí");
+			Debug.log(new String[] { "Server_User", "login" }, " å¯¹  ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+					+ "  çš„ç™»é™†äº‹ä»¶  çš„å¤„ç†");
 
 			LoginMsg.LoginReq loginObject = LoginMsg.LoginReq.parseFrom(networkMessage.getMessageObjectBytes());
 			LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
 
-			// ²éÕÒÊÇ·ñ´æÔÚÍ¬ÃûÓÃ»§
+			// æŸ¥æ‰¾æ˜¯å¦å­˜åœ¨åŒåç”¨æˆ·
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(User.class);
 			criteria.add(Restrictions.eq("userId", loginObject.getUserId()));
-			if (criteria.list().size() > 0) { // ÒÑ´æÔÚ
-				// ÓÃ»§´æÔÚ£¬¿ªÊ¼Ð£Ñé
+			if (criteria.list().size() > 0) { // å·²å­˜åœ¨
+				// ç”¨æˆ·å­˜åœ¨ï¼Œå¼€å§‹æ ¡éªŒ
 				User user = (User) criteria.list().get(0);
-				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // ÃÜÂëÕýÈ·
+				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // å¯†ç æ­£ç¡®
 					Debug.log(new String[] { "Server_User", "login" },
-							"ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  µÄµÇÂ½Ð£Ñé³É¹¦!");
+							"ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  çš„ç™»é™†æ ¡éªŒæˆåŠŸ!");
 
-					// ¼ì²éÊÇ·ñÓÐÖØ¸´µÇÂ½
+					// æ£€æŸ¥æ˜¯å¦æœ‰é‡å¤ç™»é™†
 					checkAnotherOnline(networkMessage, loginObject.getUserId());
 
-					// ¼ÇÂ¼µ½±íÖÐ
+					// è®°å½•åˆ°è¡¨ä¸­
 					ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 					if (clientUser != null)
 						clientUser.userId = loginObject.getUserId();
 
-					// ¼ÇÂ¼»Ø¸´Î»
+					// è®°å½•å›žå¤ä½
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
-				} else { // ÃÜÂë´íÎó
+				} else { // å¯†ç é”™è¯¯
 					Debug.log(new String[] { "Server_User", "login" },
-							"ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  µÄµÇÂ½ÃÜÂë´íÎó!");
+							"ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  çš„ç™»é™†å¯†ç é”™è¯¯!");
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 				}
-			} else { // ÓÃ»§²»´æÔÚ
-				Debug.log(new String[] { "Server_User", "login" }, "ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession)
-						+ "  µÄÓÃ»§²»´æÔÚ!");
+			} else { // ç”¨æˆ·ä¸å­˜åœ¨
+				Debug.log(new String[] { "Server_User", "login" }, "ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+						+ "  çš„ç”¨æˆ·ä¸å­˜åœ¨!");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			}
 			session.close();
 
-			// »Ø¸´¿Í»§¶Ë
+			// å›žå¤å®¢æˆ·ç«¯
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
 					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
 							.toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : ×¢²áÊÂ¼þ£º ÓÃProtobuf·´ÐòÁÐ»¯ " + ServerModel.getIoSessionKey(networkMessage.ioSession)
-					+ " µÄ°üÊ±Òì³££¡");
+			System.err.println("Server_User : æ³¨å†Œäº‹ä»¶ï¼š ç”¨Protobufååºåˆ—åŒ– " + ServerModel.getIoSessionKey(networkMessage.ioSession)
+					+ " çš„åŒ…æ—¶å¼‚å¸¸ï¼");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Server_User : ×¢²áÊÂ¼þ£º " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " ·µ»Ø°üÊ±Òì³££¡");
+			System.err.println("Server_User : æ³¨å†Œäº‹ä»¶ï¼š " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " è¿”å›žåŒ…æ—¶å¼‚å¸¸ï¼");
 			e.printStackTrace();
 		} catch (NoIpException e) {
 			e.printStackTrace();
@@ -189,7 +189,7 @@ public class Server_User {
 	}
 
 	/**
-	 * ¼ì²éÊÇ·ñÓÐÁíÒ»¸öÍ¬ÕËºÅµÄÓÃ»§µÇÂ½£¬ÓÐµÄ»°ÌßÏÂÈ¥
+	 * æ£€æŸ¥æ˜¯å¦æœ‰å¦ä¸€ä¸ªåŒè´¦å·çš„ç”¨æˆ·ç™»é™†ï¼Œæœ‰çš„è¯è¸¢ä¸‹åŽ»
 	 * 
 	 * @param networkMessage
 	 * @return
@@ -199,23 +199,23 @@ public class Server_User {
 	private boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) throws IOException {
 		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
 		if (user != null && !user.die) {
-			// ·¢ËÍÓÐËûÈËµÇÂ½ÏûÏ¢
+			// å‘é€æœ‰ä»–äººç™»é™†æ¶ˆæ¯
 			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
 			byte[] objectBytes = offLineMessage.build().toByteArray();
 
 			try {
 				Debug.log(new String[] { "Server_User", "checkAnotherOnline" },
-						"ÓÃ»§ " + user.userId + "ÔÚÆäËûÉè±¸µÇÂ½£¬" + ServerModel.getIoSessionKey(user.ioSession) + "±»ÌßÏÂÏß£¡");
+						"ç”¨æˆ· " + user.userId + "åœ¨å…¶ä»–è®¾å¤‡ç™»é™†ï¼Œ" + ServerModel.getIoSessionKey(user.ioSession) + "è¢«è¸¢ä¸‹çº¿ï¼");
 			} catch (NoIpException e) {
-				Debug.log(new String[] { "Server_User", "checkAnotherOnline" }, "ÕÒµ½µÄÓÃ»§ÒÑ¶ÏÏß£¬²»×ö´¦Àí£¡");
+				Debug.log(new String[] { "Server_User", "checkAnotherOnline" }, "æ‰¾åˆ°çš„ç”¨æˆ·å·²æ–­çº¿ï¼Œä¸åšå¤„ç†ï¼");
 				return false;
 			}
-			// Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢
+			// å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯
 			byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
 			ServerNetwork.instance.sendMessageToClient(user.ioSession, messageBytes);
 
-			// Ìí¼ÓµÈ´ý»Ø¸´
+			// æ·»åŠ ç­‰å¾…å›žå¤
 			ServerModel.instance.addClientResponseListener(networkMessage.ioSession, NetworkMessage.getMessageID(messageBytes),
 					messageBytes);
 
@@ -226,7 +226,7 @@ public class Server_User {
 
 	/**
 	 * 
-	 * ÁíÒ»¸öÈËµÇÂ½£¬±¾ÓÃ»§±»ÌßÏÂµÄÍ¨ÖªµÄ»Ø¸´
+	 * å¦ä¸€ä¸ªäººç™»é™†ï¼Œæœ¬ç”¨æˆ·è¢«è¸¢ä¸‹çš„é€šçŸ¥çš„å›žå¤
 	 * 
 	 * @param networkMessage
 	 * @author Feng
@@ -235,13 +235,13 @@ public class Server_User {
 	public void clientOfflineResponse(NetworkMessage networkMessage) throws NoIpException {
 		ClientUser user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 		Debug.log(new String[] { "Srever_User", "clientOfflineResponse" },
-				"¿Í»§¶Ë " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " ÒÑ½Óµ½±»ÌßÏÂµÄÏûÏ¢£¬½«ÆäÉèÎªËÀÍö£¡");
+				"å®¢æˆ·ç«¯ " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " å·²æŽ¥åˆ°è¢«è¸¢ä¸‹çš„æ¶ˆæ¯ï¼Œå°†å…¶è®¾ä¸ºæ­»äº¡ï¼");
 		user.userId = null;
 		user.die = true;
 	}
 
 	/**
-	 * ´¦Àí¸öÈËÉèÖÃÇëÇó
+	 * å¤„ç†ä¸ªäººè®¾ç½®è¯·æ±‚
 	 * 
 	 * @param networkMessage
 	 * @author wangfei
@@ -251,7 +251,7 @@ public class Server_User {
 	public void personalSettings(NetworkMessage networkMessage) throws NoIpException {
 		try {
 			Debug.log(new String[] { "Server_User", "personalSettings" },
-					" ¶Ô  ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  µÄ¸öÈËÉèÖÃÊÂ¼þ  µÄ´¦Àí");
+					" å¯¹  ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  çš„ä¸ªäººè®¾ç½®äº‹ä»¶  çš„å¤„ç†");
 
 			PersonalSettingsMsg.PersonalSettingsReq personalSettingsObject = PersonalSettingsMsg.PersonalSettingsReq
 					.parseFrom(networkMessage.getMessageObjectBytes());
@@ -270,42 +270,42 @@ public class Server_User {
 			criteria.add(Restrictions.eq("userId", clientUser.userId));
 			if (criteria.list().size() > 0) {
 				User user = (User) criteria.list().get(0);
-				// ÐÞ¸ÄêÇ³Æ
+				// ä¿®æ”¹æ˜µç§°
 				if (personalSettingsObject.getUserName() != null && personalSettingsObject.getUserName() != "") {
 					user.setUserName(personalSettingsObject.getUserName());
 				}
-				// ÐÞ¸ÄÃÜÂë
+				// ä¿®æ”¹å¯†ç 
 				if (personalSettingsObject.getUserPassword() != null && personalSettingsObject.getUserPassword() != "") {
 					user.setUserPassword(personalSettingsObject.getUserPassword());
 					changePassword = true;
 				}
 
-				// ÐÞ¸ÄÍ·Ïñ
+				// ä¿®æ”¹å¤´åƒ
 				if (personalSettingsObject.getHeadIndex() >= 1 && personalSettingsObject.getHeadIndex() <= 6) {
 					BufferedImage image = null;
 					user.setHeadIndex(personalSettingsObject.getHeadIndex());
 					try {
-						// ´ÓÄ¬ÈÏÍ·ÏñÎÄ¼þ¼Ð»ñÈ¡Í¼Æ¬
+						// ä»Žé»˜è®¤å¤´åƒæ–‡ä»¶å¤¹èŽ·å–å›¾ç‰‡
 						image = ImageIO.read(new File(ResourcePath.headDefaultPath + personalSettingsObject.getHeadIndex()
 								+ ".png"));
 						File file = new File(ResourcePath.headPath);
-						// ¼ì²é±£´æÍ·ÏñµÄÎÄ¼þ¼ÐÊÇ·ñ´æÔÚ
+						// æ£€æŸ¥ä¿å­˜å¤´åƒçš„æ–‡ä»¶å¤¹æ˜¯å¦å­˜åœ¨
 						if (!file.exists() && !file.isDirectory()) {
-							// Èç¹û²»´æÔÚ Ôò´´½¨ÎÄ¼þ¼Ð
+							// å¦‚æžœä¸å­˜åœ¨ åˆ™åˆ›å»ºæ–‡ä»¶å¤¹
 							file.mkdir();
 						}
-						// ±£´æ»ñÈ¡µÄÄ¬ÈÏÍ·Ïñµ½Í·ÏñÎÄ¼þ¼Ð
+						// ä¿å­˜èŽ·å–çš„é»˜è®¤å¤´åƒåˆ°å¤´åƒæ–‡ä»¶å¤¹
 						File saveFile = new File(ResourcePath.headPath + clientUser.userId + ".png");
 						ImageIO.write(image, "png", saveFile);
 						personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
 					} catch (IOException e) {
-						System.err.println("±£´æÍ·ÏñÍ¼Æ¬Ê§°Ü");
+						System.err.println("ä¿å­˜å¤´åƒå›¾ç‰‡å¤±è´¥");
 						personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 						e.printStackTrace();
 					}
 				}
 
-				// Êý¾Ý¿âÐÞ¸ÄêÇ³Æ»òÃÜÂë
+				// æ•°æ®åº“ä¿®æ”¹æ˜µç§°æˆ–å¯†ç 
 				try {
 					Transaction trans = session.beginTransaction();
 					session.update(user);
@@ -317,14 +317,14 @@ public class Server_User {
 				}
 
 			} else {
-				// ÓÃ»§²»´æÔÚ
+				// ç”¨æˆ·ä¸å­˜åœ¨
 				Debug.log(new String[] { "Server_User", "personalSettings" },
-						"ÓÃ»§" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  µÄÓÃ»§²»´æÔÚ!");
+						"ç”¨æˆ·" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  çš„ç”¨æˆ·ä¸å­˜åœ¨!");
 				personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			}
 			session.close();
 
-			// »Ø¸´¿Í»§¶Ë
+			// å›žå¤å®¢æˆ·ç«¯
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
@@ -344,11 +344,11 @@ public class Server_User {
 						messageBytes);
 			}
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : ¸öÈËÉèÖÃÊÂ¼þ£º ÓÃProtobuf·´ÐòÁÐ»¯ " + ServerModel.getIoSessionKey(networkMessage.ioSession)
-					+ " µÄ°üÊ±Òì³££¡");
+			System.err.println("Server_User : ä¸ªäººè®¾ç½®äº‹ä»¶ï¼š ç”¨Protobufååºåˆ—åŒ– " + ServerModel.getIoSessionKey(networkMessage.ioSession)
+					+ " çš„åŒ…æ—¶å¼‚å¸¸ï¼");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Server_User : ¸öÈËÉèÖÃÊÂ¼þ£º " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " ·µ»Ø°üÊ±Òì³££¡");
+			System.err.println("Server_User : ä¸ªäººè®¾ç½®äº‹ä»¶ï¼š " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " è¿”å›žåŒ…æ—¶å¼‚å¸¸ï¼");
 			e.printStackTrace();
 		} catch (NoIpException e) {
 			e.printStackTrace();
@@ -356,7 +356,7 @@ public class Server_User {
 	}
 
 	/**
-	 * ÓÃ»§ÍË³öµÇÂ¼
+	 * ç”¨æˆ·é€€å‡ºç™»å½•
 	 * 
 	 * @param networkMessage
 	 * @author wangfei
@@ -370,7 +370,7 @@ public class Server_User {
 				user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 				logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
 				Debug.log(new String[] { "Srever_User", "logout" },
-						"¿Í»§¶Ë " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " ÍË³öµÇÂ¼£¬½«ÆäÉèÎªËÀÍö£¡");
+						"å®¢æˆ·ç«¯ " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " é€€å‡ºç™»å½•ï¼Œå°†å…¶è®¾ä¸ºæ­»äº¡ï¼");
 				
 				user.userId = null;
 				user.die = true;

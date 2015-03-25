@@ -46,35 +46,35 @@ class HttpServerHandle extends IoHandlerAdapter {
 
 		if (message instanceof HttpRequest) {
 
-			// 请求，解码器将请求转换成HttpRequest对象
+			// 璇锋眰锛岃В鐮佸櫒灏嗚姹傝浆鎹㈡垚HttpRequest瀵硅薄
 			HttpRequest request = (HttpRequest) message;
 
-			// 获取请求参数
+			// 鑾峰彇璇锋眰鍙傛暟
 			String name = request.getParameter("name");
 			name = URLDecoder.decode(name, "UTF-8");
 
-			// 响应HTML
+			// 鍝嶅簲HTML
 			// byte[] responseBytes = getHelloResponse(name);
 			byte[] responseBytes = getImageResonse(name);
 
 			int contentLength = responseBytes.length;
 
-			// 构造HttpResponse对象，HttpResponse只包含响应的status line和header部分
+			// 鏋勯�燞ttpResponse瀵硅薄锛孒ttpResponse鍙寘鍚搷搴旂殑status line鍜宧eader閮ㄥ垎
 //			headers.put("Content-Type", "text/html; charset=utf-8");
 			HttpResponse response = getImageHttpResponse(contentLength);
 
-			// 响应BODY
+			// 鍝嶅簲BODY
 			IoBuffer responseIoBuffer = IoBuffer.allocate(contentLength);
 			responseIoBuffer.put(responseBytes);
 			responseIoBuffer.flip();
 
-			session.write(response); // 响应的status line和header部分
-			session.write(responseIoBuffer); // 响应body部分
+			session.write(response); // 鍝嶅簲鐨剆tatus line鍜宧eader閮ㄥ垎
+			session.write(responseIoBuffer); // 鍝嶅簲body閮ㄥ垎
 		}
 	}
 
 	public byte[] getHelloResponse(String name) throws UnsupportedEncodingException {
-		// 响应HTML
+		// 閿熸枻鎷峰簲HTML
 		String responseHtml = "<html><body>Hello, " + name + "</body></html>";
 		return responseHtml.getBytes("UTF-8");
 	}
@@ -95,7 +95,7 @@ class HttpServerHandle extends IoHandlerAdapter {
 		while (offset < buffer.length && (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
 			offset += numRead;
 		}
-		// 确保所有数据均被读取
+		// 纭敓鏂ゆ嫹閿熸枻鎷烽敓鏂ゆ嫹閿熸枻鎷疯彞閿熸枻鎷峰彇
 		if (offset != buffer.length) {
 			throw new IOException("Could not completely read file " + file.getName());
 		}

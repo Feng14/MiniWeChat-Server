@@ -7,11 +7,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-// Êı¾İ×ª»»Æ÷
+// æ•°æ®è½¬æ¢å™¨
 public class DataTypeTranslater {
 
 	/**
-	 *  int×ªbyte[]
+	 *  intè½¬byte[]
 	 * @param number
 	 * @return
 	 * @throws IOException
@@ -24,7 +24,7 @@ public class DataTypeTranslater {
 	}
 	
 	/**
-	 *  byte[4] ×ªint
+	 *  byte[4] è½¬int
 	 * @param bytes
 	 * @param offset
 	 * @return
@@ -40,7 +40,7 @@ public class DataTypeTranslater {
 	
 	private static ByteBuffer bbuf;
 	/**
-	 * float ×ª byte[4]
+	 * float è½¬ byte[4]
 	 * @param number
 	 * @return
 	 */

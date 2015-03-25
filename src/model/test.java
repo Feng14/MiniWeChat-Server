@@ -67,20 +67,20 @@ public class test {
 			session.close();
 	    }
 	    
-	   //HQL²éÑ¯
+	   //HQLæŸ¥è¯¢
 	    private static void query(){
 		   Session session = HibernateSessionFactory.getSession();
 	       Query query = session.createQuery("select u.user,u.userName,u.userPassword from User  u");
 	       List list = query.list();
 	       for(int i=0;i<list.size();i++){
-	    	   Object []o = (Object[])list.get(i);  //×ªÐÍÎªÊý×é
+	    	   Object []o = (Object[])list.get(i);  //è½¬åž‹ä¸ºæ•°ç»„
 	    	   System.out.println((String)o[0]+" "+(String)o[1]+" "+(String)o[2]);
 	       }
 	       
 	       session.close();
 	    }
 	   
-	   //criteria²éÑ¯
+	   //criteriaæŸ¥è¯¢
 	   private static void query2(){
 		   Session session = HibernateSessionFactory.getSession();
 		   Criteria criteria = session.createCriteria(User.class);

@@ -35,7 +35,7 @@ public class HibernateSessionFactory {
 	}
 	
 	/**
-	 * �ύSession
+	 * 提交Session
 	 * @param session
 	 * @author Feng
 	 */

@@ -1,7 +1,7 @@
 package exception;
 
 /**
- * 找不到IP（Socket）时抛出
+ * 鎵句笉鍒癐P锛圫ocket锛夋椂鎶涘嚭
  * @author Feng
  *
  */
