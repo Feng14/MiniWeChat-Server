@@ -19,13 +19,13 @@ import server.NetworkMessage;
 import client.SocketClientTest;
 
 /**
- * ¶Ô»ñÈ¡ÓÃ»§ĞÅÏ¢µÄ²âÊÔ
+ * å¯¹è·å–ç”¨æˆ·ä¿¡æ¯çš„æµ‹è¯•
  * @author wangfei
  *
  */
 public class TestGetUserInfo {
-	String host = "192.168.45.17"; // ÒªÁ¬½ÓµÄ·şÎñ¶ËIPµØÖ·
-	int port = 8080; // ÒªÁ¬½ÓµÄ·şÎñ¶Ë¶ÔÓ¦µÄ¼àÌı¶Ë¿Ú
+	String host = "192.168.45.17"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+	int port = 8080; // è¦è¿æ¥çš„æœåŠ¡ç«¯å¯¹åº”çš„ç›‘å¬ç«¯å£
 
 	public Socket socket;
 	public InputStream inputStream;
@@ -45,7 +45,7 @@ public class TestGetUserInfo {
 	}
 	
 	/**
-	 * ²â»ñÈ¡ÓÃ»§ĞÅÏ¢
+	 * æµ‹è·å–ç”¨æˆ·ä¿¡æ¯
 	 * @author wangfei
 	 * @throws IOException
 	 */

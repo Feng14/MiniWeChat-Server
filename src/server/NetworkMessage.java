@@ -10,13 +10,13 @@ import sun.awt.datatransfer.DataTransferer;
 import tools.DataTypeTranslater;
 
 /**
- * ´æ·ÅÍøÂçÍ¨ĞÅÃ¿Ò»¸öÇëÇóµÄ¶ÔÏó£¨½«·ÅÈë¶ÓÁĞ£©
+ * å­˜æ”¾ç½‘ç»œé€šä¿¡æ¯ä¸€ä¸ªè¯·æ±‚çš„å¯¹è±¡ï¼ˆå°†æ”¾å…¥é˜Ÿåˆ—ï¼‰
  * @author Feng
  */
 public class NetworkMessage {
-	// ĞÅÏ¢ÖĞµÄintËùÕ¼µÄ×Ö½ÚÊı
+	// ä¿¡æ¯ä¸­çš„intæ‰€å çš„å­—èŠ‚æ•°
 	public static final int HEAD_INT_SIZE = 4;
-	// ĞÅÏ¢ÖĞµÄfloatsËùÕ¼µÄ×Ö½ÚÊı
+	// ä¿¡æ¯ä¸­çš„floatsæ‰€å çš„å­—èŠ‚æ•°
 	public static final int HEAD_FLOAT_SIZE = 4;
 
 	public IoSession ioSession;
@@ -28,7 +28,7 @@ public class NetworkMessage {
 	}
 
 	/**
-	 *  »ñÈ¡ÇëÇóµÄ³¤¶È
+	 *  è·å–è¯·æ±‚çš„é•¿åº¦
 	 * @return int
 	 * @author Feng
 	 */
@@ -43,7 +43,7 @@ public class NetworkMessage {
 	}
 
 	/**
-	 *  »ñÈ¡ÇëÇóÀàĞÍ
+	 *  è·å–è¯·æ±‚ç±»å‹
 	 * @return ProtoHead.ENetworkMessage
 	 * @author Feng
 	 */
@@ -56,7 +56,7 @@ public class NetworkMessage {
 	}
 	
 	/**
-	 * »ñÈ¡MessageId
+	 * è·å–MessageId
 	 * @return byte[]
 	 * @author Feng
 	 */
@@ -74,7 +74,7 @@ public class NetworkMessage {
 	}
 	
 	/**
-	 *  »ñÈ¡ÏûÏ¢µÄ¶ÔÏóbyteÊı×é
+	 *  è·å–æ¶ˆæ¯çš„å¯¹è±¡byteæ•°ç»„
 	 * @return byte[]
 	 * @author Feng
 	 */
@@ -91,7 +91,7 @@ public class NetworkMessage {
 	}
 	
 	/**
-	 *  ´ò°ü³É¿ÉÒÔ·¢ËÍµÄbyte[]
+	 *  æ‰“åŒ…æˆå¯ä»¥å‘é€çš„byte[]
 	 * @param messageType
 	 * @param packetBytes
 	 * @return byte[]
@@ -106,28 +106,28 @@ public class NetworkMessage {
 		int size = getMessageObjectStartIndex() + packetBytes.length;
 		byte[] messageBytes = new byte[size];
 		
-		// 1.Ìí¼Ósize
+		// 1.æ·»åŠ size
 		byte[] sizeBytes = DataTypeTranslater.intToByte(size);
 		for (int i=0; i<sizeBytes.length; i++)
 			messageBytes[i] = sizeBytes[i];
 		
-		// 2.¼ÓÈëÀàĞÍ
+		// 2.åŠ å…¥ç±»å‹
 		byte[] typeBytes = DataTypeTranslater.intToByte(messageType);
 		for (int i=0; i<typeBytes.length; i++)
 			messageBytes[getTypeStartIndex() + i] = typeBytes[i];
 		
-		// 3.Ìí¼ÓMessageId
+		// 3.æ·»åŠ MessageId
 		for (int i=0; i<messageIdBytes.length; i++)
 			messageBytes[getMessageIdStartIndex() + i] = messageIdBytes[i];
 		
-		// 4.¼ÓÈëÊı¾İ°ü
+		// 4.åŠ å…¥æ•°æ®åŒ…
 		for (int i=0; i<packetBytes.length; i++)
 			messageBytes[getMessageObjectStartIndex() + i] = packetBytes[i];
 		
 		return messageBytes;
 	}
 	
-	// ¸÷¸öÊı¾İµÄ¿ªÊ¼Î»
+	// å„ä¸ªæ•°æ®çš„å¼€å§‹ä½
 	public static int getSizeStartIndex(){
 		return 0;
 	}

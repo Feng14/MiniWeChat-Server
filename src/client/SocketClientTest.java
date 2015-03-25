@@ -48,13 +48,13 @@ public class SocketClientTest {
 		// outputStream = socket.getOutputStream();
 
 
-		// ������
+		// 测心跳
 //		 testKeepAlive();
-		// ��ע��
+		// 测注册
 		// testRegister();
-		// ���½
+		// 测登陆
 //		 testLogin();
-		// ���Ը�������
+		// 测个人设置
 		// testPersonalSettings();
 
 //		 测心跳

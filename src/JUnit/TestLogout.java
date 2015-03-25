@@ -18,8 +18,8 @@ import server.NetworkMessage;
 import client.SocketClientTest;
 
 public class TestLogout {
-	String host = "192.168.45.34"; // ÒªÁ¬½ÓµÄ·şÎñ¶ËIPµØÖ·
-	int port = 8080; // ÒªÁ¬½ÓµÄ·şÎñ¶Ë¶ÔÓ¦µÄ¼àÌı¶Ë¿Ú
+	String host = "192.168.45.34"; // è¦è¿æ¥çš„æœåŠ¡ç«¯IPåœ°å€
+	int port = 8080; // è¦è¿æ¥çš„æœåŠ¡ç«¯å¯¹åº”çš„ç›‘å¬ç«¯å£
 
 	public Socket socket;
 	public InputStream inputStream;
@@ -39,7 +39,7 @@ public class TestLogout {
 	}
 	
 	/**
-	 * ²âÊÔÍË³öµÇÂ¼
+	 * æµ‹è¯•é€€å‡ºç™»å½•
 	 * @throws IOException
 	 */
 	@Test

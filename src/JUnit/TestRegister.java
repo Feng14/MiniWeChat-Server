@@ -20,14 +20,14 @@ import server.NetworkMessage;
 import client.SocketClientTest;
 
 /**
- * 对注册功能的测试（要先开服务器）
+ * 瀵规敞鍐屽姛鑳界殑娴嬭瘯锛堣鍏堝紑鏈嶅姟鍣級
  * @author Feng
  *
  */
 public class TestRegister {
-	// String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.45.34"; // 要连接的服务端IP地址
-	int port = 8080; // 要连接的服务端对应的监听端口
+	// String host = "192.168.45.11"; // 瑕佽繛鎺ョ殑鏈嶅姟绔疘P鍦板潃
+	String host = "192.168.45.34"; // 瑕佽繛鎺ョ殑鏈嶅姟绔疘P鍦板潃
+	int port = 8080; // 瑕佽繛鎺ョ殑鏈嶅姟绔搴旂殑鐩戝惉绔彛
 
 	public Socket socket;
 	public InputStream inputStream;
@@ -47,7 +47,7 @@ public class TestRegister {
 	}
 
 	/**
-	 * 测试注册功能
+	 * 娴嬭瘯娉ㄥ唽鍔熻兘
 	 * 
 	 * @author Feng
 	 * @throws IOException

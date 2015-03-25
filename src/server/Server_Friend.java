@@ -23,7 +23,7 @@ import protocol.Msg.GetUserInfoMsg;
 
 
 /**
- * Ö÷·şÎñÆ÷ÏÂµÄ×Ó·şÎñÆ÷ ¸ºÔğÍ¨Ñ¶Â¼Ïà¹ØÊÂ¼ş
+ * ä¸»æœåŠ¡å™¨ä¸‹çš„å­æœåŠ¡å™¨ è´Ÿè´£é€šè®¯å½•ç›¸å…³äº‹ä»¶
  * 
  * @author wangfei
  *
@@ -36,7 +36,7 @@ public class Server_Friend {
 	}
 	
 	/**
-	 * ËÑË÷ÓÃ»§
+	 * æœç´¢ç”¨æˆ·
 	 * @param networkMessage
 	 * @author wangfei
 	 * @time 2015-03-23
@@ -50,7 +50,7 @@ public class Server_Friend {
 			Criteria criteria = session.createCriteria(User.class);
 			criteria.add(Restrictions.eq("userId", getUserInfoObject.getTargetUserId()));
 			if(criteria.list().size()>0){
-				//²»Ö§³ÖÄ£ºıËÑË÷ ËùÒÔÈç¹ûÓĞËÑË÷½á¹û Ö»¿ÉÄÜÓĞÒ»¸ö½á¹û
+				//ä¸æ”¯æŒæ¨¡ç³Šæœç´¢ æ‰€ä»¥å¦‚æœæœ‰æœç´¢ç»“æœ åªå¯èƒ½æœ‰ä¸€ä¸ªç»“æœ
 				User user = (User)criteria.list().get(0);
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
 				
@@ -64,7 +64,7 @@ public class Server_Friend {
 			else{
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
 			}
-			//»Ø¸´¿Í»§¶Ë
+			//å›å¤å®¢æˆ·ç«¯
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_RSP.getNumber(),
@@ -80,7 +80,7 @@ public class Server_Friend {
 	}
 
 	/**
-	 * Ìí¼ÓºÃÓÑ
+	 * æ·»åŠ å¥½å‹
 	 * @param networkMessage
 	 * @author wangfei
 	 * @time 2015-03-24
@@ -94,7 +94,7 @@ public class Server_Friend {
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			try{
-				//Ë«·½»¥¼ÓºÃÓÑ
+				//åŒæ–¹äº’åŠ å¥½å‹
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
 				Criteria criteria2 = session.createCriteria(User.class);
@@ -117,7 +117,7 @@ public class Server_Friend {
 			}
 			
 
-			//»Ø¸´¿Í»§¶Ë
+			//å›å¤å®¢æˆ·ç«¯
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADDFRIEND_RSP.getNumber(),
@@ -133,7 +133,7 @@ public class Server_Friend {
 	}
 	
 	/**
-	 * É¾³ıºÃÓÑ
+	 * åˆ é™¤å¥½å‹
 	 * @param networkMessage
 	 * @author wangfei
 	 * @time 2015-03-24
@@ -147,7 +147,7 @@ public class Server_Friend {
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			try{
-				//Ë«·½»¥¼ÓºÃÓÑ
+				//åŒæ–¹äº’åŠ å¥½å‹
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
 				Criteria criteria2 = session.createCriteria(User.class);
@@ -179,7 +179,7 @@ public class Server_Friend {
 			}
 			
 
-			//»Ø¸´¿Í»§¶Ë
+			//å›å¤å®¢æˆ·ç«¯
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_RSP.getNumber(),

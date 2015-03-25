@@ -20,7 +20,7 @@ import tools.DataTypeTranslater;
 import tools.Debug;
 
 /**
- * ·şÎñÆ÷µÄÍøÂç²ã£¬¸ºÔğÍøÂç½»»¥
+ * æœåŠ¡å™¨çš„ç½‘ç»œå±‚ï¼Œè´Ÿè´£ç½‘ç»œäº¤äº’
  * 
  * @author Feng
  * 
@@ -33,21 +33,21 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  ³õÊ¼»¯
+	 *  åˆå§‹åŒ–
 	 * @throws IOException
 	 * @author Feng
 	 */
 	public void init() throws IOException {
-		// ÏÔÊ¾IPµØÖ·
+		// æ˜¾ç¤ºIPåœ°å€
 		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
-			Debug.log("IPµØÖ·", addr.getHostAddress().toString());
-			Debug.log("±¾»úÃû³Æ", addr.getHostName().toString());
+			Debug.log("IPåœ°å€", addr.getHostAddress().toString());
+			Debug.log("æœ¬æœºåç§°", addr.getHostName().toString());
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		Debug.log("¶Ë¿ÚºÅ£º8080");
+		Debug.log("ç«¯å£å·ï¼š8080");
 
 		IoAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);
@@ -57,24 +57,24 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private int count = 0;
 
 	/**
-	 *  ½ÓÊÕµ½ĞÂµÄÊı¾İ
+	 *  æ¥æ”¶åˆ°æ–°çš„æ•°æ®
 	 * @author Feng
 	 */
 	@Override
 	public void messageReceived(IoSession session, Object message) throws Exception {
-		// ½ÓÊÕ¿Í»§¶ËµÄÊı¾İ
+		// æ¥æ”¶å®¢æˆ·ç«¯çš„æ•°æ®
 		IoBuffer ioBuffer = (IoBuffer) message;
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
 		Debug.log("byteArray.length = " + byteArray.length);
-		// ´óĞ¡
+		// å¤§å°
 		int size;
-		// ·Ö¸îÊı¾İ½øĞĞµ¥¶ÀÇëÇóµÄ´¦Àí
+		// åˆ†å‰²æ•°æ®è¿›è¡Œå•ç‹¬è¯·æ±‚çš„å¤„ç†
 		byte[] oneReqBytes;
 		int reqOffset = 0;
 		do {
-			Debug.log("\nServerNetwork: ¿ªÊ¼·Ö¸îÒ»¸öĞÂµÄÇëÇó!");
+			Debug.log("\nServerNetwork: å¼€å§‹åˆ†å‰²ä¸€ä¸ªæ–°çš„è¯·æ±‚!");
 			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
 			System.out.println("size:" + size);
 			if (size == 0)
@@ -93,7 +93,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 	
 	/**
-	 *  ÓÃÓÚ´¦ÀíÒ»¸öÇëÇó
+	 *  ç”¨äºå¤„ç†ä¸€ä¸ªè¯·æ±‚
 	 * @param session
 	 * @param size
 	 * @param byteArray
@@ -102,15 +102,15 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private void dealRequest(IoSession ioSession, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-			Debug.log("ServerNetwork", "½«ClientÇëÇó·ÅÈë´ı´¦Àí¶ÓÁĞ");
+			Debug.log("ServerNetwork", "å°†Clientè¯·æ±‚æ”¾å…¥å¾…å¤„ç†é˜Ÿåˆ—");
 		} catch (InterruptedException e) {
-			System.err.println("ServerNetwork : ÍùÇëÇó¶ÓÁĞÖĞÌí¼ÓÇëÇóÊÂ¼şÒì³£!");
+			System.err.println("ServerNetwork : å¾€è¯·æ±‚é˜Ÿåˆ—ä¸­æ·»åŠ è¯·æ±‚äº‹ä»¶å¼‚å¸¸!");
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 *  ÓÉµ×²ã¾ö¶¨ÊÇ·ñ´´½¨Ò»¸ösession
+	 *  ç”±åº•å±‚å†³å®šæ˜¯å¦åˆ›å»ºä¸€ä¸ªsession
 	 * @author Feng
 	 */
 	@Override
@@ -119,18 +119,18 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  ´´½¨ÁËsession ºó»á»Øµ÷sessionOpened
+	 *  åˆ›å»ºäº†session åä¼šå›è°ƒsessionOpened
 	 * @author Feng
 	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
-		Debug.log("\nµÚ " + count + " ¸ö client µÇÂ½£¡address£º : " + session.getRemoteAddress());
-		Debug.log("ServerNetwork", "¼ì²âµ½Ò»¸öClientµÄÁ¬½Ó£¬Ìí¼Ó½ø±íÖĞ");
+		Debug.log("\nç¬¬ " + count + " ä¸ª client ç™»é™†ï¼addressï¼š : " + session.getRemoteAddress());
+		Debug.log("ServerNetwork", "æ£€æµ‹åˆ°ä¸€ä¸ªClientçš„è¿æ¥ï¼Œæ·»åŠ è¿›è¡¨ä¸­");
 		addClientUserToTable(session);
 	}
 
 	/**
-	 *  ·¢ËÍ³É¹¦ºó»á»Øµ÷µÄ·½·¨
+	 *  å‘é€æˆåŠŸåä¼šå›è°ƒçš„æ–¹æ³•
 	 * @author Feng
 	 */
 	public void messageSent(IoSession session, Object message) {
@@ -144,7 +144,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  session ¿ÕÏĞµÄÊ±ºòµ÷ÓÃ
+	 *  session ç©ºé—²çš„æ—¶å€™è°ƒç”¨
 	 * @author Feng
 	 */
 	public void sessionIdle(IoSession session, IdleStatus status) {
@@ -152,7 +152,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  Òì³£²¶×½
+	 *  å¼‚å¸¸æ•æ‰
 	 * @author Feng
 	 */
 	@Override
@@ -160,22 +160,22 @@ public class ServerNetwork extends IoHandlerAdapter {
 		Debug.log("throws exception");
 		Debug.log("session.toString()", session.toString());
 		Debug.log("cause.toString()", cause.toString());
-		Debug.log("±¨´íÍê±Ï£¡£¡");
+		Debug.log("æŠ¥é”™å®Œæ¯•ï¼ï¼");
 	}
 	
 	/**
-	 * ½«ĞÂµÄÓÃ»§Ìí¼Óµ½¡°ÒÑÁ¬½ÓÓÃ»§ĞÅÏ¢±í¡±ÖĞ
+	 * å°†æ–°çš„ç”¨æˆ·æ·»åŠ åˆ°â€œå·²è¿æ¥ç”¨æˆ·ä¿¡æ¯è¡¨â€ä¸­
 	 * @param ioSession
 	 * @author Feng
 	 */
 	public void addClientUserToTable(IoSession ioSession){
-		// ÒÑÓĞ¾Í²»¼Ó½øÀ´ÁË
+		// å·²æœ‰å°±ä¸åŠ è¿›æ¥äº†
 		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null){
-			System.err.println("Ìí¼ÓÊ±ÓÃ»§ÒÑ´æÔÚ");
+			System.err.println("æ·»åŠ æ—¶ç”¨æˆ·å·²å­˜åœ¨");
 			return;
 		}
 		
-		Debug.log("ServerNetwork", "·¢ÏÖĞÂµÄÓÃ»§" + ioSession.getRemoteAddress() + "Á¬½Ó£¬¼ÓÈëÓÃ»§±í");
+		Debug.log("ServerNetwork", "å‘ç°æ–°çš„ç”¨æˆ·" + ioSession.getRemoteAddress() + "è¿æ¥ï¼ŒåŠ å…¥ç”¨æˆ·è¡¨");
 		try {
 			ServerModel.instance.addClientUserToTable(ioSession, new ClientUser(ioSession));
 		} catch (NoIpException e) {
@@ -184,7 +184,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 	
 	/**
-	 * ¸ø¿Í»§¶Ë·¢°ü
+	 * ç»™å®¢æˆ·ç«¯å‘åŒ…
 	 * @param ioSession
 	 * @param byteArray
 	 * @author Feng

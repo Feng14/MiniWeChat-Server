@@ -16,17 +16,17 @@ import protocol.ProtoHead;
 import tools.DataTypeTranslater;
 
 /**
- * ·şÎñÆ÷Æô¶¯Æ÷
+ * æœåŠ¡å™¨å¯åŠ¨å™¨
  * @author Feng
  *
  */
 public class Server {
 	
 	public static void main(String[] args) throws IOException {
-		// Æô¶¯ÍøÂç²ã
+		// å¯åŠ¨ç½‘ç»œå±‚
 		ServerNetwork.instance.init();
 		
-		// Æô¶¯Âß¼­²ã
+		// å¯åŠ¨é€»è¾‘å±‚
 		ServerModel.instance.init();
 	}
 

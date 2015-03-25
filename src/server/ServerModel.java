@@ -30,25 +30,25 @@ import tools.DataTypeTranslater;
 import tools.Debug;
 
 /**
- * ÍøÂçÂß¼­²ã
+ * ç½‘ç»œé€»è¾‘å±‚
  * 
  * @author Feng
  * 
  */
 public class ServerModel {
-	// ĞÄÌø°ü¼ä¸ô(5Ãë)
+	// å¿ƒè·³åŒ…é—´éš”(5ç§’)
 	public static final int KEEP_ALIVE_PACKET_TIME = 5000;
-	// ÂÖÑ¯"µÈ´ıclient»Ø¸´"ÁĞ±í£¨waitClientRepTable£©µÄ¼ä¸ô
+	// è½®è¯¢"ç­‰å¾…clientå›å¤"åˆ—è¡¨ï¼ˆwaitClientRepTableï¼‰çš„é—´éš”
 	public static final int CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME = 1000;
-	// ÂÖÑ¯"µÈ´ıclient»Ø¸´"ÁĞ±í£¨waitClientRepTable£©µÄ³¬Ê±Ê±¼ä
+	// è½®è¯¢"ç­‰å¾…clientå›å¤"åˆ—è¡¨ï¼ˆwaitClientRepTableï¼‰çš„è¶…æ—¶æ—¶é—´
 	public static final long WAIT_CLIENT_RESPONSE_TIMEOUT = 3000;
 
 	public static ServerModel instance = new ServerModel();
-	// ClientÇëÇó¶ÓÁĞ
+	// Clientè¯·æ±‚é˜Ÿåˆ—
 	private LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
-	// ÒÑÁ¬½ÓÓÃ»§ĞÅÏ¢±í(Key ÎªIoSession.getRemoteAddress().toString)
+	// å·²è¿æ¥ç”¨æˆ·ä¿¡æ¯è¡¨(Key ä¸ºIoSession.getRemoteAddress().toString)
 	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
-	// ¼àÌı¿Í»§¶Ë»Ø¸´µÄ±í
+	// ç›‘å¬å®¢æˆ·ç«¯å›å¤çš„è¡¨
 	private Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
 
 	private ServerModel() {
@@ -66,7 +66,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * ´´½¨Ò»¸öËæ»úµÄMessageId
+	 * åˆ›å»ºä¸€ä¸ªéšæœºçš„MessageId
 	 * 
 	 * @author Feng
 	 * @return
@@ -76,19 +76,19 @@ public class ServerModel {
 	}
 
 	/**
-	 * ³õÊ¼»¯
+	 * åˆå§‹åŒ–
 	 * 
 	 * @author Feng
 	 */
 	public void init() {
-		// ¿ªÊ¼ĞÂÏß³Ì
+		// å¼€å§‹æ–°çº¿ç¨‹
 		new Thread(new DealClientRequest()).start();
 		new Thread(new KeepAlivePacketSenser()).start();
 		new Thread(new CheckWaitClientResponseThread()).start();
 	}
 
 	/**
-	 * Íù¿Í»§¶ËÇëÇóÁĞ±íÖĞ¼ÓÈëÒ»ÌõÇëÇó
+	 * å¾€å®¢æˆ·ç«¯è¯·æ±‚åˆ—è¡¨ä¸­åŠ å…¥ä¸€æ¡è¯·æ±‚
 	 * 
 	 * @param ioSession
 	 * @param arrayBytes
@@ -100,7 +100,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * Íù¡°ÒÑÁ¬½ÓÓÃ»§ĞÅÏ¢±í¡±ÖĞÌí¼ÓÒ»¸öĞÂÓÃ»§
+	 * å¾€â€œå·²è¿æ¥ç”¨æˆ·ä¿¡æ¯è¡¨â€ä¸­æ·»åŠ ä¸€ä¸ªæ–°ç”¨æˆ·
 	 * 
 	 * @param key
 	 * @param clientUser
@@ -115,7 +115,7 @@ public class ServerModel {
 	}
 	
 	/**
-	 * ´ÓiosessionÉú³ÉKey
+	 * ä»iosessionç”ŸæˆKey
 	 * @param ioSession
 	 * @return
 	 * @throws NoIpException 
@@ -128,7 +128,7 @@ public class ServerModel {
 	}
 	
 	/**
-	 * ´Ó¡°ÒÑÁ¬½ÓÓÃ»§ĞÅÏ¢±í¡±ÖĞ»ñÈ¡ÓÃ»§
+	 * ä»â€œå·²è¿æ¥ç”¨æˆ·ä¿¡æ¯è¡¨â€ä¸­è·å–ç”¨æˆ·
 	 * 
 	 * @param key
 	 * @return ClientUser
@@ -147,7 +147,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * ¸ù¾İuserId´Ó¡°ÒÑÁ¬½ÓÓÃ»§ĞÅÏ¢±í¡±ÖĞ»ñÈ¡ÓÃ»§
+	 * æ ¹æ®userIdä»â€œå·²è¿æ¥ç”¨æˆ·ä¿¡æ¯è¡¨â€ä¸­è·å–ç”¨æˆ·
 	 * @param userId
 	 * @return
 	 */
@@ -177,7 +177,7 @@ public class ServerModel {
 	}
 	
 	/**
-	 * ´ÓÔÚÏßÓÃ»§ĞÅÏ¢±íÉ¾³ıÒ»¸öÓÃ»§
+	 * ä»åœ¨çº¿ç”¨æˆ·ä¿¡æ¯è¡¨åˆ é™¤ä¸€ä¸ªç”¨æˆ·
 	 * @param key
 	 */
 	public void removeClientUserFromTable(String key) {
@@ -187,7 +187,7 @@ public class ServerModel {
 	}
 	
 	/**
-	 * Ìí¼ÓÒ»¸öµÈ´ı¿Í»§¶Ë»Ø¸´µÄ¼àÌı£¨·şÎñÆ÷Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢ºó£¬ÒªÇó¿Í»§¶Ë»Ø¸´£©
+	 * æ·»åŠ ä¸€ä¸ªç­‰å¾…å®¢æˆ·ç«¯å›å¤çš„ç›‘å¬ï¼ˆæœåŠ¡å™¨å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯åï¼Œè¦æ±‚å®¢æˆ·ç«¯å›å¤ï¼‰
 	 * 
 	 * @param ioSession
 	 * @param key
@@ -197,12 +197,12 @@ public class ServerModel {
 	public void addClientResponseListener(IoSession ioSession, byte[] key, byte[] messageHasSent) {
 		WaitClientResponse waitClientResponse = new WaitClientResponse(ioSession, messageHasSent);
 		waitClientResponse.time = new Date().getTime();
-		// ¼ÓÈëµ½¡°µÈ´ı»Ø¸´±í¡±ÖĞ£¬ÓÉCheckWaitClientResponseThread Ïß³Ì½øĞĞÂÖÑ¯
+		// åŠ å…¥åˆ°â€œç­‰å¾…å›å¤è¡¨â€ä¸­ï¼Œç”±CheckWaitClientResponseThread çº¿ç¨‹è¿›è¡Œè½®è¯¢
 		waitClientRepTable.put(key, waitClientResponse);
 	}
 
 	/**
-	 * É¾³ıÒ»¸öµÈ´ı¿Í»§¶Ë»Ø¸´µÄ¼àÌı£¨·şÎñÆ÷Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢ºó£¬ÒªÇó¿Í»§¶Ë»Ø¸´£©
+	 * åˆ é™¤ä¸€ä¸ªç­‰å¾…å®¢æˆ·ç«¯å›å¤çš„ç›‘å¬ï¼ˆæœåŠ¡å™¨å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯åï¼Œè¦æ±‚å®¢æˆ·ç«¯å›å¤ï¼‰
 	 * 
 	 * @param ioSession
 	 * @param key
@@ -216,7 +216,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * ²éÕÒÒ»¸öµÈ´ı¿Í»§¶Ë»Ø¸´µÄ¼àÌı£¨·şÎñÆ÷Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢ºó£¬ÒªÇó¿Í»§¶Ë»Ø¸´£©
+	 * æŸ¥æ‰¾ä¸€ä¸ªç­‰å¾…å®¢æˆ·ç«¯å›å¤çš„ç›‘å¬ï¼ˆæœåŠ¡å™¨å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯åï¼Œè¦æ±‚å®¢æˆ·ç«¯å›å¤ï¼‰
 	 * 
 	 * @param ioSession
 	 * @param key
@@ -230,7 +230,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * ÓÃÓÚ´¦ÀíÓÃ»§ÇëÇóµÄÏß³Ì
+	 * ç”¨äºå¤„ç†ç”¨æˆ·è¯·æ±‚çš„çº¿ç¨‹
 	 * 
 	 * @author Feng
 	 * 
@@ -239,7 +239,7 @@ public class ServerModel {
 		@Override
 		public void run() {
 			NetworkMessage networkMessage = null;
-			// Ñ­»·»ñÈ¡ĞÂµÄÇëÇó£¬×èÈûÊ½
+			// å¾ªç¯è·å–æ–°çš„è¯·æ±‚ï¼Œé˜»å¡å¼
 			synchronized (waitClientRepTable) {
 				while (true) {
 					try {
@@ -247,7 +247,7 @@ public class ServerModel {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					Debug.log("ServerModel", "ServerModel´ÓÇëÇó¶ÓÁĞÖĞ»ñÈ¡µ½Ò»ÌõClient·¢À´µÄÇëÇó£¬¿ªÊ¼½»¸øÇëÇó·ÖÅäÆ÷ClientRequest_Dispatcher´¦Àí£¡");
+					Debug.log("ServerModel", "ServerModelä»è¯·æ±‚é˜Ÿåˆ—ä¸­è·å–åˆ°ä¸€æ¡Clientå‘æ¥çš„è¯·æ±‚ï¼Œå¼€å§‹äº¤ç»™è¯·æ±‚åˆ†é…å™¨ClientRequest_Dispatcherå¤„ç†ï¼");
 					if (networkMessage == null)
 						continue;
 					ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
@@ -258,7 +258,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * ÓÃÓÚ¶¨Ê±·¢ËÍĞÄÌø°ü
+	 * ç”¨äºå®šæ—¶å‘é€å¿ƒè·³åŒ…
 	 * 
 	 * @author Feng
 	 * 
@@ -268,7 +268,7 @@ public class ServerModel {
 		public void run() {
 			KeepAliveMsg.KeepAliveSyncPacket.Builder packet = KeepAliveMsg.KeepAliveSyncPacket.newBuilder();
 			byte[] packetBytes = packet.build().toByteArray();
-			// ´´½¨ĞÄÌø°ü
+			// åˆ›å»ºå¿ƒè·³åŒ…
 			byte[] messageBytes;
 
 			IoBuffer responseIoBuffer;
@@ -283,10 +283,10 @@ public class ServerModel {
 						Iterator iterator = clientUserTable.keySet().iterator();
 						String key;
 						
-						Debug.log("ServerModel", "¿ªÊ¼ĞÂµÄÒ»ÂÖĞÄÌø°ü·¢ËÍ£¡¹²ÓĞ " + clientUserTable.size() + " ÃûÓÃ»§!");
+						Debug.log("ServerModel", "å¼€å§‹æ–°çš„ä¸€è½®å¿ƒè·³åŒ…å‘é€ï¼å…±æœ‰ " + clientUserTable.size() + " åç”¨æˆ·!");
 						while (iterator.hasNext()) {
 //					for (String key : keyIterators) {
-							Debug.log("ServerModel", "½øÈë·¢ĞÄÌø°üÑ­»·!");
+							Debug.log("ServerModel", "è¿›å…¥å‘å¿ƒè·³åŒ…å¾ªç¯!");
 							
 							key = iterator.next().toString();
 							
@@ -294,9 +294,9 @@ public class ServerModel {
 								continue;
 							user = clientUserTable.get(key);
 							
-							// ÈôÒÑËÀ£¬É¾³ı    ;   ½«ÉÏ´ÎÃ»ÓĞ»Ø¸´µÄ¸Éµô£¬´ÓÓÃ»§±íÖĞÉ¾µô
+							// è‹¥å·²æ­»ï¼Œåˆ é™¤    ;   å°†ä¸Šæ¬¡æ²¡æœ‰å›å¤çš„å¹²æ‰ï¼Œä»ç”¨æˆ·è¡¨ä¸­åˆ æ‰
 							if (user.die || user.onLine == false) {
-								Debug.log("ServerModel", "Client ÓÃ»§¡°" + user.ioSession.getRemoteAddress() + "¡±ÒÑµôÏß£¬¼´½«É¾³ı£¡");
+								Debug.log("ServerModel", "Client ç”¨æˆ·â€œ" + user.ioSession.getRemoteAddress() + "â€å·²æ‰çº¿ï¼Œå³å°†åˆ é™¤ï¼");
 								// user.ioSession.close(true);
 								iterator.remove();
 								continue;
@@ -307,17 +307,17 @@ public class ServerModel {
 							responseIoBuffer.put(messageBytes);
 							responseIoBuffer.flip();
 							
-							// ·¢ËÍĞÄÌø°üÖ®Ç°ÏÈ½«onlineÉèÎªFalse±íÊ¾²»ÔÚÏß£¬ÈôÊÇClient»Ø¸´£¬ÔòÖØĞÂÉèÎªTrue
-							// £¬±íÊ¾ÔÚÏß
-							Debug.log("ServerModel", "ÏòClient " + user.ioSession.getRemoteAddress() + " ·¢ËÍĞÄÌø°ü");
+							// å‘é€å¿ƒè·³åŒ…ä¹‹å‰å…ˆå°†onlineè®¾ä¸ºFalseè¡¨ç¤ºä¸åœ¨çº¿ï¼Œè‹¥æ˜¯Clientå›å¤ï¼Œåˆ™é‡æ–°è®¾ä¸ºTrue
+							// ï¼Œè¡¨ç¤ºåœ¨çº¿
+							Debug.log("ServerModel", "å‘Client " + user.ioSession.getRemoteAddress() + " å‘é€å¿ƒè·³åŒ…");
 							user.onLine = false;
 							user.ioSession.write(responseIoBuffer);
 						}
 					} catch (IOException e) {
-						System.err.println("·¢ĞĞĞÄÌø°üÏß³ÌÒì³£!");
+						System.err.println("å‘è¡Œå¿ƒè·³åŒ…çº¿ç¨‹å¼‚å¸¸!");
 						e.printStackTrace();
 					} catch (InterruptedException e) {
-						System.err.println("·¢ĞĞĞÄÌø°üÏß³ÌÒì³£! -----Ë¯ÃßÄ£¿é");
+						System.err.println("å‘è¡Œå¿ƒè·³åŒ…çº¿ç¨‹å¼‚å¸¸! -----ç¡çœ æ¨¡å—");
 						e.printStackTrace();
 					}
 				}
@@ -326,7 +326,7 @@ public class ServerModel {
 	}
 
 	/**
-	 * ÂÖÑ¯"µÈ´ıclient»Ø¸´"ÁĞ±í£¨waitClientRepTable£©£¬¼ì²éÊÇ·ñÓĞ³¬Ê±µÄÌõÄ¿ ³¬Ê±µÄ½øĞĞÖØ·¢
+	 * è½®è¯¢"ç­‰å¾…clientå›å¤"åˆ—è¡¨ï¼ˆwaitClientRepTableï¼‰ï¼Œæ£€æŸ¥æ˜¯å¦æœ‰è¶…æ—¶çš„æ¡ç›® è¶…æ—¶çš„è¿›è¡Œé‡å‘
 	 * 
 	 * @author Feng
 	 * 
@@ -340,13 +340,13 @@ public class ServerModel {
 			synchronized (waitClientRepTable) {
 				while (true) {
 					currentTime = new java.util.Date().getTime();
-					// Ã¿¸ôCHECK_WAIT_CLIENT_RESPONSE_DELTA_TIMEÊ±¼äÂÖÑ¯Ò»´Î
+					// æ¯éš”CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIMEæ—¶é—´è½®è¯¢ä¸€æ¬¡
 					try {
 						Thread.sleep(CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					// ¶ÔÃ¿¸öÓÃ»§½øĞĞ¼ì²é
+					// å¯¹æ¯ä¸ªç”¨æˆ·è¿›è¡Œæ£€æŸ¥
 					Iterator iterator = waitClientRepTable.keySet().iterator();
 					while (iterator.hasNext()) {
 						key = iterator.next().toString();
@@ -355,17 +355,17 @@ public class ServerModel {
 							continue;
 						
 						if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
-							// ³¬Ê±£¬ÖØ·¢
-							Debug.log("ServerModel", "µÈ´ı¿Í»§¶Ë" + waitObj.ioSession.getRemoteAddress() + " »Ø¸´³¬Ê±£¡");
-							System.out.println("ServerModel : µÈ´ı¿Í»§¶Ë" + waitObj.ioSession.getRemoteAddress() + " »Ø¸´³¬Ê±£¡");
+							// è¶…æ—¶ï¼Œé‡å‘
+							Debug.log("ServerModel", "ç­‰å¾…å®¢æˆ·ç«¯" + waitObj.ioSession.getRemoteAddress() + " å›å¤è¶…æ—¶ï¼");
+							System.out.println("ServerModel : ç­‰å¾…å®¢æˆ·ç«¯" + waitObj.ioSession.getRemoteAddress() + " å›å¤è¶…æ—¶ï¼");
 							if (!clientUserTable.get(waitObj.ioSession.getRemoteAddress()).onLine) {
-								// ²»ÔÚÏß,É¾ÁË
-								Debug.log("ServerModel", "¿Í»§¶Ë" + waitObj.ioSession.getRemoteAddress() + " ÒÑ¶ÏÏß£¬½«´Ó±íÖĞÒÆ³ı£¡");
+								// ä¸åœ¨çº¿,åˆ äº†
+								Debug.log("ServerModel", "å®¢æˆ·ç«¯" + waitObj.ioSession.getRemoteAddress() + " å·²æ–­çº¿ï¼Œå°†ä»è¡¨ä¸­ç§»é™¤ï¼");
 								waitClientRepTable.remove(key);
 								continue;
 							}
-							// ÖØ·¢£¬ÖØÖÃµÈ´ıÊ±¼ä
-							Debug.log("ServerModel", "¿Í»§¶Ë" + waitObj.ioSession.getRemoteAddress() + " ÔÚÏß£¬ÏûÏ¢½«ÖØ·¢£¡");
+							// é‡å‘ï¼Œé‡ç½®ç­‰å¾…æ—¶é—´
+							Debug.log("ServerModel", "å®¢æˆ·ç«¯" + waitObj.ioSession.getRemoteAddress() + " åœ¨çº¿ï¼Œæ¶ˆæ¯å°†é‡å‘ï¼");
 							ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
 							waitObj.time = currentTime;
 						}

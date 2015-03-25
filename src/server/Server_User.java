@@ -329,8 +329,8 @@ public class Server_User {
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
 							networkMessage.getMessageID(), personalSettingsBuilder.build().toByteArray()));
-			if(changePassword){
-				// ��ͻ��˷�����Ϣ
+			if (changePassword) {
+				// 向客户端发送消息
 				OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 				offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.CHANGE_PASSWORD);
 				byte[] objectBytes = offLineMessage.build().toByteArray();
@@ -339,9 +339,9 @@ public class Server_User {
 				clientUser.die = true;
 				ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
 
-				// ���ӵȴ��ظ�
-				ServerModel.instance.addClientResponseListener(networkMessage.ioSession, NetworkMessage.getMessageID(messageBytes),
-						messageBytes);
+				// 添加等待回复
+				ServerModel.instance.addClientResponseListener(networkMessage.ioSession,
+						NetworkMessage.getMessageID(messageBytes), messageBytes);
 			}
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 个人设置事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession)
@@ -371,7 +371,7 @@ public class Server_User {
 				logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
 				Debug.log(new String[] { "Srever_User", "logout" },
 						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
-				
+
 				user.userId = null;
 				user.die = true;
 				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);

@@ -8,7 +8,7 @@ import protocol.ProtoHead;
 import tools.Debug;
 
 /**
- * ÓÃswitch½øĞĞÇëÇó·Ö·¢
+ * ç”¨switchè¿›è¡Œè¯·æ±‚åˆ†å‘
  * 
  * @author Feng
  * 
@@ -21,7 +21,7 @@ public class ClientRequest_Dispatcher {
 	}
 
 	/**
-	 * ¸ù¾İÇëÇóµÄÀàĞÍ·ÖÅä¸ø²»Í¬µÄ´¦ÀíÆ÷
+	 * æ ¹æ®è¯·æ±‚çš„ç±»å‹åˆ†é…ç»™ä¸åŒçš„å¤„ç†å™¨
 	 * 
 	 * @param networkMessage
 	 * @author Feng
@@ -29,11 +29,11 @@ public class ClientRequest_Dispatcher {
 	public void dispatcher(NetworkMessage networkMessage) {
 		// System.out.println("IP" +
 		// networkMessage.ioSession.getRemoteAddress());
-		Debug.log("ClientRequest_Dispatcher", "ClientµÄÇëÇóÀàĞÍÊÇ " + networkMessage.getMessageType().toString());
+		Debug.log("ClientRequest_Dispatcher", "Clientçš„è¯·æ±‚ç±»å‹æ˜¯ " + networkMessage.getMessageType().toString());
 
 		try {
 			switch (networkMessage.getMessageType().getNumber()) {
-			// Client»Ø¸´ĞÄÌø°ü
+			// Clientå›å¤å¿ƒè·³åŒ…
 			case ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE:
 				Server_User.instance.keepAlive(networkMessage);
 				break;
@@ -55,7 +55,7 @@ public class ClientRequest_Dispatcher {
 			case ProtoHead.ENetworkMessage.DELETEFRIEND_REQ_VALUE:
 				Server_Friend.instance.deleteFriend(networkMessage);
 				break;
-			// ÁíÒ»¸öÈËµÇÂ½£¬±¾ÓÃ»§±»ÌßÏÂµÄÍ¨ÖªµÄ»Ø¸´
+			// å¦ä¸€ä¸ªäººç™»é™†ï¼Œæœ¬ç”¨æˆ·è¢«è¸¢ä¸‹çš„é€šçŸ¥çš„å›å¤
 			case ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE:
 				Server_User.instance.clientOfflineResponse(networkMessage);
 				break;

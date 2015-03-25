@@ -3,7 +3,7 @@ package server;
 import org.apache.mina.core.session.IoSession;
 
 /**
- * ·şÎñÆ÷¶Ë¶Ô¿Í»§¶ËÓÃ»§µÄ×´Ì¬¼ÇÂ¼
+ * æœåŠ¡å™¨ç«¯å¯¹å®¢æˆ·ç«¯ç”¨æˆ·çš„çŠ¶æ€è®°å½•
  * @author Feng
  *
  */

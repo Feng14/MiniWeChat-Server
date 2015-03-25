@@ -2,12 +2,12 @@ package server;
 
 public class ResourcePath {
 	/**
-	 * 定义文件路径
+	 * 瀹氫箟鏂囦欢璺緞
 	 */
 	
-	//头像路径
+	//澶村儚璺緞
 	public static String headPath = "d:\\miniwechatRes\\head\\";
-	//默认头像路径
+	//榛樿澶村儚璺緞
 	public static String headDefaultPath = "d:\\miniwechatRes\\headDefault\\";
 
 }

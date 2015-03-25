@@ -18,13 +18,13 @@ import server.NetworkMessage;
 import client.SocketClientTest;
 
 /**
- * 对个人设置功能的测试
+ * 瀵逛釜浜鸿缃姛鑳界殑娴嬭瘯
  * @author wangfei
  *
  */
 public class TestPersonalSettings {
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
-	int port = 8080; // 要连接的服务端对应的监听端口
+	String host = "192.168.45.17"; // 瑕佽繛鎺ョ殑鏈嶅姟绔疘P鍦板潃
+	int port = 8080; // 瑕佽繛鎺ョ殑鏈嶅姟绔搴旂殑鐩戝惉绔彛
 
 	public Socket socket;
 	public InputStream inputStream;
@@ -45,7 +45,7 @@ public class TestPersonalSettings {
 	
 	
 	/**
-	 * 测试个人设置
+	 * 娴嬭瘯涓汉璁剧疆
 	 * @author wangfei
 	 * @throws IOException
 	 */

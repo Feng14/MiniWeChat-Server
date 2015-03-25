@@ -15,7 +15,7 @@ import client.SocketClientTest;
 import server.NetworkMessage;
 
 /**
- * 对登陆功能的测试（要先开服务器）
+ * 瀵圭櫥闄嗗姛鑳界殑娴嬭瘯锛堣鍏堝紑鏈嶅姟鍣級
  * @author Feng
  *
  */
@@ -29,7 +29,7 @@ public class TestLogin {
 	}
 
 	/**
-	 * 测试登陆功能
+	 * 娴嬭瘯鐧婚檰鍔熻兘
 	 * 
 	 * @author Feng
 	 * @throws IOException

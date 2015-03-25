@@ -18,13 +18,13 @@ import server.NetworkMessage;
 import client.SocketClientTest;
 
 /**
- * 对添加好友的测试
+ * 瀵规坊鍔犲ソ鍙嬬殑娴嬭瘯
  * @author wangfei
  *
  */
 public class TestAddFriend {
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
-	int port = 8080; // 要连接的服务端对应的监听端口
+	String host = "192.168.45.17"; // 瑕佽繛鎺ョ殑鏈嶅姟绔疘P鍦板潃
+	int port = 8080; // 瑕佽繛鎺ョ殑鏈嶅姟绔搴旂殑鐩戝惉绔彛
 
 	public Socket socket;
 	public InputStream inputStream;
@@ -44,7 +44,7 @@ public class TestAddFriend {
 	}
 	
 	/**
-	 * 测试添加好友
+	 * 娴嬭瘯娣诲姞濂藉弸
 	 * @author wangfei
 	 * @throws IOException
 	 */

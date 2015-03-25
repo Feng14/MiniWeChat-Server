@@ -5,7 +5,7 @@ import java.util.Date;
 import org.apache.mina.core.session.IoSession;
 
 /**
- * 这是一个存在“监听Client回复”表中的对象
+ * 杩欐槸涓�涓瓨鍦ㄢ�滅洃鍚珻lient鍥炲鈥濊〃涓殑瀵硅薄
  * @author Feng
  *
  */

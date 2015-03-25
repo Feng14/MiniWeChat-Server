@@ -17,7 +17,7 @@ import tools.DataTypeTranslater;
 import client.SocketClientTest;
 
 /**
- * ²âÊÔµÚ¶ş¸öÈËµÇÂ½ºóµÚÒ»¸öÈË±»ÌßÏÂÀ´µÄÇé¿ö
+ * æµ‹è¯•ç¬¬äºŒä¸ªäººç™»é™†åç¬¬ä¸€ä¸ªäººè¢«è¸¢ä¸‹æ¥çš„æƒ…å†µ
  * 
  * @author Feng
  * 
@@ -35,29 +35,29 @@ public class TestDoubleLogin {
 
 	@Test
 	public void test() throws UnknownHostException, IOException {
-		// 1ºÅ¿Í»§¶ËµÇÂ½
+		// 1å·å®¢æˆ·ç«¯ç™»é™†
 		byte[] resultBytes = client1.testLogin_JUint("a", "aa");
 		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 
-		// 2ºÅ¿Í»§¶ËµÇÂ½
+		// 2å·å®¢æˆ·ç«¯ç™»é™†
 		resultBytes = client2.testLogin_JUint("a", "aa");
 		responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 
-		// ¼ì²â1ºÅ¿Í»§¶ËµÄÊÕµ½µÄ¡°ÌßÏÂÏß¡±ÏûÏ¢
+		// æ£€æµ‹1å·å®¢æˆ·ç«¯çš„æ”¶åˆ°çš„â€œè¸¢ä¸‹çº¿â€æ¶ˆæ¯
 		for (int i = 0; i < 2; i++) {
 			resultBytes = client1.readFromServer();
-			// ÆäËûÏûÏ¢£¬²»¹Ü
+			// å…¶ä»–æ¶ˆæ¯ï¼Œä¸ç®¡
 			if (ProtoHead.ENetworkMessage.OFFLINE_SYNC != NetworkMessage.getMessageType(resultBytes))
 				continue;
 			// System.err.println(NetworkMessage.getMessageType(resultBytes));
 
-			// »Ø¸´·şÎñÆ÷
+			// å›å¤æœåŠ¡å™¨
 			client1.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE,
 					NetworkMessage.getMessageID(resultBytes), new byte[]{}));
 
-			// ÌßÈËÍ¨Öª
+			// è¸¢äººé€šçŸ¥
 			assertTrue(true);
 			return;
 		}
