@@ -62,7 +62,7 @@ public class Server_Friend {
 				
 			}
 			else{
-				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
+				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
 			}
 			//»Ø¸´¿Í»§¶Ë
 			ServerNetwork.instance.sendMessageToClient(

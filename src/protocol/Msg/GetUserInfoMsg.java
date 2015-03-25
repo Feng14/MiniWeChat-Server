@@ -649,6 +649,14 @@ public final class GetUserInfoMsg {
        * </pre>
        */
       FAIL(1, 1),
+      /**
+       * <code>USER_NOT_EXIST = 2;</code>
+       *
+       * <pre>
+       *用户不存在
+       * </pre>
+       */
+      USER_NOT_EXIST(2, 2),
       ;
 
       /**
@@ -667,6 +675,14 @@ public final class GetUserInfoMsg {
        * </pre>
        */
       public static final int FAIL_VALUE = 1;
+      /**
+       * <code>USER_NOT_EXIST = 2;</code>
+       *
+       * <pre>
+       *用户不存在
+       * </pre>
+       */
+      public static final int USER_NOT_EXIST_VALUE = 2;
 
 
       public final int getNumber() { return value; }
@@ -675,6 +691,7 @@ public final class GetUserInfoMsg {
         switch (value) {
           case 0: return SUCCESS;
           case 1: return FAIL;
+          case 2: return USER_NOT_EXIST;
           default: return null;
         }
       }
@@ -1223,11 +1240,11 @@ public final class GetUserInfoMsg {
     java.lang.String[] descriptorData = {
       "\n\024GetUserInfoMsg.proto\022\010protocol\032\016UserDa" +
       "ta.proto\"&\n\016GetUserInfoReq\022\024\n\014targetUser" +
-      "Id\030\001 \002(\t\"\224\001\n\016GetUserInfoRsp\0227\n\nresultCod" +
+      "Id\030\001 \002(\t\"\250\001\n\016GetUserInfoRsp\0227\n\nresultCod" +
       "e\030\001 \002(\0162#.protocol.GetUserInfoRsp.Result" +
       "Code\022$\n\010userItem\030\002 \001(\0132\022.protocol.UserIt" +
-      "em\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001B" +
-      "\016\n\014protocol.Msg"
+      "em\"7\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001\022" +
+      "\022\n\016USER_NOT_EXIST\020\002B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

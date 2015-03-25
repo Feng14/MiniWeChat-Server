@@ -25,8 +25,8 @@ public class SocketClientTest {
 	public OutputStream outputStream;
 
 //	String host = "192.168.45.17"; // 要连接的服务端IP地址
-	String host = "192.168.45.11"; // 要连接的服务端IP地址
-//	String host = "192.168.45.34"; // 要连接的服务端IP地址
+	//String host = "192.168.45.11"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -58,14 +58,14 @@ public class SocketClientTest {
 		// testPersonalSettings();
 
 //		 测心跳
-		testKeepAlive();
+		//testKeepAlive();
 		// 测注册
 //		testRegister();
 		
 		// 测登陆
 //		testLogin();
 		// 测试个人设置
-		//testPersonalSettings();
+		testPersonalSettings();
 		
 		//测查看用户个人信息
 		//testGetUserInfo();
@@ -404,7 +404,7 @@ public class SocketClientTest {
 			outputStream = socket.getOutputStream();
 			
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
-			loginBuilder.setUserId("a");
+			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("aa");
 			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
 					.toByteArray());
@@ -432,6 +432,9 @@ public class SocketClientTest {
 
 					System.out.println("Response : "
 							+ PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+				if(type == ProtoHead.ENetworkMessage.OFFLINE_SYNC){
+					System.out.println("被下线");
 				}
 			}
 

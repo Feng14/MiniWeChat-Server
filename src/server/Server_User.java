@@ -262,7 +262,7 @@ public class Server_User {
 			Criteria criteria = session.createCriteria(User.class);
 
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
-
+			boolean changePassword = false;
 			// ClientUser clientUser =
 			// ServerModel.instance.getClientUserFromTable(networkMessage.ioSession.getRemoteAddress().toString());
 			System.out.println("get userId that have been login:" + clientUser.userId);
@@ -277,6 +277,7 @@ public class Server_User {
 				// 修改密码
 				if (personalSettingsObject.getUserPassword() != null && personalSettingsObject.getUserPassword() != "") {
 					user.setUserPassword(personalSettingsObject.getUserPassword());
+					changePassword = true;
 				}
 
 				// 修改头像
@@ -328,6 +329,20 @@ public class Server_User {
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
 							networkMessage.getMessageID(), personalSettingsBuilder.build().toByteArray()));
+			if(changePassword){
+				// 向客户端发送消息
+				OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
+				offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.CHANGE_PASSWORD);
+				byte[] objectBytes = offLineMessage.build().toByteArray();
+				byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
+				clientUser.userId = null;
+				clientUser.die = true;
+				ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
+
+				// 添加等待回复
+				ServerModel.instance.addClientResponseListener(networkMessage.ioSession, NetworkMessage.getMessageID(messageBytes),
+						messageBytes);
+			}
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 个人设置事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ " 的包时异常！");
