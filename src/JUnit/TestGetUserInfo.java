@@ -1,5 +1,7 @@
 package JUnit;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,6 +9,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.junit.Before;
+
+import protocol.Msg.GetUserInfoMsg;
+import protocol.Msg.PersonalSettingsMsg;
+import protocol.Msg.RegisterMsg;
+import server.NetworkMessage;
 
 import client.SocketClientTest;
 
@@ -34,6 +41,24 @@ public class TestGetUserInfo {
 		socket = new Socket(host, port);
 		inputStream = socket.getInputStream();
 		outputStream = socket.getOutputStream();
+	}
+	
+	/**
+	 * 测获取用户信息
+	 * @author wangfei
+	 * @throws IOException
+	 */
+	public void testGetUserInfo() throws IOException{
+		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
+		
+		byte[] resultBytes = client.testGetUserInfo_JUnit(randomData);
+		GetUserInfoMsg.GetUserInfoRsp responseObject = 
+				GetUserInfoMsg.GetUserInfoRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS.toString());
+
+		resultBytes = client.testGetUserInfo_JUnit(randomData);
+		responseObject =GetUserInfoMsg.GetUserInfoRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL.toString());
 	}
 
 }

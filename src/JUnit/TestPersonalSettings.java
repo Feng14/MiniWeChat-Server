@@ -53,13 +53,14 @@ public class TestPersonalSettings {
 	public void testPersonalSettings() throws IOException{
 		
 		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
+		int randomIndex =(int)Math.random()*6;
 		
-		byte[] resultBytes = client.testPersonalSettings_JUnit(randomData, randomData);
+		byte[] resultBytes = client.testPersonalSettings_JUnit(randomData, randomData,randomIndex);
 		PersonalSettingsMsg.PersonalSettingsRsp responseObject = 
 				PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
-		assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());
+		assertEquals(responseObject.getResultCode().toString(),PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS.toString());
 
-		resultBytes = client.testPersonalSettings_JUnit(randomData, randomData);
+		resultBytes = client.testPersonalSettings_JUnit(randomData, randomData,randomIndex);
 		responseObject =PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL.toString());
 	}

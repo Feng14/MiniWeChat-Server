@@ -364,8 +364,8 @@ public class SocketClientTest {
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
 		builder.setUserName("bbbss");
-		// builder.setUserPassword("s123");
-		//builder.setHeadIndex(1);
+		builder.setUserPassword("s123");
+		builder.setHeadIndex(1);
 		System.out.println("start personalSettings test! ----------------------------");
 		try {
 			Socket socket = new Socket(host, port);
@@ -409,8 +409,31 @@ public class SocketClientTest {
 		}
 	}
 	
-	public byte[] testPersonalSettings_JUnit(String userName,String userPassword){
-		return null;
+	/**
+	 * 测试个人设置--JUnit调用
+	 * @param userName
+	 * @param userPassword
+	 * @return
+	 * @throws IOException
+	 * @author wangfei
+	 */
+	public byte[] testPersonalSettings_JUnit(String userName,String userPassword,int headIndex) throws IOException{
+		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
+		builder.setUserName(userName);
+		builder.setUserPassword(userPassword);
+		builder.setHeadIndex(headIndex);
+		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
+				.build().toByteArray());
+		writeToServer(byteArray);
+		while(true){
+			byteArray = readFromServer();
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+					HEAD_INT_SIZE));
+			if (type == ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP) {
+				return byteArray;
+			}
+		}
+		
 		
 	}
 
@@ -480,8 +503,27 @@ public class SocketClientTest {
 		}
 	}
 	
-	public byte[] testGetUserInfo_JUnit(String targetUserId){
-		return null;
+	/**
+	 * 测试获取用户信息--JUnit调用
+	 * @param targetUserId
+	 * @return
+	 * @throws IOException
+	 * @author wangfei
+	 */
+	public byte[] testGetUserInfo_JUnit(String targetUserId) throws IOException{
+		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
+		builder.setTargetUserId(targetUserId);
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_REQ.getNumber(), 
+				builder.build().toByteArray());
+		writeToServer(byteArray);
+		while(true){
+			byteArray = readFromServer();
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+					HEAD_INT_SIZE));
+			if (type == ProtoHead.ENetworkMessage.GETUSERINFO_RSP) {
+				return byteArray;
+			}
+		}
 		
 	}
 	
@@ -533,8 +575,27 @@ public class SocketClientTest {
 		}
 	}
 	
-	public byte[] testAddFriend(String friendUserId){
-		return null;
+	/**
+	 * 测试添加好友--JUnit调用
+	 * @param friendUserId
+	 * @return
+	 * @throws IOException
+	 */
+	public byte[] testAddFriend_JUnit(String friendUserId) throws IOException{
+		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
+		builder.setFriendUserId(friendUserId);
+		
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADDFRIEND_REQ.getNumber(), 
+					builder.build().toByteArray());
+		writeToServer(byteArray);
+		while(true){
+			byteArray = readFromServer();
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+			if (type == ProtoHead.ENetworkMessage.ADDFRIEND_RSP) {
+				return byteArray;
+			}
+		}
 	}
 	
 	/**
@@ -583,8 +644,27 @@ public class SocketClientTest {
 		}
 	}
 	
-	public byte[] testDeleteFriend_JUnit(){
-		return null;
+	/**
+	 * 测试删除好友
+	 * @param friendUserId
+	 * @return
+	 * @throws IOException
+	 * @author wangfei
+	 */
+	public byte[] testDeleteFriend_JUnit(String friendUserId) throws IOException{
+		DeleteFriendMsg.DeleteFriendReq.Builder builder = DeleteFriendMsg.DeleteFriendReq.newBuilder();
+		builder.setFriendUserId(friendUserId);
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_REQ.getNumber(), 
+				builder.build().toByteArray());
+		writeToServer(byteArray);
+		while(true){
+			byteArray = readFromServer();
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+					HEAD_INT_SIZE));
+			if (type == ProtoHead.ENetworkMessage.DELETEFRIEND_RSP) {
+				return byteArray;
+			}
+		}
 	}
 	
 }
