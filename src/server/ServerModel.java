@@ -9,8 +9,14 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import model.HibernateSessionFactory;
+import model.User;
+
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
@@ -42,7 +48,17 @@ public class ServerModel {
 	private Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
 
 	private ServerModel() {
-
+//		System.out.println("Fuycj");
+//		Session session = HibernateSessionFactory.getSession();
+//		Criteria criteria = session.createCriteria(User.class);
+//		criteria.add(Restrictions.eq("userId", "a"));
+//
+//		System.out.println(1);
+//		User user = (User) criteria.list().get(0);
+//		System.out.println(2);
+//		System.out.println(user.getFriends().get(0).getUserId());
+//		System.out.println(3);
+//		System.out.println(user.getFriends().get(1).getUserName());
 	}
 
 	/**
