@@ -49,13 +49,13 @@ public class TestDoubleLogin {
 		for (int i = 0; i < 2; i++) {
 			resultBytes = client1.readFromServer();
 			// 其他消息，不管
-			if (ProtoHead.ENetworkMessage.OFFLINE_REQ != NetworkMessage.getMessageType(resultBytes))
+			if (ProtoHead.ENetworkMessage.OFFLINE_SYNC != NetworkMessage.getMessageType(resultBytes))
 				continue;
 			// System.err.println(NetworkMessage.getMessageType(resultBytes));
 
 			// 回复服务器
-			client1.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_RSP_VALUE,
-					NetworkMessage.getMessageID(resultBytes), OffLineMsg.OffLineRsp.newBuilder().build().toByteArray()));
+			client1.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE,
+					NetworkMessage.getMessageID(resultBytes), new byte[]{}));
 
 			// 踢人通知
 			assertTrue(true);

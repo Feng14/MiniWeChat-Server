@@ -199,9 +199,9 @@ public class Server_User {
 	private boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) throws IOException {
 		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
 		if (user != null && !user.die) {
-			// 发送由他人登陆消息
-			OffLineMsg.OffLineReq.Builder offLineMessage = OffLineMsg.OffLineReq.newBuilder();
-			offLineMessage.setCauseCode(OffLineMsg.OffLineReq.CauseCode.ANOTHER_LOGIN);
+			// 发送有他人登陆消息
+			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
+			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
 			byte[] objectBytes = offLineMessage.build().toByteArray();
 
 			try {
@@ -212,7 +212,7 @@ public class Server_User {
 				return false;
 			}
 			// 向客户端发送消息
-			byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_REQ.getNumber(), objectBytes);
+			byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
 			ServerNetwork.instance.sendMessageToClient(user.ioSession, messageBytes);
 
 			// 添加等待回复
