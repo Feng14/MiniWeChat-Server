@@ -77,7 +77,7 @@ public class SocketClientTest {
 		//testDeleteFriend();
 		
 		//测退出登录
-		testLogout();
+//		testLogout();
 
 		// new Thread(new readThread()).start();
 	}

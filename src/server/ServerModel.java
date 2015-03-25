@@ -108,8 +108,10 @@ public class ServerModel {
 	 * @throws NoIpException 
 	 */
 	public void addClientUserToTable(IoSession ioSession, ClientUser clientUser) throws NoIpException {
-		clientUser.onLine = true;
-		clientUserTable.put(getIoSessionKey(ioSession), clientUser);
+		synchronized (clientUserTable) {
+			clientUser.onLine = true;
+			clientUserTable.put(getIoSessionKey(ioSession), clientUser);
+		}
 	}
 	
 	/**
@@ -133,11 +135,15 @@ public class ServerModel {
 	 * @author Feng
 	 */
 	public ClientUser getClientUserFromTable(String key) {
-		return clientUserTable.get(key);
+		synchronized (clientUserTable) {
+			return clientUserTable.get(key);
+		}
 	}
 	
 	public ClientUser getClientUserFromTable(IoSession ioSession) throws NoIpException {
-		return getClientUserFromTable(getIoSessionKey(ioSession));
+		synchronized (clientUserTable) {
+			return getClientUserFromTable(getIoSessionKey(ioSession));
+		}
 	}
 
 	/**
@@ -149,21 +155,23 @@ public class ServerModel {
 		Iterator iterator = clientUserTable.keySet().iterator();
 		String key;
 		ClientUser user;
-		
-		while (iterator.hasNext()) {
 
-			key = iterator.next().toString();
-			
-			if (!clientUserTable.containsKey(key))
-				continue;
-			
-			user = clientUserTable.get(key);
-			
-			if (user.userId == null)
-				continue;
-			
-			if (user.userId.equals(userId))
-				return user;
+		synchronized (clientUserTable) {
+			while (iterator.hasNext()) {
+				
+				key = iterator.next().toString();
+				
+				if (!clientUserTable.containsKey(key))
+					continue;
+				
+				user = clientUserTable.get(key);
+				
+				if (user.userId == null)
+					continue;
+				
+				if (user.userId.equals(userId))
+					return user;
+			}
 		}
 		return null;
 	}
@@ -172,9 +180,10 @@ public class ServerModel {
 	 * 从在线用户信息表删除一个用户
 	 * @param key
 	 */
-	synchronized
 	public void removeClientUserFromTable(String key) {
-		clientUserTable.remove(key);
+		synchronized (clientUserTable) {
+			clientUserTable.remove(key);
+		}
 	}
 	
 	/**
@@ -201,7 +210,9 @@ public class ServerModel {
 	 * @author Feng
 	 */
 	public void removeClientResponseListener(byte[] key) {
-		waitClientRepTable.remove(key);
+		synchronized (waitClientRepTable) {
+			waitClientRepTable.remove(key);
+		}
 	}
 
 	/**
@@ -213,7 +224,9 @@ public class ServerModel {
 	 * @author Feng
 	 */
 	public WaitClientResponse getClientResponseListener(byte[] key) {
-		return waitClientRepTable.get(key);
+		synchronized (waitClientRepTable) {
+			return waitClientRepTable.get(key);
+		}
 	}
 
 	/**
@@ -227,17 +240,19 @@ public class ServerModel {
 		public void run() {
 			NetworkMessage networkMessage = null;
 			// 循环获取新的请求，阻塞式
-			while (true) {
-				try {
-					networkMessage = requestQueue.take();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			synchronized (waitClientRepTable) {
+				while (true) {
+					try {
+						networkMessage = requestQueue.take();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					Debug.log("ServerModel", "ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
+					if (networkMessage == null)
+						continue;
+					ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
+					
 				}
-				Debug.log("ServerModel", "ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
-				if (networkMessage == null)
-					continue;
-				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
-
 			}
 		}
 	}
@@ -259,50 +274,52 @@ public class ServerModel {
 			IoBuffer responseIoBuffer;
 			ArrayList<String> keyIterators;
 
-			while (true) {
-				try {
-					Thread.sleep(KEEP_ALIVE_PACKET_TIME);
-
-					ClientUser user;
-					Iterator iterator = clientUserTable.keySet().iterator();
-					String key;
-					
-					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
-					while (iterator.hasNext()) {
+			synchronized (clientUserTable) {
+				while (true) {
+					try {
+						Thread.sleep(KEEP_ALIVE_PACKET_TIME);
+						
+						ClientUser user;
+						Iterator iterator = clientUserTable.keySet().iterator();
+						String key;
+						
+						Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
+						while (iterator.hasNext()) {
 //					for (String key : keyIterators) {
-						Debug.log("ServerModel", "进入发心跳包循环!");
-						
-						key = iterator.next().toString();
-						
-						if (!clientUserTable.containsKey(key))
-							continue;
-						user = clientUserTable.get(key);
-						
-						// 若已死，删除    ;   将上次没有回复的干掉，从用户表中删掉
-						if (user.die || user.onLine == false) {
-							Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
-							// user.ioSession.close(true);
-							iterator.remove();
-							continue;
+							Debug.log("ServerModel", "进入发心跳包循环!");
+							
+							key = iterator.next().toString();
+							
+							if (!clientUserTable.containsKey(key))
+								continue;
+							user = clientUserTable.get(key);
+							
+							// 若已死，删除    ;   将上次没有回复的干掉，从用户表中删掉
+							if (user.die || user.onLine == false) {
+								Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
+								// user.ioSession.close(true);
+								iterator.remove();
+								continue;
+							}
+							
+							messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(), packetBytes);
+							responseIoBuffer = IoBuffer.allocate(messageBytes.length);
+							responseIoBuffer.put(messageBytes);
+							responseIoBuffer.flip();
+							
+							// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
+							// ，表示在线
+							Debug.log("ServerModel", "向Client " + user.ioSession.getRemoteAddress() + " 发送心跳包");
+							user.onLine = false;
+							user.ioSession.write(responseIoBuffer);
 						}
-						
-						messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(), packetBytes);
-						responseIoBuffer = IoBuffer.allocate(messageBytes.length);
-						responseIoBuffer.put(messageBytes);
-						responseIoBuffer.flip();
-
-						// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
-						// ，表示在线
-						Debug.log("ServerModel", "向Client " + user.ioSession.getRemoteAddress() + " 发送心跳包");
-						user.onLine = false;
-						user.ioSession.write(responseIoBuffer);
+					} catch (IOException e) {
+						System.err.println("发行心跳包线程异常!");
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						System.err.println("发行心跳包线程异常! -----睡眠模块");
+						e.printStackTrace();
 					}
-				} catch (IOException e) {
-					System.err.println("发行心跳包线程异常!");
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					System.err.println("发行心跳包线程异常! -----睡眠模块");
-					e.printStackTrace();
 				}
 			}
 		}
@@ -320,36 +337,38 @@ public class ServerModel {
 			long currentTime;
 			WaitClientResponse waitObj;
 			String key;
-			while (true) {
-				currentTime = new java.util.Date().getTime();
-				// 每隔CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME时间轮询一次
-				try {
-					Thread.sleep(CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				// 对每个用户进行检查
-				Iterator iterator = waitClientRepTable.keySet().iterator();
-				while (iterator.hasNext()) {
-					key = iterator.next().toString();
-					waitObj = waitClientRepTable.get(key);
-					if (waitObj == null)
-						continue;
-					
-					if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
-						// 超时，重发
-						Debug.log("ServerModel", "等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
-						System.out.println("ServerModel : 等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
-						if (!clientUserTable.get(waitObj.ioSession.getRemoteAddress()).onLine) {
-							// 不在线,删了
-							Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
-							waitClientRepTable.remove(key);
+			synchronized (waitClientRepTable) {
+				while (true) {
+					currentTime = new java.util.Date().getTime();
+					// 每隔CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME时间轮询一次
+					try {
+						Thread.sleep(CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					// 对每个用户进行检查
+					Iterator iterator = waitClientRepTable.keySet().iterator();
+					while (iterator.hasNext()) {
+						key = iterator.next().toString();
+						waitObj = waitClientRepTable.get(key);
+						if (waitObj == null)
 							continue;
+						
+						if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
+							// 超时，重发
+							Debug.log("ServerModel", "等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
+							System.out.println("ServerModel : 等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
+							if (!clientUserTable.get(waitObj.ioSession.getRemoteAddress()).onLine) {
+								// 不在线,删了
+								Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
+								waitClientRepTable.remove(key);
+								continue;
+							}
+							// 重发，重置等待时间
+							Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 在线，消息将重发！");
+							ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
+							waitObj.time = currentTime;
 						}
-						// 重发，重置等待时间
-						Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 在线，消息将重发！");
-						ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
-						waitObj.time = currentTime;
 					}
 				}
 			}
