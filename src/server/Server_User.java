@@ -16,6 +16,8 @@ import org.hibernate.criterion.Restrictions;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
+import exception.NoIpException;
+
 import protocol.ProtoHead;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
@@ -46,12 +48,13 @@ public class Server_User {
 	public void keepAlive(NetworkMessage networkMessage) {
 		// System.out.println((networkMessage == null) + "      " +
 		// (networkMessage.ioSession == null));
-		Debug.log("Server_User", "对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  回复的心跳包  的处理");
 		// System.out.println(ServerModel.instance.clientUserTable.keySet().size());
 		// System.out.println("fuck   " +
 		// ServerModel.instance.clientUserTable.containsKey(ServerModel.getIoSessionKey(networkMessage.ioSession)));
 		// 如果ClientUser已经掉线被删除，那么就不管了
 		try {
+			Debug.log("Server_User", "对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  回复的心跳包  的处理");
+
 			if (ServerModel.instance.getClientUserFromTable(networkMessage.ioSession) == null) {
 				Debug.log("Server_User", "用户表(ClientUserTalbe)中找不到 用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 						+ "，心跳回复不作处理!");
@@ -62,6 +65,8 @@ public class Server_User {
 		} catch (NullPointerException e) {
 			System.out.println("Server_User: 异常，用户" + networkMessage.ioSession + "已掉线，心跳回复不作处理!");
 			e.printStackTrace();
+		} catch (NoIpException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -70,11 +75,12 @@ public class Server_User {
 	 * 
 	 * @param networkMessage
 	 * @author Feng
+	 * @throws NoIpException
 	 */
-	public void register(NetworkMessage networkMessage) {
-		Debug.log("Server_User", "注册事件： 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的注册事件  的处理");
-
+	public void register(NetworkMessage networkMessage) throws NoIpException {
 		try {
+			Debug.log("Server_User", "注册事件： 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的注册事件  的处理");
+
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(networkMessage.getMessageObjectBytes());
 			RegisterMsg.RegisterRsp.Builder responseBuilder = RegisterMsg.RegisterRsp.newBuilder();
 
@@ -110,9 +116,10 @@ public class Server_User {
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ " 的包时异常！");
-			e.printStackTrace();
 		} catch (IOException e) {
 			System.err.println("Server_User : 注册事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
+			e.printStackTrace();
+		} catch (NoIpException e) {
 			e.printStackTrace();
 		}
 	}
@@ -122,12 +129,13 @@ public class Server_User {
 	 * 
 	 * @param networkMessage
 	 * @author Feng
+	 * @throws NoIpException
 	 */
-	public void login(NetworkMessage networkMessage) {
-		Debug.log(new String[] { "Server_User", "login" }, " 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
-				+ "  的登陆事件  的处理");
-
+	public void login(NetworkMessage networkMessage) throws NoIpException {
 		try {
+			Debug.log(new String[] { "Server_User", "login" }, " 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+					+ "  的登陆事件  的处理");
+
 			LoginMsg.LoginReq loginObject = LoginMsg.LoginReq.parseFrom(networkMessage.getMessageObjectBytes());
 			LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
 
@@ -175,6 +183,8 @@ public class Server_User {
 		} catch (IOException e) {
 			System.err.println("Server_User : 注册事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
 			e.printStackTrace();
+		} catch (NoIpException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -184,17 +194,23 @@ public class Server_User {
 	 * @param networkMessage
 	 * @return
 	 * @throws IOException
+	 * @throws NoIpException
 	 */
 	private boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) throws IOException {
 		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
-		if (user != null) {
+		if (user != null && !user.die) {
 			// 发送由他人登陆消息
 			OffLineMsg.OffLineReq.Builder offLineMessage = OffLineMsg.OffLineReq.newBuilder();
 			offLineMessage.setCauseCode(OffLineMsg.OffLineReq.CauseCode.ANOTHER_LOGIN);
 			byte[] objectBytes = offLineMessage.build().toByteArray();
 
-			Debug.log(new String[] { "Server_User", "checkAnotherOnline" },
-					"用户 " + user.userId + "在其他设备登陆，" + ServerModel.getIoSessionKey(user.ioSession) + "被踢下线！");
+			try {
+				Debug.log(new String[] { "Server_User", "checkAnotherOnline" },
+						"用户 " + user.userId + "在其他设备登陆，" + ServerModel.getIoSessionKey(user.ioSession) + "被踢下线！");
+			} catch (NoIpException e) {
+				Debug.log(new String[] { "Server_User", "checkAnotherOnline" }, "找到的用户已断线，不做处理！");
+				return false;
+			}
 			// 向客户端发送消息
 			byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_REQ.getNumber(), objectBytes);
 			ServerNetwork.instance.sendMessageToClient(user.ioSession, messageBytes);
@@ -214,8 +230,9 @@ public class Server_User {
 	 * 
 	 * @param networkMessage
 	 * @author Feng
+	 * @throws NoIpException
 	 */
-	public void clientOfflineResponse(NetworkMessage networkMessage) {
+	public void clientOfflineResponse(NetworkMessage networkMessage) throws NoIpException {
 		ClientUser user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 		Debug.log(new String[] { "Srever_User", "clientOfflineResponse" },
 				"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 已接到被踢下的消息，将其设为死亡！");
@@ -228,12 +245,14 @@ public class Server_User {
 	 * 
 	 * @param networkMessage
 	 * @author wangfei
+	 * @throws NoIpException
 	 * @time 2015-03-21
 	 */
-	public void personalSettings(NetworkMessage networkMessage) {
-		Debug.log(new String[] { "Server_User", "personalSettings" },
-				" 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的个人设置事件  的处理");
+	public void personalSettings(NetworkMessage networkMessage) throws NoIpException {
 		try {
+			Debug.log(new String[] { "Server_User", "personalSettings" },
+					" 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的个人设置事件  的处理");
+
 			PersonalSettingsMsg.PersonalSettingsReq personalSettingsObject = PersonalSettingsMsg.PersonalSettingsReq
 					.parseFrom(networkMessage.getMessageObjectBytes());
 			PersonalSettingsMsg.PersonalSettingsRsp.Builder personalSettingsBuilder = PersonalSettingsMsg.PersonalSettingsRsp
@@ -259,7 +278,7 @@ public class Server_User {
 				if (personalSettingsObject.getUserPassword() != null && personalSettingsObject.getUserPassword() != "") {
 					user.setUserPassword(personalSettingsObject.getUserPassword());
 				}
-				
+
 				// 修改头像
 				if (personalSettingsObject.getHeadIndex() >= 1 && personalSettingsObject.getHeadIndex() <= 6) {
 					BufferedImage image = null;
@@ -284,7 +303,7 @@ public class Server_User {
 						e.printStackTrace();
 					}
 				}
-				
+
 				// 数据库修改昵称或密码
 				try {
 					Transaction trans = session.beginTransaction();
@@ -295,8 +314,6 @@ public class Server_User {
 					personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 					e.printStackTrace();
 				}
-
-				
 
 			} else {
 				// 用户不存在
@@ -318,32 +335,43 @@ public class Server_User {
 		} catch (IOException e) {
 			System.err.println("Server_User : 个人设置事件： " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 返回包时异常！");
 			e.printStackTrace();
+		} catch (NoIpException e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 用户退出登录
+	 * 
 	 * @param networkMessage
 	 * @author wangfei
 	 * @time 2015-03-25
 	 */
-	public void logout(NetworkMessage networkMessage){
+	public void logout(NetworkMessage networkMessage) {
 		try {
-			ClientUser user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
-			LogoutMsg.LogoutRsp.Builder logoutBuilder= LogoutMsg.LogoutRsp.newBuilder();
-			Debug.log(new String[] { "Srever_User", "logout" },
-					"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
-			
+			ClientUser user = null;
+			LogoutMsg.LogoutRsp.Builder logoutBuilder = null;
+			try {
+				user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
+				logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
+				Debug.log(new String[] { "Srever_User", "logout" },
+						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
+			} catch (NoIpException e) {
+				
+				e.printStackTrace();
+			}
+
 			user.userId = null;
 			user.die = true;
 			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
-			
-			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
-					ProtoHead.ENetworkMessage.LOGOUT_RSP.getNumber(),networkMessage.getMessageID(), logoutBuilder.build().toByteArray()));
-		}catch (IOException e) {
+
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.LOGOUT_RSP.getNumber(), networkMessage.getMessageID(), logoutBuilder.build()
+							.toByteArray()));
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 }

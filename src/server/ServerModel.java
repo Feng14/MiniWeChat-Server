@@ -2,6 +2,7 @@ package server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -14,11 +15,14 @@ import model.User;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.transport.socket.nio.NioSession;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
+
+import exception.NoIpException;
 
 import protocol.ProtoHead;
 import protocol.Msg.KeepAliveMsg;
@@ -101,8 +105,9 @@ public class ServerModel {
 	 * @param key
 	 * @param clientUser
 	 * @author Feng
+	 * @throws NoIpException 
 	 */
-	public void addClientUserToTable(IoSession ioSession, ClientUser clientUser) {
+	public void addClientUserToTable(IoSession ioSession, ClientUser clientUser) throws NoIpException {
 		clientUser.onLine = true;
 		clientUserTable.put(getIoSessionKey(ioSession), clientUser);
 	}
@@ -111,8 +116,12 @@ public class ServerModel {
 	 * ´ÓiosessionÉú³ÉKey
 	 * @param ioSession
 	 * @return
+	 * @throws NoIpException 
 	 */
-	public static String getIoSessionKey(IoSession ioSession) {
+	public static String getIoSessionKey(IoSession ioSession) throws NoIpException {
+//		System.err.println("1.2  " + (ioSession.getRemoteAddress() == null));
+		if (ioSession.getRemoteAddress() == null)
+			throw new NoIpException();
 		return ((InetSocketAddress)ioSession.getRemoteAddress()).getAddress().toString() + ":" + ((InetSocketAddress)ioSession.getRemoteAddress()).getPort();
 	}
 	
@@ -127,7 +136,7 @@ public class ServerModel {
 		return clientUserTable.get(key);
 	}
 	
-	public ClientUser getClientUserFromTable(IoSession ioSession) {
+	public ClientUser getClientUserFromTable(IoSession ioSession) throws NoIpException {
 		return getClientUserFromTable(getIoSessionKey(ioSession));
 	}
 

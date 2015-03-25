@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/Hibernate/jboss-transaction-api_1.2_spec-1.0.0.Final.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.2-beta-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mina-http-2.0.7.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

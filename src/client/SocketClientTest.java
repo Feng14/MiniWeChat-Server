@@ -24,9 +24,8 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	//String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.45.34"; // 要连接的服务端IP地址
-	// String host = "192.168.45.11"; // 要连接的服务端IP地址
+	String host = "192.168.45.17"; // 要连接的服务端IP地址
+//	String host = "192.168.45.11"; // 要连接的服务端IP地址
 //	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8080; // 要连接的服务端对应的监听端口
@@ -50,7 +49,7 @@ public class SocketClientTest {
 
 
 		// ������
-		// testKeepAlive();
+//		 testKeepAlive();
 		// ��ע��
 		// testRegister();
 		// ���½
@@ -58,13 +57,13 @@ public class SocketClientTest {
 		// ���Ը�������
 		// testPersonalSettings();
 
-		// 测心跳
-		//testKeepAlive();
+//		 测心跳
+//		testKeepAlive();
 		// 测注册
-		testRegister();
+//		testRegister();
 		
 		// 测登陆
-		//testLogin();
+		testLogin();
 		// 测试个人设置
 		//testPersonalSettings();
 		//测查看用户个人信息
@@ -348,9 +347,38 @@ public class SocketClientTest {
 
 					System.out
 							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-					return;
+					break;
 				}
-				
+			}
+			inputStream.close();
+			outputStream.close();
+			socket.close();
+			link();
+			//断后重测
+			System.out.println("断后重测");
+			byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
+					.toByteArray());
+			writeToServer(byteArray);
+			while (true) {
+				byteArray = readFromServer();
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("size: " + size);
+
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+				System.out.println("Type : " + type.toString());
+
+				if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+
+					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
+
+					System.out
+							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+					break;
+				}
 			}
 
 		} catch (IOException e) {
