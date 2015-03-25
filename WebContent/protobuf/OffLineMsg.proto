@@ -2,7 +2,7 @@ package protocol;
 
 option java_package = "protocol.Msg";
 
-message OffLineReq{
+message OffLineSync{
 	//下线原因
 	enum CauseCode{
 		CHANGE_PASSWORD=0;//修改密码
@@ -10,8 +10,4 @@ message OffLineReq{
 	}
 	required CauseCode causeCode =1;
 	
-}
-
-message OffLineRsp{
-
 }
