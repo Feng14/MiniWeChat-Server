@@ -74,7 +74,7 @@ class HttpServerHandle extends IoHandlerAdapter {
 	}
 
 	public byte[] getHelloResponse(String name) throws UnsupportedEncodingException {
-		// 锟斤拷应HTML
+		// 生成HTML
 		String responseHtml = "<html><body>Hello, " + name + "</body></html>";
 		return responseHtml.getBytes("UTF-8");
 	}
@@ -95,7 +95,7 @@ class HttpServerHandle extends IoHandlerAdapter {
 		while (offset < buffer.length && (numRead = fi.read(buffer, offset, buffer.length - offset)) >= 0) {
 			offset += numRead;
 		}
-		// 确锟斤拷锟斤拷锟斤拷锟斤拷菥锟斤拷取
+		// 获取字节数组长度
 		if (offset != buffer.length) {
 			throw new IOException("Could not completely read file " + file.getName());
 		}
