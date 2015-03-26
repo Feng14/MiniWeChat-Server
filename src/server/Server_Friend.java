@@ -17,7 +17,9 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import protocol.ProtoHead;
 import protocol.Data.UserData;
+import protocol.Data.UserData.UserItem;
 import protocol.Msg.AddFriendMsg;
+import protocol.Msg.ChangeFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 
@@ -120,10 +122,30 @@ public class Server_Friend {
 				if(!exist1){
 					u.getFriends().add(friend);
 				    session.update(u);
+				  
 				}
 				if(!exist2){
 					friend.getFriends().add(u);
 					session.update(friend);
+					
+					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
+					if(null != friendUser){
+						//如果对方在线  需要发消息给对方通知好友添加
+					    UserItem.Builder uib = UserItem.newBuilder();
+					    uib.setUserId(u.getUserId());
+					    uib.setUserName(u.getUserName());
+					    uib.setHeadIndex(u.getHeadIndex());
+					    ChangeFriendMsg.ChangeFriendSync.Builder cfb = ChangeFriendMsg.ChangeFriendSync.newBuilder();
+					    cfb.setChangeType(ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
+					    cfb.setUserItem(uib);
+					    //向客户端发送消息
+					    byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(), cfb.build().toByteArray());
+						ServerNetwork.instance.sendMessageToClient(friendUser.ioSession, messageBytes);
+
+						// 添加等待回复
+						ServerModel.instance.addClientResponseListener(friendUser.ioSession, NetworkMessage.getMessageID(messageBytes),
+								messageBytes);
+					}
 				}
 				trans.commit();
 				
@@ -190,6 +212,24 @@ public class Server_Friend {
 				if(null != y){
 					friend.getFriends().remove(y);
 					session.update(friend);
+					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
+					if(null != friendUser){
+						//如果对方在线  需要发消息给对方通知好友删除
+					    UserItem.Builder uib = UserItem.newBuilder();
+					    uib.setUserId(u.getUserId());
+					    uib.setUserName(u.getUserName());
+					    uib.setHeadIndex(u.getHeadIndex());
+					    ChangeFriendMsg.ChangeFriendSync.Builder cfb = ChangeFriendMsg.ChangeFriendSync.newBuilder();
+					    cfb.setChangeType(ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
+					    cfb.setUserItem(uib);
+					    //向客户端发送消息
+					    byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(), cfb.build().toByteArray());
+						ServerNetwork.instance.sendMessageToClient(friendUser.ioSession, messageBytes);
+
+						// 添加等待回复
+						ServerModel.instance.addClientResponseListener(friendUser.ioSession, NetworkMessage.getMessageID(messageBytes),
+								messageBytes);
+					}
 				}
 				
 				trans.commit();

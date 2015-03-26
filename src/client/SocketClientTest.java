@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
+import protocol.Msg.ChangeFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetPersonalInfoMsg;
 import protocol.Msg.GetUserInfoMsg;
@@ -65,9 +66,9 @@ public class SocketClientTest {
 //		testRegister();
 		
 		// 测登陆
-//		testLogin();
+		//testLogin();
 		// 测试个人设置
-		testPersonalSettings();
+		//testPersonalSettings();
 		
 		//测查看用户个人信息
 		//testGetUserInfo();
@@ -76,7 +77,7 @@ public class SocketClientTest {
 		//testAddFriend();
 
 		//测删除好友
-		//testDeleteFriend();
+		testDeleteFriend();
 		
 		//测退出登录
 //		testLogout();
@@ -322,8 +323,8 @@ public class SocketClientTest {
 	public void testLogin() {
 
 		LoginMsg.LoginReq.Builder builder = LoginMsg.LoginReq.newBuilder();
-		builder.setUserId("a");
-		builder.setUserPassword("aa");
+		builder.setUserId("a1");
+		builder.setUserPassword("12");
 		System.out.println("Start Test Login!");
 		try {
 			socket = new Socket(host, port);
@@ -384,7 +385,14 @@ public class SocketClientTest {
 
 					System.out
 							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-					break;
+					
+				}
+				if(type == ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC){
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					ChangeFriendMsg.ChangeFriendSync response = ChangeFriendMsg.ChangeFriendSync.parseFrom(objBytes);
+					System.out.println(response.getChangeType()+" "+response.getUserItem());
 				}
 			}
 
@@ -651,7 +659,7 @@ public class SocketClientTest {
 			outputStream = socket.getOutputStream();
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
-			loginBuilder.setUserPassword("aa");
+			loginBuilder.setUserPassword("s1234");
 			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
 					.toByteArray());
 			writeToServer(loginByteArray);

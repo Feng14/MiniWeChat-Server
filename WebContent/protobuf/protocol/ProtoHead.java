@@ -85,6 +85,10 @@ public final class ProtoHead {
      * <code>GET_PERSONALINFO_RSP = 17;</code>
      */
     GET_PERSONALINFO_RSP(17, 17),
+    /**
+     * <code>CHANGE_FRIEND_SYNC = 18;</code>
+     */
+    CHANGE_FRIEND_SYNC(18, 18),
     ;
 
     /**
@@ -159,6 +163,10 @@ public final class ProtoHead {
      * <code>GET_PERSONALINFO_RSP = 17;</code>
      */
     public static final int GET_PERSONALINFO_RSP_VALUE = 17;
+    /**
+     * <code>CHANGE_FRIEND_SYNC = 18;</code>
+     */
+    public static final int CHANGE_FRIEND_SYNC_VALUE = 18;
 
 
     public final int getNumber() { return value; }
@@ -183,6 +191,7 @@ public final class ProtoHead {
         case 15: return LOGOUT_RSP;
         case 16: return GET_PERSONALINFO_REQ;
         case 17: return GET_PERSONALINFO_RSP;
+        case 18: return CHANGE_FRIEND_SYNC;
         default: return null;
       }
     }
@@ -243,7 +252,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\204\003\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\234\003\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -253,7 +262,8 @@ public final class ProtoHead {
       "_FRIEND_REQ\020\013\022\025\n\021DELETE_FRIEND_RSP\020\014\022\020\n\014" +
       "OFFLINE_SYNC\020\r\022\016\n\nLOGOUT_REQ\020\016\022\016\n\nLOGOUT" +
       "_RSP\020\017\022\030\n\024GET_PERSONALINFO_REQ\020\020\022\030\n\024GET_",
-      "PERSONALINFO_RSP\020\021B\n\n\010protocol"
+      "PERSONALINFO_RSP\020\021\022\026\n\022CHANGE_FRIEND_SYNC" +
+      "\020\022B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
