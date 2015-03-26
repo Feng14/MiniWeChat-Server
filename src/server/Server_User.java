@@ -366,6 +366,11 @@ public class Server_User {
 		BufferedImage image = null;
 		u.setHeadIndex(headInx);
 		try {
+			Session session = HibernateSessionFactory.getSession();
+			Transaction trans = session.beginTransaction();
+			u.setHeadIndex(headInx);
+			session.update(u);
+			trans.commit();
 			// 从默认头像文件夹获取图片
 			image = ImageIO.read(new File(ResourcePath.headDefaultPath + headInx
 					+ ".png"));
