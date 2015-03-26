@@ -512,29 +512,29 @@ public final class GetPersonalInfoMsg {
      */
     protocol.Data.UserData.UserItemOrBuilder getUserInfoOrBuilder();
 
-    // repeated .protocol.UserItem friendList = 3;
+    // repeated .protocol.UserItem friends = 3;
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
     java.util.List<protocol.Data.UserData.UserItem> 
-        getFriendListList();
+        getFriendsList();
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    protocol.Data.UserData.UserItem getFriendList(int index);
+    protocol.Data.UserData.UserItem getFriends(int index);
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    int getFriendListCount();
+    int getFriendsCount();
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
     java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-        getFriendListOrBuilderList();
+        getFriendsOrBuilderList();
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    protocol.Data.UserData.UserItemOrBuilder getFriendListOrBuilder(
+    protocol.Data.UserData.UserItemOrBuilder getFriendsOrBuilder(
         int index);
   }
   /**
@@ -614,10 +614,10 @@ public final class GetPersonalInfoMsg {
             }
             case 26: {
               if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-                friendList_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>();
+                friends_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>();
                 mutable_bitField0_ |= 0x00000004;
               }
-              friendList_.add(input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry));
+              friends_.add(input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry));
               break;
             }
           }
@@ -629,7 +629,7 @@ public final class GetPersonalInfoMsg {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-          friendList_ = java.util.Collections.unmodifiableList(friendList_);
+          friends_ = java.util.Collections.unmodifiableList(friends_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -799,46 +799,46 @@ public final class GetPersonalInfoMsg {
       return userInfo_;
     }
 
-    // repeated .protocol.UserItem friendList = 3;
-    public static final int FRIENDLIST_FIELD_NUMBER = 3;
-    private java.util.List<protocol.Data.UserData.UserItem> friendList_;
+    // repeated .protocol.UserItem friends = 3;
+    public static final int FRIENDS_FIELD_NUMBER = 3;
+    private java.util.List<protocol.Data.UserData.UserItem> friends_;
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    public java.util.List<protocol.Data.UserData.UserItem> getFriendListList() {
-      return friendList_;
+    public java.util.List<protocol.Data.UserData.UserItem> getFriendsList() {
+      return friends_;
     }
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
     public java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-        getFriendListOrBuilderList() {
-      return friendList_;
+        getFriendsOrBuilderList() {
+      return friends_;
     }
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    public int getFriendListCount() {
-      return friendList_.size();
+    public int getFriendsCount() {
+      return friends_.size();
     }
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    public protocol.Data.UserData.UserItem getFriendList(int index) {
-      return friendList_.get(index);
+    public protocol.Data.UserData.UserItem getFriends(int index) {
+      return friends_.get(index);
     }
     /**
-     * <code>repeated .protocol.UserItem friendList = 3;</code>
+     * <code>repeated .protocol.UserItem friends = 3;</code>
      */
-    public protocol.Data.UserData.UserItemOrBuilder getFriendListOrBuilder(
+    public protocol.Data.UserData.UserItemOrBuilder getFriendsOrBuilder(
         int index) {
-      return friendList_.get(index);
+      return friends_.get(index);
     }
 
     private void initFields() {
       resultCode_ = protocol.Msg.GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.SUCCESS;
       userInfo_ = protocol.Data.UserData.UserItem.getDefaultInstance();
-      friendList_ = java.util.Collections.emptyList();
+      friends_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -855,8 +855,8 @@ public final class GetPersonalInfoMsg {
           return false;
         }
       }
-      for (int i = 0; i < getFriendListCount(); i++) {
-        if (!getFriendList(i).isInitialized()) {
+      for (int i = 0; i < getFriendsCount(); i++) {
+        if (!getFriends(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -874,8 +874,8 @@ public final class GetPersonalInfoMsg {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeMessage(2, userInfo_);
       }
-      for (int i = 0; i < friendList_.size(); i++) {
-        output.writeMessage(3, friendList_.get(i));
+      for (int i = 0; i < friends_.size(); i++) {
+        output.writeMessage(3, friends_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -894,9 +894,9 @@ public final class GetPersonalInfoMsg {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, userInfo_);
       }
-      for (int i = 0; i < friendList_.size(); i++) {
+      for (int i = 0; i < friends_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, friendList_.get(i));
+          .computeMessageSize(3, friends_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1007,7 +1007,7 @@ public final class GetPersonalInfoMsg {
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getUserInfoFieldBuilder();
-          getFriendListFieldBuilder();
+          getFriendsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1024,11 +1024,11 @@ public final class GetPersonalInfoMsg {
           userInfoBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
-        if (friendListBuilder_ == null) {
-          friendList_ = java.util.Collections.emptyList();
+        if (friendsBuilder_ == null) {
+          friends_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000004);
         } else {
-          friendListBuilder_.clear();
+          friendsBuilder_.clear();
         }
         return this;
       }
@@ -1070,14 +1070,14 @@ public final class GetPersonalInfoMsg {
         } else {
           result.userInfo_ = userInfoBuilder_.build();
         }
-        if (friendListBuilder_ == null) {
+        if (friendsBuilder_ == null) {
           if (((bitField0_ & 0x00000004) == 0x00000004)) {
-            friendList_ = java.util.Collections.unmodifiableList(friendList_);
+            friends_ = java.util.Collections.unmodifiableList(friends_);
             bitField0_ = (bitField0_ & ~0x00000004);
           }
-          result.friendList_ = friendList_;
+          result.friends_ = friends_;
         } else {
-          result.friendList_ = friendListBuilder_.build();
+          result.friends_ = friendsBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -1101,29 +1101,29 @@ public final class GetPersonalInfoMsg {
         if (other.hasUserInfo()) {
           mergeUserInfo(other.getUserInfo());
         }
-        if (friendListBuilder_ == null) {
-          if (!other.friendList_.isEmpty()) {
-            if (friendList_.isEmpty()) {
-              friendList_ = other.friendList_;
+        if (friendsBuilder_ == null) {
+          if (!other.friends_.isEmpty()) {
+            if (friends_.isEmpty()) {
+              friends_ = other.friends_;
               bitField0_ = (bitField0_ & ~0x00000004);
             } else {
-              ensureFriendListIsMutable();
-              friendList_.addAll(other.friendList_);
+              ensureFriendsIsMutable();
+              friends_.addAll(other.friends_);
             }
             onChanged();
           }
         } else {
-          if (!other.friendList_.isEmpty()) {
-            if (friendListBuilder_.isEmpty()) {
-              friendListBuilder_.dispose();
-              friendListBuilder_ = null;
-              friendList_ = other.friendList_;
+          if (!other.friends_.isEmpty()) {
+            if (friendsBuilder_.isEmpty()) {
+              friendsBuilder_.dispose();
+              friendsBuilder_ = null;
+              friends_ = other.friends_;
               bitField0_ = (bitField0_ & ~0x00000004);
-              friendListBuilder_ = 
+              friendsBuilder_ = 
                 com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getFriendListFieldBuilder() : null;
+                   getFriendsFieldBuilder() : null;
             } else {
-              friendListBuilder_.addAllMessages(other.friendList_);
+              friendsBuilder_.addAllMessages(other.friends_);
             }
           }
         }
@@ -1142,8 +1142,8 @@ public final class GetPersonalInfoMsg {
             return false;
           }
         }
-        for (int i = 0; i < getFriendListCount(); i++) {
-          if (!getFriendList(i).isInitialized()) {
+        for (int i = 0; i < getFriendsCount(); i++) {
+          if (!getFriends(i).isInitialized()) {
             
             return false;
           }
@@ -1323,244 +1323,244 @@ public final class GetPersonalInfoMsg {
         return userInfoBuilder_;
       }
 
-      // repeated .protocol.UserItem friendList = 3;
-      private java.util.List<protocol.Data.UserData.UserItem> friendList_ =
+      // repeated .protocol.UserItem friends = 3;
+      private java.util.List<protocol.Data.UserData.UserItem> friends_ =
         java.util.Collections.emptyList();
-      private void ensureFriendListIsMutable() {
+      private void ensureFriendsIsMutable() {
         if (!((bitField0_ & 0x00000004) == 0x00000004)) {
-          friendList_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>(friendList_);
+          friends_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>(friends_);
           bitField0_ |= 0x00000004;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilder<
-          protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> friendListBuilder_;
+          protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> friendsBuilder_;
 
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public java.util.List<protocol.Data.UserData.UserItem> getFriendListList() {
-        if (friendListBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(friendList_);
+      public java.util.List<protocol.Data.UserData.UserItem> getFriendsList() {
+        if (friendsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(friends_);
         } else {
-          return friendListBuilder_.getMessageList();
+          return friendsBuilder_.getMessageList();
         }
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public int getFriendListCount() {
-        if (friendListBuilder_ == null) {
-          return friendList_.size();
+      public int getFriendsCount() {
+        if (friendsBuilder_ == null) {
+          return friends_.size();
         } else {
-          return friendListBuilder_.getCount();
+          return friendsBuilder_.getCount();
         }
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public protocol.Data.UserData.UserItem getFriendList(int index) {
-        if (friendListBuilder_ == null) {
-          return friendList_.get(index);
+      public protocol.Data.UserData.UserItem getFriends(int index) {
+        if (friendsBuilder_ == null) {
+          return friends_.get(index);
         } else {
-          return friendListBuilder_.getMessage(index);
+          return friendsBuilder_.getMessage(index);
         }
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder setFriendList(
+      public Builder setFriends(
           int index, protocol.Data.UserData.UserItem value) {
-        if (friendListBuilder_ == null) {
+        if (friendsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureFriendListIsMutable();
-          friendList_.set(index, value);
+          ensureFriendsIsMutable();
+          friends_.set(index, value);
           onChanged();
         } else {
-          friendListBuilder_.setMessage(index, value);
+          friendsBuilder_.setMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder setFriendList(
+      public Builder setFriends(
           int index, protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (friendListBuilder_ == null) {
-          ensureFriendListIsMutable();
-          friendList_.set(index, builderForValue.build());
+        if (friendsBuilder_ == null) {
+          ensureFriendsIsMutable();
+          friends_.set(index, builderForValue.build());
           onChanged();
         } else {
-          friendListBuilder_.setMessage(index, builderForValue.build());
+          friendsBuilder_.setMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder addFriendList(protocol.Data.UserData.UserItem value) {
-        if (friendListBuilder_ == null) {
+      public Builder addFriends(protocol.Data.UserData.UserItem value) {
+        if (friendsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureFriendListIsMutable();
-          friendList_.add(value);
+          ensureFriendsIsMutable();
+          friends_.add(value);
           onChanged();
         } else {
-          friendListBuilder_.addMessage(value);
+          friendsBuilder_.addMessage(value);
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder addFriendList(
+      public Builder addFriends(
           int index, protocol.Data.UserData.UserItem value) {
-        if (friendListBuilder_ == null) {
+        if (friendsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          ensureFriendListIsMutable();
-          friendList_.add(index, value);
+          ensureFriendsIsMutable();
+          friends_.add(index, value);
           onChanged();
         } else {
-          friendListBuilder_.addMessage(index, value);
+          friendsBuilder_.addMessage(index, value);
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder addFriendList(
+      public Builder addFriends(
           protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (friendListBuilder_ == null) {
-          ensureFriendListIsMutable();
-          friendList_.add(builderForValue.build());
+        if (friendsBuilder_ == null) {
+          ensureFriendsIsMutable();
+          friends_.add(builderForValue.build());
           onChanged();
         } else {
-          friendListBuilder_.addMessage(builderForValue.build());
+          friendsBuilder_.addMessage(builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder addFriendList(
+      public Builder addFriends(
           int index, protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (friendListBuilder_ == null) {
-          ensureFriendListIsMutable();
-          friendList_.add(index, builderForValue.build());
+        if (friendsBuilder_ == null) {
+          ensureFriendsIsMutable();
+          friends_.add(index, builderForValue.build());
           onChanged();
         } else {
-          friendListBuilder_.addMessage(index, builderForValue.build());
+          friendsBuilder_.addMessage(index, builderForValue.build());
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder addAllFriendList(
+      public Builder addAllFriends(
           java.lang.Iterable<? extends protocol.Data.UserData.UserItem> values) {
-        if (friendListBuilder_ == null) {
-          ensureFriendListIsMutable();
-          super.addAll(values, friendList_);
+        if (friendsBuilder_ == null) {
+          ensureFriendsIsMutable();
+          super.addAll(values, friends_);
           onChanged();
         } else {
-          friendListBuilder_.addAllMessages(values);
+          friendsBuilder_.addAllMessages(values);
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder clearFriendList() {
-        if (friendListBuilder_ == null) {
-          friendList_ = java.util.Collections.emptyList();
+      public Builder clearFriends() {
+        if (friendsBuilder_ == null) {
+          friends_ = java.util.Collections.emptyList();
           bitField0_ = (bitField0_ & ~0x00000004);
           onChanged();
         } else {
-          friendListBuilder_.clear();
+          friendsBuilder_.clear();
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public Builder removeFriendList(int index) {
-        if (friendListBuilder_ == null) {
-          ensureFriendListIsMutable();
-          friendList_.remove(index);
+      public Builder removeFriends(int index) {
+        if (friendsBuilder_ == null) {
+          ensureFriendsIsMutable();
+          friends_.remove(index);
           onChanged();
         } else {
-          friendListBuilder_.remove(index);
+          friendsBuilder_.remove(index);
         }
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public protocol.Data.UserData.UserItem.Builder getFriendListBuilder(
+      public protocol.Data.UserData.UserItem.Builder getFriendsBuilder(
           int index) {
-        return getFriendListFieldBuilder().getBuilder(index);
+        return getFriendsFieldBuilder().getBuilder(index);
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public protocol.Data.UserData.UserItemOrBuilder getFriendListOrBuilder(
+      public protocol.Data.UserData.UserItemOrBuilder getFriendsOrBuilder(
           int index) {
-        if (friendListBuilder_ == null) {
-          return friendList_.get(index);  } else {
-          return friendListBuilder_.getMessageOrBuilder(index);
+        if (friendsBuilder_ == null) {
+          return friends_.get(index);  } else {
+          return friendsBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
       public java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-           getFriendListOrBuilderList() {
-        if (friendListBuilder_ != null) {
-          return friendListBuilder_.getMessageOrBuilderList();
+           getFriendsOrBuilderList() {
+        if (friendsBuilder_ != null) {
+          return friendsBuilder_.getMessageOrBuilderList();
         } else {
-          return java.util.Collections.unmodifiableList(friendList_);
+          return java.util.Collections.unmodifiableList(friends_);
         }
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public protocol.Data.UserData.UserItem.Builder addFriendListBuilder() {
-        return getFriendListFieldBuilder().addBuilder(
+      public protocol.Data.UserData.UserItem.Builder addFriendsBuilder() {
+        return getFriendsFieldBuilder().addBuilder(
             protocol.Data.UserData.UserItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
-      public protocol.Data.UserData.UserItem.Builder addFriendListBuilder(
+      public protocol.Data.UserData.UserItem.Builder addFriendsBuilder(
           int index) {
-        return getFriendListFieldBuilder().addBuilder(
+        return getFriendsFieldBuilder().addBuilder(
             index, protocol.Data.UserData.UserItem.getDefaultInstance());
       }
       /**
-       * <code>repeated .protocol.UserItem friendList = 3;</code>
+       * <code>repeated .protocol.UserItem friends = 3;</code>
        */
       public java.util.List<protocol.Data.UserData.UserItem.Builder> 
-           getFriendListBuilderList() {
-        return getFriendListFieldBuilder().getBuilderList();
+           getFriendsBuilderList() {
+        return getFriendsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilder<
           protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> 
-          getFriendListFieldBuilder() {
-        if (friendListBuilder_ == null) {
-          friendListBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          getFriendsFieldBuilder() {
+        if (friendsBuilder_ == null) {
+          friendsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder>(
-                  friendList_,
+                  friends_,
                   ((bitField0_ & 0x00000004) == 0x00000004),
                   getParentForChildren(),
                   isClean());
-          friendList_ = null;
+          friends_ = null;
         }
-        return friendListBuilder_;
+        return friendsBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:protocol.GetPersonalInfoRsp)
@@ -1596,12 +1596,12 @@ public final class GetPersonalInfoMsg {
       "\n\030GetPersonalInfoMsg.proto\022\010protocol\032\016Us" +
       "erData.proto\"H\n\022GetPersonalInfoReq\022\027\n\010us" +
       "erInfo\030\001 \001(\010:\005false\022\031\n\nfriendInfo\030\002 \001(\010:" +
-      "\005false\"\304\001\n\022GetPersonalInfoRsp\022;\n\nresultC" +
+      "\005false\"\301\001\n\022GetPersonalInfoRsp\022;\n\nresultC" +
       "ode\030\001 \002(\0162\'.protocol.GetPersonalInfoRsp." +
       "ResultCode\022$\n\010userInfo\030\002 \001(\0132\022.protocol." +
-      "UserItem\022&\n\nfriendList\030\003 \003(\0132\022.protocol." +
-      "UserItem\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004F" +
-      "AIL\020\001B\016\n\014protocol.Msg"
+      "UserItem\022#\n\007friends\030\003 \003(\0132\022.protocol.Use" +
+      "rItem\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL" +
+      "\020\001B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1619,7 +1619,7 @@ public final class GetPersonalInfoMsg {
           internal_static_protocol_GetPersonalInfoRsp_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_GetPersonalInfoRsp_descriptor,
-              new java.lang.String[] { "ResultCode", "UserInfo", "FriendList", });
+              new java.lang.String[] { "ResultCode", "UserInfo", "Friends", });
           return null;
         }
       };

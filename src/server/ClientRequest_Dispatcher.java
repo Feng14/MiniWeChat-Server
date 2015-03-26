@@ -46,13 +46,13 @@ public class ClientRequest_Dispatcher {
 			case ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ_VALUE:
 				Server_User.instance.personalSettings(networkMessage);
 				break;
-			case ProtoHead.ENetworkMessage.GETUSERINFO_REQ_VALUE:
+			case ProtoHead.ENetworkMessage.GET_USERINFO_REQ_VALUE:
 				Server_Friend.instance.getUserInfo(networkMessage);
 				break;
-			case ProtoHead.ENetworkMessage.ADDFRIEND_REQ_VALUE:
+			case ProtoHead.ENetworkMessage.ADD_FRIEND_REQ_VALUE:
 				Server_Friend.instance.addFriend(networkMessage);
 				break;
-			case ProtoHead.ENetworkMessage.DELETEFRIEND_REQ_VALUE:
+			case ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ_VALUE:
 				Server_Friend.instance.deleteFriend(networkMessage);
 				break;
 			// 另一个人登陆，本用户被踢下的通知的回复
@@ -61,6 +61,9 @@ public class ClientRequest_Dispatcher {
 				break;
 			case ProtoHead.ENetworkMessage.LOGOUT_REQ_VALUE:
 				Server_User.instance.logout(networkMessage);
+				break;
+			case ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ_VALUE:
+				Server_User.instance.getPersonalInfo(networkMessage);
 				break;
 
 			default:

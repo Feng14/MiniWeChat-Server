@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
+import protocol.Msg.GetPersonalInfoMsg;
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
@@ -25,9 +26,9 @@ public class SocketClientTest {
 	public OutputStream outputStream;
 
 //	String host = "192.168.45.17"; // 要连接的服务端IP地址
-	String host = "192.168.1.103"; // 要连接的服务端IP地址
+	//String host = "192.168.1.103"; // 要连接的服务端IP地址
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
-//	String host = "192.168.45.34"; // 要连接的服务端IP地址
+	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8080; // 要连接的服务端对应的监听端口
 
@@ -59,7 +60,7 @@ public class SocketClientTest {
 		// testPersonalSettings();
 
 //		 测心跳
-		testKeepAlive();
+		//testKeepAlive();
 		// 测注册
 //		testRegister();
 		
@@ -79,6 +80,9 @@ public class SocketClientTest {
 		
 		//测退出登录
 //		testLogout();
+		
+		//测获取个人信息
+		testGetPersonalInfo();
 
 		// new Thread(new readThread()).start();
 	}
@@ -506,7 +510,7 @@ public class SocketClientTest {
 					.toByteArray());
 			writeToServer(loginByteArray);
 			
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_REQ.getNumber(), 
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), 
 					builder.build().toByteArray());
 			
 			writeToServer(byteArray);
@@ -519,7 +523,7 @@ public class SocketClientTest {
 						HEAD_INT_SIZE));
 				System.out.println("Type : " + type.toString());
 
-				if (type == ProtoHead.ENetworkMessage.GETUSERINFO_RSP) {
+				if (type == ProtoHead.ENetworkMessage.GET_USERINFO_RSP) {
 					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
 						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
@@ -548,14 +552,14 @@ public class SocketClientTest {
 	public byte[] testGetUserInfo_JUnit(String targetUserId) throws IOException{
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
 		builder.setTargetUserId(targetUserId);
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_REQ.getNumber(), 
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), 
 				builder.build().toByteArray());
 		writeToServer(byteArray);
 		while(true){
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
-			if (type == ProtoHead.ENetworkMessage.GETUSERINFO_RSP) {
+			if (type == ProtoHead.ENetworkMessage.GET_USERINFO_RSP) {
 				return byteArray;
 			}
 		}
@@ -582,7 +586,7 @@ public class SocketClientTest {
 					.toByteArray());
 			writeToServer(loginByteArray);
 			
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADDFRIEND_REQ.getNumber(), 
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), 
 					builder.build().toByteArray());
 			
 			writeToServer(byteArray);
@@ -595,7 +599,7 @@ public class SocketClientTest {
 						HEAD_INT_SIZE));
 				System.out.println("Type : " + type.toString());
 
-				if (type == ProtoHead.ENetworkMessage.ADDFRIEND_RSP) {
+				if (type == ProtoHead.ENetworkMessage.ADD_FRIEND_RSP) {
 					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
 						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
@@ -620,14 +624,14 @@ public class SocketClientTest {
 		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
 		builder.setFriendUserId(friendUserId);
 		
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADDFRIEND_REQ.getNumber(), 
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), 
 					builder.build().toByteArray());
 		writeToServer(byteArray);
 		while(true){
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 						HEAD_INT_SIZE));
-			if (type == ProtoHead.ENetworkMessage.ADDFRIEND_RSP) {
+			if (type == ProtoHead.ENetworkMessage.ADD_FRIEND_RSP) {
 				return byteArray;
 			}
 		}
@@ -651,7 +655,7 @@ public class SocketClientTest {
 			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
 					.toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_REQ.getNumber(), 
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), 
 					builder.build().toByteArray());
 		
 			writeToServer(byteArray);
@@ -664,7 +668,7 @@ public class SocketClientTest {
 						HEAD_INT_SIZE));
 				System.out.println("Type : " + type.toString());
 
-				if (type == ProtoHead.ENetworkMessage.DELETEFRIEND_RSP) {
+				if (type == ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP) {
 					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
 						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
@@ -689,14 +693,14 @@ public class SocketClientTest {
 	public byte[] testDeleteFriend_JUnit(String friendUserId) throws IOException{
 		DeleteFriendMsg.DeleteFriendReq.Builder builder = DeleteFriendMsg.DeleteFriendReq.newBuilder();
 		builder.setFriendUserId(friendUserId);
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_REQ.getNumber(), 
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), 
 				builder.build().toByteArray());
 		writeToServer(byteArray);
 		while(true){
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
-			if (type == ProtoHead.ENetworkMessage.DELETEFRIEND_RSP) {
+			if (type == ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP) {
 				return byteArray;
 			}
 		}
@@ -755,6 +759,49 @@ public class SocketClientTest {
 			if (type == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
 				return byteArray;
 			}
+		}
+	}
+	
+	
+	public void testGetPersonalInfo(){
+		System.out.println(" start test getPersonalInfo ---------");
+		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
+		builder.setFriendInfo(true);
+		builder.setUserInfo(true);
+		try{
+			Socket socket = new Socket(host,port);
+			inputStream = socket.getInputStream();
+			outputStream = socket.getOutputStream();
+			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
+			loginBuilder.setUserId("a2");
+			loginBuilder.setUserPassword("s123");
+			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
+					.toByteArray());
+			writeToServer(loginByteArray);
+			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), 
+					builder.build().toByteArray());
+		
+			writeToServer(byteArray);
+			while(true){
+				byteArray = readFromServer();
+				System.out.println(" read from server !");
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+						HEAD_INT_SIZE));
+				System.out.println(type);
+				if (type == ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP) {
+					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+					GetPersonalInfoMsg.GetPersonalInfoRsp response = GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(objBytes);
+					System.out.println("Response : "
+							+ GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+					System.out.println(response.getUserInfo());
+					System.out.println(response.getFriendsList());
+				}
+			}
+		}catch(IOException e){
+			
 		}
 	}
 	

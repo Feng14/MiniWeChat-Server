@@ -11,43 +11,43 @@ public final class PersonalSettingsMsg {
   public interface PersonalSettingsReqOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // optional string userName = 1 [default = ""];
+    // optional string userName = 1;
     /**
-     * <code>optional string userName = 1 [default = ""];</code>
+     * <code>optional string userName = 1;</code>
      */
     boolean hasUserName();
     /**
-     * <code>optional string userName = 1 [default = ""];</code>
+     * <code>optional string userName = 1;</code>
      */
     java.lang.String getUserName();
     /**
-     * <code>optional string userName = 1 [default = ""];</code>
+     * <code>optional string userName = 1;</code>
      */
     com.google.protobuf.ByteString
         getUserNameBytes();
 
-    // optional string userPassword = 2 [default = ""];
+    // optional string userPassword = 2;
     /**
-     * <code>optional string userPassword = 2 [default = ""];</code>
+     * <code>optional string userPassword = 2;</code>
      */
     boolean hasUserPassword();
     /**
-     * <code>optional string userPassword = 2 [default = ""];</code>
+     * <code>optional string userPassword = 2;</code>
      */
     java.lang.String getUserPassword();
     /**
-     * <code>optional string userPassword = 2 [default = ""];</code>
+     * <code>optional string userPassword = 2;</code>
      */
     com.google.protobuf.ByteString
         getUserPasswordBytes();
 
-    // optional int32 headIndex = 3 [default = 0];
+    // optional int32 headIndex = 3;
     /**
-     * <code>optional int32 headIndex = 3 [default = 0];</code>
+     * <code>optional int32 headIndex = 3;</code>
      */
     boolean hasHeadIndex();
     /**
-     * <code>optional int32 headIndex = 3 [default = 0];</code>
+     * <code>optional int32 headIndex = 3;</code>
      */
     int getHeadIndex();
   }
@@ -157,17 +157,17 @@ public final class PersonalSettingsMsg {
     }
 
     private int bitField0_;
-    // optional string userName = 1 [default = ""];
+    // optional string userName = 1;
     public static final int USERNAME_FIELD_NUMBER = 1;
     private java.lang.Object userName_;
     /**
-     * <code>optional string userName = 1 [default = ""];</code>
+     * <code>optional string userName = 1;</code>
      */
     public boolean hasUserName() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional string userName = 1 [default = ""];</code>
+     * <code>optional string userName = 1;</code>
      */
     public java.lang.String getUserName() {
       java.lang.Object ref = userName_;
@@ -184,7 +184,7 @@ public final class PersonalSettingsMsg {
       }
     }
     /**
-     * <code>optional string userName = 1 [default = ""];</code>
+     * <code>optional string userName = 1;</code>
      */
     public com.google.protobuf.ByteString
         getUserNameBytes() {
@@ -200,17 +200,17 @@ public final class PersonalSettingsMsg {
       }
     }
 
-    // optional string userPassword = 2 [default = ""];
+    // optional string userPassword = 2;
     public static final int USERPASSWORD_FIELD_NUMBER = 2;
     private java.lang.Object userPassword_;
     /**
-     * <code>optional string userPassword = 2 [default = ""];</code>
+     * <code>optional string userPassword = 2;</code>
      */
     public boolean hasUserPassword() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional string userPassword = 2 [default = ""];</code>
+     * <code>optional string userPassword = 2;</code>
      */
     public java.lang.String getUserPassword() {
       java.lang.Object ref = userPassword_;
@@ -227,7 +227,7 @@ public final class PersonalSettingsMsg {
       }
     }
     /**
-     * <code>optional string userPassword = 2 [default = ""];</code>
+     * <code>optional string userPassword = 2;</code>
      */
     public com.google.protobuf.ByteString
         getUserPasswordBytes() {
@@ -243,17 +243,17 @@ public final class PersonalSettingsMsg {
       }
     }
 
-    // optional int32 headIndex = 3 [default = 0];
+    // optional int32 headIndex = 3;
     public static final int HEADINDEX_FIELD_NUMBER = 3;
     private int headIndex_;
     /**
-     * <code>optional int32 headIndex = 3 [default = 0];</code>
+     * <code>optional int32 headIndex = 3;</code>
      */
     public boolean hasHeadIndex() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional int32 headIndex = 3 [default = 0];</code>
+     * <code>optional int32 headIndex = 3;</code>
      */
     public int getHeadIndex() {
       return headIndex_;
@@ -524,16 +524,16 @@ public final class PersonalSettingsMsg {
       }
       private int bitField0_;
 
-      // optional string userName = 1 [default = ""];
+      // optional string userName = 1;
       private java.lang.Object userName_ = "";
       /**
-       * <code>optional string userName = 1 [default = ""];</code>
+       * <code>optional string userName = 1;</code>
        */
       public boolean hasUserName() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional string userName = 1 [default = ""];</code>
+       * <code>optional string userName = 1;</code>
        */
       public java.lang.String getUserName() {
         java.lang.Object ref = userName_;
@@ -547,7 +547,7 @@ public final class PersonalSettingsMsg {
         }
       }
       /**
-       * <code>optional string userName = 1 [default = ""];</code>
+       * <code>optional string userName = 1;</code>
        */
       public com.google.protobuf.ByteString
           getUserNameBytes() {
@@ -563,7 +563,7 @@ public final class PersonalSettingsMsg {
         }
       }
       /**
-       * <code>optional string userName = 1 [default = ""];</code>
+       * <code>optional string userName = 1;</code>
        */
       public Builder setUserName(
           java.lang.String value) {
@@ -576,7 +576,7 @@ public final class PersonalSettingsMsg {
         return this;
       }
       /**
-       * <code>optional string userName = 1 [default = ""];</code>
+       * <code>optional string userName = 1;</code>
        */
       public Builder clearUserName() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -585,7 +585,7 @@ public final class PersonalSettingsMsg {
         return this;
       }
       /**
-       * <code>optional string userName = 1 [default = ""];</code>
+       * <code>optional string userName = 1;</code>
        */
       public Builder setUserNameBytes(
           com.google.protobuf.ByteString value) {
@@ -598,16 +598,16 @@ public final class PersonalSettingsMsg {
         return this;
       }
 
-      // optional string userPassword = 2 [default = ""];
+      // optional string userPassword = 2;
       private java.lang.Object userPassword_ = "";
       /**
-       * <code>optional string userPassword = 2 [default = ""];</code>
+       * <code>optional string userPassword = 2;</code>
        */
       public boolean hasUserPassword() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional string userPassword = 2 [default = ""];</code>
+       * <code>optional string userPassword = 2;</code>
        */
       public java.lang.String getUserPassword() {
         java.lang.Object ref = userPassword_;
@@ -621,7 +621,7 @@ public final class PersonalSettingsMsg {
         }
       }
       /**
-       * <code>optional string userPassword = 2 [default = ""];</code>
+       * <code>optional string userPassword = 2;</code>
        */
       public com.google.protobuf.ByteString
           getUserPasswordBytes() {
@@ -637,7 +637,7 @@ public final class PersonalSettingsMsg {
         }
       }
       /**
-       * <code>optional string userPassword = 2 [default = ""];</code>
+       * <code>optional string userPassword = 2;</code>
        */
       public Builder setUserPassword(
           java.lang.String value) {
@@ -650,7 +650,7 @@ public final class PersonalSettingsMsg {
         return this;
       }
       /**
-       * <code>optional string userPassword = 2 [default = ""];</code>
+       * <code>optional string userPassword = 2;</code>
        */
       public Builder clearUserPassword() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -659,7 +659,7 @@ public final class PersonalSettingsMsg {
         return this;
       }
       /**
-       * <code>optional string userPassword = 2 [default = ""];</code>
+       * <code>optional string userPassword = 2;</code>
        */
       public Builder setUserPasswordBytes(
           com.google.protobuf.ByteString value) {
@@ -672,22 +672,22 @@ public final class PersonalSettingsMsg {
         return this;
       }
 
-      // optional int32 headIndex = 3 [default = 0];
+      // optional int32 headIndex = 3;
       private int headIndex_ ;
       /**
-       * <code>optional int32 headIndex = 3 [default = 0];</code>
+       * <code>optional int32 headIndex = 3;</code>
        */
       public boolean hasHeadIndex() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional int32 headIndex = 3 [default = 0];</code>
+       * <code>optional int32 headIndex = 3;</code>
        */
       public int getHeadIndex() {
         return headIndex_;
       }
       /**
-       * <code>optional int32 headIndex = 3 [default = 0];</code>
+       * <code>optional int32 headIndex = 3;</code>
        */
       public Builder setHeadIndex(int value) {
         bitField0_ |= 0x00000004;
@@ -696,7 +696,7 @@ public final class PersonalSettingsMsg {
         return this;
       }
       /**
-       * <code>optional int32 headIndex = 3 [default = 0];</code>
+       * <code>optional int32 headIndex = 3;</code>
        */
       public Builder clearHeadIndex() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1230,13 +1230,13 @@ public final class PersonalSettingsMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\031PersonalSettingsMsg.proto\022\010protocol\"W\n" +
-      "\023PersonalSettingsReq\022\022\n\010userName\030\001 \001(\t:\000" +
-      "\022\026\n\014userPassword\030\002 \001(\t:\000\022\024\n\theadIndex\030\003 " +
-      "\001(\005:\0010\"x\n\023PersonalSettingsRsp\022<\n\nresultC" +
-      "ode\030\001 \002(\0162(.protocol.PersonalSettingsRsp" +
-      ".ResultCode\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010" +
-      "\n\004FAIL\020\001B\016\n\014protocol.Msg"
+      "\n\031PersonalSettingsMsg.proto\022\010protocol\"P\n" +
+      "\023PersonalSettingsReq\022\020\n\010userName\030\001 \001(\t\022\024" +
+      "\n\014userPassword\030\002 \001(\t\022\021\n\theadIndex\030\003 \001(\005\"" +
+      "x\n\023PersonalSettingsRsp\022<\n\nresultCode\030\001 \002" +
+      "(\0162(.protocol.PersonalSettingsRsp.Result" +
+      "Code\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020" +
+      "\001B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

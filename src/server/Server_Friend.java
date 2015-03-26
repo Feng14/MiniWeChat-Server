@@ -67,7 +67,7 @@ public class Server_Friend {
 			//回复客户端
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GETUSERINFO_RSP.getNumber(),
+					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),
 							networkMessage.getMessageID(), getUserInfoBuilder.build().toByteArray()));
 			
 		} catch (InvalidProtocolBufferException e) {
@@ -120,7 +120,7 @@ public class Server_Friend {
 			//回复客户端
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADDFRIEND_RSP.getNumber(),
+					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
 							networkMessage.getMessageID(), addFriendBuilder.build().toByteArray()));
 			
 		} catch (InvalidProtocolBufferException e) {
@@ -182,7 +182,7 @@ public class Server_Friend {
 			//回复客户端
 			ServerNetwork.instance.sendMessageToClient(
 					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETEFRIEND_RSP.getNumber(),
+					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
 							networkMessage.getMessageID(), DeleteFriendBuilder.build().toByteArray()));
 			
 		} catch (InvalidProtocolBufferException e) {

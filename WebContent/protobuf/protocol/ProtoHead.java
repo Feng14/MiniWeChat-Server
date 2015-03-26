@@ -42,29 +42,29 @@ public final class ProtoHead {
      */
     PERSONALSETTINGS_RSP(6, 6),
     /**
-     * <code>GETUSERINFO_REQ = 7;</code>
+     * <code>GET_USERINFO_REQ = 7;</code>
      */
-    GETUSERINFO_REQ(7, 7),
+    GET_USERINFO_REQ(7, 7),
     /**
-     * <code>GETUSERINFO_RSP = 8;</code>
+     * <code>GET_USERINFO_RSP = 8;</code>
      */
-    GETUSERINFO_RSP(8, 8),
+    GET_USERINFO_RSP(8, 8),
     /**
-     * <code>ADDFRIEND_REQ = 9;</code>
+     * <code>ADD_FRIEND_REQ = 9;</code>
      */
-    ADDFRIEND_REQ(9, 9),
+    ADD_FRIEND_REQ(9, 9),
     /**
-     * <code>ADDFRIEND_RSP = 10;</code>
+     * <code>ADD_FRIEND_RSP = 10;</code>
      */
-    ADDFRIEND_RSP(10, 10),
+    ADD_FRIEND_RSP(10, 10),
     /**
-     * <code>DELETEFRIEND_REQ = 11;</code>
+     * <code>DELETE_FRIEND_REQ = 11;</code>
      */
-    DELETEFRIEND_REQ(11, 11),
+    DELETE_FRIEND_REQ(11, 11),
     /**
-     * <code>DELETEFRIEND_RSP = 12;</code>
+     * <code>DELETE_FRIEND_RSP = 12;</code>
      */
-    DELETEFRIEND_RSP(12, 12),
+    DELETE_FRIEND_RSP(12, 12),
     /**
      * <code>OFFLINE_SYNC = 13;</code>
      */
@@ -77,6 +77,14 @@ public final class ProtoHead {
      * <code>LOGOUT_RSP = 15;</code>
      */
     LOGOUT_RSP(15, 15),
+    /**
+     * <code>GET_PERSONALINFO_REQ = 16;</code>
+     */
+    GET_PERSONALINFO_REQ(16, 16),
+    /**
+     * <code>GET_PERSONALINFO_RSP = 17;</code>
+     */
+    GET_PERSONALINFO_RSP(17, 17),
     ;
 
     /**
@@ -108,29 +116,29 @@ public final class ProtoHead {
      */
     public static final int PERSONALSETTINGS_RSP_VALUE = 6;
     /**
-     * <code>GETUSERINFO_REQ = 7;</code>
+     * <code>GET_USERINFO_REQ = 7;</code>
      */
-    public static final int GETUSERINFO_REQ_VALUE = 7;
+    public static final int GET_USERINFO_REQ_VALUE = 7;
     /**
-     * <code>GETUSERINFO_RSP = 8;</code>
+     * <code>GET_USERINFO_RSP = 8;</code>
      */
-    public static final int GETUSERINFO_RSP_VALUE = 8;
+    public static final int GET_USERINFO_RSP_VALUE = 8;
     /**
-     * <code>ADDFRIEND_REQ = 9;</code>
+     * <code>ADD_FRIEND_REQ = 9;</code>
      */
-    public static final int ADDFRIEND_REQ_VALUE = 9;
+    public static final int ADD_FRIEND_REQ_VALUE = 9;
     /**
-     * <code>ADDFRIEND_RSP = 10;</code>
+     * <code>ADD_FRIEND_RSP = 10;</code>
      */
-    public static final int ADDFRIEND_RSP_VALUE = 10;
+    public static final int ADD_FRIEND_RSP_VALUE = 10;
     /**
-     * <code>DELETEFRIEND_REQ = 11;</code>
+     * <code>DELETE_FRIEND_REQ = 11;</code>
      */
-    public static final int DELETEFRIEND_REQ_VALUE = 11;
+    public static final int DELETE_FRIEND_REQ_VALUE = 11;
     /**
-     * <code>DELETEFRIEND_RSP = 12;</code>
+     * <code>DELETE_FRIEND_RSP = 12;</code>
      */
-    public static final int DELETEFRIEND_RSP_VALUE = 12;
+    public static final int DELETE_FRIEND_RSP_VALUE = 12;
     /**
      * <code>OFFLINE_SYNC = 13;</code>
      */
@@ -143,6 +151,14 @@ public final class ProtoHead {
      * <code>LOGOUT_RSP = 15;</code>
      */
     public static final int LOGOUT_RSP_VALUE = 15;
+    /**
+     * <code>GET_PERSONALINFO_REQ = 16;</code>
+     */
+    public static final int GET_PERSONALINFO_REQ_VALUE = 16;
+    /**
+     * <code>GET_PERSONALINFO_RSP = 17;</code>
+     */
+    public static final int GET_PERSONALINFO_RSP_VALUE = 17;
 
 
     public final int getNumber() { return value; }
@@ -156,15 +172,17 @@ public final class ProtoHead {
         case 4: return LOGIN_RSP;
         case 5: return PERSONALSETTINGS_REQ;
         case 6: return PERSONALSETTINGS_RSP;
-        case 7: return GETUSERINFO_REQ;
-        case 8: return GETUSERINFO_RSP;
-        case 9: return ADDFRIEND_REQ;
-        case 10: return ADDFRIEND_RSP;
-        case 11: return DELETEFRIEND_REQ;
-        case 12: return DELETEFRIEND_RSP;
+        case 7: return GET_USERINFO_REQ;
+        case 8: return GET_USERINFO_RSP;
+        case 9: return ADD_FRIEND_REQ;
+        case 10: return ADD_FRIEND_RSP;
+        case 11: return DELETE_FRIEND_REQ;
+        case 12: return DELETE_FRIEND_RSP;
         case 13: return OFFLINE_SYNC;
         case 14: return LOGOUT_REQ;
         case 15: return LOGOUT_RSP;
+        case 16: return GET_PERSONALINFO_REQ;
+        case 17: return GET_PERSONALINFO_RSP;
         default: return null;
       }
     }
@@ -225,16 +243,17 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\312\002\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\204\003\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
-      "\022\030\n\024PERSONALSETTINGS_RSP\020\006\022\023\n\017GETUSERINF" +
-      "O_REQ\020\007\022\023\n\017GETUSERINFO_RSP\020\010\022\021\n\rADDFRIEN" +
-      "D_REQ\020\t\022\021\n\rADDFRIEND_RSP\020\n\022\024\n\020DELETEFRIE" +
-      "ND_REQ\020\013\022\024\n\020DELETEFRIEND_RSP\020\014\022\020\n\014OFFLIN" +
-      "E_SYNC\020\r\022\016\n\nLOGOUT_REQ\020\016\022\016\n\nLOGOUT_RSP\020\017" +
-      "B\n\n\010protocol"
+      "\022\030\n\024PERSONALSETTINGS_RSP\020\006\022\024\n\020GET_USERIN" +
+      "FO_REQ\020\007\022\024\n\020GET_USERINFO_RSP\020\010\022\022\n\016ADD_FR" +
+      "IEND_REQ\020\t\022\022\n\016ADD_FRIEND_RSP\020\n\022\025\n\021DELETE" +
+      "_FRIEND_REQ\020\013\022\025\n\021DELETE_FRIEND_RSP\020\014\022\020\n\014" +
+      "OFFLINE_SYNC\020\r\022\016\n\nLOGOUT_REQ\020\016\022\016\n\nLOGOUT" +
+      "_RSP\020\017\022\030\n\024GET_PERSONALINFO_REQ\020\020\022\030\n\024GET_",
+      "PERSONALINFO_RSP\020\021B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

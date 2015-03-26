@@ -16,5 +16,5 @@ message GetPersonalInfoRsp{
 	required ResultCode resultCode = 1;
 	
 	optional UserItem userInfo = 2;
-	repeated  UserItem friendList = 3;
+	repeated  UserItem friends = 3;
 }
