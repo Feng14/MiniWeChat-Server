@@ -51,7 +51,13 @@ class HttpServerHandle extends IoHandlerAdapter {
 
 			// 获取请求参数
 			String name = request.getParameter("name");
-			name = URLDecoder.decode(name, "UTF-8");
+			String data = request.getParameter("data");
+			System.out.println("Data : " + data);
+			try {
+				name = URLDecoder.decode(name, "UTF-8");
+			} catch (Exception e) {
+				System.err.println("HttpServer : 解码异常!");
+			}
 
 			// 响应HTML
 			// byte[] responseBytes = getHelloResponse(name);

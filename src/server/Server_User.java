@@ -198,7 +198,7 @@ public class Server_User {
 	 */
 	private boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) throws IOException {
 		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
-		if (user != null && !user.die) {
+		if (user != null) {
 			// 发送有他人登陆消息
 			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
@@ -236,8 +236,8 @@ public class Server_User {
 		ClientUser user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 		Debug.log(new String[] { "Srever_User", "clientOfflineResponse" },
 				"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 已接到被踢下的消息，将其设为死亡！");
+		// 删掉连接中用户信息表的登陆数据
 		user.userId = null;
-		user.die = true;
 	}
 
 	/**
@@ -336,7 +336,6 @@ public class Server_User {
 				byte[] objectBytes = offLineMessage.build().toByteArray();
 				byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
 				clientUser.userId = null;
-				clientUser.die = true;
 				ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
 
 				// 添加等待回复
@@ -373,7 +372,6 @@ public class Server_User {
 						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
 
 				user.userId = null;
-				user.die = true;
 				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
 			} catch (NoIpException e) {
 				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);

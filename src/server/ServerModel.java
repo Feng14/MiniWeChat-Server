@@ -277,8 +277,8 @@ public class ServerModel {
 								continue;
 							user = clientUserTable.get(key);
 
-							// 若已死，删除 ; 将上次没有回复的干掉，从用户表中删掉
-							if (user.die || user.onLine == false) {
+							// 将上次没有回复的干掉，从用户表中删掉
+							if (user.onLine == false) {
 								Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
 								// user.ioSession.close(true);
 								iterator.remove();
