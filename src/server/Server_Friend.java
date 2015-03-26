@@ -95,6 +95,7 @@ public class Server_Friend {
 			
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
+			User friend =null;
 			try{
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
@@ -102,7 +103,7 @@ public class Server_Friend {
 				criteria.add(Restrictions.eq("userId", clientUser.userId));
 				User u = (User) criteria.list().get(0);
 				criteria2.add(Restrictions.eq("userId", addFriendObject.getFriendUserId()));
-				User friend = (User) criteria2.list().get(0);
+				friend = (User) criteria2.list().get(0);
 				//检测双方是否已经是好友关系
 				boolean exist1 = false,exist2 = false;
 				for(User user:u.getFriends()){
@@ -131,20 +132,7 @@ public class Server_Friend {
 					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
 					if(null != friendUser){
 						//如果对方在线  需要发消息给对方通知好友添加
-					    UserItem.Builder uib = UserItem.newBuilder();
-					    uib.setUserId(u.getUserId());
-					    uib.setUserName(u.getUserName());
-					    uib.setHeadIndex(u.getHeadIndex());
-					    ChangeFriendMsg.ChangeFriendSync.Builder cfb = ChangeFriendMsg.ChangeFriendSync.newBuilder();
-					    cfb.setChangeType(ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
-					    cfb.setUserItem(uib);
-					    //向客户端发送消息
-					    byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(), cfb.build().toByteArray());
-						ServerNetwork.instance.sendMessageToClient(friendUser.ioSession, messageBytes);
-
-						// 添加等待回复
-						ServerModel.instance.addClientResponseListener(friendUser.ioSession, NetworkMessage.getMessageID(messageBytes),
-								messageBytes);
+					   sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
 					}
 				}
 				trans.commit();
@@ -162,6 +150,7 @@ public class Server_Friend {
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
 							networkMessage.getMessageID(), addFriendBuilder.build().toByteArray()));
 			
+			sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
 		} catch (InvalidProtocolBufferException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,6 +174,7 @@ public class Server_Friend {
 			
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
+			User friend = null;
 			try{
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
@@ -192,7 +182,7 @@ public class Server_Friend {
 				criteria.add(Restrictions.eq("userId", clientUser.userId));
 				User u = (User) criteria.list().get(0);
 				criteria2.add(Restrictions.eq("userId", deleteFriendObject.getFriendUserId()));
-				User friend = (User) criteria2.list().get(0);
+				friend = (User) criteria2.list().get(0);
 				User x=null,y=null;
 				//检测双方之前是否是好友关系
 				for(User a:u.getFriends()){
@@ -214,21 +204,7 @@ public class Server_Friend {
 					session.update(friend);
 					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
 					if(null != friendUser){
-						//如果对方在线  需要发消息给对方通知好友删除
-					    UserItem.Builder uib = UserItem.newBuilder();
-					    uib.setUserId(u.getUserId());
-					    uib.setUserName(u.getUserName());
-					    uib.setHeadIndex(u.getHeadIndex());
-					    ChangeFriendMsg.ChangeFriendSync.Builder cfb = ChangeFriendMsg.ChangeFriendSync.newBuilder();
-					    cfb.setChangeType(ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
-					    cfb.setUserItem(uib);
-					    //向客户端发送消息
-					    byte[] messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(), cfb.build().toByteArray());
-						ServerNetwork.instance.sendMessageToClient(friendUser.ioSession, messageBytes);
-
-						// 添加等待回复
-						ServerModel.instance.addClientResponseListener(friendUser.ioSession, NetworkMessage.getMessageID(messageBytes),
-								messageBytes);
+						sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
 					}
 				}
 				
@@ -247,10 +223,32 @@ public class Server_Friend {
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
 							networkMessage.getMessageID(), DeleteFriendBuilder.build().toByteArray()));
 			
+			sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
 		} catch (InvalidProtocolBufferException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void sendSync(ClientUser clientUser,User user,ChangeFriendMsg.ChangeFriendSync.ChangeType type){
+		 UserItem.Builder uib = UserItem.newBuilder();
+		 uib.setUserId(user.getUserId());
+		 uib.setUserName(user.getUserName());
+		 uib.setHeadIndex(user.getHeadIndex());
+		 ChangeFriendMsg.ChangeFriendSync.Builder cfb = ChangeFriendMsg.ChangeFriendSync.newBuilder();
+		 cfb.setChangeType(type);
+		 cfb.setUserItem(uib);
+		 //向客户端发送消息
+		 byte[] messageBytes;
+		try {
+			messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(), cfb.build().toByteArray());
+			 ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
+			 // 添加等待回复
+			 ServerModel.instance.addClientResponseListener(clientUser.ioSession, NetworkMessage.getMessageID(messageBytes),messageBytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
