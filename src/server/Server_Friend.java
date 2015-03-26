@@ -94,7 +94,6 @@ public class Server_Friend {
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			try{
-				//双方互加好友
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
 				Criteria criteria2 = session.createCriteria(User.class);
@@ -102,14 +101,32 @@ public class Server_Friend {
 				User u = (User) criteria.list().get(0);
 				criteria2.add(Restrictions.eq("userId", addFriendObject.getFriendUserId()));
 				User friend = (User) criteria2.list().get(0);
-				u.getFriends().add(friend);
-				friend.getFriends().add(u);
-			
+				//检测双方是否已经是好友关系
+				boolean exist1 = false,exist2 = false;
+				for(User user:u.getFriends()){
+					if(user.getUserId().equals(friend.getUserId())){
+						exist1 = true;
+						break;
+					}
+				}
+				for(User user:friend.getFriends()){
+					if(user.getUserId().equals(u.getUserId())){
+						exist2 = true ;
+						break;
+					}
+				}
+				//如果不存在好友关系 则添加好友
 				Transaction trans = session.beginTransaction();
-			    session.update(u);
-			    session.update(friend);
-			    trans.commit();
-			    
+				if(!exist1){
+					u.getFriends().add(friend);
+				    session.update(u);
+				}
+				if(!exist2){
+					friend.getFriends().add(u);
+					session.update(friend);
+				}
+				trans.commit();
+				
 			    addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.SUCCESS);
 			}catch(Exception e){
 				addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
@@ -147,7 +164,6 @@ public class Server_Friend {
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			try{
-				//双方互加好友
 				Session session = HibernateSessionFactory.getSession();
 				Criteria criteria = session.createCriteria(User.class);
 				Criteria criteria2 = session.createCriteria(User.class);
@@ -156,6 +172,7 @@ public class Server_Friend {
 				criteria2.add(Restrictions.eq("userId", deleteFriendObject.getFriendUserId()));
 				User friend = (User) criteria2.list().get(0);
 				User x=null,y=null;
+				//检测双方之前是否是好友关系
 				for(User a:u.getFriends()){
 					if(a.getUserId().equals(friend.getUserId()))
 						x=a;
@@ -164,13 +181,18 @@ public class Server_Friend {
 					if(b.getUserId().equals(u.getUserId()))
 						y=b;
 				}
-				u.getFriends().remove(x);
-				friend.getFriends().remove(y);
-			
+				//如果是存在好友关系 则删除
 				Transaction trans = session.beginTransaction();
-			    session.update(u);
-			    session.update(friend);
-			    trans.commit();
+				if(null!=x){
+					u.getFriends().remove(x);
+					session.update(u);
+				}
+				if(null != y){
+					friend.getFriends().remove(y);
+					session.update(friend);
+				}
+				
+				trans.commit();
 			    
 			    DeleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.SUCCESS);
 			}catch(Exception e){

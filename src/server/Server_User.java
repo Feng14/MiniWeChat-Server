@@ -315,8 +315,15 @@ public class Server_User {
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			e.printStackTrace();
 		}
-		
+		try {
+			// 回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(), networkMessage.getMessageID(), builder.build().toByteArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
 	private void changeUserPassword(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder,NetworkMessage networkMessage,ClientUser clientUser,User u,String userPassword){
 		try {
 			Session session = HibernateSessionFactory.getSession();
@@ -329,7 +336,7 @@ public class Server_User {
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			e.printStackTrace();
 		}
-		// 向客户端发送消息
+		// 向客户端发送消息 更改密码后客户端需要下线重新登录
 		OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 		offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.CHANGE_PASSWORD);
 		byte[] objectBytes = offLineMessage.build().toByteArray();
@@ -346,6 +353,13 @@ public class Server_User {
 		// 添加等待回复
 		ServerModel.instance.addClientResponseListener(networkMessage.ioSession,
 				NetworkMessage.getMessageID(messageBytes), messageBytes);
+		try {
+			// 回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(), networkMessage.getMessageID(), builder.build().toByteArray()));
+			} catch (IOException e) {
+				e.printStackTrace();
+		}
 	}
 	
 	private void changeHeadIndex(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder,NetworkMessage networkMessage,ClientUser clientUser,User u,int headInx){
@@ -368,6 +382,13 @@ public class Server_User {
 		} catch (IOException e) {
 			System.err.println("保存头像图片失败");
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
+			e.printStackTrace();
+		}
+		try {
+			// 回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(), networkMessage.getMessageID(), builder.build().toByteArray()));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -407,7 +428,7 @@ public class Server_User {
 	}
 	
 	/**
-	 * 获取用户信息 包括基本信息和好友列表
+	 * 获取个人信息 包括基本信息和好友列表
 	 * @param networkMessage
 	 */
 	public void getPersonalInfo(NetworkMessage networkMessage){

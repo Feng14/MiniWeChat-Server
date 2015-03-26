@@ -67,7 +67,7 @@ public class SocketClientTest {
 		// 测登陆
 //		testLogin();
 		// 测试个人设置
-//		testPersonalSettings();
+		testPersonalSettings();
 		
 		//测查看用户个人信息
 		//testGetUserInfo();
@@ -82,7 +82,7 @@ public class SocketClientTest {
 //		testLogout();
 		
 		//测获取个人信息
-		testGetPersonalInfo();
+		//testGetPersonalInfo();
 
 		// new Thread(new readThread()).start();
 	}
@@ -399,9 +399,9 @@ public class SocketClientTest {
 	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
-		builder.setUserName("bbbss");
-		builder.setUserPassword("s123");
-		builder.setHeadIndex(1);
+		builder.setUserName("bbss");
+		//builder.setUserPassword("s1234");
+		builder.setHeadIndex(6);
 		System.out.println("start personalSettings test! ----------------------------");
 		try {
 			Socket socket = new Socket(host, port);
@@ -410,7 +410,7 @@ public class SocketClientTest {
 			
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
-			loginBuilder.setUserPassword("aa");
+			loginBuilder.setUserPassword("s1234");
 			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
 					.toByteArray());
 			writeToServer(loginByteArray);
@@ -706,6 +706,10 @@ public class SocketClientTest {
 		}
 	}
 	
+	/**
+	 * 测试退出登录
+	 * @author wangfei
+	 */
 	public void testLogout(){
 		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
 		try{
@@ -762,7 +766,10 @@ public class SocketClientTest {
 		}
 	}
 	
-	
+	/**
+	 * 测获取个人信息--包括基本信息和好友信息
+	 * @author wangfei
+	 */
 	public void testGetPersonalInfo(){
 		System.out.println(" start test getPersonalInfo ---------");
 		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
@@ -803,6 +810,31 @@ public class SocketClientTest {
 		}catch(IOException e){
 			
 		}
+	}
+	
+	/**
+	 * 测获取个人信息--包括基本信息和好友信息 --JUnit调用
+	 * @return
+	 * @author wangfei
+	 * @throws IOException 
+	 * @time 2015-03-26
+	 */
+	public byte[] testGetPersonalInfo_JUnit(boolean userInfo,boolean friendInfo) throws IOException{
+		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder =GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
+		builder.setUserInfo(userInfo);
+		builder.setFriendInfo(friendInfo);
+		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), 
+				builder.build().toByteArray());
+		writeToServer(byteArray);
+		while(true){
+			byteArray = readFromServer();
+			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
+					HEAD_INT_SIZE));
+			if (type == ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP) {
+				return byteArray;
+			}
+		}
+		
 	}
 	
 }
