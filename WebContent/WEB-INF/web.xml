@@ -14,7 +14,7 @@
 		<servlet-name>HelloWorld</servlet-name>
 		<url-pattern>/HelloWorld</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>TransferFile</servlet-name>
 		<servlet-class>server_HTTP.ServletServer</servlet-class>
@@ -24,6 +24,10 @@
 		<url-pattern>/TransferFile</url-pattern>
 	</servlet-mapping>
 	<!-- 结束servlet的配置 -->
+
+	<listener>
+		<listener-class>tools.MyListener</listener-class>
+	</listener>
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
