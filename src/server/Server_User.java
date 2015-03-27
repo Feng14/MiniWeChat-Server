@@ -413,7 +413,7 @@ public class Server_User {
 				user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 				logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
 				Debug.log(new String[] { "Srever_User", "logout" },
-						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录，将其设为死亡！");
+						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录！");
 
 				user.userId = null;
 				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);

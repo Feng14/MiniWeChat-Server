@@ -77,7 +77,7 @@ public class SocketClientTest {
 		//testAddFriend();
 
 		//测删除好友
-		testDeleteFriend();
+		//testDeleteFriend();
 		
 		//测退出登录
 //		testLogout();

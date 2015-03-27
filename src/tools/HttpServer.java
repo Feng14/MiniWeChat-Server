@@ -2,7 +2,6 @@ package tools;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -51,8 +50,23 @@ class HttpServerHandle extends IoHandlerAdapter {
 
 			// 获取请求参数
 			String name = request.getParameter("name");
+			System.out.println("name : " + name);
+			System.out.println(request.getQueryString());
+			System.out.println(request.getRequestPath());
+
+
+//			Token token = (Token)message;
+			System.out.println(request.getParameters().size());;
+			
+//			System.out.println(request.toString());
+//			System.out.println("1111111111111111111111111111111111111111");
+			
+//			System.out.println(token.getBusiMessage().toString());
+			
+			
+			
 			String data = request.getParameter("data");
-			System.out.println("Data : " + data);
+			System.out.println("data : " + data);
 			try {
 				name = URLDecoder.decode(name, "UTF-8");
 			} catch (Exception e) {

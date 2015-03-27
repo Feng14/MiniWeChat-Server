@@ -102,9 +102,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private void dealRequest(IoSession ioSession, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-			Debug.log("ServerNetwork", "将Client请求放入待处理队列");
+			Debug.log("ServerNetwork", "将Client" + ServerModel.getIoSessionKey(ioSession) + " 的请求(size=" + byteArray.length + ")放入待处理队列");
 		} catch (InterruptedException e) {
 			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
+			e.printStackTrace();
+		} catch (NoIpException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

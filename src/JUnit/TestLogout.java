@@ -37,20 +37,20 @@ public class TestLogout {
 		inputStream = socket.getInputStream();
 		outputStream = socket.getOutputStream();
 	}
-	
+
 	/**
 	 * 测试退出登录
+	 * 
 	 * @throws IOException
 	 */
 	@Test
-	public void testLogout() throws IOException{
+	public void testLogout() throws IOException {
 		byte[] resultBytes = client.testLogout_JUnit();
-		LogoutMsg.LogoutRsp responseObject = 
-				LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		LogoutMsg.LogoutRsp responseObject = LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.SUCCESS.toString());
-		
+
 		resultBytes = client.testLogout_JUnit();
-		responseObject =LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject = LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.FAIL.toString());
 	}
 

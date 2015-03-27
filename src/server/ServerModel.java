@@ -222,15 +222,12 @@ public class ServerModel {
 		public void run() {
 			NetworkMessage networkMessage = null;
 			// 循环获取新的请求，阻塞式
-			System.out.println(1);
 			while (true) {
-				System.err.println(2);
 				try {
 					networkMessage = requestQueue.take();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				System.err.println(3);
 				Debug.log("ServerModel", "ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
 				if (networkMessage == null)
 					continue;
