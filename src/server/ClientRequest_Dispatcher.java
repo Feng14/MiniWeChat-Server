@@ -63,6 +63,8 @@ public class ClientRequest_Dispatcher {
 			case ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ_VALUE:
 				Server_User.instance.getPersonalInfo(networkMessage);
 				break;
+			// client发送消息
+//			case ProtoHead.ENetworkMessage.
 
 			default:
 				break;

@@ -3,11 +3,11 @@ package protocol;
 option java_package = "protocol.Msg";
 import "ChatData.proto";
 
-message SendChatReq{
-	required ChatItem chatData = 1;
+message ReceiveChatReq{
+	repeated ChatItem chatData = 1;
 }
 
-message SendChatRsp{
+message ReceiveChatRsp{
 	enum ResultCode{
     	SUCCESS = 0;
 		FAIL = 1;
