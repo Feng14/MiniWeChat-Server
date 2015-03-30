@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -24,7 +25,7 @@ import tools.Debug;
  * @author Feng
  * 
  */
-public class ServerModel {
+public class ServerModel extends Observable {
 	// 心跳包间隔(5秒)
 	public static final int KEEP_ALIVE_PACKET_TIME = 5000;
 	// 轮询"等待client回复"列表（waitClientRepTable）的间隔

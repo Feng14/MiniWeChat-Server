@@ -1,7 +1,5 @@
 package server;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-
 import exception.NoIpException;
 
 import protocol.ProtoHead;
