@@ -1,13 +1,21 @@
 package tools;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
+
+import server_HTTP.ServletServer;
 
 public class HttpClient {
 	/**
@@ -90,6 +98,10 @@ public class HttpClient {
 			out = new PrintWriter(conn.getOutputStream());
 			// 发送请求参数
 			out.print(param);
+
+			// 发送图片
+			OutputStream outputStream = conn.getOutputStream();
+
 			// flush输出流的缓冲
 			out.flush();
 			// 定义BufferedReader输入流来读取URL的响应
@@ -122,8 +134,87 @@ public class HttpClient {
 
 	}
 
-	public static void main(String args[]) {
-//		new HttpClient();
-		sendPost("http://192.168.45.17:8080", "data=1.jpg");
+	// public static void main(String args[]) {
+	// // new HttpClient();
+	// sendPost("http://192.168.45.17:8080/MiniWechat/TransferFile",
+	// "type=Image&imageName=1.jpg");
+	// }
+
+	static String sessionId = "";
+
+	public static String getPicBASE64() {
+		String picPath = "D:/1.jpg";
+		String content = "";
+		try {
+			FileInputStream fileForInput = new FileInputStream(picPath);
+			byte[] bytes = new byte[fileForInput.available()];
+			fileForInput.read(bytes);
+			content = new sun.misc.BASE64Encoder().encode(bytes); // 具体的编码方法
+			fileForInput.close();
+			// System.out.println(content.length());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return content;
+	}
+
+	public static void main(String[] args) throws Exception {
+		URL url = new URL("http://192.168.45.17:8080/MiniWechat/TransferFile");
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+		connection.setDoOutput(true);
+		// Read from the connection. Default is true.
+		connection.setDoInput(true);
+		// Set the post method. Default is GET
+		connection.setRequestMethod("POST");
+		// Post cannot use caches
+		// Post 请求不能使用缓存
+		connection.setUseCaches(false);
+		// This method takes effects to
+		// every instances of this class.
+		// URLConnection.setFollowRedirects是static函数，作用于所有的URLConnection对象。
+		// connection.setFollowRedirects(true);
+		// This methods only
+		// takes effacts to this
+		// instance.
+		// URLConnection.setInstanceFollowRedirects是成员函数，仅作用于当前函数
+		connection.setInstanceFollowRedirects(false);
+		// Set the content type to urlencoded,
+		// because we will write
+		// some URL-encoded content to the
+		// connection. Settings above must be set before connect!
+		// 配置本次连接的Content-type，配置为application/x-www-form-urlencoded的
+		// 意思是正文是urlencoded编码过的form参数，下面我们可以看到我们对正文内容使用URLEncoder.encode
+		// 进行编码
+		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		// 连接，从postUrl.openConnection()至此的配置必须要在connect之前完成，
+		// 要注意的是connection.getOutputStream会隐含的进行connect。
+		connection.connect();
+		Long sendTime = System.currentTimeMillis();
+		DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+		// 要传的参数
+//		String content = URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("UpdateImage", "UTF-8");
+//		content += "&" + URLEncoder.encode("imageName", "UTF-8") + "=" + URLEncoder.encode("1.jpg", "UTF-8");
+		String content = "type=UpdateImage&imageName=1.jpg&";
+		// 得到图片的base64编码
+//		content = content + "&" + URLEncoder.encode("file", "UTF-8") + "=" + URLEncoder.encode(getPicBASE64(), "UTF-8");
+		
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		outputStream.write(content.getBytes());
+//		System.out.println(ServletServer.CLIENT_PATH + "1.jpg");
+		outputStream.write(DataTypeTranslater.fileToByte(ServletServer.CLIENT_PATH + "1.jpg"));
+		
+		out.write(outputStream.toByteArray());
+		out.flush();
+		out.close(); // flush and close
+		// Get Session ID
+		String key = "";
+		if (connection != null) {
+			for (int i = 1; (key = connection.getHeaderFieldKey(i)) != null; i++) {
+				if (key.equalsIgnoreCase("set-cookie")) {
+					sessionId = connection.getHeaderField(key);
+					sessionId = sessionId.substring(0, sessionId.indexOf(";"));
+				}
+			}
+		}
 	}
 }

@@ -7,17 +7,9 @@
 
 	<!-- 这里开始添加servlet的配置 -->
 	<servlet>
-		<servlet-name>HelloWorld</servlet-name>
-		<servlet-class>test.HelloWorld1</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>HelloWorld</servlet-name>
-		<url-pattern>/HelloWorld</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>TransferFile</servlet-name>
 		<servlet-class>server_HTTP.ServletServer</servlet-class>
+		<load-on-startup>4</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>TransferFile</servlet-name>
@@ -25,9 +17,9 @@
 	</servlet-mapping>
 	<!-- 结束servlet的配置 -->
 
-	<listener>
+	<!-- <listener>
 		<listener-class>tools.MyListener</listener-class>
-	</listener>
+	</listener> -->
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

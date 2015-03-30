@@ -47,11 +47,11 @@ public class ServerNetwork extends IoHandlerAdapter {
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		Debug.log("端口号：8080");
+		Debug.log("端口号：8081");
 
 		IoAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);
-		acceptor.bind(new InetSocketAddress(8080));
+		acceptor.bind(new InetSocketAddress(8081));
 	}
 
 	private int count = 0;

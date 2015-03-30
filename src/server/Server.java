@@ -22,12 +22,16 @@ import tools.DataTypeTranslater;
  */
 public class Server {
 	
-	public static void main(String[] args) throws IOException {
+	public Server() throws IOException{
 		// 启动网络层
 		ServerNetwork.instance.init();
 		
 		// 启动逻辑层
 		ServerModel.instance.init();
+	}
+	
+	public static void main(String[] args) throws IOException {
+		new Server();
 	}
 
 }
