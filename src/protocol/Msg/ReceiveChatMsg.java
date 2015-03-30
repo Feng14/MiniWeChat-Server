@@ -8,42 +8,53 @@ public final class ReceiveChatMsg {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface SendChatReqOrBuilder
+  public interface ReceiveChatSyncOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ChatItem chatData = 1;
+    // repeated .protocol.ChatItem chatData = 1;
     /**
-     * <code>required .protocol.ChatItem chatData = 1;</code>
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
      */
-    boolean hasChatData();
+    java.util.List<protocol.Data.ChatData.ChatItem> 
+        getChatDataList();
     /**
-     * <code>required .protocol.ChatItem chatData = 1;</code>
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
      */
-    protocol.Data.ChatData.ChatItem getChatData();
+    protocol.Data.ChatData.ChatItem getChatData(int index);
     /**
-     * <code>required .protocol.ChatItem chatData = 1;</code>
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
      */
-    protocol.Data.ChatData.ChatItemOrBuilder getChatDataOrBuilder();
+    int getChatDataCount();
+    /**
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
+     */
+    java.util.List<? extends protocol.Data.ChatData.ChatItemOrBuilder> 
+        getChatDataOrBuilderList();
+    /**
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
+     */
+    protocol.Data.ChatData.ChatItemOrBuilder getChatDataOrBuilder(
+        int index);
   }
   /**
-   * Protobuf type {@code protocol.SendChatReq}
+   * Protobuf type {@code protocol.ReceiveChatSync}
    */
-  public static final class SendChatReq extends
+  public static final class ReceiveChatSync extends
       com.google.protobuf.GeneratedMessage
-      implements SendChatReqOrBuilder {
-    // Use SendChatReq.newBuilder() to construct.
-    private SendChatReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements ReceiveChatSyncOrBuilder {
+    // Use ReceiveChatSync.newBuilder() to construct.
+    private ReceiveChatSync(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private SendChatReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private ReceiveChatSync(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final SendChatReq defaultInstance;
-    public static SendChatReq getDefaultInstance() {
+    private static final ReceiveChatSync defaultInstance;
+    public static ReceiveChatSync getDefaultInstance() {
       return defaultInstance;
     }
 
-    public SendChatReq getDefaultInstanceForType() {
+    public ReceiveChatSync getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -53,7 +64,7 @@ public final class ReceiveChatMsg {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private SendChatReq(
+    private ReceiveChatSync(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -77,16 +88,11 @@ public final class ReceiveChatMsg {
               break;
             }
             case 10: {
-              protocol.Data.ChatData.ChatItem.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000001) == 0x00000001)) {
-                subBuilder = chatData_.toBuilder();
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                chatData_ = new java.util.ArrayList<protocol.Data.ChatData.ChatItem>();
+                mutable_bitField0_ |= 0x00000001;
               }
-              chatData_ = input.readMessage(protocol.Data.ChatData.ChatItem.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(chatData_);
-                chatData_ = subBuilder.buildPartial();
-              }
-              bitField0_ |= 0x00000001;
+              chatData_.add(input.readMessage(protocol.Data.ChatData.ChatItem.PARSER, extensionRegistry));
               break;
             }
           }
@@ -97,75 +103,89 @@ public final class ReceiveChatMsg {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          chatData_ = java.util.Collections.unmodifiableList(chatData_);
+        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatReq_descriptor;
+      return protocol.Msg.ReceiveChatMsg.internal_static_protocol_ReceiveChatSync_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatReq_fieldAccessorTable
+      return protocol.Msg.ReceiveChatMsg.internal_static_protocol_ReceiveChatSync_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              protocol.Msg.ReceiveChatMsg.SendChatReq.class, protocol.Msg.ReceiveChatMsg.SendChatReq.Builder.class);
+              protocol.Msg.ReceiveChatMsg.ReceiveChatSync.class, protocol.Msg.ReceiveChatMsg.ReceiveChatSync.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<SendChatReq> PARSER =
-        new com.google.protobuf.AbstractParser<SendChatReq>() {
-      public SendChatReq parsePartialFrom(
+    public static com.google.protobuf.Parser<ReceiveChatSync> PARSER =
+        new com.google.protobuf.AbstractParser<ReceiveChatSync>() {
+      public ReceiveChatSync parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SendChatReq(input, extensionRegistry);
+        return new ReceiveChatSync(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<SendChatReq> getParserForType() {
+    public com.google.protobuf.Parser<ReceiveChatSync> getParserForType() {
       return PARSER;
     }
 
-    private int bitField0_;
-    // required .protocol.ChatItem chatData = 1;
+    // repeated .protocol.ChatItem chatData = 1;
     public static final int CHATDATA_FIELD_NUMBER = 1;
-    private protocol.Data.ChatData.ChatItem chatData_;
+    private java.util.List<protocol.Data.ChatData.ChatItem> chatData_;
     /**
-     * <code>required .protocol.ChatItem chatData = 1;</code>
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
      */
-    public boolean hasChatData() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required .protocol.ChatItem chatData = 1;</code>
-     */
-    public protocol.Data.ChatData.ChatItem getChatData() {
+    public java.util.List<protocol.Data.ChatData.ChatItem> getChatDataList() {
       return chatData_;
     }
     /**
-     * <code>required .protocol.ChatItem chatData = 1;</code>
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
      */
-    public protocol.Data.ChatData.ChatItemOrBuilder getChatDataOrBuilder() {
+    public java.util.List<? extends protocol.Data.ChatData.ChatItemOrBuilder> 
+        getChatDataOrBuilderList() {
       return chatData_;
+    }
+    /**
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
+     */
+    public int getChatDataCount() {
+      return chatData_.size();
+    }
+    /**
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
+     */
+    public protocol.Data.ChatData.ChatItem getChatData(int index) {
+      return chatData_.get(index);
+    }
+    /**
+     * <code>repeated .protocol.ChatItem chatData = 1;</code>
+     */
+    public protocol.Data.ChatData.ChatItemOrBuilder getChatDataOrBuilder(
+        int index) {
+      return chatData_.get(index);
     }
 
     private void initFields() {
-      chatData_ = protocol.Data.ChatData.ChatItem.getDefaultInstance();
+      chatData_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasChatData()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!getChatData().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
+      for (int i = 0; i < getChatDataCount(); i++) {
+        if (!getChatData(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -174,8 +194,8 @@ public final class ReceiveChatMsg {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, chatData_);
+      for (int i = 0; i < chatData_.size(); i++) {
+        output.writeMessage(1, chatData_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -186,9 +206,9 @@ public final class ReceiveChatMsg {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      for (int i = 0; i < chatData_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, chatData_);
+          .computeMessageSize(1, chatData_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -202,53 +222,53 @@ public final class ReceiveChatMsg {
       return super.writeReplace();
     }
 
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(byte[] data)
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(java.io.InputStream input)
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseDelimitedFrom(java.io.InputStream input)
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseDelimitedFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ReceiveChatMsg.SendChatReq parseFrom(
+    public static protocol.Msg.ReceiveChatMsg.ReceiveChatSync parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -257,7 +277,7 @@ public final class ReceiveChatMsg {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(protocol.Msg.ReceiveChatMsg.SendChatReq prototype) {
+    public static Builder newBuilder(protocol.Msg.ReceiveChatMsg.ReceiveChatSync prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -269,24 +289,24 @@ public final class ReceiveChatMsg {
       return builder;
     }
     /**
-     * Protobuf type {@code protocol.SendChatReq}
+     * Protobuf type {@code protocol.ReceiveChatSync}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Msg.ReceiveChatMsg.SendChatReqOrBuilder {
+       implements protocol.Msg.ReceiveChatMsg.ReceiveChatSyncOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatReq_descriptor;
+        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_ReceiveChatSync_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatReq_fieldAccessorTable
+        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_ReceiveChatSync_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                protocol.Msg.ReceiveChatMsg.SendChatReq.class, protocol.Msg.ReceiveChatMsg.SendChatReq.Builder.class);
+                protocol.Msg.ReceiveChatMsg.ReceiveChatSync.class, protocol.Msg.ReceiveChatMsg.ReceiveChatSync.Builder.class);
       }
 
-      // Construct using protocol.Msg.ReceiveChatMsg.SendChatReq.newBuilder()
+      // Construct using protocol.Msg.ReceiveChatMsg.ReceiveChatSync.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -308,11 +328,11 @@ public final class ReceiveChatMsg {
       public Builder clear() {
         super.clear();
         if (chatDataBuilder_ == null) {
-          chatData_ = protocol.Data.ChatData.ChatItem.getDefaultInstance();
+          chatData_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
         } else {
           chatDataBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -322,64 +342,84 @@ public final class ReceiveChatMsg {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatReq_descriptor;
+        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_ReceiveChatSync_descriptor;
       }
 
-      public protocol.Msg.ReceiveChatMsg.SendChatReq getDefaultInstanceForType() {
-        return protocol.Msg.ReceiveChatMsg.SendChatReq.getDefaultInstance();
+      public protocol.Msg.ReceiveChatMsg.ReceiveChatSync getDefaultInstanceForType() {
+        return protocol.Msg.ReceiveChatMsg.ReceiveChatSync.getDefaultInstance();
       }
 
-      public protocol.Msg.ReceiveChatMsg.SendChatReq build() {
-        protocol.Msg.ReceiveChatMsg.SendChatReq result = buildPartial();
+      public protocol.Msg.ReceiveChatMsg.ReceiveChatSync build() {
+        protocol.Msg.ReceiveChatMsg.ReceiveChatSync result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public protocol.Msg.ReceiveChatMsg.SendChatReq buildPartial() {
-        protocol.Msg.ReceiveChatMsg.SendChatReq result = new protocol.Msg.ReceiveChatMsg.SendChatReq(this);
+      public protocol.Msg.ReceiveChatMsg.ReceiveChatSync buildPartial() {
+        protocol.Msg.ReceiveChatMsg.ReceiveChatSync result = new protocol.Msg.ReceiveChatMsg.ReceiveChatSync(this);
         int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
         if (chatDataBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            chatData_ = java.util.Collections.unmodifiableList(chatData_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
           result.chatData_ = chatData_;
         } else {
           result.chatData_ = chatDataBuilder_.build();
         }
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof protocol.Msg.ReceiveChatMsg.SendChatReq) {
-          return mergeFrom((protocol.Msg.ReceiveChatMsg.SendChatReq)other);
+        if (other instanceof protocol.Msg.ReceiveChatMsg.ReceiveChatSync) {
+          return mergeFrom((protocol.Msg.ReceiveChatMsg.ReceiveChatSync)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(protocol.Msg.ReceiveChatMsg.SendChatReq other) {
-        if (other == protocol.Msg.ReceiveChatMsg.SendChatReq.getDefaultInstance()) return this;
-        if (other.hasChatData()) {
-          mergeChatData(other.getChatData());
+      public Builder mergeFrom(protocol.Msg.ReceiveChatMsg.ReceiveChatSync other) {
+        if (other == protocol.Msg.ReceiveChatMsg.ReceiveChatSync.getDefaultInstance()) return this;
+        if (chatDataBuilder_ == null) {
+          if (!other.chatData_.isEmpty()) {
+            if (chatData_.isEmpty()) {
+              chatData_ = other.chatData_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureChatDataIsMutable();
+              chatData_.addAll(other.chatData_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.chatData_.isEmpty()) {
+            if (chatDataBuilder_.isEmpty()) {
+              chatDataBuilder_.dispose();
+              chatDataBuilder_ = null;
+              chatData_ = other.chatData_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              chatDataBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getChatDataFieldBuilder() : null;
+            } else {
+              chatDataBuilder_.addAllMessages(other.chatData_);
+            }
+          }
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasChatData()) {
-          
-          return false;
-        }
-        if (!getChatData().isInitialized()) {
-          
-          return false;
+        for (int i = 0; i < getChatDataCount(); i++) {
+          if (!getChatData(i).isInitialized()) {
+            
+            return false;
+          }
         }
         return true;
       }
@@ -388,11 +428,11 @@ public final class ReceiveChatMsg {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        protocol.Msg.ReceiveChatMsg.SendChatReq parsedMessage = null;
+        protocol.Msg.ReceiveChatMsg.ReceiveChatSync parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (protocol.Msg.ReceiveChatMsg.SendChatReq) e.getUnfinishedMessage();
+          parsedMessage = (protocol.Msg.ReceiveChatMsg.ReceiveChatSync) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -403,116 +443,239 @@ public final class ReceiveChatMsg {
       }
       private int bitField0_;
 
-      // required .protocol.ChatItem chatData = 1;
-      private protocol.Data.ChatData.ChatItem chatData_ = protocol.Data.ChatData.ChatItem.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          protocol.Data.ChatData.ChatItem, protocol.Data.ChatData.ChatItem.Builder, protocol.Data.ChatData.ChatItemOrBuilder> chatDataBuilder_;
-      /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
-       */
-      public boolean hasChatData() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+      // repeated .protocol.ChatItem chatData = 1;
+      private java.util.List<protocol.Data.ChatData.ChatItem> chatData_ =
+        java.util.Collections.emptyList();
+      private void ensureChatDataIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          chatData_ = new java.util.ArrayList<protocol.Data.ChatData.ChatItem>(chatData_);
+          bitField0_ |= 0x00000001;
+         }
       }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          protocol.Data.ChatData.ChatItem, protocol.Data.ChatData.ChatItem.Builder, protocol.Data.ChatData.ChatItemOrBuilder> chatDataBuilder_;
+
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
-      public protocol.Data.ChatData.ChatItem getChatData() {
+      public java.util.List<protocol.Data.ChatData.ChatItem> getChatDataList() {
         if (chatDataBuilder_ == null) {
-          return chatData_;
+          return java.util.Collections.unmodifiableList(chatData_);
         } else {
-          return chatDataBuilder_.getMessage();
+          return chatDataBuilder_.getMessageList();
         }
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
-      public Builder setChatData(protocol.Data.ChatData.ChatItem value) {
+      public int getChatDataCount() {
+        if (chatDataBuilder_ == null) {
+          return chatData_.size();
+        } else {
+          return chatDataBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public protocol.Data.ChatData.ChatItem getChatData(int index) {
+        if (chatDataBuilder_ == null) {
+          return chatData_.get(index);
+        } else {
+          return chatDataBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public Builder setChatData(
+          int index, protocol.Data.ChatData.ChatItem value) {
         if (chatDataBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
           }
-          chatData_ = value;
+          ensureChatDataIsMutable();
+          chatData_.set(index, value);
           onChanged();
         } else {
-          chatDataBuilder_.setMessage(value);
+          chatDataBuilder_.setMessage(index, value);
         }
-        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
       public Builder setChatData(
+          int index, protocol.Data.ChatData.ChatItem.Builder builderForValue) {
+        if (chatDataBuilder_ == null) {
+          ensureChatDataIsMutable();
+          chatData_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          chatDataBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public Builder addChatData(protocol.Data.ChatData.ChatItem value) {
+        if (chatDataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureChatDataIsMutable();
+          chatData_.add(value);
+          onChanged();
+        } else {
+          chatDataBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public Builder addChatData(
+          int index, protocol.Data.ChatData.ChatItem value) {
+        if (chatDataBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureChatDataIsMutable();
+          chatData_.add(index, value);
+          onChanged();
+        } else {
+          chatDataBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public Builder addChatData(
           protocol.Data.ChatData.ChatItem.Builder builderForValue) {
         if (chatDataBuilder_ == null) {
-          chatData_ = builderForValue.build();
+          ensureChatDataIsMutable();
+          chatData_.add(builderForValue.build());
           onChanged();
         } else {
-          chatDataBuilder_.setMessage(builderForValue.build());
+          chatDataBuilder_.addMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
-      public Builder mergeChatData(protocol.Data.ChatData.ChatItem value) {
+      public Builder addChatData(
+          int index, protocol.Data.ChatData.ChatItem.Builder builderForValue) {
         if (chatDataBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001) &&
-              chatData_ != protocol.Data.ChatData.ChatItem.getDefaultInstance()) {
-            chatData_ =
-              protocol.Data.ChatData.ChatItem.newBuilder(chatData_).mergeFrom(value).buildPartial();
-          } else {
-            chatData_ = value;
-          }
+          ensureChatDataIsMutable();
+          chatData_.add(index, builderForValue.build());
           onChanged();
         } else {
-          chatDataBuilder_.mergeFrom(value);
+          chatDataBuilder_.addMessage(index, builderForValue.build());
         }
-        bitField0_ |= 0x00000001;
         return this;
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public Builder addAllChatData(
+          java.lang.Iterable<? extends protocol.Data.ChatData.ChatItem> values) {
+        if (chatDataBuilder_ == null) {
+          ensureChatDataIsMutable();
+          super.addAll(values, chatData_);
+          onChanged();
+        } else {
+          chatDataBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
       public Builder clearChatData() {
         if (chatDataBuilder_ == null) {
-          chatData_ = protocol.Data.ChatData.ChatItem.getDefaultInstance();
+          chatData_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
           onChanged();
         } else {
           chatDataBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
-      public protocol.Data.ChatData.ChatItem.Builder getChatDataBuilder() {
-        bitField0_ |= 0x00000001;
-        onChanged();
-        return getChatDataFieldBuilder().getBuilder();
+      public Builder removeChatData(int index) {
+        if (chatDataBuilder_ == null) {
+          ensureChatDataIsMutable();
+          chatData_.remove(index);
+          onChanged();
+        } else {
+          chatDataBuilder_.remove(index);
+        }
+        return this;
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
-      public protocol.Data.ChatData.ChatItemOrBuilder getChatDataOrBuilder() {
-        if (chatDataBuilder_ != null) {
-          return chatDataBuilder_.getMessageOrBuilder();
-        } else {
-          return chatData_;
+      public protocol.Data.ChatData.ChatItem.Builder getChatDataBuilder(
+          int index) {
+        return getChatDataFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public protocol.Data.ChatData.ChatItemOrBuilder getChatDataOrBuilder(
+          int index) {
+        if (chatDataBuilder_ == null) {
+          return chatData_.get(index);  } else {
+          return chatDataBuilder_.getMessageOrBuilder(index);
         }
       }
       /**
-       * <code>required .protocol.ChatItem chatData = 1;</code>
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilder<
+      public java.util.List<? extends protocol.Data.ChatData.ChatItemOrBuilder> 
+           getChatDataOrBuilderList() {
+        if (chatDataBuilder_ != null) {
+          return chatDataBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(chatData_);
+        }
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public protocol.Data.ChatData.ChatItem.Builder addChatDataBuilder() {
+        return getChatDataFieldBuilder().addBuilder(
+            protocol.Data.ChatData.ChatItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public protocol.Data.ChatData.ChatItem.Builder addChatDataBuilder(
+          int index) {
+        return getChatDataFieldBuilder().addBuilder(
+            index, protocol.Data.ChatData.ChatItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protocol.ChatItem chatData = 1;</code>
+       */
+      public java.util.List<protocol.Data.ChatData.ChatItem.Builder> 
+           getChatDataBuilderList() {
+        return getChatDataFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
           protocol.Data.ChatData.ChatItem, protocol.Data.ChatData.ChatItem.Builder, protocol.Data.ChatData.ChatItemOrBuilder> 
           getChatDataFieldBuilder() {
         if (chatDataBuilder_ == null) {
-          chatDataBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          chatDataBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
               protocol.Data.ChatData.ChatItem, protocol.Data.ChatData.ChatItem.Builder, protocol.Data.ChatData.ChatItemOrBuilder>(
                   chatData_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
                   getParentForChildren(),
                   isClean());
           chatData_ = null;
@@ -520,522 +683,22 @@ public final class ReceiveChatMsg {
         return chatDataBuilder_;
       }
 
-      // @@protoc_insertion_point(builder_scope:protocol.SendChatReq)
+      // @@protoc_insertion_point(builder_scope:protocol.ReceiveChatSync)
     }
 
     static {
-      defaultInstance = new SendChatReq(true);
+      defaultInstance = new ReceiveChatSync(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:protocol.SendChatReq)
-  }
-
-  public interface SendChatRspOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
-
-    // required .protocol.SendChatRsp.ResultCode resultCode = 1;
-    /**
-     * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-     */
-    boolean hasResultCode();
-    /**
-     * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-     */
-    protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode getResultCode();
-  }
-  /**
-   * Protobuf type {@code protocol.SendChatRsp}
-   */
-  public static final class SendChatRsp extends
-      com.google.protobuf.GeneratedMessage
-      implements SendChatRspOrBuilder {
-    // Use SendChatRsp.newBuilder() to construct.
-    private SendChatRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-      super(builder);
-      this.unknownFields = builder.getUnknownFields();
-    }
-    private SendChatRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final SendChatRsp defaultInstance;
-    public static SendChatRsp getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public SendChatRsp getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
-    private SendChatRsp(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 8: {
-              int rawValue = input.readEnum();
-              protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode value = protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode.valueOf(rawValue);
-              if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
-              } else {
-                bitField0_ |= 0x00000001;
-                resultCode_ = value;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatRsp_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatRsp_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              protocol.Msg.ReceiveChatMsg.SendChatRsp.class, protocol.Msg.ReceiveChatMsg.SendChatRsp.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<SendChatRsp> PARSER =
-        new com.google.protobuf.AbstractParser<SendChatRsp>() {
-      public SendChatRsp parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SendChatRsp(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<SendChatRsp> getParserForType() {
-      return PARSER;
-    }
-
-    /**
-     * Protobuf enum {@code protocol.SendChatRsp.ResultCode}
-     */
-    public enum ResultCode
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>SUCCESS = 0;</code>
-       */
-      SUCCESS(0, 0),
-      /**
-       * <code>FAIL = 1;</code>
-       */
-      FAIL(1, 1),
-      ;
-
-      /**
-       * <code>SUCCESS = 0;</code>
-       */
-      public static final int SUCCESS_VALUE = 0;
-      /**
-       * <code>FAIL = 1;</code>
-       */
-      public static final int FAIL_VALUE = 1;
-
-
-      public final int getNumber() { return value; }
-
-      public static ResultCode valueOf(int value) {
-        switch (value) {
-          case 0: return SUCCESS;
-          case 1: return FAIL;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<ResultCode>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<ResultCode>() {
-              public ResultCode findValueByNumber(int number) {
-                return ResultCode.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return protocol.Msg.ReceiveChatMsg.SendChatRsp.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final ResultCode[] VALUES = values();
-
-      public static ResultCode valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new java.lang.IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private ResultCode(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:protocol.SendChatRsp.ResultCode)
-    }
-
-    private int bitField0_;
-    // required .protocol.SendChatRsp.ResultCode resultCode = 1;
-    public static final int RESULTCODE_FIELD_NUMBER = 1;
-    private protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode resultCode_;
-    /**
-     * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-     */
-    public boolean hasResultCode() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-     */
-    public protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode getResultCode() {
-      return resultCode_;
-    }
-
-    private void initFields() {
-      resultCode_ = protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode.SUCCESS;
-    }
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized != -1) return isInitialized == 1;
-
-      if (!hasResultCode()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      getSerializedSize();
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, resultCode_.getNumber());
-      }
-      getUnknownFields().writeTo(output);
-    }
-
-    private int memoizedSerializedSize = -1;
-    public int getSerializedSize() {
-      int size = memoizedSerializedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, resultCode_.getNumber());
-      }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
-    }
-
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input);
-    }
-    public static protocol.Msg.ReceiveChatMsg.SendChatRsp parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
-    }
-
-    public static Builder newBuilder() { return Builder.create(); }
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(protocol.Msg.ReceiveChatMsg.SendChatRsp prototype) {
-      return newBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() { return newBuilder(this); }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code protocol.SendChatRsp}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Msg.ReceiveChatMsg.SendChatRspOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatRsp_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatRsp_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                protocol.Msg.ReceiveChatMsg.SendChatRsp.class, protocol.Msg.ReceiveChatMsg.SendChatRsp.Builder.class);
-      }
-
-      // Construct using protocol.Msg.ReceiveChatMsg.SendChatRsp.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
-      }
-      private static Builder create() {
-        return new Builder();
-      }
-
-      public Builder clear() {
-        super.clear();
-        resultCode_ = protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode.SUCCESS;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return protocol.Msg.ReceiveChatMsg.internal_static_protocol_SendChatRsp_descriptor;
-      }
-
-      public protocol.Msg.ReceiveChatMsg.SendChatRsp getDefaultInstanceForType() {
-        return protocol.Msg.ReceiveChatMsg.SendChatRsp.getDefaultInstance();
-      }
-
-      public protocol.Msg.ReceiveChatMsg.SendChatRsp build() {
-        protocol.Msg.ReceiveChatMsg.SendChatRsp result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public protocol.Msg.ReceiveChatMsg.SendChatRsp buildPartial() {
-        protocol.Msg.ReceiveChatMsg.SendChatRsp result = new protocol.Msg.ReceiveChatMsg.SendChatRsp(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.resultCode_ = resultCode_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof protocol.Msg.ReceiveChatMsg.SendChatRsp) {
-          return mergeFrom((protocol.Msg.ReceiveChatMsg.SendChatRsp)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(protocol.Msg.ReceiveChatMsg.SendChatRsp other) {
-        if (other == protocol.Msg.ReceiveChatMsg.SendChatRsp.getDefaultInstance()) return this;
-        if (other.hasResultCode()) {
-          setResultCode(other.getResultCode());
-        }
-        this.mergeUnknownFields(other.getUnknownFields());
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasResultCode()) {
-          
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        protocol.Msg.ReceiveChatMsg.SendChatRsp parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (protocol.Msg.ReceiveChatMsg.SendChatRsp) e.getUnfinishedMessage();
-          throw e;
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      // required .protocol.SendChatRsp.ResultCode resultCode = 1;
-      private protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode resultCode_ = protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode.SUCCESS;
-      /**
-       * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-       */
-      public boolean hasResultCode() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-       */
-      public protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode getResultCode() {
-        return resultCode_;
-      }
-      /**
-       * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-       */
-      public Builder setResultCode(protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode value) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        bitField0_ |= 0x00000001;
-        resultCode_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required .protocol.SendChatRsp.ResultCode resultCode = 1;</code>
-       */
-      public Builder clearResultCode() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        resultCode_ = protocol.Msg.ReceiveChatMsg.SendChatRsp.ResultCode.SUCCESS;
-        onChanged();
-        return this;
-      }
-
-      // @@protoc_insertion_point(builder_scope:protocol.SendChatRsp)
-    }
-
-    static {
-      defaultInstance = new SendChatRsp(true);
-      defaultInstance.initFields();
-    }
-
-    // @@protoc_insertion_point(class_scope:protocol.SendChatRsp)
+    // @@protoc_insertion_point(class_scope:protocol.ReceiveChatSync)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_protocol_SendChatReq_descriptor;
+    internal_static_protocol_ReceiveChatSync_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_protocol_SendChatReq_fieldAccessorTable;
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_protocol_SendChatRsp_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_protocol_SendChatRsp_fieldAccessorTable;
+      internal_static_protocol_ReceiveChatSync_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1046,29 +709,21 @@ public final class ReceiveChatMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\024ReceiveChatMsg.proto\022\010protocol\032\016ChatDa" +
-      "ta.proto\"3\n\013SendChatReq\022$\n\010chatData\030\001 \002(" +
-      "\0132\022.protocol.ChatItem\"h\n\013SendChatRsp\0224\n\n" +
-      "resultCode\030\001 \002(\0162 .protocol.SendChatRsp." +
-      "ResultCode\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n" +
-      "\004FAIL\020\001B\016\n\014protocol.Msg"
+      "ta.proto\"7\n\017ReceiveChatSync\022$\n\010chatData\030" +
+      "\001 \003(\0132\022.protocol.ChatItemB\016\n\014protocol.Ms" +
+      "g"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_protocol_SendChatReq_descriptor =
+          internal_static_protocol_ReceiveChatSync_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_protocol_SendChatReq_fieldAccessorTable = new
+          internal_static_protocol_ReceiveChatSync_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_protocol_SendChatReq_descriptor,
+              internal_static_protocol_ReceiveChatSync_descriptor,
               new java.lang.String[] { "ChatData", });
-          internal_static_protocol_SendChatRsp_descriptor =
-            getDescriptor().getMessageTypes().get(1);
-          internal_static_protocol_SendChatRsp_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_protocol_SendChatRsp_descriptor,
-              new java.lang.String[] { "ResultCode", });
           return null;
         }
       };

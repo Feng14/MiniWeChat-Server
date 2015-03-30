@@ -90,13 +90,17 @@ public final class ProtoHead {
      */
     CHANGE_FRIEND_SYNC(18, 18),
     /**
-     * <code>SEND_CHAT = 19;</code>
+     * <code>SEND_CHAT_REQ = 19;</code>
      */
-    SEND_CHAT(19, 19),
+    SEND_CHAT_REQ(19, 19),
     /**
-     * <code>RECEIVE_CHAT = 20;</code>
+     * <code>SEND_CHAT_RSP = 20;</code>
      */
-    RECEIVE_CHAT(20, 20),
+    SEND_CHAT_RSP(20, 20),
+    /**
+     * <code>RECEIVE_CHAT_SYNC = 21;</code>
+     */
+    RECEIVE_CHAT_SYNC(21, 21),
     ;
 
     /**
@@ -176,13 +180,17 @@ public final class ProtoHead {
      */
     public static final int CHANGE_FRIEND_SYNC_VALUE = 18;
     /**
-     * <code>SEND_CHAT = 19;</code>
+     * <code>SEND_CHAT_REQ = 19;</code>
      */
-    public static final int SEND_CHAT_VALUE = 19;
+    public static final int SEND_CHAT_REQ_VALUE = 19;
     /**
-     * <code>RECEIVE_CHAT = 20;</code>
+     * <code>SEND_CHAT_RSP = 20;</code>
      */
-    public static final int RECEIVE_CHAT_VALUE = 20;
+    public static final int SEND_CHAT_RSP_VALUE = 20;
+    /**
+     * <code>RECEIVE_CHAT_SYNC = 21;</code>
+     */
+    public static final int RECEIVE_CHAT_SYNC_VALUE = 21;
 
 
     public final int getNumber() { return value; }
@@ -208,8 +216,9 @@ public final class ProtoHead {
         case 16: return GET_PERSONALINFO_REQ;
         case 17: return GET_PERSONALINFO_RSP;
         case 18: return CHANGE_FRIEND_SYNC;
-        case 19: return SEND_CHAT;
-        case 20: return RECEIVE_CHAT;
+        case 19: return SEND_CHAT_REQ;
+        case 20: return SEND_CHAT_RSP;
+        case 21: return RECEIVE_CHAT_SYNC;
         default: return null;
       }
     }
@@ -270,7 +279,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\275\003\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\331\003\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -281,8 +290,8 @@ public final class ProtoHead {
       "OFFLINE_SYNC\020\r\022\016\n\nLOGOUT_REQ\020\016\022\016\n\nLOGOUT" +
       "_RSP\020\017\022\030\n\024GET_PERSONALINFO_REQ\020\020\022\030\n\024GET_",
       "PERSONALINFO_RSP\020\021\022\026\n\022CHANGE_FRIEND_SYNC" +
-      "\020\022\022\r\n\tSEND_CHAT\020\023\022\020\n\014RECEIVE_CHAT\020\024B\n\n\010p" +
-      "rotocol"
+      "\020\022\022\021\n\rSEND_CHAT_REQ\020\023\022\021\n\rSEND_CHAT_RSP\020\024" +
+      "\022\025\n\021RECEIVE_CHAT_SYNC\020\025B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

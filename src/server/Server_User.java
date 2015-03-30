@@ -9,12 +9,15 @@ import javax.imageio.ImageIO;
 import model.HibernateSessionFactory;
 import model.User;
 
+import observer.ObserverMessage_Login;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import exception.NoIpException;
 
@@ -180,6 +183,9 @@ public class Server_User {
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
 					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
 							.toByteArray()));
+			
+			// 广播“由用户登陆消息
+			ServerModel.instance.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ " 的包时异常！");
@@ -221,7 +227,7 @@ public class Server_User {
 
 			// 添加等待回复
 			ServerModel.instance.addClientResponseListener(networkMessage.ioSession, NetworkMessage.getMessageID(messageBytes),
-					messageBytes);
+					messageBytes, null);
 
 			return true;
 		}
@@ -352,7 +358,7 @@ public class Server_User {
 
 		// 添加等待回复
 		ServerModel.instance.addClientResponseListener(networkMessage.ioSession,
-				NetworkMessage.getMessageID(messageBytes), messageBytes);
+				NetworkMessage.getMessageID(messageBytes), messageBytes, null);
 		try {
 			// 回复客户端
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(

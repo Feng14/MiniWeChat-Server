@@ -13,10 +13,12 @@ public class WaitClientResponse {
 	long time;
 	public byte[] messageHasSent;
 	public IoSession ioSession;
+	public WaitClientResponseCallBack waitClientResponseCallBack;
 	
-	public WaitClientResponse(IoSession ioSession, byte[] messageHasSent) {
+	public WaitClientResponse(IoSession ioSession, byte[] messageHasSent, WaitClientResponseCallBack waitClientResponseCallBack) {
 		this.ioSession = ioSession;
 		this.messageHasSent = messageHasSent;
+		this.waitClientResponseCallBack = waitClientResponseCallBack;
 		
 		time = new Date().getTime();
 	}

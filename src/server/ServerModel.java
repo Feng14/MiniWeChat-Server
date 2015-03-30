@@ -177,8 +177,9 @@ public class ServerModel extends Observable {
 	 * @param messageHasSent
 	 * @author Feng
 	 */
-	public void addClientResponseListener(IoSession ioSession, byte[] key, byte[] messageHasSent) {
-		WaitClientResponse waitClientResponse = new WaitClientResponse(ioSession, messageHasSent);
+	public void addClientResponseListener(IoSession ioSession, byte[] key, byte[] messageHasSent,
+			WaitClientResponseCallBack waitClientResponseCallBack) {
+		WaitClientResponse waitClientResponse = new WaitClientResponse(ioSession, messageHasSent, waitClientResponseCallBack);
 		waitClientResponse.time = new Date().getTime();
 		// 加入到“等待回复表”中，由CheckWaitClientResponseThread 线程进行轮询
 		waitClientRepTable.put(key, waitClientResponse);

@@ -64,7 +64,9 @@ public class ClientRequest_Dispatcher {
 				Server_User.instance.getPersonalInfo(networkMessage);
 				break;
 			// client发送消息
-//			case ProtoHead.ENetworkMessage.
+			case ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE:
+				Server_Chatting.instance.clientSendChatting(networkMessage);
+				break;
 
 			default:
 				break;

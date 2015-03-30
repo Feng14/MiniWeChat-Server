@@ -246,7 +246,7 @@ public class Server_Friend {
 			messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(), cfb.build().toByteArray());
 			 ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
 			 // 添加等待回复
-			 ServerModel.instance.addClientResponseListener(clientUser.ioSession, NetworkMessage.getMessageID(messageBytes),messageBytes);
+			 ServerModel.instance.addClientResponseListener(clientUser.ioSession, NetworkMessage.getMessageID(messageBytes),messageBytes, null);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

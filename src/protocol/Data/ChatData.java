@@ -65,6 +65,16 @@ public final class ChatData {
      */
     com.google.protobuf.ByteString
         getChatBodyBytes();
+
+    // optional int64 date = 5;
+    /**
+     * <code>optional int64 date = 5;</code>
+     */
+    boolean hasDate();
+    /**
+     * <code>optional int64 date = 5;</code>
+     */
+    long getDate();
   }
   /**
    * Protobuf type {@code protocol.ChatItem}
@@ -141,6 +151,11 @@ public final class ChatData {
             case 34: {
               bitField0_ |= 0x00000008;
               chatBody_ = input.readBytes();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
+              date_ = input.readInt64();
               break;
             }
           }
@@ -410,11 +425,28 @@ public final class ChatData {
       }
     }
 
+    // optional int64 date = 5;
+    public static final int DATE_FIELD_NUMBER = 5;
+    private long date_;
+    /**
+     * <code>optional int64 date = 5;</code>
+     */
+    public boolean hasDate() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional int64 date = 5;</code>
+     */
+    public long getDate() {
+      return date_;
+    }
+
     private void initFields() {
       sendUserId_ = "";
       receiveUserId_ = "";
       chatType_ = protocol.Data.ChatData.ChatItem.ChatType.TEXT;
       chatBody_ = "";
+      date_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -456,6 +488,9 @@ public final class ChatData {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, getChatBodyBytes());
       }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeInt64(5, date_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -480,6 +515,10 @@ public final class ChatData {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, getChatBodyBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(5, date_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -605,6 +644,8 @@ public final class ChatData {
         bitField0_ = (bitField0_ & ~0x00000004);
         chatBody_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        date_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -649,6 +690,10 @@ public final class ChatData {
           to_bitField0_ |= 0x00000008;
         }
         result.chatBody_ = chatBody_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.date_ = date_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -682,6 +727,9 @@ public final class ChatData {
           bitField0_ |= 0x00000008;
           chatBody_ = other.chatBody_;
           onChanged();
+        }
+        if (other.hasDate()) {
+          setDate(other.getDate());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -984,6 +1032,39 @@ public final class ChatData {
         return this;
       }
 
+      // optional int64 date = 5;
+      private long date_ ;
+      /**
+       * <code>optional int64 date = 5;</code>
+       */
+      public boolean hasDate() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional int64 date = 5;</code>
+       */
+      public long getDate() {
+        return date_;
+      }
+      /**
+       * <code>optional int64 date = 5;</code>
+       */
+      public Builder setDate(long value) {
+        bitField0_ |= 0x00000010;
+        date_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int64 date = 5;</code>
+       */
+      public Builder clearDate() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        date_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:protocol.ChatItem)
     }
 
@@ -1009,11 +1090,12 @@ public final class ChatData {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016ChatData.proto\022\010protocol\"\227\001\n\010ChatItem\022" +
+      "\n\016ChatData.proto\022\010protocol\"\245\001\n\010ChatItem\022" +
       "\022\n\nsendUserId\030\001 \002(\t\022\025\n\rreceiveUserId\030\002 \002" +
       "(\t\022-\n\010chatType\030\003 \002(\0162\033.protocol.ChatItem" +
-      ".ChatType\022\020\n\010chatBody\030\004 \002(\t\"\037\n\010ChatType\022" +
-      "\010\n\004TEXT\020\000\022\t\n\005IMAGE\020\001B\017\n\rprotocol.Data"
+      ".ChatType\022\020\n\010chatBody\030\004 \002(\t\022\014\n\004date\030\005 \001(" +
+      "\003\"\037\n\010ChatType\022\010\n\004TEXT\020\000\022\t\n\005IMAGE\020\001B\017\n\rpr" +
+      "otocol.Data"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1025,7 +1107,7 @@ public final class ChatData {
           internal_static_protocol_ChatItem_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_ChatItem_descriptor,
-              new java.lang.String[] { "SendUserId", "ReceiveUserId", "ChatType", "ChatBody", });
+              new java.lang.String[] { "SendUserId", "ReceiveUserId", "ChatType", "ChatBody", "Date", });
           return null;
         }
       };
