@@ -1,5 +1,8 @@
-message ChatItem
-{
+package protocol;
+
+option java_package = "protocol.Data";
+
+message ChatItem{
 	enum ChatType{
     	TEXT = 0;
 		IMAGE = 1;

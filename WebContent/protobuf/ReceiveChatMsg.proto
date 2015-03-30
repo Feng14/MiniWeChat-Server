@@ -1,9 +1,10 @@
 package protocol;
 
 option java_package = "protocol.Msg";
+import "ChatData.proto";
 
 message SendChatReq{
-	required ChatData chatData = 1;
+	required ChatItem chatData = 1;
 }
 
 message SendChatRsp{
