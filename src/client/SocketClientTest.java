@@ -26,10 +26,10 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-//	String host = "192.168.45.17"; // 要连接的服务端IP地址
+	String host = "192.168.45.17"; // 要连接的服务端IP地址
 	//String host = "192.168.1.103"; // 要连接的服务端IP地址
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
-	String host = "192.168.45.34"; // 要连接的服务端IP地址
+//	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8081; // 要连接的服务端对应的监听端口
 
@@ -40,9 +40,9 @@ public class SocketClientTest {
 
 	public SocketClientTest() throws UnknownHostException, IOException {
 		// 为了简单起见，所有的异常都直接往外抛
-		String host = "192.168.45.34"; // 要连接的服务端IP地址
+		//String host = "192.168.45.34"; // 要连接的服务端IP地址
 		// String host = "192.168.45.37"; // 要连接的服务端IP地址
-		int port = 8080; // 要连接的服务端对应的监听端口
+		//int port = 8080; // 要连接的服务端对应的监听端口
 		// 与服务端建立连接
 		// 测心跳
 		// testKeepAlive();
@@ -66,9 +66,9 @@ public class SocketClientTest {
 //		testRegister();
 		
 		// 测登陆
-		testLogin();
+		//testLogin();
 		// 测试个人设置
-		//testPersonalSettings();
+		testPersonalSettings();
 		
 		//测查看用户个人信息
 		//testGetUserInfo();

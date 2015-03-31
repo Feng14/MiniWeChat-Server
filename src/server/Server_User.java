@@ -3,29 +3,19 @@ package server;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import model.HibernateSessionFactory;
 import model.User;
-
 import observer.ObserverMessage_Login;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import exception.NoIpException;
-
 import protocol.ProtoHead;
-import protocol.Data.UserData;
 import protocol.Data.UserData.UserItem;
 import protocol.Msg.GetPersonalInfoMsg;
-import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.OffLineMsg;
@@ -139,6 +129,7 @@ public class Server_User {
 	 * @throws NoIpException
 	 */
 	public void login(NetworkMessage networkMessage) throws NoIpException {
+		boolean success = false;
 		try {
 			Debug.log(new String[] { "Server_User", "login" }, " 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ "  的登陆事件  的处理");
@@ -167,6 +158,8 @@ public class Server_User {
 
 					// 记录回复位
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
+					
+					success = true;
 				} else { // 密码错误
 					Debug.log(new String[] { "Server_User", "login" },
 							"用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的登陆密码错误!");
@@ -184,8 +177,13 @@ public class Server_User {
 					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
 							.toByteArray()));
 			
-			// 广播“由用户登陆消息
-			ServerModel.instance.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
+			// 广播“由用户登陆消息"
+			if (success) {
+				Debug.log(new String[] { "Server_User", "login" }, "在服务器内广播 用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+						+ "  的登陆成功事件!");			
+				ServerModel.instance.setChange();
+				ServerModel.instance.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
+			}
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ " 的包时异常！");

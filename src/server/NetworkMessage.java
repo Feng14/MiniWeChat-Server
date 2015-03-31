@@ -1,12 +1,8 @@
 package server;
 
 import java.io.IOException;
-
 import org.apache.mina.core.session.IoSession;
-
 import protocol.ProtoHead;
-
-import sun.awt.datatransfer.DataTransferer;
 import tools.DataTypeTranslater;
 
 /**

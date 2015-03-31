@@ -1,15 +1,10 @@
 package server;
 
 import java.io.IOException;
-import java.util.Date;
-
 import model.Chatting;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
-import protocol.Msg.ReceiveChatMsg;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg;
 import exception.NoIpException;
@@ -27,6 +22,12 @@ public class Server_Chatting {
 
 	}
 
+	/**
+	 * 对 用户发送微信消息 的事件进行处理 对方在线就立刻发送，不在则存如内存
+	 * 
+	 * @param networkMessage
+	 * @throws NoIpException
+	 */
 	public void clientSendChatting(NetworkMessage networkMessage) throws NoIpException {
 
 		Debug.log(new String[] { "Server_Chatting", "clientSendChatting" },
@@ -43,22 +44,28 @@ public class Server_Chatting {
 					.getChatBody());
 
 			// 若是接收者在线，则发送，否则加入队列
-			ClientUser clientUser = ServerModel.instance.getClientUserByUserId(chatting.getSenderUserId());
+			ClientUser clientUser = ServerModel.instance.getClientUserByUserId(chatting.getReceiverUserId());
 			if (clientUser != null) {
+				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" },
+						"接收者在线，直接发给接受者(" + ServerModel.getIoSessionKey(clientUser.ioSession) + ")!");
 				ChatItem.Builder chatItem = chatting.createChatItem();
+				
+				Debug.log(chatItem.getSendUserId() + " " + chatItem.getReceiveUserId() + " " + chatItem.getChatType() + " "
+						+ chatItem.getChatBody());
 
 				ReceiveChatSync.Builder receiverChatObj = ReceiveChatSync.newBuilder();
 				receiverChatObj.addChatData(chatItem);
 
-				byte[] messageWillSend = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_RSP_VALUE, receiverChatObj
-						.build().toByteArray());
+				byte[] messageWillSend = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+						receiverChatObj.build().toByteArray());
 				// 添加回复监听
-				ServerModel_Message.instance.addListenReceiveChatting(clientUser.ioSession, chatting, messageWillSend);
-				
+				ServerModel_Chatting.instance.addListenReceiveChatting(clientUser.ioSession, chatting, messageWillSend);
+
 				// 发送
 				ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageWillSend);
 			} else {
-				ServerModel_Message.instance.addChatting(chatting);
+				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "接收者不在线，暂存在内存!");
+				ServerModel_Chatting.instance.addChatting(chatting);
 			}
 
 			// 回复客户端说发送成功(保存在服务器成功)
@@ -72,5 +79,16 @@ public class Server_Chatting {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	/**
+	 * 客户端已接收到服务其发送的“未接收消息”，
+	 * 删除对客户端回复的等待
+	 * @param networkMessage
+	 */
+	public void clientReceiveChatting(NetworkMessage networkMessage) {
+		byte[] key = NetworkMessage.getMessageID(networkMessage.arrayBytes);
+		ServerModel.instance.removeClientResponseListener(key);
 	}
 }

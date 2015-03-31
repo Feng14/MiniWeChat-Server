@@ -1,19 +1,22 @@
 package server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.apache.mina.core.session.IoSession;
-
 import exception.NoIpException;
-
 import observer.ObserverMessage;
 import observer.ObserverMessage_Login;
+<<<<<<< HEAD:src/server/ServerModel_Message.java
+=======
+import protocol.ProtoHead;
 import protocol.Msg.ReceiveChatMsg;
+>>>>>>> 【新功能】发消息(已测试：1.双方在线单消息。2.单方在线单消息）:src/server/ServerModel_Chatting.java
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
+import tools.Debug;
 
 import model.Chatting;
 
@@ -22,12 +25,12 @@ import model.Chatting;
  * 
  * @author Feng
  */
-public class ServerModel_Message {
-	public static ServerModel_Message instance = new ServerModel_Message();
+public class ServerModel_Chatting {
+	public static ServerModel_Chatting instance = new ServerModel_Chatting();
 
 	private Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
 
-	private ServerModel_Message() {
+	private ServerModel_Chatting() {
 		chattingHashtable = new Hashtable<String, LinkedBlockingQueue<Chatting>>();
 
 		// 监听用户登陆事件
@@ -40,8 +43,13 @@ public class ServerModel_Message {
 				ObserverMessage om = (ObserverMessage) arg;
 				if (om.type == ObserverMessage.Type.Login) {
 					ObserverMessage_Login oml = (ObserverMessage_Login) om;
+					Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "监听到用户 " + oml.userId + " 的登陆事件！");
+
 					ArrayList<Chatting> chattingList = getChattingNotReceive(oml.userId);
 					if (chattingList != null && chattingList.size() > 0) {
+						Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "用户 " + oml.userId + " 有"
+								+ chattingList.size() + "条未接收消息，开始发送！");
+
 						ReceiveChatSync.Builder receiveChatting = ReceiveChatSync.newBuilder();
 
 						// 加入所有未接收消息
@@ -49,10 +57,16 @@ public class ServerModel_Message {
 							receiveChatting.addChatData(chatting.createChatItem());
 
 						byte[] messageWillSend = receiveChatting.build().toByteArray();
+						System.err.println(messageWillSend.length);
 						// 添加监听
 						addListenReceiveChatting(oml.ioSession, chattingList, messageWillSend);
 
-						ServerNetwork.instance.sendMessageToClient(oml.ioSession, messageWillSend);
+						try {
+							ServerNetwork.instance.sendMessageToClient(oml.ioSession,
+									NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, messageWillSend));
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -61,6 +75,7 @@ public class ServerModel_Message {
 
 	/**
 	 * 发送“未接收消息”和添加“等待客户端回复：已收到”监听
+	 * 
 	 * @author Feng
 	 * @param ioSession
 	 * @param chatting
@@ -84,10 +99,9 @@ public class ServerModel_Message {
 							if (!chattingHashtable.containsKey(key)) {
 								chattingQueue = new LinkedBlockingQueue<Chatting>();
 								chattingHashtable.put(key, chattingQueue);
-							}
-							else
+							} else
 								chattingQueue = chattingHashtable.get(key);
-							
+
 							for (Chatting chatting : chattingList)
 								chattingQueue.add(chatting);
 						} catch (NoIpException e) {

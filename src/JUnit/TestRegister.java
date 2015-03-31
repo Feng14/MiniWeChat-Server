@@ -1,20 +1,14 @@
 package JUnit;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import protocol.Msg.RegisterMsg;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-
 import server.NetworkMessage;
 
 import client.SocketClientTest;

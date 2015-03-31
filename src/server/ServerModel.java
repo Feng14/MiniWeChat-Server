@@ -8,12 +8,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
-
 import exception.NoIpException;
-
 import protocol.ProtoHead;
 import protocol.Msg.KeepAliveMsg;
 import tools.DataTypeTranslater;
@@ -213,6 +210,18 @@ public class ServerModel extends Observable {
 		}
 	}
 
+	/**
+	 * 广播前的设置变更
+	 */
+	public void setChange(){
+		super.setChanged();
+	}
+	
+	public static void notify(Object obj) {
+		ServerModel.instance.setChange();
+		ServerModel.instance.notifyObservers(instance);
+	}
+	
 	/**
 	 * 用于处理用户请求的线程
 	 * 

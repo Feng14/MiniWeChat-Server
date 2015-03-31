@@ -67,7 +67,10 @@ public class ClientRequest_Dispatcher {
 			case ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE:
 				Server_Chatting.instance.clientSendChatting(networkMessage);
 				break;
-
+			// 服务器向客户端发送未接收消息，客户端的回答
+			case ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE:
+				Server_Chatting.instance.clientReceiveChatting(networkMessage);
+				break;
 			default:
 				break;
 			}

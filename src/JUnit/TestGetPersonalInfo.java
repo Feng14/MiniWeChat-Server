@@ -1,16 +1,13 @@
 package JUnit;
 
 import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Random;
-
 import org.junit.Before;
-
 import protocol.Msg.GetPersonalInfoMsg;
 import protocol.Msg.GetUserInfoMsg;
 import server.NetworkMessage;
