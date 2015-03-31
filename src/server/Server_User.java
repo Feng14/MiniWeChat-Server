@@ -129,6 +129,7 @@ public class Server_User {
 	 * @throws NoIpException
 	 */
 	public void login(NetworkMessage networkMessage) throws NoIpException {
+		boolean success = false;
 		try {
 			Debug.log(new String[] { "Server_User", "login" }, " 对  用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ "  的登陆事件  的处理");
@@ -157,6 +158,8 @@ public class Server_User {
 
 					// 记录回复位
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
+					
+					success = true;
 				} else { // 密码错误
 					Debug.log(new String[] { "Server_User", "login" },
 							"用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的登陆密码错误!");
@@ -174,8 +177,13 @@ public class Server_User {
 					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
 							.toByteArray()));
 			
-			// 广播“由用户登陆消息
-			ServerModel.instance.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
+			// 广播“由用户登陆消息"
+			if (success) {
+				Debug.log(new String[] { "Server_User", "login" }, "在服务器内广播 用户" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+						+ "  的登陆成功事件!");			
+				ServerModel.instance.setChange();
+				ServerModel.instance.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
+			}
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 注册事件： 用Protobuf反序列化 " + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ " 的包时异常！");

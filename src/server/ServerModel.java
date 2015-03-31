@@ -211,6 +211,18 @@ public class ServerModel extends Observable {
 	}
 
 	/**
+	 * 广播前的设置变更
+	 */
+	public void setChange(){
+		super.setChanged();
+	}
+	
+	public static void notify(Object obj) {
+		ServerModel.instance.setChange();
+		ServerModel.instance.notifyObservers(instance);
+	}
+	
+	/**
 	 * 用于处理用户请求的线程
 	 * 
 	 * @author Feng

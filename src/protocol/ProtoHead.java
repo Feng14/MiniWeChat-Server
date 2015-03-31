@@ -98,13 +98,9 @@ public final class ProtoHead {
      */
     SEND_CHAT_RSP(20, 20),
     /**
-     * <code>RECEIVE_CHAT_REQ = 21;</code>
+     * <code>RECEIVE_CHAT_SYNC = 21;</code>
      */
-    RECEIVE_CHAT_REQ(21, 21),
-    /**
-     * <code>RECEIVE_CHAT_RSP = 22;</code>
-     */
-    RECEIVE_CHAT_RSP(22, 22),
+    RECEIVE_CHAT_SYNC(21, 21),
     ;
 
     /**
@@ -192,13 +188,9 @@ public final class ProtoHead {
      */
     public static final int SEND_CHAT_RSP_VALUE = 20;
     /**
-     * <code>RECEIVE_CHAT_REQ = 21;</code>
+     * <code>RECEIVE_CHAT_SYNC = 21;</code>
      */
-    public static final int RECEIVE_CHAT_REQ_VALUE = 21;
-    /**
-     * <code>RECEIVE_CHAT_RSP = 22;</code>
-     */
-    public static final int RECEIVE_CHAT_RSP_VALUE = 22;
+    public static final int RECEIVE_CHAT_SYNC_VALUE = 21;
 
 
     public final int getNumber() { return value; }
@@ -226,8 +218,7 @@ public final class ProtoHead {
         case 18: return CHANGE_FRIEND_SYNC;
         case 19: return SEND_CHAT_REQ;
         case 20: return SEND_CHAT_RSP;
-        case 21: return RECEIVE_CHAT_REQ;
-        case 22: return RECEIVE_CHAT_RSP;
+        case 21: return RECEIVE_CHAT_SYNC;
         default: return null;
       }
     }
@@ -288,7 +279,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\356\003\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\331\003\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -300,8 +291,7 @@ public final class ProtoHead {
       "_RSP\020\017\022\030\n\024GET_PERSONALINFO_REQ\020\020\022\030\n\024GET_",
       "PERSONALINFO_RSP\020\021\022\026\n\022CHANGE_FRIEND_SYNC" +
       "\020\022\022\021\n\rSEND_CHAT_REQ\020\023\022\021\n\rSEND_CHAT_RSP\020\024" +
-      "\022\024\n\020RECEIVE_CHAT_REQ\020\025\022\024\n\020RECEIVE_CHAT_R" +
-      "SP\020\026B\n\n\010protocol"
+      "\022\025\n\021RECEIVE_CHAT_SYNC\020\025B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
