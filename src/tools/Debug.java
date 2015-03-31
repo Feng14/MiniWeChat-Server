@@ -19,6 +19,7 @@ public class Debug {
 	public static void log(String messsage) {
 		init();
 		if (LogSwitch){
+			System.out.println(getTime() + messsage);
 			logger.debug(messsage);
 		}
 //			System.out.println(getTime() + messsage);
@@ -27,17 +28,23 @@ public class Debug {
 	
 	public static void log(String head, String messsage) {
 		init();
-		if (LogSwitch)
+		if (LogSwitch){
 			logger.debug(getTime() + head + " : " + messsage);
+			System.out.println(getTime() + head + " : " + messsage);
+		}
 	}
 
 	public static void log(String[] heads, String messsage) {
 		init();
 		if (LogSwitch) {
 			logger.debug(getTime());
-			for (String s : heads)
+			System.out.println(getTime());
+			for (String s : heads) {
 				logger.debug(s + " : ");
+				System.out.print(s + " : ");
+			}
 			logger.debug(messsage);
+			System.out.println(messsage);
 		}
 	}
 	
