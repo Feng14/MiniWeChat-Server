@@ -31,7 +31,7 @@ public class SocketClientTest {
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
 	String host = "192.168.45.34"; // 要连接的服务端IP地址
 
-	int port = 8080; // 要连接的服务端对应的监听端口
+	int port = 8081; // 要连接的服务端对应的监听端口
 
 
 	public static void main(String args[]) throws IOException {
@@ -66,7 +66,7 @@ public class SocketClientTest {
 //		testRegister();
 		
 		// 测登陆
-		//testLogin();
+		testLogin();
 		// 测试个人设置
 		//testPersonalSettings();
 		
