@@ -1,15 +1,10 @@
 package server;
 
 import java.io.IOException;
-import java.util.Date;
-
 import model.Chatting;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
-import protocol.Msg.ReceiveChatMsg;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg;
 import exception.NoIpException;

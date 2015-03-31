@@ -1,19 +1,14 @@
 package JUnit;
 
 import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.net.UnknownHostException;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
-
 import client.SocketClientTest;
-
 import server.NetworkMessage;
 
 /**

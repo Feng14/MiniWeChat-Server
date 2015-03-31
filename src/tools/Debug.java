@@ -1,10 +1,7 @@
 package tools;
 
 import java.util.Date;
-
 import org.apache.log4j.Logger;
-
-import test.TestLog1;
 
 public class Debug {
 	public static boolean LogSwitch = true;

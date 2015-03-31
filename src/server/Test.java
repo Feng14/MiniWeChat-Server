@@ -1,9 +1,6 @@
 package server;
 
-import java.util.Scanner;
-
 import org.hibernate.Session;
-
 import model.HibernateSessionFactory;
 import model.User;
 

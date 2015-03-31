@@ -8,12 +8,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
-
 import exception.NoIpException;
-
 import protocol.ProtoHead;
 import protocol.Msg.KeepAliveMsg;
 import tools.DataTypeTranslater;

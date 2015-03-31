@@ -5,14 +5,10 @@ import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import org.apache.mina.core.session.IoSession;
-
 import exception.NoIpException;
-
 import observer.ObserverMessage;
 import observer.ObserverMessage_Login;
-import protocol.Msg.ReceiveChatMsg;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 
 import model.Chatting;
