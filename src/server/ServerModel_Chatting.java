@@ -57,8 +57,8 @@ public class ServerModel_Chatting {
 						addListenReceiveChatting(oml.ioSession, chattingList, messageWillSend);
 
 						try {
-							ServerNetwork.instance.sendMessageToClient(oml.ioSession,
-									NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, messageWillSend));
+							ServerNetwork.instance.sendMessageToClient(oml.ioSession, NetworkMessage.packMessage(
+									ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, messageWillSend));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -88,20 +88,19 @@ public class ServerModel_Chatting {
 					@Override
 					public void beforeDelete() {
 						// 保存回未发送队列
-						try {
-							String key = ServerModel.getIoSessionKey(ioSession);
-							LinkedBlockingQueue<Chatting> chattingQueue;
-							if (!chattingHashtable.containsKey(key)) {
-								chattingQueue = new LinkedBlockingQueue<Chatting>();
-								chattingHashtable.put(key, chattingQueue);
-							} else
-								chattingQueue = chattingHashtable.get(key);
+						Debug.log(new String[] { "ServerModel_Chatting", "addListenReceiveChatting" }, "微信消息发送失败，存入内存！");
+						if (chattingList.size() == 0)
+							return;
+						String key = chattingList.get(0).getReceiverUserId();
+						LinkedBlockingQueue<Chatting> chattingQueue;
+						if (!chattingHashtable.containsKey(key)) {
+							chattingQueue = new LinkedBlockingQueue<Chatting>();
+							chattingHashtable.put(key, chattingQueue);
+						} else
+							chattingQueue = chattingHashtable.get(key);
 
-							for (Chatting chatting : chattingList)
-								chattingQueue.add(chatting);
-						} catch (NoIpException e) {
-							e.printStackTrace();
-						}
+						for (Chatting chatting : chattingList)
+							chattingQueue.add(chatting);
 					}
 				});
 	}

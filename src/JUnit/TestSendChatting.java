@@ -11,13 +11,12 @@ import org.junit.Test;
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
-import protocol.Msg.LoginMsg.LoginReq;
 import protocol.Msg.LoginMsg.LoginRsp;
-import protocol.Msg.ReceiveChatMsg;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatReq;
 import protocol.Msg.SendChatMsg.SendChatRsp;
 import server.NetworkMessage;
+import server.ServerModel;
 import tools.Debug;
 
 /**
@@ -35,6 +34,7 @@ public class TestSendChatting {
 	 * @throws UnknownHostException
 	 */
 	@Test
+	@Ignore
 	public void test1() throws UnknownHostException, IOException {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
@@ -59,9 +59,9 @@ public class TestSendChatting {
 			SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
 			Debug.log("a 向 b 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 			assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
-			clientSocket1.close();
 			break;
 		}
+		clientSocket1.close();
 
 		// 用户2接收消息
 		while (true) {
@@ -78,20 +78,21 @@ public class TestSendChatting {
 			// 回复
 			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
 					NetworkMessage.getMessageID(response), new byte[0]));
-			clientSocket2.close();
 			break;
 		}
+		clientSocket2.close();
 
 	}
 
-	
 	/**
 	 * 测试只有发送者在线的场景
+	 * 
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
 	@Test
-	public void test2() throws UnknownHostException, IOException{
+	@Ignore
+	public void test2() throws UnknownHostException, IOException {
 		ClientSocket clientSocket1 = new ClientSocket();
 		byte[] response;
 		String userId1 = "a", userId2 = "b", message = "a fuck b";
@@ -111,15 +112,15 @@ public class TestSendChatting {
 			SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
 			Debug.log("a 向 b 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 			assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
-			clientSocket1.close();
 			break;
 		}
+		clientSocket1.close();
 
 		// 接收者登陆
 		ClientSocket clientSocket2 = new ClientSocket();
 		if (clientSocket2.login(userId2, "bb") != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
-		
+
 		while (true) {
 			response = clientSocket2.readFromServerWithoutKeepAlive();
 			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
@@ -134,11 +135,164 @@ public class TestSendChatting {
 			// 回复
 			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
 					NetworkMessage.getMessageID(response), new byte[0]));
-			clientSocket2.close();
 			break;
 		}
+		clientSocket2.close();
+	}
+
+	/**
+	 * 测试只有发送者在线的场景(发多条消息)
+	 * 
+	 * @throws IOException
+	 * @throws UnknownHostException
+	 */
+	@Test
+	@Ignore
+	public void test3() throws UnknownHostException, IOException {
+		ClientSocket clientSocket1 = new ClientSocket();
+		byte[] response;
+		String userId1 = "e", userId2 = "f", message = "e fuck f ";
+		int times = 5;
+
+		// 发送者登陆
+		if (clientSocket1.login(userId1, "ee") != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+
+		// 发消息
+		for (int i = 0; i < times; i++) {
+			sendChatting(clientSocket1, userId1, userId2, ChatType.TEXT, message + (i + ""));
+			// 接收回复
+			while (true) {
+				response = clientSocket1.readFromServerWithoutKeepAlive();
+				if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
+					continue;
+
+				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+				Debug.log("e 向 f 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
+				assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
+				break;
+			}
+		}
+		clientSocket1.close();
+
+		// 接收者登陆
+		ClientSocket clientSocket2 = new ClientSocket();
+		if (clientSocket2.login(userId2, "ff") != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+
+		while (true) {
+			response = clientSocket2.readFromServerWithoutKeepAlive();
+			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+				continue;
+
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ChatItem chatItem;
+			
+			for (int i = 0; i < times; i++) {
+				chatItem = receiveChatting.getChatData(i);
+				Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
+						+ chatItem.getChatBody());
+				assertEquals(chatItem.getChatBody(), message + (i + ""));
+			}
+
+			// 回复
+			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					NetworkMessage.getMessageID(response), new byte[0]));
+			break;
+		}
+		clientSocket2.close();
 	}
 	
+	/**
+	 * 测试只有发送者在线的场景(发多条消息),接受者上线后接收后不返回（装断线），然后再上线，测试服务器是否保存
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 * @throws InterruptedException 
+	 */
+	@Test
+	public void test4() throws UnknownHostException, IOException, InterruptedException{
+		ClientSocket clientSocket1 = new ClientSocket();
+		byte[] response;
+		String userId1 = "g", userId2 = "h", message = "e fuck f ";
+		int times = 5;
+
+		// 发送者登陆
+		if (clientSocket1.login(userId1, userId1) != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+
+		// 发消息
+		for (int i = 0; i < times; i++) {
+			sendChatting(clientSocket1, userId1, userId2, ChatType.TEXT, message + (i + ""));
+			// 接收回复
+			while (true) {
+				response = clientSocket1.readFromServerWithoutKeepAlive();
+				if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
+					continue;
+
+				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+				Debug.log("g 向 h 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
+				assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
+				break;
+			}
+		}
+		clientSocket1.close();
+
+		// 接收者登陆
+		ClientSocket clientSocket2 = new ClientSocket();
+		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+
+		while (true) {
+			response = clientSocket2.readFromServerWithoutKeepAlive();
+			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+				continue;
+
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ChatItem chatItem;
+			
+			for (int i = 0; i < times; i++) {
+				chatItem = receiveChatting.getChatData(i);
+				Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
+						+ chatItem.getChatBody());
+				assertEquals(chatItem.getChatBody(), message + (i + ""));
+			}
+			
+			Debug.log("接受者不回复！下线");
+			break;
+		}
+		// 等待服务器把自己踢下线
+		Thread.sleep(ServerModel.KEEP_ALIVE_PACKET_TIME + ServerModel.CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME);
+//		Thread.sleep(9*1000);
+		
+		// 重新连接，登录，接收消息
+		clientSocket2 = new ClientSocket();
+		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+
+		while (true) {
+			response = clientSocket2.readFromServerWithoutKeepAlive();
+			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+				continue;
+
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ChatItem chatItem;
+			
+			for (int i = 0; i < times; i++) {
+				chatItem = receiveChatting.getChatData(i);
+				Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
+						+ chatItem.getChatBody());
+				assertEquals(chatItem.getChatBody(), message + (i + ""));
+			}
+
+			// 回复
+			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					NetworkMessage.getMessageID(response), new byte[0]));
+			break;
+		}
+		clientSocket2.close();
+		
+	}
+
 	/**
 	 * 发送一条聊天
 	 * 

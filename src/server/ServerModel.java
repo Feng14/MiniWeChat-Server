@@ -36,7 +36,7 @@ public class ServerModel extends Observable {
 	// 已连接用户信息表(Key 为IoSession.getRemoteAddress().toString)
 	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	// 监听客户端回复的表
-	private Hashtable<byte[], WaitClientResponse> waitClientRepTable = new Hashtable<byte[], WaitClientResponse>();
+	private Hashtable<String, WaitClientResponse> waitClientRepTable = new Hashtable<String, WaitClientResponse>();
 
 	private ServerModel() {
 	}
@@ -179,7 +179,8 @@ public class ServerModel extends Observable {
 		WaitClientResponse waitClientResponse = new WaitClientResponse(ioSession, messageHasSent, waitClientResponseCallBack);
 		waitClientResponse.time = new Date().getTime();
 		// 加入到“等待回复表”中，由CheckWaitClientResponseThread 线程进行轮询
-		waitClientRepTable.put(key, waitClientResponse);
+		System.err.println("add Listener, key: " + key.toString());
+		waitClientRepTable.put(key.toString(), waitClientResponse);
 	}
 
 	/**
@@ -213,15 +214,15 @@ public class ServerModel extends Observable {
 	/**
 	 * 广播前的设置变更
 	 */
-	public void setChange(){
+	public void setChange() {
 		super.setChanged();
 	}
-	
+
 	public static void notify(Object obj) {
 		ServerModel.instance.setChange();
 		ServerModel.instance.notifyObservers(instance);
 	}
-	
+
 	/**
 	 * 用于处理用户请求的线程
 	 * 
@@ -329,6 +330,7 @@ public class ServerModel extends Observable {
 			long currentTime;
 			WaitClientResponse waitObj;
 			String key;
+			ClientUser clientUser = null;
 			while (true) {
 				currentTime = new java.util.Date().getTime();
 				// 每隔CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME时间轮询一次
@@ -338,21 +340,31 @@ public class ServerModel extends Observable {
 					e.printStackTrace();
 				}
 				// 对每个用户进行检查
+				Debug.log(new String[] { "ServerModel", "CheckWaitClientResponseThread" }, "开始检测等待客户端未回复列表，共 "
+						+ waitClientRepTable.size() + " 个等待！");
 				Iterator iterator = waitClientRepTable.keySet().iterator();
 				synchronized (waitClientRepTable) {
 					while (iterator.hasNext()) {
 						key = iterator.next().toString();
 						waitObj = waitClientRepTable.get(key);
+						System.err.println("key : " + key + "  size: " + waitClientRepTable.size() + "  obj=null : " + (waitObj == null));
 						if (waitObj == null)
 							continue;
 
+//						System.err.println(currentTime -  waitObj.time);
 						if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
 							// 超时，重发
 							Debug.log("ServerModel", "等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
-							System.out.println("ServerModel : 等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
-							if (!clientUserTable.get(waitObj.ioSession.getRemoteAddress()).onLine) {
-								// 不在线,删了
+							// 不在线,调用删前回调，删除
+							try {
+								clientUser = clientUserTable.get(ServerModel.getIoSessionKey(waitObj.ioSession));
+							} catch (NoIpException e) {
+//								e.printStackTrace();
+							}
+							if (clientUser == null || !clientUser.onLine) {
 								Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
+								if (waitObj.waitClientResponseCallBack != null)
+									waitObj.waitClientResponseCallBack.beforeDelete();
 								waitClientRepTable.remove(key);
 								continue;
 							}
