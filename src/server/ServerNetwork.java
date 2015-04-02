@@ -25,14 +25,14 @@ import tools.Debug;
  */
 public class ServerNetwork extends IoHandlerAdapter {
 	public static ServerNetwork instance = new ServerNetwork();
-<<<<<<< HEAD
+
 	Logger logger = Logger.getLogger(ServerNetwork.class);
-=======
+
 	
 	private InetSocketAddress inetSocketAddress;
 	private IoAcceptor acceptor;
 
->>>>>>> 【新功能】Servlet关闭时自动关闭Mina服务器
+
 	private ServerNetwork() {
 
 	}

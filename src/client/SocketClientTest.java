@@ -26,7 +26,9 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
+
 //	String host = "192.168.45.17"; // 要连接的服务端IP地址
+
 	String host = "104.224.165.21"; // 要连接的服务端IP地址
 	//String host = "192.168.1.103"; // 要连接的服务端IP地址
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
@@ -410,7 +412,7 @@ public class SocketClientTest {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
 		builder.setUserName("bbss");
 		//builder.setUserPassword("s1234");
-		builder.setHeadIndex(6);
+		builder.setHeadIndex(5);
 		System.out.println("start personalSettings test! ----------------------------");
 		try {
 			Socket socket = new Socket(host, port);
@@ -418,8 +420,8 @@ public class SocketClientTest {
 			outputStream = socket.getOutputStream();
 			
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
-			loginBuilder.setUserId("a2");
-			loginBuilder.setUserPassword("s1234");
+			loginBuilder.setUserId("a3");
+			loginBuilder.setUserPassword("aa");
 			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
 					.toByteArray());
 			writeToServer(loginByteArray);

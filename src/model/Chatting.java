@@ -1,7 +1,16 @@
 package model;
 
 import java.util.Date;
-
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
 
@@ -10,6 +19,8 @@ import protocol.Data.ChatData.ChatItem.ChatType;
  * @author Feng
  *
  */
+@Entity
+@Table(name="chatting_message")
 public class Chatting {
 	//消息id
 	private long id;
@@ -43,14 +54,17 @@ public class Chatting {
 	}
 	
 	
-
+	@Id
+	@Column(name="chatting_id",columnDefinition = "int(8)  COMMENT '聊天消息Id'")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
-
+	
+	@Column(name="chatting_type",columnDefinition = "int(1)  COMMENT '聊天类型'")
 	public ChatType getChattingType() {
 		return chattingType;
 	}
@@ -59,6 +73,7 @@ public class Chatting {
 	}
 
 
+	@Column(name="is_group",columnDefinition = "int(1)  COMMENT '是否群聊'")
 	public boolean getIsGroup() {
 		return isGroup;
 	}
@@ -66,7 +81,9 @@ public class Chatting {
 		this.isGroup = isGroup;
 	}
 
-
+	
+	@ManyToOne(targetEntity=Group.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinColumn(name="group_id",columnDefinition = "int(8)  COMMENT '聊天群Id'")
 	public int getGroupId() {
 		return groupId;
 	}
@@ -75,6 +92,7 @@ public class Chatting {
 	}
 
 
+	@Column(name="time",columnDefinition = "int(20)  COMMENT '时间'")
 	public long getTime() {
 		return time;
 	}
@@ -83,6 +101,8 @@ public class Chatting {
 	}
 
 
+	@ManyToOne(targetEntity=User.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinColumn(name="sender_user_id",columnDefinition = "int(8)  COMMENT '发送者Id'")
 	public String getSenderUserId() {
 		return senderUserId;
 	}
@@ -91,6 +111,8 @@ public class Chatting {
 	}
 
 
+	@ManyToOne(targetEntity=User.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@JoinColumn(name="receiver_user_id",columnDefinition = "int(8)  COMMENT '接受者Id'")
 	public String getReceiverUserId() {
 		return receiverUserId;
 	}
@@ -98,6 +120,7 @@ public class Chatting {
 		this.receiverUserId = receiverUserId;
 	}
 
+	@Column(name="message",columnDefinition = "char(100)  COMMENT '消息'")
 	public String getMessage() {
 		return message;
 	}
