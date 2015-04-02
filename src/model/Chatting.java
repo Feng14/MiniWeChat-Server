@@ -2,15 +2,7 @@ package model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import protocol.Data.ChatData.ChatItem;
-import protocol.Data.ChatData.ChatItem.Builder;
 import protocol.Data.ChatData.ChatItem.ChatType;
 
 /**
@@ -18,17 +10,10 @@ import protocol.Data.ChatData.ChatItem.ChatType;
  * @author Feng
  *
  */
-
-@Entity
-@Table(name="chatting")
 public class Chatting {
-<<<<<<< HEAD
 	//消息id
 	private long id;
 	//聊天类型  文字和图片
-=======
-	private long id;
->>>>>>> 【新功能】聊天记录存入硬盘初步
 	private ChatType chattingType;
 	//是否群聊 true群聊 false个人聊天
 	private boolean isGroup;
@@ -38,21 +23,8 @@ public class Chatting {
 	private long time;
 	private String senderUserId, receiverUserId, message;
 	
-<<<<<<< HEAD
 	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message,long time,
 			boolean isGroup,int groupId){
-=======
-	public Chatting(long id, String senderUserId, String receiverUserId, ChatType chattingType, String message) {
-		setId(id);
-		setSenderUserId(senderUserId);
-		setReceiverUserId(receiverUserId);
-		setChattingType(chattingType);
-		setMessage(message);
-	}
-	
-	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message) {
-		setId(id);
->>>>>>> 【新功能】聊天记录存入硬盘初步
 		setSenderUserId(senderUserId);
 		setReceiverUserId(receiverUserId);
 		setChattingType(chattingType);
@@ -92,17 +64,6 @@ public class Chatting {
 	}
 	public void setIsGroup(boolean isGroup) {
 		this.isGroup = isGroup;
-	}
-	
-	@Id
-	@GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid",strategy = "uuid")
-	public long getId(){
-		return id;
-	}
-	
-	public void setId(long id){
-		this.id = id;
 	}
 
 
