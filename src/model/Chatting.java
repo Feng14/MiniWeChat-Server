@@ -22,6 +22,8 @@ import protocol.Data.ChatData.ChatItem.ChatType;
 @Entity
 @Table(name="chatting_message")
 public class Chatting {
+	public static final String TABLE_NAME = "chatting_message";
+	
 	//消息id
 	private long id;
 	//聊天类型  文字和图片

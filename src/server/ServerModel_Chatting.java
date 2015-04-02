@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,15 +12,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import javax.xml.crypto.Data;
-
 import org.apache.mina.core.session.IoSession;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import observer.ObserverMessage;
 import observer.ObserverMessage_Login;
 import protocol.ProtoHead;
+import protocol.Data.ChatData.ChatItem.ChatType;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import tools.Debug;
 
@@ -34,10 +33,11 @@ import model.HibernateSessionFactory;
 public class ServerModel_Chatting {
 	public static final int SAVE_DATA_HOUR = 1;
 	public static final int INTERVAL_HOUR = 24 * 60 * 60;
+	public static final int DELETE_INTERVAL = 24 * 3 * 60 * 60;
 	
 	public static ServerModel_Chatting instance = new ServerModel_Chatting();
 
-	private Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
+	public Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
 
 	private ServerModel_Chatting() {
 		chattingHashtable = new Hashtable<String, LinkedBlockingQueue<Chatting>>();
@@ -81,11 +81,12 @@ public class ServerModel_Chatting {
 		});
 	
 		// 添加每日聊天记录存入数据库
-		Date firstStartDate = new Date();
-		firstStartDate.setDate(firstStartDate.getDate() + 1);
-		firstStartDate.setHours(SAVE_DATA_HOUR);
-		Timer timer = new Timer();
-		timer.schedule(new SaveDataThread(), firstStartDate, INTERVAL_HOUR);
+//		Date firstStartDate = new Date();
+//		firstStartDate.setDate(firstStartDate.getDate() + 1);
+//		firstStartDate.setHours(SAVE_DATA_HOUR);
+//		Timer timer = new Timer();
+//		timer.schedule(new SaveDataThread(), firstStartDate, INTERVAL_HOUR);
+		test();
 	}
 
 	/**
@@ -155,24 +156,53 @@ public class ServerModel_Chatting {
 		return new ArrayList<Chatting>();
 	}
 
+	
 	/**
 	 * 将内存中所有聊天记录存入数据库
 	 * @author Feng
 	 */
-	private class SaveDataThread extends TimerTask {
+	public class SaveDataThread extends TimerTask {
 		public void run() {
-			// 读取哈希表，存入硬盘
 			Iterator iterator = chattingHashtable.keySet().iterator();
 			LinkedBlockingQueue<Chatting> queue;
 			
+			//删除过期消息
+			Date date = new Date();
+			date.setDate(date.getDate() - 3);
+//			date.setDate(date.getDate() + 3);
 			Session session = HibernateSessionFactory.getSession();
+			String sql = "delete from " + Chatting.TABLE_NAME + " where time<" + date.getTime() + ";";
+			session.createQuery(sql);
+			
+			
+			session = HibernateSessionFactory.getSession();
 			while (iterator.hasNext()) {
 				queue = (LinkedBlockingQueue<Chatting>)iterator.next();
+				
+				// 读取哈希表，存入硬盘
 				for (Chatting chatting : queue) {
-					
+					session.save(chatting);
 				}
 			}
+			HibernateSessionFactory.commitSession(session);
+			
+			// 清空内存
+			chattingHashtable.clear();
 		}
+	}
+	
+	/**
+	 * 测试用
+	 * @param args
+	 * @author Feng
+	 */
+	private void test(){
+		addChatting(new Chatting("a", "b", ChatType.TEXT, "Fuck"));
+		addChatting(new Chatting("c", "d", ChatType.TEXT, "Fuck"));
+		System.out.println("size: " + instance.chattingHashtable.size());
 		
+		Timer timer = new Timer();
+		timer.schedule(new SaveDataThread(), 0);
+		System.out.println("size: " + instance.chattingHashtable.size());
 	}
 }
