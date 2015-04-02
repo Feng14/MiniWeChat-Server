@@ -340,8 +340,8 @@ public class ServerModel extends Observable {
 					e.printStackTrace();
 				}
 				// 对每个用户进行检查
-				Debug.log(new String[] { "ServerModel", "CheckWaitClientResponseThread" }, "开始检测等待客户端未回复列表，共 "
-						+ waitClientRepTable.size() + " 个等待！");
+//				Debug.log(new String[] { "ServerModel", "CheckWaitClientResponseThread" }, "开始检测等待客户端未回复列表，共 "
+//						+ waitClientRepTable.size() + " 个等待！");
 				Iterator iterator = waitClientRepTable.keySet().iterator();
 				synchronized (waitClientRepTable) {
 					while (iterator.hasNext()) {

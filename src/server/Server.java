@@ -17,6 +17,10 @@ public class Server {
 		ServerModel.instance.init();
 	}
 	
+	public void onDestroy(){
+		ServerNetwork.instance.onDestroy();
+	}
+	
 	public static void main(String[] args) throws IOException {
 		new Server();
 	}

@@ -25,7 +25,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	
 	private InetSocketAddress inetSocketAddress;
 	private IoAcceptor acceptor;
-	Logger logger = Logger.getLogger(ServerNetwork.class);
+
 	private ServerNetwork() {
 
 	}

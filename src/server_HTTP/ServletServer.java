@@ -31,6 +31,8 @@ public class ServletServer extends HttpServlet {
 	public static final String SOURCE_PATH = "D:/Program/MiniWeChat-Server/Source";
 	public static final String CLIENT_PATH = SOURCE_PATH + "/FromClient/";
 	public static final String SERVER_PATH = SOURCE_PATH + "/FromServer/";
+	
+	public Server minaServer;
 
 	@Override
 	public void init() {
@@ -39,11 +41,17 @@ public class ServletServer extends HttpServlet {
     	String configFile = path + getInitParameter("configFile");
     	PropertyConfigurator.configure(configFile);
 		try {
-			new Server();
+			minaServer = new Server();
 		} catch (IOException e) {
 			System.err.println("ServletServer : 服务器启动失败");
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void destroy(){
+		System.err.println("Oh Noooooooooooooooooo!!!!");
+		minaServer.onDestroy();
 	}
 
 	// 用于处理客户端发送的GET请求 　　

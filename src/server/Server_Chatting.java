@@ -27,6 +27,7 @@ public class Server_Chatting {
 	 * 
 	 * @param networkMessage
 	 * @throws NoIpException
+	 * @author Feng
 	 */
 	public void clientSendChatting(NetworkMessage networkMessage) throws NoIpException {
 
@@ -45,8 +46,15 @@ public class Server_Chatting {
 					.getChatBody());
 			
 			// 若接收者是 自动回复账号，则单独处理
-			if (sendChattingObject.getChatData().getReceiveUserId().equals("AutoChat"))
+			if (sendChattingObject.getChatData().getReceiveUserId().equals("AutoChat")){
 				sendChattingAutoResponse(networkMessage, chatting);
+				return;
+			}
+			
+			// 如果是特殊指令，则做特殊处理
+			if (sendChattingObject.getChatData().getChatBody().startsWith("/")) {
+				
+			}
 
 			// 若是接收者在线，则发送，否则加入队列
 			ClientUser clientUser = ServerModel.instance.getClientUserByUserId(chatting.getReceiverUserId());
@@ -115,6 +123,16 @@ public class Server_Chatting {
 
 		// 发送
 		ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, messageWillSend);
+	}
+	
+	
+	private void sendChatSuperCommand(NetworkMessage networkMessage, Chatting chatting) throws IOException{
+		// 回复发送者：发送成功
+		SendChatMsg.SendChatRsp.Builder sendChattingResponse = SendChatMsg.SendChatRsp.newBuilder();
+		sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
+		ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+				ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, networkMessage.getMessageID(), sendChattingResponse.build()
+						.toByteArray()));
 	}
 
 	/**

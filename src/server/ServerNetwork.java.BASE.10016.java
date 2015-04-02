@@ -22,10 +22,7 @@ import tools.Debug;
  */
 public class ServerNetwork extends IoHandlerAdapter {
 	public static ServerNetwork instance = new ServerNetwork();
-	
-	private InetSocketAddress inetSocketAddress;
-	private IoAcceptor acceptor;
-	Logger logger = Logger.getLogger(ServerNetwork.class);
+
 	private ServerNetwork() {
 
 	}
@@ -47,14 +44,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 		}
 		Debug.log("端口号：8081");
 
-		acceptor = new NioSocketAcceptor();
+		IoAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);
-		inetSocketAddress = new InetSocketAddress(8081);
-		acceptor.bind(inetSocketAddress);
-	}
-	
-	public void onDestroy(){
-		acceptor.unbind(inetSocketAddress);
+		acceptor.bind(new InetSocketAddress(8081));
 	}
 
 	private int count = 0;
