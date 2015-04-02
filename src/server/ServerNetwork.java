@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+
+import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+
 import exception.NoIpException;
 import tools.DataTypeTranslater;
 import tools.Debug;
@@ -22,7 +25,7 @@ import tools.Debug;
  */
 public class ServerNetwork extends IoHandlerAdapter {
 	public static ServerNetwork instance = new ServerNetwork();
-
+	Logger logger = Logger.getLogger(ServerNetwork.class);
 	private ServerNetwork() {
 
 	}
@@ -37,12 +40,12 @@ public class ServerNetwork extends IoHandlerAdapter {
 		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
-			Debug.log("IP地址", addr.getHostAddress().toString());
-			Debug.log("本机名称", addr.getHostName().toString());
+			logger.debug("IP地址:"+addr.getHostAddress().toString());
+			logger.debug("本机名称:"+ addr.getHostName().toString());
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		Debug.log("端口号：8081");
+		logger.debug("端口号：8081");
 
 		IoAcceptor acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);

@@ -3,15 +3,21 @@ package server;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import model.HibernateSessionFactory;
 import model.User;
 import observer.ObserverMessage_Login;
+
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import exception.NoIpException;
 import protocol.ProtoHead;
 import protocol.Data.UserData.UserItem;
@@ -31,7 +37,7 @@ import tools.Debug;
  */
 public class Server_User {
 	public static Server_User instance = new Server_User();
-
+	Logger logger = Logger.getLogger(Server_User.class);
 	private Server_User() {
 
 	}

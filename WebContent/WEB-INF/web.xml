@@ -9,6 +9,10 @@
 	<servlet>
 		<servlet-name>TransferFile</servlet-name>
 		<servlet-class>server_HTTP.ServletServer</servlet-class>
+		<init-param>
+			<param-name>configFile</param-name>
+			<param-value>/WEB-INF/Log4JConfig.properties</param-value>
+		</init-param>
 		<load-on-startup>4</load-on-startup>
 	</servlet>
 	<servlet-mapping>

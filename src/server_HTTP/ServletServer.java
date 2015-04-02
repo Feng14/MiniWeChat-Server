@@ -9,11 +9,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.PropertyConfigurator;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
@@ -32,6 +35,9 @@ public class ServletServer extends HttpServlet {
 	@Override
 	public void init() {
 		System.out.println("I am be run!");
+		String path = getServletContext().getRealPath("/");
+    	String configFile = path + getInitParameter("configFile");
+    	PropertyConfigurator.configure(configFile);
 		try {
 			new Server();
 		} catch (IOException e) {
