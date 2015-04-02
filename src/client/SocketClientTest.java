@@ -26,7 +26,8 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
+//	String host = "192.168.45.17"; // 要连接的服务端IP地址
+	String host = "104.224.165.21"; // 要连接的服务端IP地址
 	//String host = "192.168.1.103"; // 要连接的服务端IP地址
 	//String host = "192.168.45.11"; // 要连接的服务端IP地址
 //	String host = "192.168.45.34"; // 要连接的服务端IP地址
@@ -66,9 +67,9 @@ public class SocketClientTest {
 //		testRegister();
 		
 		// 测登陆
-		//testLogin();
+		testLogin();
 		// 测试个人设置
-		testPersonalSettings();
+//		testPersonalSettings();
 		
 		//测查看用户个人信息
 		//testGetUserInfo();
@@ -323,8 +324,8 @@ public class SocketClientTest {
 	public void testLogin() {
 
 		LoginMsg.LoginReq.Builder builder = LoginMsg.LoginReq.newBuilder();
-		builder.setUserId("a1");
-		builder.setUserPassword("12");
+		builder.setUserId("a3");
+		builder.setUserPassword("aa");
 		System.out.println("Start Test Login!");
 		try {
 			socket = new Socket(host, port);

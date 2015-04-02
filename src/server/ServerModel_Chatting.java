@@ -2,12 +2,21 @@ package server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import javax.xml.crypto.Data;
+
 import org.apache.mina.core.session.IoSession;
-import exception.NoIpException;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+
 import observer.ObserverMessage;
 import observer.ObserverMessage_Login;
 import protocol.ProtoHead;
@@ -15,6 +24,7 @@ import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import tools.Debug;
 
 import model.Chatting;
+import model.HibernateSessionFactory;
 
 /**
  * 网络逻辑层(微信消息模块）
@@ -22,6 +32,9 @@ import model.Chatting;
  * @author Feng
  */
 public class ServerModel_Chatting {
+	public static final int SAVE_DATA_HOUR = 1;
+	public static final int INTERVAL_HOUR = 24 * 60 * 60;
+	
 	public static ServerModel_Chatting instance = new ServerModel_Chatting();
 
 	private Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
@@ -66,6 +79,13 @@ public class ServerModel_Chatting {
 				}
 			}
 		});
+	
+		// 添加每日聊天记录存入数据库
+		Date firstStartDate = new Date();
+		firstStartDate.setDate(firstStartDate.getDate() + 1);
+		firstStartDate.setHours(SAVE_DATA_HOUR);
+		Timer timer = new Timer();
+		timer.schedule(new SaveDataThread(), firstStartDate, INTERVAL_HOUR);
 	}
 
 	/**
@@ -133,5 +153,26 @@ public class ServerModel_Chatting {
 			return chattingList;
 		}
 		return new ArrayList<Chatting>();
+	}
+
+	/**
+	 * 将内存中所有聊天记录存入数据库
+	 * @author Feng
+	 */
+	private class SaveDataThread extends TimerTask {
+		public void run() {
+			// 读取哈希表，存入硬盘
+			Iterator iterator = chattingHashtable.keySet().iterator();
+			LinkedBlockingQueue<Chatting> queue;
+			
+			Session session = HibernateSessionFactory.getSession();
+			while (iterator.hasNext()) {
+				queue = (LinkedBlockingQueue<Chatting>)iterator.next();
+				for (Chatting chatting : queue) {
+					
+				}
+			}
+		}
+		
 	}
 }
