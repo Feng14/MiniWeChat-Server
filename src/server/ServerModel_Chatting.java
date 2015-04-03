@@ -39,8 +39,13 @@ public class ServerModel_Chatting {
 
 	public Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
 
+	public void a(){
+		
+	}
+	
 	private ServerModel_Chatting() {
 		chattingHashtable = new Hashtable<String, LinkedBlockingQueue<Chatting>>();
+		System.out.println(chattingHashtable.containsKey("b"));
 
 		// 监听用户登陆事件
 		ServerModel.instance.addObserver(new Observer() {
@@ -191,6 +196,34 @@ public class ServerModel_Chatting {
 		}
 	}
 	
+	public void test2(){
+		Iterator iterator = chattingHashtable.keySet().iterator();
+		LinkedBlockingQueue<Chatting> queue;
+		
+		//删除过期消息
+		Date date = new Date();
+		date.setDate(date.getDate() - 3);
+//		date.setDate(date.getDate() + 3);
+		Session session = HibernateSessionFactory.getSession();
+		String sql = "delete from " + Chatting.TABLE_NAME + " where time<" + date.getTime() + ";";
+		session.createQuery(sql);
+		
+		
+		session = HibernateSessionFactory.getSession();
+		while (iterator.hasNext()) {
+			queue = (LinkedBlockingQueue<Chatting>)iterator.next();
+			
+			// 读取哈希表，存入硬盘
+			for (Chatting chatting : queue) {
+				session.save(chatting);
+			}
+		}
+		HibernateSessionFactory.commitSession(session);
+		
+		// 清空内存
+		chattingHashtable.clear();
+	}
+	
 	/**
 	 * 测试用
 	 * @param args
@@ -199,10 +232,11 @@ public class ServerModel_Chatting {
 	private void test(){
 		addChatting(new Chatting("a", "b", ChatType.TEXT, "Fuck"));
 		addChatting(new Chatting("c", "d", ChatType.TEXT, "Fuck"));
-		System.out.println("size: " + instance.chattingHashtable.size());
+		System.out.println("size: " + chattingHashtable.size());
 		
-		Timer timer = new Timer();
-		timer.schedule(new SaveDataThread(), 0);
-		System.out.println("size: " + instance.chattingHashtable.size());
+//		Timer timer = new Timer();
+//		timer.schedule(new SaveDataThread(), 0);
+		test2();
+		System.out.println("size: " + chattingHashtable.size());
 	}
 }

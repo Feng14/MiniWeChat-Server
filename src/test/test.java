@@ -19,6 +19,6 @@ public class test {
 //		Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable = ServerModel_Chatting.instance.chattingHashtable;
 //		ServerModel_Chatting.instance.addChatting(new Chatting("a", "b", ChatType.TEXT, "Fuck"));
 //		ServerModel_Chatting.instance.addChatting(new Chatting("c", "d", ChatType.TEXT, "Fuck"));
-		ServerModel_Chatting.instance.chattingHashtable.size();
+		ServerModel_Chatting.instance.a();
 	}
 }

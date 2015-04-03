@@ -29,10 +29,10 @@ public class SocketClientTest {
 
 //	String host = "192.168.45.17"; // 要连接的服务端IP地址
 
-	String host = "104.224.165.21"; // 要连接的服务端IP地址
-	//String host = "192.168.1.103"; // 要连接的服务端IP地址
-	//String host = "192.168.45.11"; // 要连接的服务端IP地址
-//	String host = "192.168.45.34"; // 要连接的服务端IP地址
+	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+//	public static final String host = "192.168.1.103"; // 要连接的服务端IP地址
+//	public static final String host = "192.168.45.11"; // 要连接的服务端IP地址
+//	public static final String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8081; // 要连接的服务端对应的监听端口
 
