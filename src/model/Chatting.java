@@ -57,7 +57,7 @@ public class Chatting {
 	
 	
 	@Id
-	@Column(name="chatting_id",columnDefinition = "int(8)  COMMENT '聊天消息Id'")
+	@Column(name="id",columnDefinition = "bigint  COMMENT '聊天消息Id'")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public long getId() {
 		return id;
@@ -66,7 +66,7 @@ public class Chatting {
 		this.id = id;
 	}
 	
-	@Column(name="chatting_type",columnDefinition = "int(1)  COMMENT '聊天类型'")
+	@Column(name="chatting_type",columnDefinition = "int(2)  COMMENT '聊天类型'")
 	public ChatType getChattingType() {
 		return chattingType;
 	}
@@ -75,7 +75,7 @@ public class Chatting {
 	}
 
 
-	@Column(name="is_group",columnDefinition = "int(1)  COMMENT '是否群聊'")
+	@Column(name="is_group",columnDefinition = "char(1)  COMMENT '是否群聊'")
 	public boolean getIsGroup() {
 		return isGroup;
 	}
@@ -84,8 +84,8 @@ public class Chatting {
 	}
 
 	
-	@ManyToOne(targetEntity=Group.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
-	@JoinColumn(name="group_id",columnDefinition = "int(8)  COMMENT '聊天群Id'")
+	@ManyToOne(targetEntity=Group.class)
+	@JoinColumn(name="group_id")
 	public int getGroupId() {
 		return groupId;
 	}
@@ -94,7 +94,7 @@ public class Chatting {
 	}
 
 
-	@Column(name="time",columnDefinition = "int(20)  COMMENT '时间'")
+	@Column(name="time",columnDefinition = "bigint  COMMENT '时间'")
 	public long getTime() {
 		return time;
 	}
@@ -103,8 +103,8 @@ public class Chatting {
 	}
 
 
-	@ManyToOne(targetEntity=User.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
-	@JoinColumn(name="sender_user_id",columnDefinition = "int(8)  COMMENT '发送者Id'")
+	@ManyToOne(targetEntity=User.class)
+	@JoinColumn(name="sender_user_id")
 	public String getSenderUserId() {
 		return senderUserId;
 	}
@@ -113,8 +113,8 @@ public class Chatting {
 	}
 
 
-	@ManyToOne(targetEntity=User.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
-	@JoinColumn(name="receiver_user_id",columnDefinition = "int(8)  COMMENT '接受者Id'")
+	@ManyToOne(targetEntity=User.class)
+	@JoinColumn(name="receiver_user_id")
 	public String getReceiverUserId() {
 		return receiverUserId;
 	}

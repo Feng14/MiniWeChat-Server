@@ -19,7 +19,7 @@ import javax.persistence.Table;
  * @time 2015-04-02
  */
 @Entity
-@Table(name="group")
+@Table(name="user_group")
 public class Group {
 	private int groupId;
 	private String groupName;
