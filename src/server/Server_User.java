@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
 
 import model.HibernateSessionFactory;
 import model.User;
@@ -28,6 +29,7 @@ import protocol.Msg.OffLineMsg;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
 import tools.Debug;
+import tools.GetImage;
 
 /**
  * 主服务器下的子服务器，负责处理用户相关事件
@@ -382,8 +384,9 @@ public class Server_User {
 			session.update(u);
 			trans.commit();
 			// 从默认头像文件夹获取图片
-			image = ImageIO.read(new File(ResourcePath.headDefaultPath + headInx
-					+ ".png"));
+			image = GetImage.getImage( headInx+ ".png");
+//			image = ImageIO.read(new File(ResourcePath.headDefaultPath + headInx
+//					+ ".png"));
 			File file = new File(ResourcePath.headPath);
 			// 检查保存头像的文件夹是否存在
 			if (!file.exists() && !file.isDirectory()) {
@@ -392,9 +395,14 @@ public class Server_User {
 			}
 			// 保存获取的默认头像到头像文件夹
 			File saveFile = new File(ResourcePath.headPath + clientUser.userId + ".png");
-			ImageIO.write(image, "png", saveFile);
+			
+			try{
+				ImageIO.write(image, "png", saveFile);
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			System.err.println("保存头像图片失败");
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			e.printStackTrace();
