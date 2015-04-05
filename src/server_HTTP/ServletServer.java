@@ -28,6 +28,7 @@ import tools.DataTypeTranslater;
 public class ServletServer extends HttpServlet {
 	private static final String GIF = "image/gif;charset=GB2312";// 设定输出的类型
 	private static final String JPG = "image/jpeg;charset=GB2312";
+	
 	public static final String SOURCE_PATH = "D:/Program/MiniWeChat-Server/Source";
 	public static final String CLIENT_PATH = SOURCE_PATH + "/FromClient/";
 	public static final String SERVER_PATH = SOURCE_PATH + "/FromServer/";

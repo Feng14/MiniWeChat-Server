@@ -36,7 +36,7 @@ public class TestLogin {
 	@Ignore
 	public void testLogin() throws UnknownHostException, IOException {
 		System.out.println("Start Test Login!");
-		byte[] resultBytes = client.testLogin_JUint("a", "aa");
+		byte[] resultBytes = client.testLogin_JUint("a", "a");
 		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 
@@ -57,7 +57,7 @@ public class TestLogin {
 	@Test
 	public void testLogin2() throws UnknownHostException, IOException {
 		System.out.println("Start Test Login!");
-		byte[] resultBytes = client.testLogin_JUint("a", "aa");
+		byte[] resultBytes = client.testLogin_JUint("a", "a");
 		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 		
@@ -67,7 +67,7 @@ public class TestLogin {
 		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.SUCCESS.toString());
 		
 		// 再登录
-		resultBytes = client.testLogin_JUint("b", "bb");
+		resultBytes = client.testLogin_JUint("b", "b");
 		responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 	}

@@ -47,12 +47,16 @@ public class ServerNetwork extends IoHandlerAdapter {
 		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
-			logger.debug("IP地址:"+addr.getHostAddress().toString());
-			logger.debug("本机名称:"+ addr.getHostName().toString());
+			Debug.log("IP地址:"+addr.getHostAddress().toString());
+			Debug.log("本机名称:"+ addr.getHostName().toString());
+//			logger.debug("IP地址:"+addr.getHostAddress().toString());
+//			logger.debug("本机名称:"+ addr.getHostName().toString());
+			
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		logger.debug("端口号：8081");
+		Debug.log("端口号：8081");
+//		logger.debug("端口号：8081");
 
 		acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);

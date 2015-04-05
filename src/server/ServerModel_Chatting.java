@@ -205,17 +205,29 @@ public class ServerModel_Chatting {
 		date.setDate(date.getDate() - 3);
 //		date.setDate(date.getDate() + 3);
 		Session session = HibernateSessionFactory.getSession();
-		String sql = "delete from " + Chatting.TABLE_NAME + " where time<" + date.getTime() + ";";
+		String tableName = Chatting.TABLE_NAME;
+		tableName = tableName.substring(0, 1).toUpperCase() + tableName.substring(2, tableName.length());
+		String sql = "delete from " + Chatting.class.getName() + " where time<" + date.getTime();
 		session.createQuery(sql);
+		
+		HibernateSessionFactory.commitSession(session);
+		session = HibernateSessionFactory.getSession();
 		
 		
 		session = HibernateSessionFactory.getSession();
+		Chatting a = new Chatting("a3", "a4", ChatType.TEXT,"abcde", 20140526,false,2); 
+		a.setId(1);
+		session.save(a);
+		
+		
 		while (iterator.hasNext()) {
-			queue = (LinkedBlockingQueue<Chatting>)iterator.next();
+			queue = chattingHashtable.get(iterator.next().toString());
 			
 			// 读取哈希表，存入硬盘
 			for (Chatting chatting : queue) {
-				session.save(chatting);
+				Chatting c = new Chatting(chatting.getSenderUserId(), chatting.getReceiverUserId(), chatting.getChattingType(), chatting.getMessage());
+				session.save(c);
+//				session.save(chatting);
 			}
 		}
 		HibernateSessionFactory.commitSession(session);

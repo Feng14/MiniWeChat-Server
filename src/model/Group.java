@@ -27,7 +27,7 @@ public class Group {
 	
     @Id
 	@Column(name="group_id",columnDefinition = "int(8)  COMMENT '聊天群Id'")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getGroupId() {
 		return groupId;
 	}

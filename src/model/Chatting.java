@@ -66,7 +66,7 @@ public class Chatting {
 		this.id = id;
 	}
 	
-	@Column(name="chatting_type",columnDefinition = "int(2)  COMMENT '聊天类型'")
+	@Column(name="chatting_type",columnDefinition = "int(8)  COMMENT '聊天类型'")
 	public ChatType getChattingType() {
 		return chattingType;
 	}
@@ -75,7 +75,7 @@ public class Chatting {
 	}
 
 
-	@Column(name="is_group",columnDefinition = "char(1)  COMMENT '是否群聊'")
+	@Column(name="is_group",columnDefinition = "tinyint  COMMENT '是否群聊'")
 	public boolean getIsGroup() {
 		return isGroup;
 	}
