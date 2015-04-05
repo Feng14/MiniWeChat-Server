@@ -27,7 +27,7 @@ public class ClientRequest_Dispatcher {
 	public void dispatcher(NetworkMessage networkMessage) {
 		// System.out.println("IP" +
 		// networkMessage.ioSession.getRemoteAddress());
-		Debug.log("ClientRequest_Dispatcher", "Client的请求类型是 " + networkMessage.getMessageType().toString());
+		Debug.log("ClientRequest_Dispatcher", "Client's request type is : " + networkMessage.getMessageType().toString());
 
 		try {
 			switch (networkMessage.getMessageType().getNumber()) {

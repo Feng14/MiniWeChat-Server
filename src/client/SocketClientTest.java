@@ -203,7 +203,7 @@ public class SocketClientTest {
 					for (int i = 0; i < size; i++)
 						byteArray2[i] = byteArray1[i];
 
-					Debug.log("回复心跳包");
+					Debug.log("Response 'keepAlivePacket'");
 					writeToServer(byteArray2);
 				}
 			}

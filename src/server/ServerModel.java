@@ -240,7 +240,7 @@ public class ServerModel extends Observable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				Debug.log("ServerModel", "ServerModel从请求队列中获取到一条Client发来的请求，开始交给请求分配器ClientRequest_Dispatcher处理！");
+				Debug.log("ServerModel", "'ServerModel' get a request from Client，now transmit to 'ClientRequest_Dispatcher'！");
 				if (networkMessage == null)
 					continue;
 				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
@@ -274,7 +274,7 @@ public class ServerModel extends Observable {
 					Iterator iterator = clientUserTable.keySet().iterator();
 					String key;
 
-					Debug.log("ServerModel", "开始新的一轮心跳包发送！共有 " + clientUserTable.size() + " 名用户!");
+					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'！ " + clientUserTable.size() + " user exist!");
 					synchronized (clientUserTable) {
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
@@ -288,7 +288,7 @@ public class ServerModel extends Observable {
 
 							// 将上次没有回复的干掉，从用户表中删掉
 							if (user.onLine == false) {
-								Debug.log("ServerModel", "Client 用户“" + user.ioSession.getRemoteAddress() + "”已掉线，即将删除！");
+								Debug.log("ServerModel", "Client User(" + user.ioSession.getRemoteAddress() + ") was offline，now delete it！");
 								// user.ioSession.close(true);
 								iterator.remove();
 								continue;
@@ -302,15 +302,17 @@ public class ServerModel extends Observable {
 
 							// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
 							// ，表示在线
-							Debug.log("ServerModel", "向Client " + user.ioSession.getRemoteAddress() + " 发送心跳包");
+							Debug.log("ServerModel", " Send 'KeepAlivePacket' to Client(" + user.ioSession.getRemoteAddress() + ")");
 							user.onLine = false;
 							user.ioSession.write(responseIoBuffer);
 						}
 					}
 				} catch (IOException e) {
+					Debug.log(Debug.LogType.FAULT, "'Send KeepAlivePacket Thread' fail!\n" + e.toString());
 					System.err.println("发行心跳包线程异常!");
 					e.printStackTrace();
 				} catch (InterruptedException e) {
+					Debug.log(Debug.LogType.FAULT, "'Send KeepAlivePacket Thread' fail at sleep module!\n" + e.toString());
 					System.err.println("发行心跳包线程异常! -----睡眠模块");
 					e.printStackTrace();
 				}
@@ -347,14 +349,14 @@ public class ServerModel extends Observable {
 					while (iterator.hasNext()) {
 						key = iterator.next().toString();
 						waitObj = waitClientRepTable.get(key);
-						System.err.println("key : " + key + "  size: " + waitClientRepTable.size() + "  obj=null : " + (waitObj == null));
+//						System.err.println("key : " + key + "  size: " + waitClientRepTable.size() + "  obj=null : " + (waitObj == null));
 						if (waitObj == null)
 							continue;
 
 //						System.err.println(currentTime -  waitObj.time);
 						if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
 							// 超时，重发
-							Debug.log("ServerModel", "等待客户端" + waitObj.ioSession.getRemoteAddress() + " 回复超时！");
+							Debug.log("ServerModel", "Wait for Client(" + waitObj.ioSession.getRemoteAddress() + ") response timeout！");
 							// 不在线,调用删前回调，删除
 							try {
 								clientUser = clientUserTable.get(ServerModel.getIoSessionKey(waitObj.ioSession));
@@ -362,14 +364,14 @@ public class ServerModel extends Observable {
 //								e.printStackTrace();
 							}
 							if (clientUser == null || !clientUser.onLine) {
-								Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 已断线，将从表中移除！");
+								Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") was offline，now delete it！");
 								if (waitObj.waitClientResponseCallBack != null)
 									waitObj.waitClientResponseCallBack.beforeDelete();
 								waitClientRepTable.remove(key);
 								continue;
 							}
 							// 重发，重置等待时间
-							Debug.log("ServerModel", "客户端" + waitObj.ioSession.getRemoteAddress() + " 在线，消息将重发！");
+							Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") online，send again！");
 							ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
 							waitObj.time = currentTime;
 						}

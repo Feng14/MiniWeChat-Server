@@ -57,12 +57,12 @@ public class ServerModel_Chatting {
 				ObserverMessage om = (ObserverMessage) arg;
 				if (om.type == ObserverMessage.Type.Login) {
 					ObserverMessage_Login oml = (ObserverMessage_Login) om;
-					Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "监听到用户 " + oml.userId + " 的登陆事件！");
+					Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "Catch User( " + oml.userId + ") 'LoginEvent'！");
 
 					ArrayList<Chatting> chattingList = getChattingNotReceive(oml.userId);
 					if (chattingList != null && chattingList.size() > 0) {
-						Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "用户 " + oml.userId + " 有"
-								+ chattingList.size() + "条未接收消息，开始发送！");
+						Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "User(" + oml.userId + ") has"
+								+ chattingList.size() + " 'Chattings' doesn't be received，Start transmit！");
 
 						ReceiveChatSync.Builder receiveChatting = ReceiveChatSync.newBuilder();
 
@@ -114,7 +114,7 @@ public class ServerModel_Chatting {
 					@Override
 					public void beforeDelete() {
 						// 保存回未发送队列
-						Debug.log(new String[] { "ServerModel_Chatting", "addListenReceiveChatting" }, "微信消息发送失败，存入内存！");
+						Debug.log(Debug.LogType.ERROR, new String[] { "ServerModel_Chatting", "addListenReceiveChatting" }, " 'Chatting' send fail，save to Memory！");
 						if (chattingList.size() == 0)
 							return;
 						String key = chattingList.get(0).getReceiverUserId();

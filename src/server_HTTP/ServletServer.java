@@ -24,6 +24,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import server.Server;
 import tools.DataTypeTranslater;
+import tools.Debug;
 
 public class ServletServer extends HttpServlet {
 	private static final String GIF = "image/gif;charset=GB2312";// 设定输出的类型
@@ -44,6 +45,7 @@ public class ServletServer extends HttpServlet {
 		try {
 			minaServer = new Server();
 		} catch (IOException e) {
+			Debug.log(Debug.LogType.FAULT, "ServletServer", "Start Mina Server Fail!\n" + e.toString());
 			System.err.println("ServletServer : 服务器启动失败");
 			e.printStackTrace();
 		}

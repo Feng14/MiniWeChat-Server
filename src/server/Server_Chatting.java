@@ -32,7 +32,7 @@ public class Server_Chatting {
 	public void clientSendChatting(NetworkMessage networkMessage) throws NoIpException {
 
 		Debug.log(new String[] { "Server_Chatting", "clientSendChatting" },
-				" 用户发消息事件 ： 用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的发消息事件  的处理");
+				" User sendChatting Event ：Deal with sser's " + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  send chatting event");
 
 		try {
 			SendChatMsg.SendChatReq sendChattingObject = SendChatMsg.SendChatReq
@@ -60,7 +60,7 @@ public class Server_Chatting {
 			ClientUser clientUser = ServerModel.instance.getClientUserByUserId(chatting.getReceiverUserId());
 			if (clientUser != null) {
 				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" },
-						"接收者在线，直接发给接受者(" + ServerModel.getIoSessionKey(clientUser.ioSession) + ")!");
+						"Receiver online，send to receier(" + ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
 				ChatItem.Builder chatItem = chatting.createChatItem();
 				
 				Debug.log(chatItem.getSendUserId() + " " + chatItem.getReceiveUserId() + " " + chatItem.getChatType() + " "
@@ -77,7 +77,7 @@ public class Server_Chatting {
 				// 发送
 				ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageWillSend);
 			} else {
-				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "接收者不在线，暂存在内存!");
+				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver offline，save to memory!");
 				ServerModel_Chatting.instance.addChatting(chatting);
 			}
 

@@ -28,17 +28,16 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
 
-	
 	private InetSocketAddress inetSocketAddress;
 	private IoAcceptor acceptor;
-
 
 	private ServerNetwork() {
 
 	}
 
 	/**
-	 *  初始化
+	 * 初始化
+	 * 
 	 * @throws IOException
 	 * @author Feng
 	 */
@@ -47,31 +46,32 @@ public class ServerNetwork extends IoHandlerAdapter {
 		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
-			Debug.log("IP地址:"+addr.getHostAddress().toString());
-			Debug.log("本机名称:"+ addr.getHostName().toString());
-//			logger.debug("IP地址:"+addr.getHostAddress().toString());
-//			logger.debug("本机名称:"+ addr.getHostName().toString());
-			
+			Debug.log("IP address:" + addr.getHostAddress().toString());
+			Debug.log("Host Name:" + addr.getHostName().toString());
+			// logger.debug("IP地址:"+addr.getHostAddress().toString());
+			// logger.debug("本机名称:"+ addr.getHostName().toString());
+
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		Debug.log("端口号：8081");
-//		logger.debug("端口号：8081");
+		Debug.log("Port Number：8081");
+		// logger.debug("端口号：8081");
 
 		acceptor = new NioSocketAcceptor();
 		acceptor.setHandler(this);
 		inetSocketAddress = new InetSocketAddress(8081);
 		acceptor.bind(inetSocketAddress);
 	}
-	
-	public void onDestroy(){
+
+	public void onDestroy() {
 		acceptor.unbind(inetSocketAddress);
 	}
 
 	private int count = 0;
 
 	/**
-	 *  接收到新的数据
+	 * 接收到新的数据
+	 * 
 	 * @author Feng
 	 */
 	@Override
@@ -88,7 +88,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 		byte[] oneReqBytes;
 		int reqOffset = 0;
 		do {
-			Debug.log("\nServerNetwork: 开始分割一个新的请求!");
+			Debug.log("\nServerNetwork: Start cut a new Request from Client!");
 			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
 			System.out.println("size:" + size);
 			if (size == 0)
@@ -102,12 +102,13 @@ public class ServerNetwork extends IoHandlerAdapter {
 			reqOffset += size;
 		} while (reqOffset < byteArray.length);
 
-//		new Thread(new check(session)).start();
+		// new Thread(new check(session)).start();
 
 	}
-	
+
 	/**
-	 *  用于处理一个请求
+	 * 用于处理一个请求
+	 * 
 	 * @param session
 	 * @param size
 	 * @param byteArray
@@ -116,18 +117,21 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private void dealRequest(IoSession ioSession, int size, byte[] byteArray) {
 		try {
 			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-			Debug.log("ServerNetwork", "将Client" + ServerModel.getIoSessionKey(ioSession) + " 的请求(size=" + byteArray.length + ")放入待处理队列");
+			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") request(size="
+					+ byteArray.length + ")into Queue!");
 		} catch (InterruptedException e) {
+			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
 			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
 			e.printStackTrace();
 		} catch (NoIpException e) {
-			// TODO Auto-generated catch block
+			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 *  由底层决定是否创建一个session
+	 * 由底层决定是否创建一个session
+	 * 
 	 * @author Feng
 	 */
 	@Override
@@ -136,18 +140,20 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  创建了session 后会回调sessionOpened
+	 * 创建了session 后会回调sessionOpened
+	 * 
 	 * @author Feng
 	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
-		Debug.log("\n第 " + count + " 个 client 登陆！address： : " + session.getRemoteAddress());
-		Debug.log("ServerNetwork", "检测到一个Client的连接，添加进表中");
+		Debug.log("\n The " + count + " 个 client connected！address： : " + session.getRemoteAddress());
+		Debug.log("ServerNetwork", "find a Client connected，save into table");
 		addClientUserToTable(session);
 	}
 
 	/**
-	 *  发送成功后会回调的方法
+	 * 发送成功后会回调的方法
+	 * 
 	 * @author Feng
 	 */
 	public void messageSent(IoSession session, Object message) {
@@ -161,7 +167,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  session 空闲的时候调用
+	 * session 空闲的时候调用
+	 * 
 	 * @author Feng
 	 */
 	public void sessionIdle(IoSession session, IdleStatus status) {
@@ -169,7 +176,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 *  异常捕捉
+	 * 异常捕捉
+	 * 
 	 * @author Feng
 	 */
 	@Override
@@ -177,31 +185,34 @@ public class ServerNetwork extends IoHandlerAdapter {
 		Debug.log("throws exception");
 		Debug.log("session.toString()", session.toString());
 		Debug.log("cause.toString()", cause.toString());
-		Debug.log("报错完毕！！");
+		Debug.log("Report Error Over！！");
 	}
-	
+
 	/**
 	 * 将新的用户添加到“已连接用户信息表”中
+	 * 
 	 * @param ioSession
 	 * @author Feng
 	 */
-	public void addClientUserToTable(IoSession ioSession){
+	public void addClientUserToTable(IoSession ioSession) {
 		// 已有就不加进来了
-		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null){
+		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null) {
+			Debug.log(Debug.LogType.ERROR, "User exist when Save user into Table!");
 			System.err.println("添加时用户已存在");
 			return;
 		}
-		
-		Debug.log("ServerNetwork", "发现新的用户" + ioSession.getRemoteAddress() + "连接，加入用户表");
+
+		Debug.log("ServerNetwork", "Find new User(" + ioSession.getRemoteAddress() + ") connected，save into table");
 		try {
 			ServerModel.instance.addClientUserToTable(ioSession, new ClientUser(ioSession));
 		} catch (NoIpException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 给客户端发包
+	 * 
 	 * @param ioSession
 	 * @param byteArray
 	 * @author Feng
