@@ -27,7 +27,7 @@ public class Group {
 	
     @Id
 	@Column(name="group_id",columnDefinition = "int(8)  COMMENT '聊天群Id'")
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	public int getGroupId() {
 		return groupId;
 	}
@@ -46,7 +46,7 @@ public class Group {
 	
 	 @ManyToMany(targetEntity = User.class,
 			    cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-			    @JoinTable(name = "group_member",
+			    @JoinTable(name = "group_members",
 			    joinColumns = @JoinColumn(name = "group_id"),
 			    inverseJoinColumns =
 			    @JoinColumn(name = "user_id")

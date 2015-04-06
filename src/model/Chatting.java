@@ -36,6 +36,10 @@ public class Chatting {
 	private long time;
 	private String senderUserId, receiverUserId, message;
 	
+	public Chatting(){
+		
+	}
+	
 	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message,long time,
 			boolean isGroup,int groupId){
 		setSenderUserId(senderUserId);
@@ -83,9 +87,7 @@ public class Chatting {
 		this.isGroup = isGroup;
 	}
 
-	
-	@ManyToOne(targetEntity=Group.class)
-	@JoinColumn(name="group_id")
+	@Column(name="group_id",columnDefinition = "int(8)  COMMENT '时间'")
 	public int getGroupId() {
 		return groupId;
 	}
@@ -94,7 +96,7 @@ public class Chatting {
 	}
 
 
-	@Column(name="time",columnDefinition = "bigint  COMMENT '时间'")
+	@Column(name="time",columnDefinition = "bigint(20)  COMMENT '时间'")
 	public long getTime() {
 		return time;
 	}
@@ -103,8 +105,7 @@ public class Chatting {
 	}
 
 
-	@ManyToOne(targetEntity=User.class)
-	@JoinColumn(name="sender_user_id")
+	@Column(name="sender_user_id",columnDefinition = "char(20)  COMMENT '发送者id'")
 	public String getSenderUserId() {
 		return senderUserId;
 	}
@@ -113,8 +114,7 @@ public class Chatting {
 	}
 
 
-	@ManyToOne(targetEntity=User.class)
-	@JoinColumn(name="receiver_user_id")
+	@Column(name="receiver_user_id",columnDefinition = "char(20)  COMMENT '接收者id'")
 	public String getReceiverUserId() {
 		return receiverUserId;
 	}
