@@ -116,7 +116,7 @@ public class Server_Friend {
 				if(!exist1){
 					u.getFriends().add(friend);
 				    session.update(u);
-				  
+				    sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
 				}
 				if(!exist2){
 					friend.getFriends().add(u);
@@ -189,6 +189,7 @@ public class Server_Friend {
 				if(null!=x){
 					u.getFriends().remove(x);
 					session.update(u);
+					sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
 				}
 				if(null != y){
 					friend.getFriends().remove(y);
