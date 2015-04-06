@@ -142,8 +142,6 @@ public class Server_Friend {
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
 							networkMessage.getMessageID(), addFriendBuilder.build().toByteArray()));
-			
-			sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
 		} catch (InvalidProtocolBufferException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -215,8 +213,6 @@ public class Server_Friend {
 					networkMessage.ioSession,
 					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
 							networkMessage.getMessageID(), DeleteFriendBuilder.build().toByteArray()));
-			
-			sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
 		} catch (InvalidProtocolBufferException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
