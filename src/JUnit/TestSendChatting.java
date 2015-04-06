@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class TestSendChatting {
 	 * @throws UnknownHostException
 	 */
 	@Test
-	@Ignore
+//	@Ignore
 	public void test1() throws UnknownHostException, IOException {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
@@ -42,10 +43,10 @@ public class TestSendChatting {
 		String userId1 = "c", userId2 = "d", message = "c fuck d";
 
 		// 登陆
-		if (clientSocket1.login(userId1, "cc") != LoginRsp.ResultCode.SUCCESS)
+		if (clientSocket1.login(userId1, userId1) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
-		if (clientSocket2.login(userId2, "dd") != LoginRsp.ResultCode.SUCCESS)
+		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
 		// 发消息
@@ -74,6 +75,11 @@ public class TestSendChatting {
 			Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
 					+ chatItem.getChatBody());
 			assertEquals(chatItem.getChatBody(), message);
+			
+			Date date = new Date(chatItem.getDate());
+			System.out.println("sender: " + chatItem.getSendUserId() + " receiver : " + chatItem.getReceiveUserId()
+					+ " time" + (1970 + date.getYear()) + "-" + date.getMonth() + "-" + date.getDay() + "  " + date.getHours() + ":"
+					+ date.getMinutes() + ":" + date.getSeconds() + "  message : " + chatItem.getChatBody());
 
 			// 回复
 			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
@@ -98,7 +104,7 @@ public class TestSendChatting {
 		String userId1 = "a", userId2 = "b", message = "a fuck b";
 
 		// 发送者登陆
-		if (clientSocket1.login(userId1, "aa") != LoginRsp.ResultCode.SUCCESS)
+		if (clientSocket1.login(userId1, userId1) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
 		// 发消息
@@ -118,7 +124,7 @@ public class TestSendChatting {
 
 		// 接收者登陆
 		ClientSocket clientSocket2 = new ClientSocket();
-		if (clientSocket2.login(userId2, "bb") != LoginRsp.ResultCode.SUCCESS)
+		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
 		while (true) {
@@ -155,7 +161,7 @@ public class TestSendChatting {
 		int times = 5;
 
 		// 发送者登陆
-		if (clientSocket1.login(userId1, "ee") != LoginRsp.ResultCode.SUCCESS)
+		if (clientSocket1.login(userId1, userId1) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
 		// 发消息
@@ -177,7 +183,7 @@ public class TestSendChatting {
 
 		// 接收者登陆
 		ClientSocket clientSocket2 = new ClientSocket();
-		if (clientSocket2.login(userId2, "ff") != LoginRsp.ResultCode.SUCCESS)
+		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
 		while (true) {
@@ -209,6 +215,7 @@ public class TestSendChatting {
 	 * @throws IOException
 	 * @throws InterruptedException 
 	 */
+	@Ignore
 	@Test
 	public void test4() throws UnknownHostException, IOException, InterruptedException{
 		ClientSocket clientSocket1 = new ClientSocket();

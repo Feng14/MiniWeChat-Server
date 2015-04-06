@@ -240,7 +240,7 @@ public class ServerModel extends Observable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				Debug.log("ServerModel", "'ServerModel' get a request from Client，now transmit to 'ClientRequest_Dispatcher'！");
+				Debug.log("ServerModel", "'ServerModel' get a request from Client,now transmit to 'ClientRequest_Dispatcher'！");
 				if (networkMessage == null)
 					continue;
 				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
@@ -278,7 +278,7 @@ public class ServerModel extends Observable {
 					synchronized (clientUserTable) {
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
-							Debug.log("ServerModel", "进入发心跳包循环!");
+//							Debug.log("ServerModel", "进入发心跳包循环!");
 
 							key = iterator.next().toString();
 
@@ -288,7 +288,7 @@ public class ServerModel extends Observable {
 
 							// 将上次没有回复的干掉，从用户表中删掉
 							if (user.onLine == false) {
-								Debug.log("ServerModel", "Client User(" + user.ioSession.getRemoteAddress() + ") was offline，now delete it！");
+								Debug.log("ServerModel", "Client User(" + user.ioSession.getRemoteAddress() + ") was offline,now delete it！");
 								// user.ioSession.close(true);
 								iterator.remove();
 								continue;
@@ -364,14 +364,14 @@ public class ServerModel extends Observable {
 //								e.printStackTrace();
 							}
 							if (clientUser == null || !clientUser.onLine) {
-								Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") was offline，now delete it！");
+								Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") was offline,now delete it！");
 								if (waitObj.waitClientResponseCallBack != null)
 									waitObj.waitClientResponseCallBack.beforeDelete();
 								waitClientRepTable.remove(key);
 								continue;
 							}
 							// 重发，重置等待时间
-							Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") online，send again！");
+							Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") online,send again！");
 							ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
 							waitObj.time = currentTime;
 						}

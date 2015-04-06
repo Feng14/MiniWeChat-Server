@@ -147,7 +147,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
 		Debug.log("\n The " + count + " 个 client connected！address： : " + session.getRemoteAddress());
-		Debug.log("ServerNetwork", "find a Client connected，save into table");
+		Debug.log("ServerNetwork", "find a Client connected,save into table");
 		addClientUserToTable(session);
 	}
 
@@ -202,7 +202,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 			return;
 		}
 
-		Debug.log("ServerNetwork", "Find new User(" + ioSession.getRemoteAddress() + ") connected，save into table");
+		Debug.log("ServerNetwork", "Find new User(" + ioSession.getRemoteAddress() + ") connected,save into table");
 		try {
 			ServerModel.instance.addClientUserToTable(ioSession, new ClientUser(ioSession));
 		} catch (NoIpException e) {
@@ -221,6 +221,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 		IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
 		responseIoBuffer.put(byteArray);
 		responseIoBuffer.flip();
+		Debug.log(new String[] { "ServerNetwork", "sendMessageToClient" },
+				"Send packet(" + NetworkMessage.getMessageType(byteArray).toString() + ") to client!");
 		ioSession.write(responseIoBuffer);
 	}
 }

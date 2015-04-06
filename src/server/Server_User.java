@@ -221,9 +221,9 @@ public class Server_User {
 	 * @throws IOException
 	 * @throws NoIpException
 	 */
-	private boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) throws IOException {
+	private boolean checkAnotherOnline(NetworkMessage networkMessage, String userId) throws IOException, NoIpException {
 		ClientUser user = ServerModel.instance.getClientUserByUserId(userId);
-		if (user != null) {
+		if (user != null && !ServerModel.getIoSessionKey(networkMessage.ioSession).equals(ServerModel.getIoSessionKey(user.ioSession))) {
 			// 发送有他人登陆消息
 			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);

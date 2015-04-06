@@ -47,7 +47,7 @@ public class Chatting {
 		setGroupId(groupId);
 	}
 	
-	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message){
+	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message, long time){
 		setSenderUserId(senderUserId);
 		setReceiverUserId(receiverUserId);
 		setChattingType(chattingType);
