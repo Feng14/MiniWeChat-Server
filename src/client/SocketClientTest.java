@@ -5,6 +5,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import org.hibernate.Criteria;
+
+import antlr.collections.List;
+
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
 import protocol.Msg.ChangeFriendMsg;
@@ -29,9 +34,9 @@ public class SocketClientTest {
 
 //	String host = "192.168.45.17"; // 要连接的服务端IP地址
 
-	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+//	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
 //	public static final String host = "192.168.1.103"; // 要连接的服务端IP地址
-	//public static final String host = "192.168.45.17"; // 要连接的服务端IP地址
+	public static final String host = "192.168.45.17"; // 要连接的服务端IP地址
 //	public static final String host = "127.0.0.1"; // 要连接的服务端IP地址
 
 	int port = 8081; // 要连接的服务端对应的监听端口

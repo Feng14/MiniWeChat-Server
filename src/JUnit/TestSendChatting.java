@@ -40,7 +40,8 @@ public class TestSendChatting {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 		byte[] response;
-		String userId1 = "c", userId2 = "d", message = "c fuck d";
+//		String userId1 = "c", userId2 = "d", message = "c fuck d";
+		String userId1 = "123", userId2 = "1234", message = "c fuck d";
 
 		// 登陆
 		if (clientSocket1.login(userId1, userId1) != LoginRsp.ResultCode.SUCCESS)
@@ -49,6 +50,7 @@ public class TestSendChatting {
 		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
+		System.out.println("test1 登陆成功");
 		// 发消息
 		sendChatting(clientSocket1, userId1, userId2, ChatType.TEXT, message);
 		// 接收回复

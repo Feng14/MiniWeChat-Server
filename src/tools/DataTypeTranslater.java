@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 
 // 数据转换器
 public class DataTypeTranslater {
+	public static final int INT_SIZE = 4;
 
 	/**
 	 *  int转byte[]

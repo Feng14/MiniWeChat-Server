@@ -11,6 +11,7 @@ import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import exception.NoIpException;
@@ -58,9 +59,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 		// logger.debug("端口号：8081");
 
 		acceptor = new NioSocketAcceptor();
+		// 指定编码解码器
+		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaEncoder(), new MinaDecoder()));
 		acceptor.setHandler(this);
-		inetSocketAddress = new InetSocketAddress(8081);
-		acceptor.bind(inetSocketAddress);
+		acceptor.bind(new InetSocketAddress(8081));
 	}
 
 	public void onDestroy() {
@@ -81,26 +83,27 @@ public class ServerNetwork extends IoHandlerAdapter {
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
-		Debug.log("byteArray.length = " + byteArray.length);
-		// 大小
-		int size;
-		// 分割数据进行单独请求的处理
-		byte[] oneReqBytes;
-		int reqOffset = 0;
-		do {
-			Debug.log("\nServerNetwork: Start cut a new Request from Client!");
-			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
-			System.out.println("size:" + size);
-			if (size == 0)
-				break;
-			oneReqBytes = new byte[size];
-			for (int i = 0; i < size; i++)
-				oneReqBytes[i] = byteArray[reqOffset + i];
-
-			dealRequest(session, size, oneReqBytes);
-
-			reqOffset += size;
-		} while (reqOffset < byteArray.length);
+//		Debug.log("byteArray.length = " + byteArray.length);
+		dealRequest(session, byteArray);
+//		// 大小
+//		int size;
+//		// 分割数据进行单独请求的处理
+//		byte[] oneReqBytes;
+//		int reqOffset = 0;
+//		do {
+//			Debug.log("\nServerNetwork: Start cut a new Request from Client!");
+//			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
+//			System.out.println("size:" + size);
+//			if (size == 0)
+//				break;
+//			oneReqBytes = new byte[size];
+//			for (int i = 0; i < size; i++)
+//				oneReqBytes[i] = byteArray[reqOffset + i];
+//
+//			dealRequest(session, size, oneReqBytes);
+//
+//			reqOffset += size;
+//		} while (reqOffset < byteArray.length);
 
 		// new Thread(new check(session)).start();
 
@@ -114,10 +117,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-	private void dealRequest(IoSession ioSession, int size, byte[] byteArray) {
+	private void dealRequest(IoSession ioSession, byte[] byteArray) {
 		try {
 			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") request(size="
+			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") Request(size="
 					+ byteArray.length + ")into Queue!");
 		} catch (InterruptedException e) {
 			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
@@ -146,7 +149,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
-		Debug.log("\n The " + count + " 个 client connected！address： : " + session.getRemoteAddress());
+		Debug.log("\n The " + count + " client connected! address : " + session.getRemoteAddress());
 		Debug.log("ServerNetwork", "find a Client connected,save into table");
 		addClientUserToTable(session);
 	}
@@ -185,7 +188,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 		Debug.log("throws exception");
 		Debug.log("session.toString()", session.toString());
 		Debug.log("cause.toString()", cause.toString());
-		Debug.log("Report Error Over！！");
+		Debug.log("Report Error Over!!");
 	}
 
 	/**

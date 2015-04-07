@@ -167,30 +167,35 @@ public class ServerModel_Chatting {
 	 */
 	public class SaveDataThread extends TimerTask {
 		public void run() {
-			Iterator iterator = chattingHashtable.keySet().iterator();
-			LinkedBlockingQueue<Chatting> queue;
+			try {
+				Iterator iterator = chattingHashtable.keySet().iterator();
+				LinkedBlockingQueue<Chatting> queue;
 
-			// 删除过期消息
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR) - 3);
+				// 删除过期消息
+				Calendar calendar = Calendar.getInstance();
+				calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR) - 3);
 
-			Session session = HibernateSessionFactory.getSession();
-			String sql = "delete from " + Chatting.TABLE_NAME + " where time<" + calendar.getTimeInMillis() + ";";
-			session.createQuery(sql);
+				Session session = HibernateSessionFactory.getSession();
+				String sql = "delete from " + Chatting.TABLE_NAME + " where time<" + calendar.getTimeInMillis() + ";";
+				session.createQuery(sql);
 
-			session = HibernateSessionFactory.getSession();
-			while (iterator.hasNext()) {
-				queue = (LinkedBlockingQueue<Chatting>) iterator.next();
+				session = HibernateSessionFactory.getSession();
+				while (iterator.hasNext()) {
+					queue = (LinkedBlockingQueue<Chatting>) iterator.next();
 
-				// 读取哈希表，存入硬盘
-				for (Chatting chatting : queue) {
-					session.save(chatting);
+					// 读取哈希表，存入硬盘
+					for (Chatting chatting : queue) {
+						session.save(chatting);
+					}
 				}
-			}
-			HibernateSessionFactory.commitSession(session);
+				HibernateSessionFactory.commitSession(session);
 
-			// 清空内存
-			chattingHashtable.clear();
+				// 清空内存
+				chattingHashtable.clear();
+			} catch (Exception e) {
+				Debug.log(Debug.LogType.FAULT, new String[] { "ServerModel_Chatting", "SaveDataThread" },
+						"Save Chatting which were to long ago Fail!");
+			}
 		}
 	}
 
@@ -239,14 +244,14 @@ public class ServerModel_Chatting {
 	 * @param args
 	 * @author Feng
 	 */
-	private void test() {
-		addChatting(new Chatting("a", "b", ChatType.TEXT, "Fuck", 0));
-		addChatting(new Chatting("c", "d", ChatType.TEXT, "Fuck", 0));
-		System.out.println("size: " + chattingHashtable.size());
-
-		// Timer timer = new Timer();
-		// timer.schedule(new SaveDataThread(), 0);
-		test2();
-		System.out.println("size: " + chattingHashtable.size());
-	}
+	// private void test() {
+	// addChatting(new Chatting("a", "b", ChatType.TEXT, "Fuck", 0));
+	// addChatting(new Chatting("c", "d", ChatType.TEXT, "Fuck", 0));
+	// System.out.println("size: " + chattingHashtable.size());
+	//
+	// // Timer timer = new Timer();
+	// // timer.schedule(new SaveDataThread(), 0);
+	// // test2();
+	// // System.out.println("size: " + chattingHashtable.size());
+	// }
 }

@@ -33,7 +33,7 @@ public class Server_Chatting {
 	 */
 	public void clientSendChatting(NetworkMessage networkMessage) throws NoIpException {
 
-		Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, " User sendChatting Event ：Deal with sser's "
+		Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, " User sendChatting Event :Deal with user's "
 				+ ServerModel.getIoSessionKey(networkMessage.ioSession) + "  send chatting event");
 
 		try {
@@ -51,20 +51,20 @@ public class Server_Chatting {
 			chatting.setTime(Calendar.getInstance().getTimeInMillis());
 
 			// 若接收者是 自动回复账号，则单独处理
-			if (sendChattingObject.getChatData().getReceiveUserId().equals("AutoChat")) {
-				sendChattingAutoResponse(networkMessage, chatting);
-				return;
-			}
+//			if (sendChattingObject.getChatData().getReceiveUserId().equals("AutoChat")) {
+//				sendChattingAutoResponse(networkMessage, chatting);
+//				return;
+//			}
 
 			// 如果是特殊指令，则做特殊处理
-			if (sendChattingObject.getChatData().getChatBody().startsWith("/")) {
-
-			}
+//			if (sendChattingObject.getChatData().getChatBody().startsWith("/")) {
+//
+//			}
 
 			// 若是接收者在线，则发送，否则加入队列
 			ClientUser clientUser = ServerModel.instance.getClientUserByUserId(chatting.getReceiverUserId());
 			if (clientUser != null) {
-				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver online，send to receier("
+				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver online,send to receier("
 						+ ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
 				ChatItem.Builder chatItem = chatting.createChatItem();
 
@@ -82,7 +82,7 @@ public class Server_Chatting {
 				// 发送
 				ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageWillSend);
 			} else {
-				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver offline，save to memory!");
+				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver offline,save to memory!");
 				ServerModel_Chatting.instance.addChatting(chatting);
 			}
 

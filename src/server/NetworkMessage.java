@@ -34,8 +34,8 @@ public class NetworkMessage {
 	}
 
 	public static int getMessageLength(byte[] array) {
-//		return array.length;
-		return DataTypeTranslater.bytesToInt(array, getSizeStartIndex());
+		return array.length;
+//		return DataTypeTranslater.bytesToInt(array, getSizeStartIndex());
 	}
 
 	/**
@@ -102,10 +102,10 @@ public class NetworkMessage {
 		int size = getMessageObjectStartIndex() + packetBytes.length;
 		byte[] messageBytes = new byte[size];
 		
-		// 1.添加size
-		byte[] sizeBytes = DataTypeTranslater.intToByte(size);
-		for (int i=0; i<sizeBytes.length; i++)
-			messageBytes[i] = sizeBytes[i];
+//		// 1.添加size
+//		byte[] sizeBytes = DataTypeTranslater.intToByte(size);
+//		for (int i=0; i<sizeBytes.length; i++)
+//			messageBytes[i] = sizeBytes[i];
 		
 		// 2.加入类型
 		byte[] typeBytes = DataTypeTranslater.intToByte(messageType);
@@ -124,11 +124,11 @@ public class NetworkMessage {
 	}
 	
 	// 各个数据的开始位
-	public static int getSizeStartIndex(){
-		return 0;
-	}
+//	public static int getSizeStartIndex(){
+//		return 0;
+//	}
 	public static int getTypeStartIndex(){
-		return HEAD_INT_SIZE;
+		return 0;
 	}
 	public static int getMessageIdStartIndex(){
 		return getTypeStartIndex() + HEAD_INT_SIZE;
