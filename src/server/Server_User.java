@@ -87,7 +87,7 @@ public class Server_User {
 	 */
 	public void register(NetworkMessage networkMessage) throws NoIpException {
 		try {
-			Debug.log("Server_User", "'RegisterEvent'： Deal with user's" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+			logger.info("Server_User"+"'RegisterEvent'： Deal with user's" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 					+ " 'RegisterEvent'");
 
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(networkMessage.getMessageObjectBytes());
@@ -100,7 +100,7 @@ public class Server_User {
 			if (criteria.list().size() > 0) { // 已存在
 				// 已存在相同账号用户，告诉客户端
 				// System.out.println("什么鬼？");
-				Debug.log("Server_User", "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+				logger.info("Server_User"+"'RegisterEvent'：User's" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 						+ "  register userID repeated，response Error!");
 
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.USER_EXIST);
@@ -115,7 +115,7 @@ public class Server_User {
 				HibernateSessionFactory.commitSession(session);
 
 				// 成功，设置回包码
-				Debug.log("Server_User", "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+				logger.info("Server_User"+ "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(networkMessage.ioSession)
 						+ "  Register Successful，response to Client!");
 				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
 			}
@@ -431,14 +431,14 @@ public class Server_User {
 			// image = ImageIO.read(new File(ResourcePath.headDefaultPath +
 			// headInx
 			// + ".png"));
-			File file = new File(ResourcePath.headPath);
+			File file = new File(ResourcePath.getHeadPath());
 			// 检查保存头像的文件夹是否存在
 			if (!file.exists() && !file.isDirectory()) {
 				// 如果不存在 则创建文件夹
 				file.mkdir();
 			}
 			// 保存获取的默认头像到头像文件夹
-			File saveFile = new File(ResourcePath.headPath + clientUser.userId + ".png");
+			File saveFile = new File(ResourcePath.getHeadPath() + clientUser.userId + ".png");
 
 			try {
 				ImageIO.write(image, "png", saveFile);

@@ -13,7 +13,7 @@ public class GetImage {
 	public static BufferedImage getImage(String imageName){
 		BufferedImage image = null;
 		try{
-			String urlStr=ResourcePath.headDefaultPath+imageName;
+			String urlStr=ResourcePath.getHeadDefaultPath()+imageName;
 			URL url = new URL(urlStr);  
 			HttpURLConnection connection2 = (HttpURLConnection) url.openConnection();  
 			String cookieVal=null;
