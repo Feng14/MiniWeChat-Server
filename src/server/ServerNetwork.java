@@ -83,26 +83,27 @@ public class ServerNetwork extends IoHandlerAdapter {
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
-		Debug.log("byteArray.length = " + byteArray.length);
-		// 大小
-		int size;
-		// 分割数据进行单独请求的处理
-		byte[] oneReqBytes;
-		int reqOffset = 0;
-		do {
-			Debug.log("\nServerNetwork: Start cut a new Request from Client!");
-			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
-			System.out.println("size:" + size);
-			if (size == 0)
-				break;
-			oneReqBytes = new byte[size];
-			for (int i = 0; i < size; i++)
-				oneReqBytes[i] = byteArray[reqOffset + i];
-
-			dealRequest(session, size, oneReqBytes);
-
-			reqOffset += size;
-		} while (reqOffset < byteArray.length);
+//		Debug.log("byteArray.length = " + byteArray.length);
+		dealRequest(session, byteArray);
+//		// 大小
+//		int size;
+//		// 分割数据进行单独请求的处理
+//		byte[] oneReqBytes;
+//		int reqOffset = 0;
+//		do {
+//			Debug.log("\nServerNetwork: Start cut a new Request from Client!");
+//			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
+//			System.out.println("size:" + size);
+//			if (size == 0)
+//				break;
+//			oneReqBytes = new byte[size];
+//			for (int i = 0; i < size; i++)
+//				oneReqBytes[i] = byteArray[reqOffset + i];
+//
+//			dealRequest(session, size, oneReqBytes);
+//
+//			reqOffset += size;
+//		} while (reqOffset < byteArray.length);
 
 		// new Thread(new check(session)).start();
 
@@ -116,7 +117,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-	private void dealRequest(IoSession ioSession, int size, byte[] byteArray) {
+	private void dealRequest(IoSession ioSession, byte[] byteArray) {
 		try {
 			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
 			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") Request(size="
