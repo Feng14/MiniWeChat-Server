@@ -80,12 +80,14 @@ public class Debug {
 		if (LoggerSwitch) {
 			logger.debug(getTime());
 			
-			logger.debug(getLogTypeString(logType));
+			String str = getLogTypeString(logType);
 			
 			for (String s : heads)
-				logger.debug(s + " : ");
+				str += s + " : ";
+	
+			str += messsage;
 			
-			logger.debug(messsage);
+			logger.debug(str);
 		}
 		
 	}

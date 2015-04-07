@@ -171,7 +171,7 @@ public class ServerModel extends Observable {
 	 * 
 	 * @param ioSession
 	 * @param key
-	 * @param messageHasSent
+	 * @param messageHasSentww
 	 * @author Feng
 	 */
 	public void addClientResponseListener(IoSession ioSession, byte[] key, byte[] messageHasSent,
@@ -240,7 +240,7 @@ public class ServerModel extends Observable {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				Debug.log("ServerModel", "'ServerModel' get a request from Client,now transmit to 'ClientRequest_Dispatcher'！");
+				Debug.log("ServerModel", "'ServerModel' get a request from Client,now transmit to 'ClientRequest_Dispatcher'!");
 				if (networkMessage == null)
 					continue;
 				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
@@ -274,7 +274,7 @@ public class ServerModel extends Observable {
 					Iterator iterator = clientUserTable.keySet().iterator();
 					String key;
 
-					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'！ " + clientUserTable.size() + " user exist!");
+					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserTable.size() + " user exist!");
 					synchronized (clientUserTable) {
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
@@ -288,7 +288,7 @@ public class ServerModel extends Observable {
 
 							// 将上次没有回复的干掉，从用户表中删掉
 							if (user.onLine == false) {
-								Debug.log("ServerModel", "Client User(" + user.ioSession.getRemoteAddress() + ") was offline,now delete it！");
+								Debug.log("ServerModel", "Client User(" + user.ioSession.getRemoteAddress() + ") was offline,now delete it!");
 								// user.ioSession.close(true);
 								iterator.remove();
 								continue;
@@ -343,7 +343,7 @@ public class ServerModel extends Observable {
 				}
 				// 对每个用户进行检查
 //				Debug.log(new String[] { "ServerModel", "CheckWaitClientResponseThread" }, "开始检测等待客户端未回复列表，共 "
-//						+ waitClientRepTable.size() + " 个等待！");
+//						+ waitClientRepTable.size() + " 个等待!");
 				Iterator iterator = waitClientRepTable.keySet().iterator();
 				synchronized (waitClientRepTable) {
 					while (iterator.hasNext()) {
@@ -356,7 +356,7 @@ public class ServerModel extends Observable {
 //						System.err.println(currentTime -  waitObj.time);
 						if ((currentTime - waitObj.time) > WAIT_CLIENT_RESPONSE_TIMEOUT) {
 							// 超时，重发
-							Debug.log("ServerModel", "Wait for Client(" + waitObj.ioSession.getRemoteAddress() + ") response timeout！");
+							Debug.log("ServerModel", "Wait for Client(" + waitObj.ioSession.getRemoteAddress() + ") response timeout!");
 							// 不在线,调用删前回调，删除
 							try {
 								clientUser = clientUserTable.get(ServerModel.getIoSessionKey(waitObj.ioSession));
@@ -364,14 +364,14 @@ public class ServerModel extends Observable {
 //								e.printStackTrace();
 							}
 							if (clientUser == null || !clientUser.onLine) {
-								Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") was offline,now delete it！");
+								Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") was offline,now delete it!");
 								if (waitObj.waitClientResponseCallBack != null)
 									waitObj.waitClientResponseCallBack.beforeDelete();
 								waitClientRepTable.remove(key);
 								continue;
 							}
 							// 重发，重置等待时间
-							Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") online,send again！");
+							Debug.log("ServerModel", "Client(" + waitObj.ioSession.getRemoteAddress() + ") online,send again!");
 							ServerNetwork.instance.sendMessageToClient(waitObj.ioSession, waitObj.messageHasSent);
 							waitObj.time = currentTime;
 						}

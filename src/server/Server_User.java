@@ -145,12 +145,14 @@ public class Server_User {
 	 */
 	public void login(NetworkMessage networkMessage) throws NoIpException {
 		boolean success = false;
+		LoginMsg.LoginReq loginObject = null;
+		LoginMsg.LoginRsp.Builder loginBuilder = null;
 		try {
 			Debug.log(new String[] { "Server_User", "login" },
 					"Deal with user's" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 'Login' event");
 
-			LoginMsg.LoginReq loginObject = LoginMsg.LoginReq.parseFrom(networkMessage.getMessageObjectBytes());
-			LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
+			loginObject = LoginMsg.LoginReq.parseFrom(networkMessage.getMessageObjectBytes());
+			loginBuilder = LoginMsg.LoginRsp.newBuilder();
 
 			// 查找是否存在同名用户
 			Session session = HibernateSessionFactory.getSession();
@@ -188,28 +190,37 @@ public class Server_User {
 			session.close();
 
 			// 回复客户端
-			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
-					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
-							.toByteArray()));
 
-			// 广播“由用户登陆消息"
-			if (success) {
-				Debug.log(new String[] { "Server_User", "login" },
-						"Broadcast user" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " Login successful event!");
-				ServerModel.instance.setChange();
-				ServerModel.instance
-						.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
-			}
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 'LoginEvent'：Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " ！");
+			loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.err.println("Server_User : 'LoginEvent'： Error was found when response to client"
 					+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " ！");
+			loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			e.printStackTrace();
 		} catch (NoIpException e) {
 			e.printStackTrace();
+			loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
+		}
+		try {
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(), networkMessage.getMessageID(), loginBuilder.build()
+							.toByteArray()));
+		} catch (IOException e) {
+			Debug.log(Debug.LogType.FAULT, new String[]{this.getClass().toString(), "Login"}, "Send result Fail!");
+			e.printStackTrace();
+		}
+
+		// 广播“由用户登陆消息"
+		if (success) {
+			Debug.log(new String[] { "Server_User", "login" },
+					"Broadcast user" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " Login successful event!");
+			ServerModel.instance.setChange();
+			ServerModel.instance
+					.notifyObservers(new ObserverMessage_Login(networkMessage.ioSession, loginObject.getUserId()));
 		}
 	}
 
