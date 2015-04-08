@@ -1,16 +1,18 @@
 package tools;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
+
 import server.ResourcePath;
 
 public class GetImage {
+	static Logger logger = Logger.getLogger(GetImage.class);
 	public static BufferedImage getImage(String imageName){
+		logger.info("GetImage.getImage:begin to get default image:"+imageName);
 		BufferedImage image = null;
 		try{
 			String urlStr=ResourcePath.getHeadDefaultPath()+imageName;
@@ -29,9 +31,10 @@ public class GetImage {
 			connection2.connect();
 			image = ImageIO.read(connection2.getInputStream()); 
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error("GetImage.getImage:get default image:"+imageName+" fail!");
+			logger.error(e.getStackTrace());
 		}
-		
+		logger.info("GetImage.getImage:get default image:"+imageName+" success!");
 		return image;
 	}
 	

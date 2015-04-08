@@ -1,13 +1,21 @@
 package server;
 
 import java.io.IOException;
+import java.util.List;
+
+import model.HibernateDataOperation;
 import model.HibernateSessionFactory;
+import model.ResultCode;
 import model.User;
+
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import com.google.protobuf.InvalidProtocolBufferException;
+
+import exception.NoIpException;
 import protocol.ProtoHead;
 import protocol.Data.UserData;
 import protocol.Data.UserData.UserItem;
@@ -25,6 +33,7 @@ import protocol.Msg.GetUserInfoMsg;
  */
 public class Server_Friend {
 	public static Server_Friend instance = new Server_Friend();
+	Logger logger = Logger.getLogger(Server_Friend.class);
 	
 	private Server_Friend(){
 		
@@ -34,44 +43,50 @@ public class Server_Friend {
 	 * 搜索用户
 	 * @param networkMessage
 	 * @author wangfei
+	 * @throws NoIpException 
 	 * @time 2015-03-23
 	 */
-	public void getUserInfo(NetworkMessage networkMessage){
+	public void getUserInfo(NetworkMessage networkMessage) throws NoIpException{
+		logger.info("Server_Friend.getUserInfo:begin to getUserInfo!");
+		GetUserInfoMsg.GetUserInfoRsp.Builder getUserInfoBuilder = GetUserInfoMsg.GetUserInfoRsp.newBuilder();
 		try {
 			GetUserInfoMsg.GetUserInfoReq getUserInfoObject =GetUserInfoMsg.GetUserInfoReq.parseFrom(networkMessage.getMessageObjectBytes());
-			GetUserInfoMsg.GetUserInfoRsp.Builder getUserInfoBuilder = GetUserInfoMsg.GetUserInfoRsp.newBuilder();
 			
-			Session session = HibernateSessionFactory.getSession();
-			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userId", getUserInfoObject.getTargetUserId()));
-			if(criteria.list().size()>0){
+			ResultCode code = ResultCode.NULL;
+			List list = HibernateDataOperation.query("userId", getUserInfoObject.getTargetUserId(), User.class, code);
+			
+			if(code.getCode().equals(ResultCode.SUCCESS) && list.size()>0){
 				//不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
-				User user = (User)criteria.list().get(0);
-				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
-				
+				User user = (User)list.get(0);
 				UserData.UserItem.Builder userBuilder = UserData.UserItem.newBuilder();
 				userBuilder.setUserId(user.getUserId());
 				userBuilder.setUserName(user.getUserName());
 				userBuilder.setHeadIndex(user.getHeadIndex());
 				getUserInfoBuilder.setUserItem(userBuilder);
-				
+				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
 			}
-			else{
+			else if(code.getCode().equals(ResultCode.FAIL)){
+				logger.error("Server_Friend.getUserInfo: Hibernate error");
+				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
+			}
+			else if(list.size()<1){
+				logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " not exist!");
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
 			}
-			//回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),
-							networkMessage.getMessageID(), getUserInfoBuilder.build().toByteArray()));
-			
 		} catch (InvalidProtocolBufferException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}catch(IOException e){
-			e.printStackTrace();
+			logger.error("Server_Friend.getUserInfo:Error was found when using Protobuf to deserialization "+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
+			logger.error(e.getStackTrace());
+			getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
 		}
-		
+		try{
+			//回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),networkMessage.getMessageID(), getUserInfoBuilder.build().toByteArray()));
+		}
+		catch(IOException e){
+			logger.error("Server_Friend.getUserInfo deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send result Fail!");
+			logger.error(e.getStackTrace());
+		}
 	}
 
 	/**
@@ -90,13 +105,13 @@ public class Server_Friend {
 					networkMessage.ioSession.getRemoteAddress().toString());
 			User friend =null;
 			try{
-				Session session = HibernateSessionFactory.getSession();
-				Criteria criteria = session.createCriteria(User.class);
-				Criteria criteria2 = session.createCriteria(User.class);
-				criteria.add(Restrictions.eq("userId", clientUser.userId));
-				User u = (User) criteria.list().get(0);
-				criteria2.add(Restrictions.eq("userId", addFriendObject.getFriendUserId()));
-				friend = (User) criteria2.list().get(0);
+				ResultCode code1 = ResultCode.NULL;
+				ResultCode code2 = ResultCode.NULL;
+				List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1);
+				List list2 = HibernateDataOperation.query("userId", addFriendObject.getFriendUserId(), User.class, code2);
+				
+				User u = (User) list1.get(0);
+				friend = (User) list2.get(0);
 				//检测双方是否已经是好友关系
 				boolean exist1 = false,exist2 = false;
 				for(User user:u.getFriends()){
@@ -112,15 +127,17 @@ public class Server_Friend {
 					}
 				}
 				//如果不存在好友关系 则添加好友
-				Transaction trans = session.beginTransaction();
+				
 				if(!exist1){
 					u.getFriends().add(friend);
-				    session.update(u);
+				    ResultCode code = ResultCode.NULL;
+				    HibernateDataOperation.update(u, code);
 				    sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
 				}
 				if(!exist2){
 					friend.getFriends().add(u);
-					session.update(friend);
+					ResultCode code = ResultCode.NULL;
+					HibernateDataOperation.update(friend, code);
 					
 					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
 					if(null != friendUser){
@@ -128,7 +145,6 @@ public class Server_Friend {
 					   sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
 					}
 				}
-				trans.commit();
 				
 			    addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.SUCCESS);
 			}catch(Exception e){
@@ -148,6 +164,10 @@ public class Server_Friend {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+		
+	}
+	
+	private void add(User user,User friend){
 		
 	}
 	
@@ -220,6 +240,10 @@ public class Server_Friend {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	private void delete(User user,User friend){
+		
 	}
 	
 	private void sendSync(ClientUser clientUser,User user,ChangeFriendMsg.ChangeFriendSync.ChangeType type){

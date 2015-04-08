@@ -58,5 +58,8 @@ public class Group {
 		this.memberList = memberList;
 	}
 	
+	public String toString(){
+		return this.groupId+" "+this.groupName;
+	}
 
 }

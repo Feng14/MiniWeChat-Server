@@ -144,4 +144,8 @@ public class Chatting {
 		
 		return chatItem;
 	}
+	
+	public String toString(){
+		return this.getSenderUserId()+" "+this.getReceiverUserId()+" "+this.getChattingType()+" "+this.getMessage();
+	}
 }

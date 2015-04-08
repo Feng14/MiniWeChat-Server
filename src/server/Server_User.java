@@ -3,22 +3,21 @@ package server;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
 
+import model.HibernateDataOperation;
 import model.HibernateSessionFactory;
+import model.ResultCode;
 import model.User;
 import observer.ObserverMessage_Login;
-
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import exception.NoIpException;
 import protocol.ProtoHead;
 import protocol.Data.UserData.UserItem;
@@ -285,87 +284,80 @@ public class Server_User {
 	 * @param networkMessage
 	 * @author wangfei
 	 * @throws NoIpException
+	 * @throws  
 	 * @time 2015-03-21
 	 */
 	public void personalSettings(NetworkMessage networkMessage) throws NoIpException {
+		logger.info("Server_User.personalSettings deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession));
+		
+		PersonalSettingsMsg.PersonalSettingsRsp.Builder personalSettingsBuilder = PersonalSettingsMsg.PersonalSettingsRsp.newBuilder();
 		try {
-			Debug.log(new String[] { "Server_User", "personalSettings" },
-					" Deal with user's " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 'PersonalSettingEvent'");
-
 			PersonalSettingsMsg.PersonalSettingsReq personalSettingsObject = PersonalSettingsMsg.PersonalSettingsReq
 					.parseFrom(networkMessage.getMessageObjectBytes());
-			PersonalSettingsMsg.PersonalSettingsRsp.Builder personalSettingsBuilder = PersonalSettingsMsg.PersonalSettingsRsp
-					.newBuilder();
-			System.out.println(personalSettingsObject.getUserName() + " " + personalSettingsObject.getUserPassword() + " "
-					+ personalSettingsObject.getHeadIndex());
-
-			Session session = HibernateSessionFactory.getSession();
-			Criteria criteria = session.createCriteria(User.class);
-
+		
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
-			boolean changePassword = false;
-			criteria.add(Restrictions.eq("userId", clientUser.userId));
-			if (criteria.list().size() > 0) {
-				User user = (User) criteria.list().get(0);
+			ResultCode code = ResultCode.NULL;
+			List list = HibernateDataOperation.query("userId",  clientUser.userId, User.class, code);
+			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
+				User user = (User) list.get(0);
 				// 修改昵称
 				if (personalSettingsObject.getUserName() != null && personalSettingsObject.getUserName() != "") {
 					changeUserName(personalSettingsBuilder, networkMessage, user, personalSettingsObject.getUserName());
 				}
 				// 修改密码
 				if (personalSettingsObject.getUserPassword() != null && personalSettingsObject.getUserPassword() != "") {
-					changeUserPassword(personalSettingsBuilder, networkMessage, clientUser, user,
-							personalSettingsObject.getUserPassword());
+					changeUserPassword(personalSettingsBuilder, networkMessage, clientUser, user,personalSettingsObject.getUserPassword());
 				}
-
 				// 修改头像
 				if (personalSettingsObject.getHeadIndex() >= 1 && personalSettingsObject.getHeadIndex() <= 6) {
-					changeHeadIndex(personalSettingsBuilder, networkMessage, clientUser, user,
-							personalSettingsObject.getHeadIndex());
+					changeHeadIndex(personalSettingsBuilder, networkMessage, clientUser, user,personalSettingsObject.getHeadIndex());
 				}
-			} else {
-				// 用户不存在
-				Debug.log(new String[] { "Server_User", "personalSettings" },
-						"用户" + ServerModel.getIoSessionKey(networkMessage.ioSession) + "  的用户不存在!");
+			} else if(code.getCode().equals(ResultCode.FAIL)){
+				// Hibernate数据库处理出错
+				logger.error("Server_User.personalSettings: Hibernate error");
+				personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
+			}else if(list.size()<1){
+				//用户不存在
+				logger.info("Server_User.personalSettings:User:" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " not exist!");
 				personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			}
-			session.close();
-
+			
 		} catch (InvalidProtocolBufferException e) {
-			Debug.log(
-					Debug.LogType.ERROR,
-					new String[] { "Server_User", "'PersonalSettingEvent'" },
-					" Error was found when using Protobuf to deserialization "
-							+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (NoIpException e) {
-			e.printStackTrace();
+			logger.error("Server_User.personalSettings:Error was found when using Protobuf to deserialization "+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
+			logger.error(e.getStackTrace());
+			
+			personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
+		} 
+		try{
+			//回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),networkMessage.getMessageID(), personalSettingsBuilder.build().toByteArray()));
+		}catch(IOException e){
+			//回复客户端出错
+			logger.error("Server_User.personalSettings deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send result Fail!");
+			logger.error(e.getStackTrace());
 		}
 	}
 
+	/**
+	 * 修改用户昵称
+	 * @param builder
+	 * @param networkMessage
+	 * @param u
+	 * @param userName
+	 * @author wangfei
+	 */
 	private void changeUserName(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, NetworkMessage networkMessage, User u,
 			String userName) {
-		try {
-			Session session = HibernateSessionFactory.getSession();
-			Transaction trans = session.beginTransaction();
-			u.setUserName(userName);
-			session.update(u);
-			trans.commit();
+		logger.info("Server_User.changeUserName:begin to change User:"+u.getUserId()+" userName to "+userName);
+		ResultCode code = ResultCode.NULL;
+		u.setUserName(userName);
+		//Hibernate更新数据库
+		HibernateDataOperation.update(u, code);
+		if(code.getCode().equals(ResultCode.SUCCESS))
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
-		} catch (Exception e) {
+		else if(code.getCode().equals(ResultCode.FAIL))
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
-			e.printStackTrace();
-		}
-		try {
-			// 回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
-							networkMessage.getMessageID(), builder.build().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -376,50 +368,41 @@ public class Server_User {
 	 * @param u
 	 * @param userPassword
 	 * @author WangFei
+	 * @throws NoIpException 
 	 */
 	private void changeUserPassword(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, NetworkMessage networkMessage,
-			ClientUser clientUser, User u, String userPassword) {
-		try {
-			Session session = HibernateSessionFactory.getSession();
-			Transaction trans = session.beginTransaction();
-			u.setUserPassword(userPassword);
-			session.update(u);
-			trans.commit();
+			ClientUser clientUser, User u, String userPassword) throws NoIpException {
+		logger.info("Server_User.changeUserPassword:begin to change User:"+u.getUserId()+" userPassword to "+userPassword);
+		ResultCode code = ResultCode.NULL;
+		u.setUserPassword(userPassword);
+		HibernateDataOperation.update(u, code);
+		if(code.getCode().equals(ResultCode.SUCCESS)){
 			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
-		} catch (Exception e) {
-			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
-			e.printStackTrace();
-		}
-		// 向客户端发送消息 更改密码后客户端需要下线重新登录
-		OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
-		offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.CHANGE_PASSWORD);
-		byte[] objectBytes = offLineMessage.build().toByteArray();
-		byte[] messageBytes = null;
-		try {
-			messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		clientUser.userId = null;
-		ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
+			// 向客户端发送消息 更改密码后客户端需要下线重新登录
+			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
+			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.CHANGE_PASSWORD);
+			byte[] objectBytes = offLineMessage.build().toByteArray();
+			byte[] messageBytes = null;
+			try {
+				messageBytes = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
+			} catch (IOException e) {
+				logger.error("Server_User.personalSettings deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send sync Fail!");
+				logger.error(e.getStackTrace());
+			}
+			clientUser.userId = null;
+			ServerNetwork.instance.sendMessageToClient(clientUser.ioSession, messageBytes);
 
-		// 添加等待回复
-		ServerModel.instance.addClientResponseListener(networkMessage.ioSession, NetworkMessage.getMessageID(messageBytes),
-				messageBytes, null);
-		try {
-			// 回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
-							networkMessage.getMessageID(), builder.build().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
+			// 添加等待回复
+			ServerModel.instance.addClientResponseListener(networkMessage.ioSession, NetworkMessage.getMessageID(messageBytes),
+					messageBytes, null);
+		}
+		else if(code.getCode().equals(ResultCode.FAIL)){
+			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 		}
 	}
 
 	/**
-	 * 修改用户头像号
+	 * 修改用户头像
 	 * @param builder
 	 * @param networkMessage
 	 * @param clientUser
@@ -428,48 +411,34 @@ public class Server_User {
 	 * @author WangFei
 	 */
 	private void changeHeadIndex(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, NetworkMessage networkMessage,
-			ClientUser clientUser, User u, int headInx) {
+			ClientUser clientUser, User u, int headIndex) {
+		logger.info("Server_User.changeUserHeadIndex:begin to change User:"+u.getUserId()+" userHeadIndex to "+headIndex);
 		BufferedImage image = null;
-		u.setHeadIndex(headInx);
-		try {
-			Session session = HibernateSessionFactory.getSession();
-			Transaction trans = session.beginTransaction();
-			u.setHeadIndex(headInx);
-			session.update(u);
-			trans.commit();
+		ResultCode code = ResultCode.NULL;
+		u.setHeadIndex(headIndex);
+		HibernateDataOperation.update(u, code);
+		if(code.getCode().equals(ResultCode.SUCCESS)){
 			// 从默认头像文件夹获取图片
-			image = GetImage.getImage(headInx + ".png");
-			// image = ImageIO.read(new File(ResourcePath.headDefaultPath +
-			// headInx
-			// + ".png"));
+			image = GetImage.getImage(headIndex + ".png");
 			File file = new File(ResourcePath.getHeadPath());
 			// 检查保存头像的文件夹是否存在
 			if (!file.exists() && !file.isDirectory()) {
 				// 如果不存在 则创建文件夹
 				file.mkdir();
-			}
+				}
 			// 保存获取的默认头像到头像文件夹
 			File saveFile = new File(ResourcePath.getHeadPath() + clientUser.userId + ".png");
-
 			try {
 				ImageIO.write(image, "png", saveFile);
+				builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Server_User.changeHeadIndex:save head image to "+saveFile.getAbsolutePath()+" fail");
+				logger.error(e.getStackTrace());
+				builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 			}
-			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
-		} catch (Exception e) {
-			System.err.println("保存头像图片失败");
-			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
-			e.printStackTrace();
 		}
-		try {
-			// 回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP.getNumber(),
-							networkMessage.getMessageID(), builder.build().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
+		else if(code.getCode().equals(ResultCode.FAIL)){
+			builder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 		}
 	}
 
@@ -481,29 +450,29 @@ public class Server_User {
 	 * @time 2015-03-25
 	 * @author WangFei
 	 */
-	public void logout(NetworkMessage networkMessage) {
+	public void logout(NetworkMessage networkMessage)  {
 		try {
 			ClientUser user = null;
 			LogoutMsg.LogoutRsp.Builder logoutBuilder = null;
 			try {
 				user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
 				logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
-				Debug.log(new String[] { "Srever_User", "logout" },
-						"客户端 " + ServerModel.getIoSessionKey(networkMessage.ioSession) + " 退出登录！");
-
+				logger.info("Srever_User.logout:"+ServerModel.getIoSessionKey(networkMessage.ioSession) + " logout！");
+				//将登录的用户注销掉
 				user.userId = null;
 				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
 			} catch (NoIpException e) {
-				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
-				e.printStackTrace();
+				logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.FAIL);
+				logger.info("Srever_User.logout:fail to logout");
+				logger.info(e.getStackTrace());
 			}
-
+			//回复客户端
 			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession, NetworkMessage.packMessage(
 					ProtoHead.ENetworkMessage.LOGOUT_RSP.getNumber(), networkMessage.getMessageID(), logoutBuilder.build()
 							.toByteArray()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Server_User.logout:Send result Fail!");
+			logger.error(e.getStackTrace());
 		}
 
 	}
@@ -513,22 +482,23 @@ public class Server_User {
 	 * 
 	 * @param networkMessage
 	 * @author WangFei
+	 * @throws NoIpException 
 	 */
-	public void getPersonalInfo(NetworkMessage networkMessage) {
+	public void getPersonalInfo(NetworkMessage networkMessage) throws NoIpException {
+		logger.info("Server_User.getPersonalInfo:");
+		GetPersonalInfoMsg.GetPersonalInfoRsp.Builder getPersonalInfoBuilder = GetPersonalInfoMsg.GetPersonalInfoRsp.newBuilder();
 		try {
 
 			GetPersonalInfoMsg.GetPersonalInfoReq getPersonalInfoObject = GetPersonalInfoMsg.GetPersonalInfoReq
 					.parseFrom(networkMessage.getMessageObjectBytes());
-			GetPersonalInfoMsg.GetPersonalInfoRsp.Builder getPersonalInfoBuilder = GetPersonalInfoMsg.GetPersonalInfoRsp
-					.newBuilder();
+			
 			ClientUser user = ServerModel.instance.getClientUserFromTable(networkMessage.ioSession);
-
-			Session session = HibernateSessionFactory.getSession();
-			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userId", user.userId));
-			if (criteria.list().size() > 0) {
+			
+			ResultCode code = ResultCode.NULL;
+			List list = HibernateDataOperation.query("userId", user.userId, User.class, code);
+			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
 				// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
-				User u = (User) criteria.list().get(0);
+				User u = (User) list.get(0);
 				getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.SUCCESS);
 				// 获取用户的基本信息
 				if (getPersonalInfoObject.getUserInfo() == true) {
@@ -549,23 +519,27 @@ public class Server_User {
 					}
 				}
 				getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.SUCCESS);
-			} else {
+			} else if(code.getCode().equals(ResultCode.FAIL)) {
+				logger.error("Server_User.getPersonalInfo: Hibernate error");
 				getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
 			}
-			// 回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP.getNumber(),
-							networkMessage.getMessageID(), getPersonalInfoBuilder.build().toByteArray()));
-
-		} catch (NoIpException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			else if(list.size()<1){
+				logger.info("Server_User.getPersonalInfo:User:" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " not exist!");
+				getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
+			}
 		} catch (InvalidProtocolBufferException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Server_User.getPersonalInfo:Error was found when using Protobuf to deserialization "+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
+			logger.error(e.getStackTrace());
+			getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
+		} 
+		try{
+			// 回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP.getNumber(),networkMessage.getMessageID(), getPersonalInfoBuilder.build().toByteArray()));
+		}catch(IOException e){
+			//回复客户端出错
+			logger.error("Server_User.getPersonalInfo deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send result Fail!");
+			logger.error(e.getStackTrace());
 		}
 	}
 }

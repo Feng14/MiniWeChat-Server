@@ -86,5 +86,7 @@ public class User implements Serializable {
 		this.friends = friends;
 	}
    
-    
+    public String toString(){
+    	return this.getUserId()+" "+this.getUserName();
+    }
 }
