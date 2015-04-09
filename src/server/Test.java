@@ -5,6 +5,17 @@ import model.HibernateSessionFactory;
 import model.User;
 
 public class Test {
+//	public static Test test = new Test();
+	public int fuck = 123;
+	
+//	public static Test getTest() {
+//		return test;
+//	}
+//
+//	public static void setTest(Test test) {
+//		Test.test = test;
+//	}
+
 	public static void main(String args[]){
 //	  Scanner s = new Scanner(System.in);
 //	  

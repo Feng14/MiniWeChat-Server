@@ -25,6 +25,15 @@ import tools.Debug;
  * 
  */
 public class ServerNetwork extends IoHandlerAdapter {
+	private Test test;
+	public Test getTest() {
+		return test;
+	}
+
+	public void setTest(Test test) {
+		this.test = test;
+	}
+
 	public static ServerNetwork instance = new ServerNetwork();
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
@@ -33,7 +42,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private IoAcceptor acceptor;
 
 	private ServerNetwork() {
-
+		System.out.println("shit");
+		System.out.println("ServerNetwork  :" + test.fuck);
 	}
 
 	/**
@@ -77,14 +87,16 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @author Feng
 	 */
 	@Override
-	public void messageReceived(IoSession session, Object message) throws Exception {
+	public void messageReceived(IoSession ioSession, Object message) throws Exception {
 		// 接收客户端的数据
 		IoBuffer ioBuffer = (IoBuffer) message;
 		byte[] byteArray = new byte[ioBuffer.limit()];
 		ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
 //		Debug.log("byteArray.length = " + byteArray.length);
-		dealRequest(session, byteArray);
+//		dealRequest(session, byteArray);
+		ClientRequest_Dispatcher.instance.dispatcher(new NetworkMessage(ioSession, byteArray));
+		
 //		// 大小
 //		int size;
 //		// 分割数据进行单独请求的处理
@@ -117,20 +129,20 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-	private void dealRequest(IoSession ioSession, byte[] byteArray) {
-		try {
-			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") Request(size="
-					+ byteArray.length + ")into Queue!");
-		} catch (InterruptedException e) {
-			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
-			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
-			e.printStackTrace();
-		} catch (NoIpException e) {
-			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
-			e.printStackTrace();
-		}
-	}
+//	private void dealRequest(IoSession ioSession, byte[] byteArray) {
+//		try {
+//			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
+//			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") Request(size="
+//					+ byteArray.length + ")into Queue!");
+//		} catch (InterruptedException e) {
+//			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
+//			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
+//			e.printStackTrace();
+//		} catch (NoIpException e) {
+//			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * 由底层决定是否创建一个session

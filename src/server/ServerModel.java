@@ -32,7 +32,7 @@ public class ServerModel extends Observable {
 
 	public static ServerModel instance = new ServerModel();
 	// Client请求队列
-	private LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
+//	private LinkedBlockingQueue<NetworkMessage> requestQueue = new LinkedBlockingQueue<NetworkMessage>();
 	// 已连接用户信息表(Key 为IoSession.getRemoteAddress().toString)
 	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
 	// 监听客户端回复的表
@@ -58,7 +58,7 @@ public class ServerModel extends Observable {
 	 */
 	public void init() {
 		// 开始新线程
-		new Thread(new DealClientRequest()).start();
+//		new Thread(new DealClientRequest()).start();
 		new Thread(new KeepAlivePacketSenser()).start();
 		new Thread(new CheckWaitClientResponseThread()).start();
 	}
@@ -71,9 +71,9 @@ public class ServerModel extends Observable {
 	 * @author Feng
 	 * @throws InterruptedException
 	 */
-	public void addClientRequestToQueue(IoSession ioSession, byte[] byteArray) throws InterruptedException {
-		requestQueue.put(new NetworkMessage(ioSession, byteArray));
-	}
+//	public void addClientRequestToQueue(IoSession ioSession, byte[] byteArray) throws InterruptedException {
+//		requestQueue.put(new NetworkMessage(ioSession, byteArray));
+//	}
 
 	/**
 	 * 往“已连接用户信息表”中添加一个新用户
@@ -229,25 +229,25 @@ public class ServerModel extends Observable {
 	 * @author Feng
 	 * 
 	 */
-	private class DealClientRequest implements Runnable {
-		@Override
-		public void run() {
-			NetworkMessage networkMessage = null;
-			// 循环获取新的请求，阻塞式
-			while (true) {
-				try {
-					networkMessage = requestQueue.take();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Debug.log("ServerModel", "'ServerModel' get a request from Client,now transmit to 'ClientRequest_Dispatcher'!");
-				if (networkMessage == null)
-					continue;
-				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
-
-			}
-		}
-	}
+//	private class DealClientRequest implements Runnable {
+//		@Override
+//		public void run() {
+//			NetworkMessage networkMessage = null;
+//			// 循环获取新的请求，阻塞式
+//			while (true) {
+//				try {
+//					networkMessage = requestQueue.take();
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				Debug.log("ServerModel", "'ServerModel' get a request from Client,now transmit to 'ClientRequest_Dispatcher'!");
+//				if (networkMessage == null)
+//					continue;
+//				ClientRequest_Dispatcher.instance.dispatcher(networkMessage);
+//
+//			}
+//		}
+//	}
 
 	/**
 	 * 用于定时发送心跳包

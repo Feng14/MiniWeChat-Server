@@ -21,9 +21,7 @@
 	</servlet-mapping>
 	<!-- 结束servlet的配置 -->
 
-	<!-- <listener>
-		<listener-class>tools.MyListener</listener-class>
-	</listener> -->
+	<!-- <listener> <listener-class>tools.MyListener</listener-class> </listener> -->
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -33,4 +31,13 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+
+	<!-- Spring配置 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/classes/applicationContext.xml</param-value>
+	</context-param>
 </web-app>
