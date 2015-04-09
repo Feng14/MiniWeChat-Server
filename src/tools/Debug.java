@@ -32,9 +32,9 @@ public class Debug {
 		
 		if (LoggerSwitch)
 			if (logType != LogType.NO)
-				logger.debug(getLogTypeString(logType) + messsage);
+				logger.info(getLogTypeString(logType) + messsage);
 			else
-				logger.debug(messsage);
+				logger.info(messsage);
 	}
 	
 	
@@ -54,9 +54,9 @@ public class Debug {
 
 		if (LoggerSwitch)
 			if (logType != LogType.NO)
-				logger.debug(getLogTypeString(logType) + head + " : " + messsage);
+				logger.info(getLogTypeString(logType) + head + " : " + messsage);
 			else
-				logger.debug(head + " : " + messsage);
+				logger.info(head + " : " + messsage);
 	}
 
 	public static void log(String[] heads, String messsage) {
@@ -78,7 +78,7 @@ public class Debug {
 		}
 		
 		if (LoggerSwitch) {
-			logger.debug(getTime());
+			logger.info(getTime());
 			
 			String str = getLogTypeString(logType);
 			
@@ -87,7 +87,7 @@ public class Debug {
 	
 			str += messsage;
 			
-			logger.debug(str);
+			logger.info(str);
 		}
 		
 	}

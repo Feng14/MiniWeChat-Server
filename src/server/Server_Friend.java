@@ -13,9 +13,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import com.google.protobuf.InvalidProtocolBufferException;
 
-import exception.NoIpException;
 import protocol.ProtoHead;
 import protocol.Data.UserData;
 import protocol.Data.UserData.UserItem;
@@ -23,6 +21,10 @@ import protocol.Msg.AddFriendMsg;
 import protocol.Msg.ChangeFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+
+import exception.NoIpException;
 
 
 /**
@@ -93,157 +95,181 @@ public class Server_Friend {
 	 * 添加好友
 	 * @param networkMessage
 	 * @author wangfei
+	 * @throws NoIpException 
 	 * @time 2015-03-24
 	 */
-	public void addFriend(NetworkMessage networkMessage){
+	public void addFriend(NetworkMessage networkMessage) throws NoIpException{
+		logger.info("Server_Friend.addFriend:begin to add friend!");
+		AddFriendMsg.AddFriendRsp.Builder addFriendBuilder = AddFriendMsg.AddFriendRsp.newBuilder();
 		try {
 			AddFriendMsg.AddFriendReq addFriendObject = AddFriendMsg.AddFriendReq.
 					parseFrom(networkMessage.getMessageObjectBytes());
-			AddFriendMsg.AddFriendRsp.Builder addFriendBuilder = AddFriendMsg.AddFriendRsp.newBuilder();
-			
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			User friend =null;
-			try{
-				ResultCode code1 = ResultCode.NULL;
-				ResultCode code2 = ResultCode.NULL;
-				List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1);
-				List list2 = HibernateDataOperation.query("userId", addFriendObject.getFriendUserId(), User.class, code2);
-				
-				User u = (User) list1.get(0);
-				friend = (User) list2.get(0);
-				//检测双方是否已经是好友关系
-				boolean exist1 = false,exist2 = false;
-				for(User user:u.getFriends()){
-					if(user.getUserId().equals(friend.getUserId())){
-						exist1 = true;
-						break;
-					}
-				}
-				for(User user:friend.getFriends()){
-					if(user.getUserId().equals(u.getUserId())){
-						exist2 = true ;
-						break;
-					}
-				}
-				//如果不存在好友关系 则添加好友
-				
-				if(!exist1){
-					u.getFriends().add(friend);
-				    ResultCode code = ResultCode.NULL;
-				    HibernateDataOperation.update(u, code);
-				    sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
-				}
-				if(!exist2){
-					friend.getFriends().add(u);
-					ResultCode code = ResultCode.NULL;
-					HibernateDataOperation.update(friend, code);
-					
-					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
-					if(null != friendUser){
-						//如果对方在线  需要发消息给对方通知好友添加
-					   sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
-					}
-				}
-				
-			    addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.SUCCESS);
-			}catch(Exception e){
+			ResultCode code1 = ResultCode.NULL;
+			ResultCode code2 = ResultCode.NULL;
+			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1);
+			List list2 = HibernateDataOperation.query("userId", addFriendObject.getFriendUserId(), User.class, code2);
+			User u = (User) list1.get(0);
+			friend = (User) list2.get(0);
+			if(code1.getCode().equals(ResultCode.FAIL) || code2.getCode().equals(ResultCode.FAIL)){
+				//数据库查询失败 出现异常
+				logger.error("Server_Friend.addFriend:Hibernate query fail");
 				addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
-				e.printStackTrace();
+			}
+			else if(list1.size()<1 || list2.size()<1){
+				//用户不存在
+				logger.error("Server_Friend.addFriend:user or friend not exist "+list1.size()+" "+list2.size());
+				addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
+			}
+			else{
+				//查询结果正常 开始处理
+				add(u,friend,clientUser,addFriendBuilder);
 			}
 			
-
-			//回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
-							networkMessage.getMessageID(), addFriendBuilder.build().toByteArray()));
 		} catch (InvalidProtocolBufferException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Server_Friend.addFriend:Error was found when using Protobuf to deserialization "+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
+			logger.error(e.getStackTrace());
+			addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
+		}
+		try{
+			//回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),networkMessage.getMessageID(), addFriendBuilder.build().toByteArray()));
 		}catch(IOException e){
-			e.printStackTrace();
+			logger.error("Server_Friend.addFriend: deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send result Fail!");
+			logger.error(e.getStackTrace());
 		}
 		
 	}
 	
-	private void add(User user,User friend){
-		
+	private void add(User u,User friend,ClientUser clientUser,AddFriendMsg.AddFriendRsp.Builder addFriendBuilder){
+		//检测双方是否已经是好友关系
+		boolean exist1 = false,exist2 = false;
+		for(User user:u.getFriends()){
+			if(user.getUserId().equals(friend.getUserId())){
+				exist1 = true;
+				break;
+			}
+		}
+		for(User user:friend.getFriends()){
+			if(user.getUserId().equals(u.getUserId())){
+				exist2 = true ;
+				break;
+			}
+		}
+		//如果不存在好友关系 则添加好友
+		ResultCode code1 = ResultCode.NULL;
+		ResultCode code2 = ResultCode.NULL;
+		if(!exist1){
+			u.getFriends().add(friend);
+		    HibernateDataOperation.update(u, code1);
+		    //给添加好友的用户发送Sync
+		    if(code1.getCode().equals(ResultCode.SUCCESS))
+		    	sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
+		}
+		if(!exist2){
+			friend.getFriends().add(u);
+			HibernateDataOperation.update(friend, code2);
+			
+			ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
+			if(null != friendUser && code2.getCode().equals(ResultCode.SUCCESS)){
+				//如果对方在线  需要发消息给对方通知好友添加
+			   sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.ADD);
+			}
+		}
+		if(code1.getCode().equals(ResultCode.SUCCESS) && code2.getCode().equals(ResultCode.SUCCESS))
+			addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.SUCCESS);
+		else
+			addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
 	}
 	
 	/**
 	 * 删除好友
 	 * @param networkMessage
 	 * @author wangfei
+	 * @throws NoIpException 
 	 * @time 2015-03-24
 	 */
-	public void deleteFriend(NetworkMessage networkMessage){
+	public void deleteFriend(NetworkMessage networkMessage) throws NoIpException{
+		logger.info("Server_Friend.deleteFriend:begin to delete friend!");
+		DeleteFriendMsg.DeleteFriendRsp.Builder deleteFriendBuilder = DeleteFriendMsg.DeleteFriendRsp.newBuilder();
 		try {
 			DeleteFriendMsg.DeleteFriendReq deleteFriendObject = DeleteFriendMsg.DeleteFriendReq.
 					parseFrom(networkMessage.getMessageObjectBytes());
-			DeleteFriendMsg.DeleteFriendRsp.Builder DeleteFriendBuilder = DeleteFriendMsg.DeleteFriendRsp.newBuilder();
 			
 			ClientUser clientUser = ServerModel.instance.getClientUserFromTable(
 					networkMessage.ioSession.getRemoteAddress().toString());
 			User friend = null;
-			try{
-				Session session = HibernateSessionFactory.getSession();
-				Criteria criteria = session.createCriteria(User.class);
-				Criteria criteria2 = session.createCriteria(User.class);
-				criteria.add(Restrictions.eq("userId", clientUser.userId));
-				User u = (User) criteria.list().get(0);
-				criteria2.add(Restrictions.eq("userId", deleteFriendObject.getFriendUserId()));
-				friend = (User) criteria2.list().get(0);
-				User x=null,y=null;
-				//检测双方之前是否是好友关系
-				for(User a:u.getFriends()){
-					if(a.getUserId().equals(friend.getUserId()))
-						x=a;
-				}
-				for(User b:friend.getFriends()){
-					if(b.getUserId().equals(u.getUserId()))
-						y=b;
-				}
-				//如果是存在好友关系 则删除
-				Transaction trans = session.beginTransaction();
-				if(null!=x){
-					u.getFriends().remove(x);
-					session.update(u);
-					sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
-				}
-				if(null != y){
-					friend.getFriends().remove(y);
-					session.update(friend);
-					ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
-					if(null != friendUser){
-						sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
-					}
-				}
-				
-				trans.commit();
-			    
-			    DeleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.SUCCESS);
-			}catch(Exception e){
-				DeleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
-				e.printStackTrace();
-			}
+			ResultCode code1 = ResultCode.NULL;
+			ResultCode code2 = ResultCode.NULL;
+			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1);
+			List list2 = HibernateDataOperation.query("userId", deleteFriendObject.getFriendUserId(), User.class, code2);
+			User u = (User)list1.get(0);
+			friend = (User) list2.get(0);
 			
-
-			//回复客户端
-			ServerNetwork.instance.sendMessageToClient(
-					networkMessage.ioSession,
-					NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
-							networkMessage.getMessageID(), DeleteFriendBuilder.build().toByteArray()));
+			if(code1.getCode().equals(ResultCode.FAIL) || code2.getCode().equals(ResultCode.FAIL)){
+				//数据库查询失败 出现异常
+				logger.error("Server_Friend.deleteFriend:Hibernate query fail");
+				deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
+			}
+			else if(list1.size()<1 || list2.size()<1){
+				//用户不存在
+				logger.error("Server_Friend.deleteFriend:user or friend not exist "+list1.size()+" "+list2.size());
+				deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
+			}
+			else{
+				delete(u,friend,clientUser,deleteFriendBuilder);
+			}	
 		} catch (InvalidProtocolBufferException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Server_Friend.deleteFriend:Error was found when using Protobuf to deserialization "+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
+			logger.error(e.getStackTrace());
+			deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
+		}
+		try{
+			//回复客户端
+			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
+					ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),networkMessage.getMessageID(), deleteFriendBuilder.build().toByteArray()));
 		}catch(IOException e){
-			e.printStackTrace();
+			logger.error("Server_Friend.deleteFriend: deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send result Fail!");
+			logger.error(e.getStackTrace());
 		}
 	}
 	
-	private void delete(User user,User friend){
-		
+	private void delete(User u,User friend,ClientUser clientUser,DeleteFriendMsg.DeleteFriendRsp.Builder deleteFriendBuilder){
+		//检测双方之前是否是好友关系
+		User x=null,y=null;
+		for(User a:u.getFriends()){
+			if(a.getUserId().equals(friend.getUserId()))
+				x=a;
+		}
+		for(User b:friend.getFriends()){
+			if(b.getUserId().equals(u.getUserId()))
+				y=b;
+		}
+		//如果是存在好友关系 则删除
+		ResultCode code1 = ResultCode.NULL;
+		ResultCode code2 = ResultCode.NULL;
+		if(null!=x){
+			u.getFriends().remove(x);
+			HibernateDataOperation.update(u, code1);
+			if(code1.getCode().equals(ResultCode.SUCCESS))
+				//给删除好友的用户发送Sync
+				sendSync(clientUser,friend,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
+		}
+		if(null != y){
+			friend.getFriends().remove(y);
+			HibernateDataOperation.update(friend, code2);
+			ClientUser friendUser = ServerModel.instance.getClientUserByUserId(friend.getUserId());
+			if(null != friendUser && code2.getCode().equals(ResultCode.SUCCESS))
+				//如果被删除的用户在线 则给其发送Sync
+				sendSync(friendUser,u,ChangeFriendMsg.ChangeFriendSync.ChangeType.DELETE);
+		}
+		if(code1.getCode().equals(ResultCode.SUCCESS) && code2.getCode().equals(ResultCode.SUCCESS))
+			deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.SUCCESS);
+		else
+			deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
 	}
 	
 	private void sendSync(ClientUser clientUser,User user,ChangeFriendMsg.ChangeFriendSync.ChangeType type){
