@@ -25,15 +25,6 @@ import tools.Debug;
  * 
  */
 public class ServerNetwork extends IoHandlerAdapter {
-	private Test test;
-	public Test getTest() {
-		return test;
-	}
-
-	public void setTest(Test test) {
-		this.test = test;
-	}
-
 	public static ServerNetwork instance = new ServerNetwork();
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
@@ -42,8 +33,6 @@ public class ServerNetwork extends IoHandlerAdapter {
 	private IoAcceptor acceptor;
 
 	private ServerNetwork() {
-		System.out.println("shit");
-		System.out.println("ServerNetwork  :" + test.fuck);
 	}
 
 	/**

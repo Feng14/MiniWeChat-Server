@@ -14,7 +14,7 @@
 	
 	<bean id="Test" class="server.Test" />
 	
-	<bean id="ServerNetwork" class="server.ServerNetwork">
+	<bean id="Test2" class="server.Test2">
 		<property name="Test">
 			<ref bean="Test" />
 		</property>
