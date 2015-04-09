@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.Msg.AddFriendMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import client.SocketClientTest;
 
@@ -50,11 +50,11 @@ public class TestAddFriend {
 		
 		byte[] resultBytes = client.testAddFriend_JUnit(randomData);
 		AddFriendMsg.AddFriendRsp responseObject = 
-				AddFriendMsg.AddFriendRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+				AddFriendMsg.AddFriendRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), AddFriendMsg.AddFriendRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testAddFriend_JUnit(randomData);
-		responseObject =AddFriendMsg.AddFriendRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject =AddFriendMsg.AddFriendRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), AddFriendMsg.AddFriendRsp.ResultCode.FAIL.toString());
 	}
 

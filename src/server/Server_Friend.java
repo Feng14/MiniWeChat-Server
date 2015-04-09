@@ -26,73 +26,91 @@ import com.google.protobuf.InvalidProtocolBufferException;
 
 import exception.NoIpException;
 
-
 /**
  * 主服务器下的子服务器 负责通讯录相关事件
  * 
  * @author wangfei
- *
+ * 
  */
 public class Server_Friend {
-	public static Server_Friend instance = new Server_Friend();
 	Logger logger = Logger.getLogger(Server_Friend.class);
-	
-	private Server_Friend(){
-		
+
+	private ServerModel serverModel;
+	private ServerNetwork serverNetwork;
+
+	public ServerModel getServerModel() {
+		return serverModel;
 	}
-	
+
+	public void setServerModel(ServerModel serverModel) {
+		this.serverModel = serverModel;
+	}
+
+	public ServerNetwork getServerNetwork() {
+		return serverNetwork;
+	}
+
+	public void setServerNetwork(ServerNetwork serverNetwork) {
+		this.serverNetwork = serverNetwork;
+	}
+
 	/**
 	 * 搜索用户
+	 * 
 	 * @param networkMessage
 	 * @author wangfei
-	 * @throws NoIpException 
+	 * @throws NoIpException
 	 * @time 2015-03-23
 	 */
-	public void getUserInfo(NetworkMessage networkMessage) throws NoIpException{
+	public void getUserInfo(PacketFromClient networkMessage) throws NoIpException {
 		logger.info("Server_Friend.getUserInfo:begin to getUserInfo!");
 		GetUserInfoMsg.GetUserInfoRsp.Builder getUserInfoBuilder = GetUserInfoMsg.GetUserInfoRsp.newBuilder();
 		try {
-			GetUserInfoMsg.GetUserInfoReq getUserInfoObject =GetUserInfoMsg.GetUserInfoReq.parseFrom(networkMessage.getMessageObjectBytes());
-			
+			GetUserInfoMsg.GetUserInfoReq getUserInfoObject = GetUserInfoMsg.GetUserInfoReq.parseFrom(networkMessage
+					.getMessageObjectBytes());
+
 			ResultCode code = ResultCode.NULL;
 			List list = HibernateDataOperation.query("userId", getUserInfoObject.getTargetUserId(), User.class, code);
-			
-			if(code.getCode().equals(ResultCode.SUCCESS) && list.size()>0){
-				//不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
-				User user = (User)list.get(0);
+
+			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
+				// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
+				User user = (User) list.get(0);
 				UserData.UserItem.Builder userBuilder = UserData.UserItem.newBuilder();
 				userBuilder.setUserId(user.getUserId());
 				userBuilder.setUserName(user.getUserName());
 				userBuilder.setHeadIndex(user.getHeadIndex());
 				getUserInfoBuilder.setUserItem(userBuilder);
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
-			}
-			else if(code.getCode().equals(ResultCode.FAIL)){
+			} else if (code.getCode().equals(ResultCode.FAIL)) {
 				logger.error("Server_Friend.getUserInfo: Hibernate error");
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
-			}
-			else if(list.size()<1){
-				logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(networkMessage.ioSession) + " not exist!");
+			} else if (list.size() < 1) {
+				logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+						+ " not exist!");
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
 			}
 		} catch (InvalidProtocolBufferException e) {
-			logger.error("Server_Friend.getUserInfo:Error was found when using Protobuf to deserialization "+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
+			logger.error("Server_Friend.getUserInfo:Error was found when using Protobuf to deserialization "
+					+ ServerModel.getIoSessionKey(networkMessage.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
 			getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
 		}
-		try{
-			//回复客户端
-			ServerNetwork.instance.sendMessageToClient(networkMessage.ioSession,NetworkMessage.packMessage(
-					ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),networkMessage.getMessageID(), getUserInfoBuilder.build().toByteArray()));
-		}
-		catch(IOException e){
-			logger.error("Server_Friend.getUserInfo deal with user:"+ServerModel.getIoSessionKey(networkMessage.ioSession)+" Send result Fail!");
+		try {
+			// 回复客户端
+			serverNetwork.sendMessageToClient(
+					networkMessage.ioSession,
+					PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),
+							networkMessage.getMessageID(), getUserInfoBuilder.build().toByteArray()));
+		} catch (IOException e) {
+			logger.error("Server_Friend.getUserInfo deal with user:" + ServerModel.getIoSessionKey(networkMessage.ioSession)
+					+ " Send result Fail!");
 			logger.error(e.getStackTrace());
 		}
 	}
 
 	/**
 	 * 添加好友
+	 * 
 	 * @param networkMessage
 	 * @author wangfei
 	 * @throws NoIpException 
@@ -187,6 +205,7 @@ public class Server_Friend {
 	
 	/**
 	 * 删除好友
+	 * 
 	 * @param networkMessage
 	 * @author wangfei
 	 * @throws NoIpException 

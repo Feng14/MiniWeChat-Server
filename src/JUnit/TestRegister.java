@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.Msg.RegisterMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import client.SocketClientTest;
 
@@ -50,13 +50,13 @@ public class TestRegister {
 	public void testRegister() throws IOException {
 		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
 		byte[] resultBytes = client.testRegister_JUint(randomData, randomData, randomData);
-		RegisterMsg.RegisterRsp responseObject = RegisterMsg.RegisterRsp.parseFrom(NetworkMessage
+		RegisterMsg.RegisterRsp responseObject = RegisterMsg.RegisterRsp.parseFrom(PacketFromClient
 				.getMessageObjectBytes(resultBytes));
 
 		assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testRegister_JUint(randomData, randomData, randomData);
-		responseObject = RegisterMsg.RegisterRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject = RegisterMsg.RegisterRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), RegisterMsg.RegisterRsp.ResultCode.USER_EXIST.toString());
 		// assertEquals(responseObject.getResultCode().toString(),
 		// RegisterMsg.RegisterRsp.ResultCode.SUCCESS.toString());

@@ -6,6 +6,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.print.attribute.standard.Sides;
+
 import org.hibernate.Criteria;
 
 import antlr.collections.List;
@@ -20,7 +22,7 @@ import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 import tools.DataTypeTranslater;
 import tools.Debug;
 
@@ -31,16 +33,14 @@ public class SocketClientTest {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
+	// String host = "192.168.45.17"; // 要连接的服务端IP地址
 
-//	String host = "192.168.45.17"; // 要连接的服务端IP地址
-
-//	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
-//	public static final String host = "192.168.1.103"; // 要连接的服务端IP地址
+	// public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+	// public static final String host = "192.168.1.103"; // 要连接的服务端IP地址
 	public static final String host = "192.168.45.17"; // 要连接的服务端IP地址
-//	public static final String host = "127.0.0.1"; // 要连接的服务端IP地址
+	// public static final String host = "127.0.0.1"; // 要连接的服务端IP地址
 
 	int port = 8081; // 要连接的服务端对应的监听端口
-
 
 	public static void main(String args[]) throws IOException {
 		new SocketClientTest();
@@ -48,9 +48,9 @@ public class SocketClientTest {
 
 	public SocketClientTest() throws UnknownHostException, IOException {
 		// 为了简单起见，所有的异常都直接往外抛
-		//String host = "192.168.45.34"; // 要连接的服务端IP地址
+		// String host = "192.168.45.34"; // 要连接的服务端IP地址
 		// String host = "192.168.45.37"; // 要连接的服务端IP地址
-		//int port = 8080; // 要连接的服务端对应的监听端口
+		// int port = 8080; // 要连接的服务端对应的监听端口
 		// 与服务端建立连接
 		// 测心跳
 		// testKeepAlive();
@@ -58,46 +58,46 @@ public class SocketClientTest {
 		// inputStream = socket.getInputStream();
 		// outputStream = socket.getOutputStream();
 
-
 		// 测心跳
-//		 testKeepAlive();
+		// testKeepAlive();
 		// 测注册
 		// testRegister();
 		// 测登陆
-//		 testLogin();
+		// testLogin();
 		// 测个人设置
 		// testPersonalSettings();
 
-//		 测心跳
+		// 测心跳
 		testKeepAlive();
 		// 测注册
-//		testRegister();
-		
-		// 测登陆
-//		testLogin();
-		// 测试个人设置
-//		testPersonalSettings();
-		
-		//测查看用户个人信息
-		//testGetUserInfo();
-		
-		//测添加好友
-		//testAddFriend();
+		// testRegister();
 
-		//测删除好友
-		//testDeleteFriend();
-		
-		//测退出登录
-//		testLogout();
-		
-		//测获取个人信息
-		//testGetPersonalInfo();
+		// 测登陆
+		// testLogin();
+		// 测试个人设置
+		// testPersonalSettings();
+
+		// 测查看用户个人信息
+		// testGetUserInfo();
+
+		// 测添加好友
+		// testAddFriend();
+
+		// 测删除好友
+		// testDeleteFriend();
+
+		// 测退出登录
+		// testLogout();
+
+		// 测获取个人信息
+		// testGetPersonalInfo();
 
 		// new Thread(new readThread()).start();
 	}
 
 	/**
 	 * ���ӷ�����
+	 * 
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 * @author Feng
@@ -107,7 +107,6 @@ public class SocketClientTest {
 		inputStream = socket.getInputStream();
 		outputStream = socket.getOutputStream();
 	}
-
 
 	// 处理服务器回复问题
 	public byte[] readFromServer() throws IOException {
@@ -122,7 +121,7 @@ public class SocketClientTest {
 		// inputStream.close();
 
 		// System.out.println("client 收到Server 发来的 ： " + byteArray);
-//		inputStream.close();
+		// inputStream.close();
 
 		return byteArray;
 	}
@@ -189,27 +188,44 @@ public class SocketClientTest {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 
-			byte[] byteArray1, byteArray2;
+			byte[] byteArray;
 			// outputStream = socket.getOutputStream();
 			// writeToServer(byteArray);
 
 			// inputStream = socket.getInputStream();
 			while (true) {
-				byteArray1 = readFromServer();
-				int size = DataTypeTranslater.bytesToInt(byteArray1, 0);
-				System.out.println("size: " + size);
+				byteArray = readFromServer();
+				System.out.println("Bytes size : " + byteArray.length);
+				// System.out.println("Client get (): " + byteArray);
+				// System.err.println("Start");
+				// for (byte b : byteArray)
+				// System.err.println(b);
+				// System.err.println("End");
 
-				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray1,
+				if (byteArray.length < HEAD_INT_SIZE) {
+					System.out.println("貌似连接断了， 测试结束!");
+					return;
+				}
+
+				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
+				System.out.println("Real size: " + size);
+
+				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 						HEAD_INT_SIZE));
 				System.out.println("Type : " + type.toString());
+				
+//				for (byte b : byteArray)
+//					System.out.println(b);
 
 				if (type == ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC) {
-					byteArray2 = new byte[size];
-					for (int i = 0; i < size; i++)
-						byteArray2[i] = byteArray1[i];
+//					byteArray2 = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE,
+//							NetworkMessage.getMessageID(byteArray), new byte[0]);
+//					byteArray2 = new byte[size];
+//					for (int i = 0; i < size; i++)
+//						byteArray2[i] = byteArray[i];
 
 					Debug.log("Response 'keepAlivePacket'");
-					writeToServer(byteArray2);
+					writeToServer(byteArray);
 				}
 			}
 
@@ -234,9 +250,9 @@ public class SocketClientTest {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 
-			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
 					.toByteArray());
-			System.out.println("MessageID : " + NetworkMessage.getMessageID(byteArray));
+			System.out.println("MessageID : " + PacketFromClient.getMessageID(byteArray));
 			writeToServer(byteArray);
 
 			while (true) {
@@ -249,15 +265,15 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.REGISTER_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 
 					RegisterMsg.RegisterRsp response = RegisterMsg.RegisterRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
 							+ RegisterMsg.RegisterRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-					System.out.println("MessageID : " + NetworkMessage.getMessageID(byteArray));
+					System.out.println("MessageID : " + PacketFromClient.getMessageID(byteArray));
 				}
 			}
 
@@ -268,6 +284,7 @@ public class SocketClientTest {
 
 	/**
 	 * 测试注册功能(由JUnit调用)
+	 * 
 	 * @author Feng
 	 * @return
 	 * @throws IOException
@@ -278,7 +295,7 @@ public class SocketClientTest {
 		builder.setUserPassword(userPassword);
 		builder.setUserName(userName);
 
-		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
 				.toByteArray());
 		// System.out.println("MessageID : " +
 		// NetworkMessage.getMessageID(byteArray));
@@ -286,7 +303,7 @@ public class SocketClientTest {
 
 		while (true) {
 			byteArray = readFromServer(inputStream);
-			if (NetworkMessage.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
+			if (PacketFromClient.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
 				continue;
 
 			return cutResult(byteArray);
@@ -299,15 +316,15 @@ public class SocketClientTest {
 	 * @param userId
 	 * @param userPassword
 	 * @return
-	 * @throws IOException 
-	 * @throws UnknownHostException 
+	 * @throws IOException
+	 * @throws UnknownHostException
 	 */
 	public byte[] testLogin_JUint(String userId, String userPassword) throws UnknownHostException, IOException {
 		LoginMsg.LoginReq.Builder builder = LoginMsg.LoginReq.newBuilder();
 		builder.setUserId(userId);
 		builder.setUserPassword(userPassword);
 
-		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
 				.toByteArray());
 		// outputStream = socket.getOutputStream();
 		writeToServer(byteArray);
@@ -339,7 +356,7 @@ public class SocketClientTest {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 
-			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
 					.toByteArray());
 			// outputStream = socket.getOutputStream();
 			writeToServer(byteArray);
@@ -355,9 +372,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 
 					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
 
@@ -370,10 +387,10 @@ public class SocketClientTest {
 			outputStream.close();
 			socket.close();
 			link();
-			//断后重测
+			// 断后重测
 			System.out.println("断后重测");
-			byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
-					.toByteArray());
+			byteArray = PacketFromClient
+					.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build().toByteArray());
 			writeToServer(byteArray);
 			while (true) {
 				byteArray = readFromServer();
@@ -385,22 +402,22 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 
 					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
 
 					System.out
 							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-					
+
 				}
-				if(type == ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC){
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+				if (type == ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC) {
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 					ChangeFriendMsg.ChangeFriendSync response = ChangeFriendMsg.ChangeFriendSync.parseFrom(objBytes);
-					System.out.println(response.getChangeType()+" "+response.getUserItem());
+					System.out.println(response.getChangeType() + " " + response.getUserItem());
 				}
 			}
 
@@ -411,27 +428,28 @@ public class SocketClientTest {
 
 	/**
 	 * 测试个人设置功能
+	 * 
 	 * @author WangFei
 	 */
 	public void testPersonalSettings() {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
 		builder.setUserName("bbss");
-		//builder.setUserPassword("s1234");
+		// builder.setUserPassword("s1234");
 		builder.setHeadIndex(5);
 		System.out.println("start personalSettings test! ----------------------------");
 		try {
 			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
-			
+
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a3");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
-					.toByteArray());
+			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+					.build().toByteArray());
 			writeToServer(loginByteArray);
-			
-			byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
+
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
 					.build().toByteArray());
 			writeToServer(byteArray);
 			while (true) {
@@ -444,9 +462,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 
 					PersonalSettingsMsg.PersonalSettingsRsp response = PersonalSettingsMsg.PersonalSettingsRsp
 							.parseFrom(objBytes);
@@ -454,7 +472,7 @@ public class SocketClientTest {
 					System.out.println("Response : "
 							+ PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
-				if(type == ProtoHead.ENetworkMessage.OFFLINE_SYNC){
+				if (type == ProtoHead.ENetworkMessage.OFFLINE_SYNC) {
 					System.out.println("被下线");
 				}
 			}
@@ -463,24 +481,25 @@ public class SocketClientTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 测试个人设置--JUnit调用
+	 * 
 	 * @param userName
 	 * @param userPassword
 	 * @return
 	 * @throws IOException
 	 * @author wangfei
 	 */
-	public byte[] testPersonalSettings_JUnit(String userName,String userPassword,int headIndex) throws IOException{
+	public byte[] testPersonalSettings_JUnit(String userName, String userPassword, int headIndex) throws IOException {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
 		builder.setUserName(userName);
 		builder.setUserPassword(userPassword);
 		builder.setHeadIndex(headIndex);
-		byte[] byteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
-				.build().toByteArray());
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder.build()
+				.toByteArray());
 		writeToServer(byteArray);
-		while(true){
+		while (true) {
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
@@ -488,12 +507,12 @@ public class SocketClientTest {
 				return byteArray;
 			}
 		}
-		
-		
+
 	}
 
 	/**
 	 * 用于剪切从服务器发过来的byte[]
+	 * 
 	 * @param byteArray
 	 * @return
 	 */
@@ -505,32 +524,33 @@ public class SocketClientTest {
 
 		return result;
 	}
-	
+
 	/**
 	 * 测试获取用户信息功能
+	 * 
 	 * @author wangfei
 	 */
-	public void testGetUserInfo(){
+	public void testGetUserInfo() {
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
 		builder.setTargetUserId("Fuck");
 		System.out.println("start test SearchUser! -----------------------");
-		try{
-			Socket socket = new Socket(host,port);
+		try {
+			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
-			
+
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
-					.toByteArray());
+			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+					.build().toByteArray());
 			writeToServer(loginByteArray);
-			
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), 
-					builder.build().toByteArray());
-			
+
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
+					.toByteArray());
+
 			writeToServer(byteArray);
-			while(true){
+			while (true) {
 				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
@@ -540,38 +560,40 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.GET_USERINFO_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 
 					GetUserInfoMsg.GetUserInfoRsp response = GetUserInfoMsg.GetUserInfoRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
 							+ GetUserInfoMsg.GetUserInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-					if(response.getResultCode().equals(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS)){
-						System.out.println("searchResult UserId:"+response.getUserItem().getUserId()+"  UserName:"+response.getUserItem().getUserName());
+					if (response.getResultCode().equals(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS)) {
+						System.out.println("searchResult UserId:" + response.getUserItem().getUserId() + "  UserName:"
+								+ response.getUserItem().getUserName());
 					}
 				}
 			}
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 测试获取用户信息--JUnit调用
+	 * 
 	 * @param targetUserId
 	 * @return
 	 * @throws IOException
 	 * @author wangfei
 	 */
-	public byte[] testGetUserInfo_JUnit(String targetUserId) throws IOException{
+	public byte[] testGetUserInfo_JUnit(String targetUserId) throws IOException {
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
 		builder.setTargetUserId(targetUserId);
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), 
-				builder.build().toByteArray());
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
+				.toByteArray());
 		writeToServer(byteArray);
-		while(true){
+		while (true) {
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
@@ -579,34 +601,35 @@ public class SocketClientTest {
 				return byteArray;
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * 测试添加好友功能
+	 * 
 	 * @author wangfei
 	 */
-	public void testAddFriend(){
+	public void testAddFriend() {
 		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
 		builder.setFriendUserId("a3");
 		System.out.println("start test AddFriend! -----------------------");
-		try{
-			Socket socket = new Socket(host,port);
+		try {
+			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
-			
+
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
-					.toByteArray());
+			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+					.build().toByteArray());
 			writeToServer(loginByteArray);
-			
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), 
-					builder.build().toByteArray());
-			
+
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), builder.build()
+					.toByteArray());
+
 			writeToServer(byteArray);
-			while(true){
+			while (true) {
 				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
@@ -616,66 +639,68 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.ADD_FRIEND_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 					AddFriendMsg.AddFriendRsp response = AddFriendMsg.AddFriendRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
 							+ AddFriendMsg.AddFriendRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
 			}
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 测试添加好友--JUnit调用
+	 * 
 	 * @param friendUserId
 	 * @return
 	 * @throws IOException
 	 */
-	public byte[] testAddFriend_JUnit(String friendUserId) throws IOException{
+	public byte[] testAddFriend_JUnit(String friendUserId) throws IOException {
 		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
 		builder.setFriendUserId(friendUserId);
-		
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), 
-					builder.build().toByteArray());
+
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), builder.build()
+				.toByteArray());
 		writeToServer(byteArray);
-		while(true){
+		while (true) {
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
-						HEAD_INT_SIZE));
+					HEAD_INT_SIZE));
 			if (type == ProtoHead.ENetworkMessage.ADD_FRIEND_RSP) {
 				return byteArray;
 			}
 		}
 	}
-	
+
 	/**
 	 * 测试删除好友功能
+	 * 
 	 * @author wangfei
 	 */
-	public void testDeleteFriend(){
+	public void testDeleteFriend() {
 		DeleteFriendMsg.DeleteFriendReq.Builder builder = DeleteFriendMsg.DeleteFriendReq.newBuilder();
 		builder.setFriendUserId("a1");
 		System.out.println("start test DeleteFriend! -----------------------");
-		try{				
-			Socket socket = new Socket(host,port);
+		try {
+			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("s1234");
-			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
-					.toByteArray());
+			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), 
-					builder.build().toByteArray());
-		
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder
+					.build().toByteArray());
+
 			writeToServer(byteArray);
-			while(true){
+			while (true) {
 				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				System.out.println("size: " + size);
@@ -685,34 +710,35 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 					DeleteFriendMsg.DeleteFriendRsp response = DeleteFriendMsg.DeleteFriendRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
 							+ DeleteFriendMsg.DeleteFriendRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
 			}
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 测试删除好友--JUnit调用
+	 * 
 	 * @param friendUserId
 	 * @return
 	 * @throws IOException
 	 * @author wangfei
 	 */
-	public byte[] testDeleteFriend_JUnit(String friendUserId) throws IOException{
+	public byte[] testDeleteFriend_JUnit(String friendUserId) throws IOException {
 		DeleteFriendMsg.DeleteFriendReq.Builder builder = DeleteFriendMsg.DeleteFriendReq.newBuilder();
 		builder.setFriendUserId(friendUserId);
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), 
-				builder.build().toByteArray());
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder.build()
+				.toByteArray());
 		writeToServer(byteArray);
-		while(true){
+		while (true) {
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
@@ -721,58 +747,60 @@ public class SocketClientTest {
 			}
 		}
 	}
-	
+
 	/**
 	 * 测试退出登录
+	 * 
 	 * @author wangfei
 	 */
-	public void testLogout(){
+	public void testLogout() {
 		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
-		try{
-			Socket socket = new Socket(host,port);
+		try {
+			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
-					.toByteArray());
+			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), 
-					builder.build().toByteArray());
-		
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
+					.toByteArray());
+
 			writeToServer(byteArray);
-			while(true){
+			while (true) {
 				byteArray = readFromServer();
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
 				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 						HEAD_INT_SIZE));
 				if (type == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 					LogoutMsg.LogoutRsp response = LogoutMsg.LogoutRsp.parseFrom(objBytes);
 					System.out.println("Response : "
 							+ LogoutMsg.LogoutRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 				}
 			}
-		}catch(IOException e){
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 测试退出登录--JUnit调用
+	 * 
 	 * @return
 	 * @throws IOException
 	 * @author wangfei
 	 */
-	public byte[] testLogout_JUnit() throws IOException{
+	public byte[] testLogout_JUnit() throws IOException {
 		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), 
-				builder.build().toByteArray());
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
+				.toByteArray());
 		writeToServer(byteArray);
-		while(true){
+		while (true) {
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
@@ -781,31 +809,32 @@ public class SocketClientTest {
 			}
 		}
 	}
-	
+
 	/**
 	 * 测获取个人信息--包括基本信息和好友信息
+	 * 
 	 * @author wangfei
 	 */
-	public void testGetPersonalInfo(){
+	public void testGetPersonalInfo() {
 		System.out.println(" start test getPersonalInfo ---------");
 		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
 		builder.setFriendInfo(true);
 		builder.setUserInfo(true);
-		try{
-			Socket socket = new Socket(host,port);
+		try {
+			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("s123");
-			byte[] loginByteArray = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder.build()
-					.toByteArray());
+			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), 
-					builder.build().toByteArray());
-		
+			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder
+					.build().toByteArray());
+
 			writeToServer(byteArray);
-			while(true){
+			while (true) {
 				byteArray = readFromServer();
 				System.out.println(" read from server !");
 				int size = DataTypeTranslater.bytesToInt(byteArray, 0);
@@ -813,9 +842,9 @@ public class SocketClientTest {
 						HEAD_INT_SIZE));
 				System.out.println(type);
 				if (type == ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP) {
-					byte[] objBytes = new byte[size - NetworkMessage.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkMessage.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
 					GetPersonalInfoMsg.GetPersonalInfoRsp response = GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(objBytes);
 					System.out.println("Response : "
 							+ GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
@@ -823,26 +852,27 @@ public class SocketClientTest {
 					System.out.println(response.getFriendsList());
 				}
 			}
-		}catch(IOException e){
-			
+		} catch (IOException e) {
+
 		}
 	}
-	
+
 	/**
 	 * 测获取个人信息--包括基本信息和好友信息 --JUnit调用
+	 * 
 	 * @return
 	 * @author wangfei
-	 * @throws IOException 
+	 * @throws IOException
 	 * @time 2015-03-26
 	 */
-	public byte[] testGetPersonalInfo_JUnit(boolean userInfo,boolean friendInfo) throws IOException{
-		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder =GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
+	public byte[] testGetPersonalInfo_JUnit(boolean userInfo, boolean friendInfo) throws IOException {
+		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
 		builder.setUserInfo(userInfo);
 		builder.setFriendInfo(friendInfo);
-		byte[] byteArray =NetworkMessage.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), 
-				builder.build().toByteArray());
+		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder.build()
+				.toByteArray());
 		writeToServer(byteArray);
-		while(true){
+		while (true) {
 			byteArray = readFromServer();
 			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 					HEAD_INT_SIZE));
@@ -850,7 +880,7 @@ public class SocketClientTest {
 				return byteArray;
 			}
 		}
-		
+
 	}
-	
+
 }

@@ -49,14 +49,21 @@ public class ServletServer extends HttpServlet {
 		String path = getServletContext().getRealPath("/");
 		String configFile = path + getInitParameter("configFile");
 		PropertyConfigurator.configure(configFile);
-		try {
-			minaServer = new Server();
-		} catch (IOException e) {
-			Debug.log(Debug.LogType.FAULT, "ServletServer", "Start Mina Server Fail!\n" + e.toString());
-			System.err.println("ServletServer : 服务器启动失败");
-			e.printStackTrace();
+//		try {
+//			minaServer = new Server();
+//		} catch (IOException e) {
+//			Debug.log(Debug.LogType.FAULT, "ServletServer", "Start Mina Server Fail!\n" + e.toString());
+//			System.err.println("ServletServer : 服务器启动失败");
+//			e.printStackTrace();
+//		}
+		// 初始化
+		if (Server.instance != null){
+			Server.instance.init();
+			Debug.log("ServletServer", "Initiate Mina Server Successful!");
 		}
-		
+		else {
+			Debug.log(Debug.LogType.FAULT, "ServletServer", "Start Mina Server Fail!");
+		}
 	}
 
 	@Override

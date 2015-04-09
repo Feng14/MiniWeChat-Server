@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.Msg.LogoutMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 import client.SocketClientTest;
 
 public class TestLogout {
@@ -41,11 +41,11 @@ public class TestLogout {
 	@Test
 	public void testLogout() throws IOException {
 		byte[] resultBytes = client.testLogout_JUnit();
-		LogoutMsg.LogoutRsp responseObject = LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		LogoutMsg.LogoutRsp responseObject = LogoutMsg.LogoutRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testLogout_JUnit();
-		responseObject = LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject = LogoutMsg.LogoutRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.FAIL.toString());
 	}
 

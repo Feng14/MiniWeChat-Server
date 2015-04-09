@@ -7,17 +7,86 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-	<!-- 配置sessionFactory -->
-	<!-- <bean id="ServerModel" class="server.ServerModel" />
-	
-	<bean id="ServerNetwork" class="server.ServerNetwork" /> -->
-	
-	<bean id="Test" class="server.Test" />
-	
-	<bean id="Test2" class="server.Test2">
-		<property name="Test">
-			<ref bean="Test" />
+	<bean id="Server" class="server.Server">
+		<property name="Server">
+			<ref bean="Server" />
+		</property>
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+		<property name="ServerModel_Chatting">
+			<ref bean="ServerModel_Chatting" />
 		</property>
 	</bean>
+    
+	<bean id="ServerModel" class="server.ServerModel">
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
+	</bean>
+
+	<bean id="ServerNetwork" class="server.ServerNetwork">
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+		<property name="ClientRequest_Dispatcher">
+			<ref bean="ClientRequest_Dispatcher" />
+		</property>
+	</bean>
+
+	<bean id="ClientRequest_Dispatcher" class="server.ClientRequest_Dispatcher">
+		<property name="Server_User">
+			<ref bean="Server_User" />
+		</property>
+		<property name="Server_Friend">
+			<ref bean="Server_Friend" />
+		</property>
+		<property name="Server_Chatting">
+			<ref bean="Server_Chatting" />
+		</property>
+	</bean>
+
+	<bean id="ServerModel_Chatting" class="server.ServerModel_Chatting">
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
+	</bean>
+
+	<bean id="Server_Chatting" class="server.Server_Chatting">
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+		<property name="ServerModel_Chatting">
+			<ref bean="ServerModel_Chatting" />
+		</property>
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
+	</bean>
+
+	<bean id="Server_Friend" class="server.Server_Friend">
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
+	</bean>
+
+	<bean id="Server_User" class="server.Server_User">
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
+	</bean>
+
 </beans>
     

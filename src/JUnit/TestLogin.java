@@ -9,7 +9,7 @@ import org.junit.Test;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import client.SocketClientTest;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 /**
  * 对登陆功能的测试（要先开服务器）
@@ -37,15 +37,15 @@ public class TestLogin {
 	public void testLogin() throws UnknownHostException, IOException {
 		System.out.println("Start Test Login!");
 		byte[] resultBytes = client.testLogin_JUint("a", "a");
-		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testLogin_JUint("aa", "aa");
-		responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject = LoginMsg.LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.FAIL.toString());
 
 		resultBytes = client.testLogin_JUint("a", "aaa");
-		responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject = LoginMsg.LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.FAIL.toString());
 	}
 	
@@ -58,17 +58,17 @@ public class TestLogin {
 	public void testLogin2() throws UnknownHostException, IOException {
 		System.out.println("Start Test Login!");
 		byte[] resultBytes = client.testLogin_JUint("a", "a");
-		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		LoginMsg.LoginRsp responseObject = LoginMsg.LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 		
 		// 下线
 		resultBytes = client.testLogout_JUnit();
-		LogoutMsg.LogoutRsp responseObject2 = LogoutMsg.LogoutRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		LogoutMsg.LogoutRsp responseObject2 = LogoutMsg.LogoutRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LogoutMsg.LogoutRsp.ResultCode.SUCCESS.toString());
 		
 		// 再登录
 		resultBytes = client.testLogin_JUint("b", "b");
-		responseObject = LoginMsg.LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject = LoginMsg.LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), LoginMsg.LoginRsp.ResultCode.SUCCESS.toString());
 	}
 }

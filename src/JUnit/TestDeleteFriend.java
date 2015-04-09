@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.Msg.DeleteFriendMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import client.SocketClientTest;
 
@@ -50,11 +50,11 @@ public class TestDeleteFriend {
 		
 		byte[] resultBytes = client.testDeleteFriend_JUnit(randomData);
 		DeleteFriendMsg.DeleteFriendRsp responseObject = 
-				DeleteFriendMsg.DeleteFriendRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+				DeleteFriendMsg.DeleteFriendRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), DeleteFriendMsg.DeleteFriendRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testDeleteFriend_JUnit(randomData);
-		responseObject =DeleteFriendMsg.DeleteFriendRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject =DeleteFriendMsg.DeleteFriendRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL.toString());
 	}
 

@@ -11,7 +11,7 @@ import protocol.ProtoHead;
 import protocol.Msg.LoginMsg.LoginReq;
 import protocol.Msg.LoginMsg.LoginRsp;
 
-import server.NetworkMessage;
+import server.PacketFromClient;
 import tools.DataTypeTranslater;
 
 /**
@@ -108,7 +108,7 @@ public class ClientSocket {
 		while (true) {
 			byteArray = readFromServer();
 			// 不是KeepAlive（心跳包就返回）
-			if (NetworkMessage.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC)
+			if (PacketFromClient.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC)
 				return byteArray;
 
 			writeToServer(byteArray);
@@ -159,13 +159,13 @@ public class ClientSocket {
 
 		loginBuilder.setUserPassword(userPassword);
 
-		writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE, loginBuilder.build().toByteArray()));
+		writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE, loginBuilder.build().toByteArray()));
 		while (true) {
 			response = readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.LOGIN_RSP)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.LOGIN_RSP)
 				continue;
 
-			LoginRsp loginResponse = LoginRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			LoginRsp loginResponse = LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			return loginResponse.getResultCode();
 			// if (loginResponse.getResultCode() != LoginRsp.ResultCode.SUCCESS)
 			// return false;

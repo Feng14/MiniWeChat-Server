@@ -9,7 +9,7 @@ import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.LoginMsg.LoginRsp.ResultCode;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatReq;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import JUnit.ClientSocket;
 
@@ -34,15 +34,15 @@ public class AutoResponseClient {
 		byte[] arrayBytes;
 		while (true) {
 			arrayBytes = clientSocket.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(arrayBytes) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+			if (PacketFromClient.getMessageType(arrayBytes) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
 				continue;
 
 			// 回复服务器说接收成功
-			clientSocket.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-					NetworkMessage.getMessageID(arrayBytes), new byte[0]));
+			clientSocket.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					PacketFromClient.getMessageID(arrayBytes), new byte[0]));
 
 			// 将同样的消息发回给发送者
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(arrayBytes));
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(PacketFromClient.getMessageObjectBytes(arrayBytes));
 			ChatItem receiveChatItem = receiveChatting.getChatData(0);
 
 			ChatItem.Builder sendChatItem = ChatItem.newBuilder();
@@ -54,7 +54,7 @@ public class AutoResponseClient {
 			SendChatReq.Builder sendChattingObj = SendChatReq.newBuilder();
 			sendChattingObj.setChatData(sendChatItem);
 
-			clientSocket.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE, sendChattingObj
+			clientSocket.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE, sendChattingObj
 					.build().toByteArray()));
 		}
 	}

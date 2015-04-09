@@ -10,7 +10,7 @@ import java.util.Random;
 import org.junit.Before;
 import protocol.Msg.GetPersonalInfoMsg;
 import protocol.Msg.GetUserInfoMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import client.SocketClientTest;
 
@@ -48,11 +48,11 @@ public class TestGetPersonalInfo {
 		
 		byte[] resultBytes = client.testGetPersonalInfo_JUnit(userInfo,friendInfo);
 		GetPersonalInfoMsg.GetPersonalInfoRsp responseObject = 
-				GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+				GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testGetPersonalInfo_JUnit(userInfo,friendInfo);
-		responseObject =GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject =GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL.toString());
 	}
 

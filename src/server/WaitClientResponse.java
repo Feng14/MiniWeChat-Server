@@ -10,16 +10,21 @@ import org.apache.mina.core.session.IoSession;
  *
  */
 public class WaitClientResponse {
-	long time;
-	public byte[] messageHasSent;
+//	long time;
+//	public byte[] messageHasSent;
+	public PacketFromServer packetFromServer;
 	public IoSession ioSession;
 	public WaitClientResponseCallBack waitClientResponseCallBack;
 	
-	public WaitClientResponse(IoSession ioSession, byte[] messageHasSent, WaitClientResponseCallBack waitClientResponseCallBack) {
+	public WaitClientResponse(IoSession ioSession, PacketFromServer packetFromServer) {
 		this.ioSession = ioSession;
-		this.messageHasSent = messageHasSent;
+		this.packetFromServer = packetFromServer;
+		this.waitClientResponseCallBack = null;
+	}
+	
+	public WaitClientResponse(IoSession ioSession, PacketFromServer packetFromServer, WaitClientResponseCallBack waitClientResponseCallBack) {
+		this.ioSession = ioSession;
+		this.packetFromServer = packetFromServer;
 		this.waitClientResponseCallBack = waitClientResponseCallBack;
-		
-		time = new Date().getTime();
 	}
 }

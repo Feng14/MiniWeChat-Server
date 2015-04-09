@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.Msg.PersonalSettingsMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import client.SocketClientTest;
 
@@ -53,11 +53,11 @@ public class TestPersonalSettings {
 		
 		byte[] resultBytes = client.testPersonalSettings_JUnit(randomData, randomData,randomIndex);
 		PersonalSettingsMsg.PersonalSettingsRsp responseObject = 
-				PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+				PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(),PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testPersonalSettings_JUnit(randomData, randomData,randomIndex);
-		responseObject =PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject =PersonalSettingsMsg.PersonalSettingsRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL.toString());
 	}
 }

@@ -7,6 +7,9 @@ import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.future.IoFuture;
+import org.apache.mina.core.future.IoFutureListener;
+import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
@@ -25,15 +28,19 @@ import tools.Debug;
  * 
  */
 public class ServerNetwork extends IoHandlerAdapter {
-	public static ServerNetwork instance = new ServerNetwork();
+	// 轮询"等待client回复"的超时时间
+	public static final long WAIT_CLIENT_RESPONSE_TIMEOUT = 3000;
+	// 轮询"等待client回复"的重发次数
+	public static final long WAIT_CLIENT_RESPONSE_TIMES = 3;
+	
+	// public static ServerNetwork instance = new ServerNetwork();
+	private ServerModel serverModel;
+	private ClientRequest_Dispatcher clientRequest_Dispatcher;
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
 
 	private InetSocketAddress inetSocketAddress;
 	private IoAcceptor acceptor;
-
-	private ServerNetwork() {
-	}
 
 	/**
 	 * 初始化
@@ -60,12 +67,29 @@ public class ServerNetwork extends IoHandlerAdapter {
 		acceptor = new NioSocketAcceptor();
 		// 指定编码解码器
 		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaEncoder(), new MinaDecoder()));
+		acceptor.getSessionConfig().setMaxReadBufferSize(1024 * 8);
 		acceptor.setHandler(this);
 		acceptor.bind(new InetSocketAddress(8081));
 	}
 
 	public void onDestroy() {
 		acceptor.unbind(inetSocketAddress);
+	}
+
+	public ServerModel getServerModel() {
+		return serverModel;
+	}
+
+	public void setServerModel(ServerModel serverModel) {
+		this.serverModel = serverModel;
+	}
+
+	public ClientRequest_Dispatcher getClientRequest_Dispatcher() {
+		return clientRequest_Dispatcher;
+	}
+
+	public void setClientRequest_Dispatcher(ClientRequest_Dispatcher clientRequest_Dispatcher) {
+		this.clientRequest_Dispatcher = clientRequest_Dispatcher;
 	}
 
 	private int count = 0;
@@ -76,35 +100,40 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @author Feng
 	 */
 	@Override
-	public void messageReceived(IoSession ioSession, Object message) throws Exception {
+	public void messageReceived(IoSession ioSession, Object message) {
+		System.out.println("received");
 		// 接收客户端的数据
-		IoBuffer ioBuffer = (IoBuffer) message;
-		byte[] byteArray = new byte[ioBuffer.limit()];
-		ioBuffer.get(byteArray, 0, ioBuffer.limit());
+		// IoBuffer ioBuffer = (IoBuffer) message;
+		// byte[] byteArray = new byte[ioBuffer.limit()];
+		// ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
-//		Debug.log("byteArray.length = " + byteArray.length);
-//		dealRequest(session, byteArray);
-		ClientRequest_Dispatcher.instance.dispatcher(new NetworkMessage(ioSession, byteArray));
-		
-//		// 大小
-//		int size;
-//		// 分割数据进行单独请求的处理
-//		byte[] oneReqBytes;
-//		int reqOffset = 0;
-//		do {
-//			Debug.log("\nServerNetwork: Start cut a new Request from Client!");
-//			size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
-//			System.out.println("size:" + size);
-//			if (size == 0)
-//				break;
-//			oneReqBytes = new byte[size];
-//			for (int i = 0; i < size; i++)
-//				oneReqBytes[i] = byteArray[reqOffset + i];
-//
-//			dealRequest(session, size, oneReqBytes);
-//
-//			reqOffset += size;
-//		} while (reqOffset < byteArray.length);
+		PacketFromClient packetFromClient = (PacketFromClient) message;
+		Debug.log("byteArray.length = " + packetFromClient.getMessageLength());
+		// System.out.println(DataTypeTranslater.bytesToInt(byteArray, 0));
+		// dealRequest(session, byteArray);
+//		for (byte b : packetFromClient.arrayBytes)
+//			System.out.println(b);
+		clientRequest_Dispatcher.dispatcher(packetFromClient);
+
+		// // 大小
+		// int size;
+		// // 分割数据进行单独请求的处理
+		// byte[] oneReqBytes;
+		// int reqOffset = 0;
+		// do {
+		// Debug.log("\nServerNetwork: Start cut a new Request from Client!");
+		// size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
+		// System.out.println("size:" + size);
+		// if (size == 0)
+		// break;
+		// oneReqBytes = new byte[size];
+		// for (int i = 0; i < size; i++)
+		// oneReqBytes[i] = byteArray[reqOffset + i];
+		//
+		// dealRequest(session, size, oneReqBytes);
+		//
+		// reqOffset += size;
+		// } while (reqOffset < byteArray.length);
 
 		// new Thread(new check(session)).start();
 
@@ -118,20 +147,23 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-//	private void dealRequest(IoSession ioSession, byte[] byteArray) {
-//		try {
-//			ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-//			Debug.log("ServerNetwork", "Put Client's(" + ServerModel.getIoSessionKey(ioSession) + ") Request(size="
-//					+ byteArray.length + ")into Queue!");
-//		} catch (InterruptedException e) {
-//			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
-//			System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
-//			e.printStackTrace();
-//		} catch (NoIpException e) {
-//			Debug.log(Debug.LogType.FAULT, "ServerNetwork", "Put client request into queue fail!\n" + e.toString());
-//			e.printStackTrace();
-//		}
-//	}
+	// private void dealRequest(IoSession ioSession, byte[] byteArray) {
+	// try {
+	// ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
+	// Debug.log("ServerNetwork", "Put Client's(" +
+	// ServerModel.getIoSessionKey(ioSession) + ") Request(size="
+	// + byteArray.length + ")into Queue!");
+	// } catch (InterruptedException e) {
+	// Debug.log(Debug.LogType.FAULT, "ServerNetwork",
+	// "Put client request into queue fail!\n" + e.toString());
+	// System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
+	// e.printStackTrace();
+	// } catch (NoIpException e) {
+	// Debug.log(Debug.LogType.FAULT, "ServerNetwork",
+	// "Put client request into queue fail!\n" + e.toString());
+	// e.printStackTrace();
+	// }
+	// }
 
 	/**
 	 * 由底层决定是否创建一个session
@@ -150,8 +182,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	public void sessionOpened(IoSession session) throws Exception {
 		count++;
-		Debug.log("\n The " + count + " client connected! address : " + session.getRemoteAddress());
-		Debug.log("ServerNetwork", "find a Client connected,save into table");
+		Debug.log("The " + count + " client connected! address : " + session.getRemoteAddress());
+		// Debug.log("ServerNetwork",
+		// "Find a Client connected,save into table");
 		addClientUserToTable(session);
 	}
 
@@ -200,7 +233,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 */
 	public void addClientUserToTable(IoSession ioSession) {
 		// 已有就不加进来了
-		if (ServerModel.instance.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null) {
+		if (serverModel.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null) {
 			Debug.log(Debug.LogType.ERROR, "User exist when Save user into Table!");
 			System.err.println("添加时用户已存在");
 			return;
@@ -208,9 +241,67 @@ public class ServerNetwork extends IoHandlerAdapter {
 
 		Debug.log("ServerNetwork", "Find new User(" + ioSession.getRemoteAddress() + ") connected,save into table");
 		try {
-			ServerModel.instance.addClientUserToTable(ioSession, new ClientUser(ioSession));
+			serverModel.addClientUserToTable(ioSession, new ClientUser(ioSession));
 		} catch (NoIpException e) {
 			e.printStackTrace();
+		}
+	}
+	
+
+	/**
+	 * 添加一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
+	 * 
+	 * @param ioSession
+	 * @param key
+	 * @param messageHasSentww
+	 * @author Feng
+	 */
+	public void sendToClient(final WaitClientResponse waitClientResponse) {
+		sendToClient(waitClientResponse, 0);
+	}
+
+	private void sendToClient(final WaitClientResponse waitClientResponse, final int times) {
+		try {
+			if (serverModel.getClientUserFromTable(waitClientResponse.ioSession) == null) {
+				// 用户已掉线， 调用删除前的回调，然后删除
+				if (waitClientResponse.waitClientResponseCallBack != null)
+					waitClientResponse.waitClientResponseCallBack.beforeDelete();
+				return;
+			}
+			// 用户在线，重发
+			WriteFuture writeFuture = waitClientResponse.ioSession.write(waitClientResponse.packetFromServer);
+			writeFuture.awaitUninterruptibly(WAIT_CLIENT_RESPONSE_TIMEOUT);
+			writeFuture.addListener(new IoFutureListener<IoFuture>() {
+				@Override
+				public void operationComplete(IoFuture future) {
+					if (((WriteFuture) future).isWritten())
+						return;
+					else {
+						try {
+							Debug.log("ServerModel", "Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession) + ") response timeout!");
+
+							if (times < WAIT_CLIENT_RESPONSE_TIMES) {
+								// 小于重发极限次数，重发
+								Debug.log("ServerModel", "Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession) + ") online,send again!");
+								sendToClient(waitClientResponse, times + 1);
+							} else {
+								// 大于重发极限次数，抛弃
+								Debug.log("To many times, abandon!");
+								return;
+							}
+						} catch (NoIpException e) {
+							e.printStackTrace();
+						}
+
+					}
+
+				}
+			});
+		} catch (NoIpException e) {
+			e.printStackTrace();
+			if (waitClientResponse.waitClientResponseCallBack != null)
+				waitClientResponse.waitClientResponseCallBack.beforeDelete();
+			return;
 		}
 	}
 
@@ -221,12 +312,13 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-	public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
-		IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
-		responseIoBuffer.put(byteArray);
-		responseIoBuffer.flip();
-		Debug.log(new String[] { "ServerNetwork", "sendMessageToClient" },
-				"Send packet(" + NetworkMessage.getMessageType(byteArray).toString() + ") to client!");
-		ioSession.write(responseIoBuffer);
-	}
+//	public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
+//		IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
+//		responseIoBuffer.put(byteArray);
+//		responseIoBuffer.flip();
+//		Debug.log(new String[] { "ServerNetwork", "sendMessageToClient" },
+//				"Send packet(" + PacketFromClient.getMessageType(byteArray).toString() + ") to client!");
+//		ioSession.write(responseIoBuffer);
+//	}
+	
 }

@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 import org.junit.Before;
 import org.junit.Test;
 import protocol.Msg.GetUserInfoMsg;
-import server.NetworkMessage;
+import server.PacketFromClient;
 
 import client.SocketClientTest;
 
@@ -50,11 +50,11 @@ public class TestGetUserInfo {
 		
 		byte[] resultBytes = client.testGetUserInfo_JUnit(randomData);
 		GetUserInfoMsg.GetUserInfoRsp responseObject = 
-				GetUserInfoMsg.GetUserInfoRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+				GetUserInfoMsg.GetUserInfoRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS.toString());
 
 		resultBytes = client.testGetUserInfo_JUnit(randomData);
-		responseObject =GetUserInfoMsg.GetUserInfoRsp.parseFrom(NetworkMessage.getMessageObjectBytes(resultBytes));
+		responseObject =GetUserInfoMsg.GetUserInfoRsp.parseFrom(PacketFromClient.getMessageObjectBytes(resultBytes));
 		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL.toString());
 	}
 

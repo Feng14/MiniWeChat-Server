@@ -36,16 +36,37 @@ public class ServerModel_Chatting {
 	public static final int INTERVAL_HOUR = 24 * 60 * 60;
 	public static final int DELETE_INTERVAL = 24 * 3 * 60 * 60;
 
-	public static ServerModel_Chatting instance = new ServerModel_Chatting();
-
 	public Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
+	private ServerModel serverModel;
+	private ServerNetwork serverNetwork;
 
-	private ServerModel_Chatting() {
+	public ServerModel getServerModel() {
+		return serverModel;
+	}
+
+	public void setServerModel(ServerModel serverModel) {
+		this.serverModel = serverModel;
+	}
+
+	public ServerNetwork getServerNetwork() {
+		return serverNetwork;
+	}
+
+	public void setServerNetwork(ServerNetwork serverNetwork) {
+		this.serverNetwork = serverNetwork;
+	}
+
+	/**
+	 * 初始化
+	 * 
+	 * @author Feng
+	 */
+	public void init() {
 		chattingHashtable = new Hashtable<String, LinkedBlockingQueue<Chatting>>();
 		System.out.println(chattingHashtable.containsKey("b"));
 
 		// 监听用户登陆事件
-		ServerModel.instance.addObserver(new Observer() {
+		serverModel.addObserver(new Observer() {
 			/**
 			 * 检查是否有未接收的消息
 			 */
@@ -73,7 +94,7 @@ public class ServerModel_Chatting {
 						addListenReceiveChatting(oml.ioSession, chattingList, messageWillSend);
 
 						try {
-							ServerNetwork.instance.sendMessageToClient(oml.ioSession, NetworkMessage.packMessage(
+							serverNetwork.sendMessageToClient(oml.ioSession, PacketFromClient.packMessage(
 									ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, messageWillSend));
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -106,7 +127,7 @@ public class ServerModel_Chatting {
 	}
 
 	public void addListenReceiveChatting(final IoSession ioSession, final ArrayList<Chatting> chattingList, byte[] messageWillSend) {
-		ServerModel.instance.addClientResponseListener(ioSession, NetworkMessage.getMessageID(messageWillSend), messageWillSend,
+		serverModel.addClientResponseListener(ioSession, PacketFromClient.getMessageID(messageWillSend), messageWillSend,
 				new WaitClientResponseCallBack() {
 
 					@Override

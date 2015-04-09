@@ -16,7 +16,7 @@ import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatReq;
 import protocol.Msg.SendChatMsg.SendChatRsp;
-import server.NetworkMessage;
+import server.PacketFromClient;
 import server.ServerModel;
 import tools.Debug;
 
@@ -56,10 +56,10 @@ public class TestSendChatting {
 		// 接收回复
 		while (true) {
 			response = clientSocket1.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
 				continue;
 
-			SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			Debug.log("a 向 b 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 			assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
 			break;
@@ -69,10 +69,10 @@ public class TestSendChatting {
 		// 用户2接收消息
 		while (true) {
 			response = clientSocket2.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
 				continue;
 
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			ChatItem chatItem = receiveChatting.getChatData(0);
 			Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
 					+ chatItem.getChatBody());
@@ -84,8 +84,8 @@ public class TestSendChatting {
 					+ date.getMinutes() + ":" + date.getSeconds() + "  message : " + chatItem.getChatBody());
 
 			// 回复
-			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-					NetworkMessage.getMessageID(response), new byte[0]));
+			clientSocket2.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					PacketFromClient.getMessageID(response), new byte[0]));
 			break;
 		}
 		clientSocket2.close();
@@ -114,10 +114,10 @@ public class TestSendChatting {
 		// 接收回复
 		while (true) {
 			response = clientSocket1.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
 				continue;
 
-			SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			Debug.log("a 向 b 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 			assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
 			break;
@@ -131,18 +131,18 @@ public class TestSendChatting {
 
 		while (true) {
 			response = clientSocket2.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
 				continue;
 
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			ChatItem chatItem = receiveChatting.getChatData(0);
 			Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
 					+ chatItem.getChatBody());
 			assertEquals(chatItem.getChatBody(), message);
 
 			// 回复
-			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-					NetworkMessage.getMessageID(response), new byte[0]));
+			clientSocket2.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					PacketFromClient.getMessageID(response), new byte[0]));
 			break;
 		}
 		clientSocket2.close();
@@ -172,10 +172,10 @@ public class TestSendChatting {
 			// 接收回复
 			while (true) {
 				response = clientSocket1.readFromServerWithoutKeepAlive();
-				if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
+				if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
 					continue;
 
-				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 				Debug.log("e 向 f 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 				assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
 				break;
@@ -190,10 +190,10 @@ public class TestSendChatting {
 
 		while (true) {
 			response = clientSocket2.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
 				continue;
 
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			ChatItem chatItem;
 			
 			for (int i = 0; i < times; i++) {
@@ -204,8 +204,8 @@ public class TestSendChatting {
 			}
 
 			// 回复
-			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-					NetworkMessage.getMessageID(response), new byte[0]));
+			clientSocket2.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					PacketFromClient.getMessageID(response), new byte[0]));
 			break;
 		}
 		clientSocket2.close();
@@ -235,10 +235,10 @@ public class TestSendChatting {
 			// 接收回复
 			while (true) {
 				response = clientSocket1.readFromServerWithoutKeepAlive();
-				if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
+				if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
 					continue;
 
-				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 				Debug.log("g 向 h 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 				assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
 				break;
@@ -253,10 +253,10 @@ public class TestSendChatting {
 
 		while (true) {
 			response = clientSocket2.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
 				continue;
 
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			ChatItem chatItem;
 			
 			for (int i = 0; i < times; i++) {
@@ -280,10 +280,10 @@ public class TestSendChatting {
 
 		while (true) {
 			response = clientSocket2.readFromServerWithoutKeepAlive();
-			if (NetworkMessage.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
 				continue;
 
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkMessage.getMessageObjectBytes(response));
+			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(PacketFromClient.getMessageObjectBytes(response));
 			ChatItem chatItem;
 			
 			for (int i = 0; i < times; i++) {
@@ -294,8 +294,8 @@ public class TestSendChatting {
 			}
 
 			// 回复
-			clientSocket2.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-					NetworkMessage.getMessageID(response), new byte[0]));
+			clientSocket2.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
+					PacketFromClient.getMessageID(response), new byte[0]));
 			break;
 		}
 		clientSocket2.close();
@@ -324,7 +324,7 @@ public class TestSendChatting {
 		SendChatReq.Builder sendChatBuilder = SendChatReq.newBuilder();
 		sendChatBuilder.setChatData(chatItem);
 
-		clientSocket.writeToServer(NetworkMessage.packMessage(ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE, sendChatBuilder
+		clientSocket.writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE, sendChatBuilder
 				.build().toByteArray()));
 	}
 
