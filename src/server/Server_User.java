@@ -214,8 +214,6 @@ public class Server_User {
 			}
 			session.close();
 
-			// 回复客户端
-
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 'LoginEvent'：Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(packetFromClient.ioSession) + " ！");
@@ -232,8 +230,8 @@ public class Server_User {
 		}
 
 		// 回复给客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(
-				ProtoHead.ENetworkMessage.LOGIN_RSP_VALUE, loginBuilder.build().toByteArray()), null));
+		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+				.getMessageID(), ProtoHead.ENetworkMessage.LOGIN_RSP_VALUE, loginBuilder.build().toByteArray()), null));
 		// serverNetwork.sendMessageToClient(packetFromClient.ioSession,
 		// PacketFromClient.packMessage(
 		// ProtoHead.ENetworkMessage.LOGIN_RSP.getNumber(),
@@ -370,8 +368,9 @@ public class Server_User {
 			personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(
-				ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP_VALUE, personalSettingsBuilder.build().toByteArray())));
+		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+				.getMessageID(), ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP_VALUE, personalSettingsBuilder.build()
+				.toByteArray())));
 		// try {
 		// // 回复客户端
 		// serverNetwork.sendMessageToClient(
@@ -421,7 +420,7 @@ public class Server_User {
 	 * @author WangFei
 	 * @throws NoIpException
 	 */
-	private void changeUserPassword(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, PacketFromClient packetFromServer,
+	private void changeUserPassword(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, PacketFromClient packetFromClient,
 			ClientUser clientUser, User u, String userPassword) throws NoIpException {
 		logger.info("Server_User.changeUserPassword:begin to change User:" + u.getUserId() + " userPassword to " + userPassword);
 		ResultCode code = ResultCode.NULL;
@@ -438,14 +437,14 @@ public class Server_User {
 				messageBytes = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(), objectBytes);
 			} catch (IOException e) {
 				logger.error("Server_User.personalSettings deal with user:"
-						+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + " Send sync Fail!");
+						+ ServerModel.getIoSessionKey(packetFromClient.ioSession) + " Send sync Fail!");
 				logger.error(e.getStackTrace());
 			}
 			clientUser.userId = null;
 
 			// 回复客户端
-			serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(
-					ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE, objectBytes)));
+			serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+					.getMessageID(), ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE, objectBytes)));
 			// serverNetwork.sendMessageToClient(clientUser.ioSession,
 			// messageBytes);
 
@@ -468,7 +467,7 @@ public class Server_User {
 	 * @param headInx
 	 * @author WangFei
 	 */
-	private void changeHeadIndex(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, PacketFromClient packetFromServer,
+	private void changeHeadIndex(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, PacketFromClient packetFromClient,
 			ClientUser clientUser, User u, int headIndex) {
 		logger.info("Server_User.changeUserHeadIndex:begin to change User:" + u.getUserId() + " userHeadIndex to " + headIndex);
 		BufferedImage image = null;
@@ -507,14 +506,14 @@ public class Server_User {
 	 * @time 2015-03-25
 	 * @author WangFei
 	 */
-	public void logout(PacketFromClient packetFromServer) {
+	public void logout(PacketFromClient packetFromClient) {
 		// try {
 		ClientUser user = null;
 		LogoutMsg.LogoutRsp.Builder logoutBuilder = null;
 		try {
-			user = serverModel.getClientUserFromTable(packetFromServer.ioSession);
+			user = serverModel.getClientUserFromTable(packetFromClient.ioSession);
 			logoutBuilder = LogoutMsg.LogoutRsp.newBuilder();
-			logger.info("Srever_User.logout:" + ServerModel.getIoSessionKey(packetFromServer.ioSession) + " logout！");
+			logger.info("Srever_User.logout:" + ServerModel.getIoSessionKey(packetFromClient.ioSession) + " logout！");
 			// 将登录的用户注销掉
 			user.userId = null;
 			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
@@ -524,8 +523,8 @@ public class Server_User {
 			logger.info(e.getStackTrace());
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(
-				ProtoHead.ENetworkMessage.LOGOUT_RSP_VALUE, logoutBuilder.build().toByteArray())));
+		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+				.getMessageID(), ProtoHead.ENetworkMessage.LOGOUT_RSP_VALUE, logoutBuilder.build().toByteArray())));
 		// serverNetwork.sendMessageToClient(
 		// packetFromServer.ioSession,
 		// PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGOUT_RSP.getNumber(),

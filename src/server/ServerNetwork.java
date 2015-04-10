@@ -32,7 +32,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 	public static final long WAIT_CLIENT_RESPONSE_TIMEOUT = 3000;
 	// 轮询"等待client回复"的重发次数
 	public static final long WAIT_CLIENT_RESPONSE_TIMES = 3;
-	
+
 	// public static ServerNetwork instance = new ServerNetwork();
 	private ServerModel serverModel;
 	private ClientRequest_Dispatcher clientRequest_Dispatcher;
@@ -111,8 +111,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 		Debug.log("byteArray.length = " + packetFromClient.getMessageLength());
 		// System.out.println(DataTypeTranslater.bytesToInt(byteArray, 0));
 		// dealRequest(session, byteArray);
-//		for (byte b : packetFromClient.arrayBytes)
-//			System.out.println(b);
+		// for (byte b : packetFromClient.arrayBytes)
+		// System.out.println(b);
 		clientRequest_Dispatcher.dispatcher(packetFromClient);
 
 		// // 大小
@@ -246,7 +246,6 @@ public class ServerNetwork extends IoHandlerAdapter {
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
 	 * 添加一个等待客户端回复的监听（服务器向客户端发送消息后，要求客户端回复）
@@ -256,6 +255,10 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param messageHasSentww
 	 * @author Feng
 	 */
+	public void sendToClient(IoSession ioSession, PacketFromServer packetFromServer) {
+		sendToClient(new WaitClientResponse(ioSession, packetFromServer));
+	}
+
 	public void sendToClient(final WaitClientResponse waitClientResponse) {
 		sendToClient(waitClientResponse, 0);
 	}
@@ -278,11 +281,14 @@ public class ServerNetwork extends IoHandlerAdapter {
 						return;
 					else {
 						try {
-							Debug.log("ServerModel", "Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession) + ") response timeout!");
+							Debug.log("ServerModel",
+									"Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
+											+ ") response timeout!");
 
 							if (times < WAIT_CLIENT_RESPONSE_TIMES) {
 								// 小于重发极限次数，重发
-								Debug.log("ServerModel", "Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession) + ") online,send again!");
+								Debug.log("ServerModel", "Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
+										+ ") online,send again!");
 								sendToClient(waitClientResponse, times + 1);
 							} else {
 								// 大于重发极限次数，抛弃
@@ -312,13 +318,14 @@ public class ServerNetwork extends IoHandlerAdapter {
 	 * @param byteArray
 	 * @author Feng
 	 */
-//	public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
-//		IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
-//		responseIoBuffer.put(byteArray);
-//		responseIoBuffer.flip();
-//		Debug.log(new String[] { "ServerNetwork", "sendMessageToClient" },
-//				"Send packet(" + PacketFromClient.getMessageType(byteArray).toString() + ") to client!");
-//		ioSession.write(responseIoBuffer);
-//	}
-	
+	// public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
+	// IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
+	// responseIoBuffer.put(byteArray);
+	// responseIoBuffer.flip();
+	// Debug.log(new String[] { "ServerNetwork", "sendMessageToClient" },
+	// "Send packet(" + PacketFromClient.getMessageType(byteArray).toString() +
+	// ") to client!");
+	// ioSession.write(responseIoBuffer);
+	// }
+
 }

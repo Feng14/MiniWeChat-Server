@@ -19,8 +19,11 @@ import org.hibernate.Session;
 import observer.ObserverMessage;
 import observer.ObserverMessage_Login;
 import protocol.ProtoHead;
+import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
+import protocol.Msg.SendChatMsg.SendChatReq;
+import protocol.Msg.SendChatMsg.SendChatRsp;
 import tools.Debug;
 
 import model.Chatting;
@@ -89,16 +92,15 @@ public class ServerModel_Chatting {
 						for (Chatting chatting : chattingList)
 							receiveChatting.addChatData(chatting.createChatItem());
 
-						byte[] messageWillSend = receiveChatting.build().toByteArray();
+						// 发送
+						serverNetwork.sendToClient(oml.ioSession, new PacketFromServer(
+								ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiveChatting.build().toByteArray()));
+						// byte[] messageWillSend =
+						// receiveChatting.build().toByteArray();
 						// 添加监听
-						addListenReceiveChatting(oml.ioSession, chattingList, messageWillSend);
+						// addListenReceiveChatting(oml.ioSession, chattingList,
+						// messageWillSend);
 
-						try {
-							serverNetwork.sendMessageToClient(oml.ioSession, PacketFromClient.packMessage(
-									ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, messageWillSend));
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
 					}
 				}
 			}
@@ -114,42 +116,70 @@ public class ServerModel_Chatting {
 	}
 
 	/**
+	 * 发送一条聊天消息
+	 * 
+	 * @param ioSession
+	 * @param sendChattingBuilder
+	 * @author Feng
+	 */
+	public void sendChatting(IoSession ioSession, final Chatting chatting) {
+		ChatItem.Builder chatItem = chatting.createChatItem();
+
+		// Debug.log(chatItem.getSendUserId() + " " +
+		// chatItem.getReceiveUserId() + " " + chatItem.getChatType() + " "
+		// + chatItem.getChatBody());
+
+		ReceiveChatSync.Builder receiverChatObj = ReceiveChatSync.newBuilder();
+		receiverChatObj.addChatData(chatItem);
+
+		serverNetwork.sendToClient(new WaitClientResponse(ioSession, new PacketFromServer(
+				ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj.build().toByteArray()),
+				new WaitClientResponseCallBack() {
+					@Override
+					public void beforeDelete() {
+						// 添加发送失败时删除前的回调
+						addChatting(chatting);
+					}
+				}));
+	}
+
+	/**
 	 * 发送“未接收消息”和添加“等待客户端回复：已收到”监听
 	 * 
 	 * @author Feng
 	 * @param ioSession
 	 * @param chatting
 	 */
-	public void addListenReceiveChatting(IoSession ioSession, Chatting chatting, byte[] messageWillSend) {
-		ArrayList<Chatting> chattingList = new ArrayList<Chatting>(1);
-		chattingList.add(chatting);
-		addListenReceiveChatting(ioSession, chattingList, messageWillSend);
-	}
+//	public void addListenReceiveChatting(IoSession ioSession, Chatting chatting, byte[] messageWillSend) {
+//		ArrayList<Chatting> chattingList = new ArrayList<Chatting>(1);
+//		chattingList.add(chatting);
+//		addListenReceiveChatting(ioSession, chattingList, messageWillSend);
+//	}
 
-	public void addListenReceiveChatting(final IoSession ioSession, final ArrayList<Chatting> chattingList, byte[] messageWillSend) {
-		serverModel.addClientResponseListener(ioSession, PacketFromClient.getMessageID(messageWillSend), messageWillSend,
-				new WaitClientResponseCallBack() {
-
-					@Override
-					public void beforeDelete() {
-						// 保存回未发送队列
-						Debug.log(Debug.LogType.ERROR, new String[] { "ServerModel_Chatting", "addListenReceiveChatting" },
-								" 'Chatting' send fail，save to Memory！");
-						if (chattingList.size() == 0)
-							return;
-						String key = chattingList.get(0).getReceiverUserId();
-						LinkedBlockingQueue<Chatting> chattingQueue;
-						if (!chattingHashtable.containsKey(key)) {
-							chattingQueue = new LinkedBlockingQueue<Chatting>();
-							chattingHashtable.put(key, chattingQueue);
-						} else
-							chattingQueue = chattingHashtable.get(key);
-
-						for (Chatting chatting : chattingList)
-							chattingQueue.add(chatting);
-					}
-				});
-	}
+//	public void addListenReceiveChatting(final IoSession ioSession, final ArrayList<Chatting> chattingList, byte[] messageWillSend) {
+//		serverModel.addClientResponseListener(ioSession, PacketFromClient.getMessageID(messageWillSend), messageWillSend,
+//				new WaitClientResponseCallBack() {
+//
+//					@Override
+//					public void beforeDelete() {
+//						// 保存回未发送队列
+//						Debug.log(Debug.LogType.ERROR, new String[] { "ServerModel_Chatting", "addListenReceiveChatting" },
+//								" 'Chatting' send fail，save to Memory！");
+//						if (chattingList.size() == 0)
+//							return;
+//						String key = chattingList.get(0).getReceiverUserId();
+//						LinkedBlockingQueue<Chatting> chattingQueue;
+//						if (!chattingHashtable.containsKey(key)) {
+//							chattingQueue = new LinkedBlockingQueue<Chatting>();
+//							chattingHashtable.put(key, chattingQueue);
+//						} else
+//							chattingQueue = chattingHashtable.get(key);
+//
+//						for (Chatting chatting : chattingList)
+//							chattingQueue.add(chatting);
+//					}
+//				});
+//	}
 
 	/**
 	 * 往消息队列中添加一条未接收的消息

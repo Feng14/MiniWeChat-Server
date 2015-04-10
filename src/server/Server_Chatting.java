@@ -8,6 +8,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
+import protocol.Msg.SendChatMsg.SendChatRsp;
 import protocol.Msg.SendChatMsg;
 import exception.NoIpException;
 import tools.Debug;
@@ -49,20 +50,22 @@ public class Server_Chatting {
 	/**
 	 * 对 用户发送微信消息 的事件进行处理 对方在线就立刻发送，不在则存如内存
 	 * 
-	 * @param networkMessage
+	 * @param packetFromClient
 	 * @throws NoIpException
 	 * @author Feng
 	 */
-	public void clientSendChatting(PacketFromClient networkMessage) throws NoIpException {
+	public void clientSendChatting(PacketFromClient packetFromClient) throws NoIpException {
 
 		Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, " User sendChatting Event :Deal with user's "
-				+ ServerModel.getIoSessionKey(networkMessage.ioSession) + "  send chatting event");
+				+ ServerModel.getIoSessionKey(packetFromClient.ioSession) + "  send chatting event");
+
+		// 构造回复对象
+		SendChatMsg.SendChatRsp.Builder sendChattingResponse = SendChatMsg.SendChatRsp.newBuilder();
+		sendChattingResponse.setResultCode(SendChatRsp.ResultCode.FAIL);
 
 		try {
-			SendChatMsg.SendChatReq sendChattingObject = SendChatMsg.SendChatReq
-					.parseFrom(networkMessage.getMessageObjectBytes());
-
-			SendChatMsg.SendChatRsp.Builder sendChattingResponse = SendChatMsg.SendChatRsp.newBuilder();
+			SendChatMsg.SendChatReq sendChattingObject = SendChatMsg.SendChatReq.parseFrom(packetFromClient
+					.getMessageObjectBytes());
 
 			// 构建消息对象
 			Chatting chatting = new Chatting(sendChattingObject.getChatData().getSendUserId(), sendChattingObject.getChatData()
@@ -72,55 +75,25 @@ public class Server_Chatting {
 			// 设置日期
 			chatting.setTime(Calendar.getInstance().getTimeInMillis());
 
-			// 若接收者是 自动回复账号，则单独处理
-			// if
-			// (sendChattingObject.getChatData().getReceiveUserId().equals("AutoChat"))
-			// {
-			// sendChattingAutoResponse(networkMessage, chatting);
-			// return;
-			// }
-
-			// 如果是特殊指令，则做特殊处理
-			// if
-			// (sendChattingObject.getChatData().getChatBody().startsWith("/"))
-			// {
-			//
-			// }
-
 			// 若是接收者在线，则发送，否则加入队列
 			ClientUser clientUser = serverModel.getClientUserByUserId(chatting.getReceiverUserId());
 			if (clientUser != null) {
 				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver online,send to receier("
 						+ ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
-				ChatItem.Builder chatItem = chatting.createChatItem();
 
-				Debug.log(chatItem.getSendUserId() + " " + chatItem.getReceiveUserId() + " " + chatItem.getChatType() + " "
-						+ chatItem.getChatBody());
-
-				ReceiveChatSync.Builder receiverChatObj = ReceiveChatSync.newBuilder();
-				receiverChatObj.addChatData(chatItem);
-
-				byte[] messageWillSend = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-						receiverChatObj.build().toByteArray());
-				// 添加回复监听
-				serverModel_Chatting.addListenReceiveChatting(clientUser.ioSession, chatting, messageWillSend);
-
-				// 发送
-				serverNetwork.sendMessageToClient(clientUser.ioSession, messageWillSend);
+				// 发送给接收者
+				serverModel_Chatting.sendChatting(packetFromClient.ioSession, chatting);
 			} else {
+				// 不在线，保存
 				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver offline,save to memory!");
 				serverModel_Chatting.addChatting(chatting);
 			}
 
 			// 回复客户端说发送成功(保存在服务器成功)
 			sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
-			serverNetwork.sendMessageToClient(networkMessage.ioSession, PacketFromClient.packMessage(
-					ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, networkMessage.getMessageID(), sendChattingResponse.build()
-							.toByteArray()));
-
+			serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+					.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray())));
 		} catch (InvalidProtocolBufferException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -128,17 +101,16 @@ public class Server_Chatting {
 	/**
 	 * 发消息自动回复（调试测试用）
 	 * 
-	 * @param networkMessage
+	 * @param packetFromClient
 	 * @param chatting
 	 * @author Feng
 	 * @throws IOException
 	 */
-	private void sendChattingAutoResponse(PacketFromClient networkMessage, Chatting chatting) throws IOException {
+	private void sendChattingAutoResponse(PacketFromClient packetFromClient, Chatting chatting) throws IOException {
 		// 回复发送者：发送成功
 		SendChatMsg.SendChatRsp.Builder sendChattingResponse = SendChatMsg.SendChatRsp.newBuilder();
 		sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
-		serverNetwork.sendMessageToClient(networkMessage.ioSession, PacketFromClient.packMessage(
-				ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, networkMessage.getMessageID(), sendChattingResponse.build()
+		serverNetwork.sendToClient(packetFromClient.ioSession, new PacketFromServer(packetFromClient.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build()
 						.toByteArray()));
 
 		// 自动回复
@@ -148,31 +120,32 @@ public class Server_Chatting {
 		chatItem.setReceiveUserId(chatting.getSenderUserId());
 		receiverChatObj.addChatData(chatItem);
 
-		byte[] messageWillSend = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj
-				.build().toByteArray());
-		// 添加回复监听
-		serverModel_Chatting.addListenReceiveChatting(networkMessage.ioSession, chatting, messageWillSend);
-
 		// 发送
-		serverNetwork.sendMessageToClient(networkMessage.ioSession, messageWillSend);
+		serverNetwork.sendToClient(packetFromClient.ioSession, new PacketFromServer(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj
+				.build().toByteArray()));
+		
+//		byte[] messageWillSend = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj
+//				.build().toByteArray());
+		// 添加回复监听
+//		serverModel_Chatting.addListenReceiveChatting(packetFromClient.ioSession, chatting, messageWillSend);
 	}
 
-	private void sendChatSuperCommand(PacketFromClient networkMessage, Chatting chatting) throws IOException {
-		// 回复发送者：发送成功
-		SendChatMsg.SendChatRsp.Builder sendChattingResponse = SendChatMsg.SendChatRsp.newBuilder();
-		sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
-		serverNetwork.sendMessageToClient(networkMessage.ioSession, PacketFromClient.packMessage(
-				ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, networkMessage.getMessageID(), sendChattingResponse.build()
-						.toByteArray()));
-	}
+//	private void sendChatSuperCommand(PacketFromClient packetFromClient, Chatting chatting) throws IOException {
+//		// 回复发送者：发送成功
+//		SendChatMsg.SendChatRsp.Builder sendChattingResponse = SendChatMsg.SendChatRsp.newBuilder();
+//		sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
+//		serverNetwork.sendMessageToClient(packetFromClient.ioSession, PacketFromClient.packMessage(
+//				ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, packetFromClient.getMessageID(), sendChattingResponse.build()
+//						.toByteArray()));
+//	}
 
 	/**
 	 * 客户端已接收到服务其发送的“未接收消息”， 删除对客户端回复的等待
 	 * 
-	 * @param networkMessage
+	 * @param packetFromClient
 	 */
-	public void clientReceiveChatting(PacketFromClient networkMessage) {
-		byte[] key = PacketFromClient.getMessageID(networkMessage.arrayBytes);
-		serverModel.removeClientResponseListener(key);
-	}
+//	public void clientReceiveChatting(PacketFromClient packetFromClient) {
+//		byte[] key = PacketFromClient.getMessageID(packetFromClient.arrayBytes);
+//		serverModel.removeClientResponseListener(key);
+//	}
 }
