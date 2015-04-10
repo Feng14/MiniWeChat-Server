@@ -58,7 +58,7 @@ public class TestLogin {
 	 * @throws IOException
 	 */
 	@Test
-//	@Ignore
+	@Ignore
 	public void testLogin2() throws UnknownHostException, IOException {
 		ClientSocket client = new ClientSocket();
 		

@@ -18,6 +18,7 @@ import tools.DataTypeTranslater;
  * 
  */
 public class TestPersonalSettings {
+	private String user = "a";
 	// String host = "192.168.45.17"; // 要连接的服务端IP地址
 	// int port = 8080; // 要连接的服务端对应的监听端口
 	//
@@ -47,7 +48,7 @@ public class TestPersonalSettings {
 	 * @throws IOException
 	 * @author wangfei
 	 */
-	public PersonalSettingsRsp.ResultCode testPersonalSettings_JUnit(ClientSocket client, String userName, String userPassword,
+	private PersonalSettingsRsp.ResultCode testPersonalSettings_JUnit(ClientSocket client, String userName, String userPassword,
 			int headIndex) throws IOException {
 		PersonalSettingsMsg.PersonalSettingsReq.Builder builder = PersonalSettingsMsg.PersonalSettingsReq.newBuilder();
 		builder.setUserName(userName);
@@ -78,13 +79,10 @@ public class TestPersonalSettings {
 	public void testPersonalSettings() throws IOException {
 		ClientSocket client = new ClientSocket();
 
-		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
-		int randomIndex = (int) Math.random() * 6;
-
-		PersonalSettingsRsp.ResultCode resultCode = testPersonalSettings_JUnit(client, randomData, randomData, randomIndex);
+		PersonalSettingsRsp.ResultCode resultCode = testPersonalSettings_JUnit(client, user, user, 1);
 		assertEquals(resultCode, PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.SUCCESS);
 
-		resultCode = testPersonalSettings_JUnit(client, randomData, randomData, randomIndex);
+		resultCode = testPersonalSettings_JUnit(client, user, user, 2);
 		assertEquals(resultCode, PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 	}
 }

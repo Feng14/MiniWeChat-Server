@@ -52,7 +52,7 @@ public class TestRegister {
 	 * @return
 	 * @throws IOException
 	 */
-	public RegisterRsp.ResultCode testRegister_JUint(ClientSocket client, String userId, String userPassword, String userName) throws IOException {
+	private RegisterRsp.ResultCode testRegister_JUint(ClientSocket client, String userId, String userPassword, String userName) throws IOException {
 		RegisterMsg.RegisterReq.Builder builder = RegisterMsg.RegisterReq.newBuilder();
 		builder.setUserId(userId);
 		builder.setUserPassword(userPassword);

@@ -103,7 +103,7 @@ public class Server_User {
 	 * @author Feng
 	 * @throws NoIpException
 	 */
-	public void register(PacketFromClient packetFromServer) throws NoIpException {
+	public void register(NetworkPacket packetFromServer) throws NoIpException {
 		logger.info("Server_User.register:begin to register");
 		RegisterMsg.RegisterRsp.Builder responseBuilder = RegisterMsg.RegisterRsp.newBuilder();
 		responseBuilder.setResultCode(RegisterRsp.ResultCode.USER_EXIST);
@@ -175,14 +175,14 @@ public class Server_User {
 	public void login(NetworkPacket networkPacket) throws NoIpException {
 		boolean success = false;
 		LoginMsg.LoginReq loginObject = null;
-		LoginMsg.LoginRsp.Builder loginBuilder = null;
+		
+		LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
+		loginBuilder.setResultCode(LoginRsp.ResultCode.FAIL);
 		try {
 			Debug.log(new String[] { "Server_User", "login" },
 					"Deal with user's" + ServerModel.getIoSessionKey(networkPacket.ioSession) + " 'Login' event");
 
 			loginObject = LoginMsg.LoginReq.parseFrom(networkPacket.getMessageObjectBytes());
-			loginBuilder = LoginMsg.LoginRsp.newBuilder();
-			loginBuilder.setResultCode(LoginRsp.ResultCode.FAIL);
 
 			// 查找是否存在同名用户
 			ResultCode code = ResultCode.NULL;

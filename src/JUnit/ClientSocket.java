@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import protocol.ProtoHead;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.LoginMsg.LoginReq;
@@ -160,18 +162,15 @@ public class ClientSocket {
 		loginBuilder.setUserPassword(userPassword);
 
 		writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE, loginBuilder.build().toByteArray()));
-		while (true) {
+		for (int i=0; i<10; i++) {
 			response = readFromServerWithoutKeepAlive();
 			if (NetworkPacket.getMessageType(response) != ProtoHead.ENetworkMessage.LOGIN_RSP)
 				continue;
 
 			LoginRsp loginResponse = LoginRsp.parseFrom(NetworkPacket.getMessageObjectBytes(response));
 			return loginResponse.getResultCode();
-			// if (loginResponse.getResultCode() != LoginRsp.ResultCode.SUCCESS)
-			// return false;
-			//
-			// return true;
 		}
+		return LoginRsp.ResultCode.FAIL;
 	}
 	
 	
