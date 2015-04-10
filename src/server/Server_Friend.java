@@ -1,18 +1,12 @@
 package server;
 
-import java.io.IOException;
 import java.util.List;
-
 import model.HibernateDataOperation;
 import model.HibernateSessionFactory;
 import model.ResultCode;
 import model.User;
-
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 import protocol.ProtoHead;
 import protocol.Data.UserData;
@@ -23,9 +17,7 @@ import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.DeleteFriendMsg.DeleteFriendRsp;
 import protocol.Msg.GetUserInfoMsg.GetUserInfoRsp;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-
 import exception.NoIpException;
 
 /**
@@ -67,7 +59,6 @@ public class Server_Friend {
 	public void getUserInfo(NetworkPacket networkPacket) throws NoIpException {
 		logger.info("Server_Friend.getUserInfo:begin to getUserInfo!");
 		GetUserInfoMsg.GetUserInfoRsp.Builder getUserInfoBuilder = GetUserInfoMsg.GetUserInfoRsp.newBuilder();
-		getUserInfoBuilder.setResultCode(GetUserInfoRsp.ResultCode.FAIL);
 		try {
 			GetUserInfoMsg.GetUserInfoReq getUserInfoObject = GetUserInfoMsg.GetUserInfoReq.parseFrom(networkPacket
 					.getMessageObjectBytes());
@@ -101,19 +92,6 @@ public class Server_Friend {
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.GET_USERINFO_RSP_VALUE, getUserInfoBuilder.build().toByteArray())));
-		// try {
-		// // 回复客户端
-		// serverNetwork.sendMessageToClient(
-		// networkPacket.ioSession,
-		// networkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),
-		// networkPacket.getMessageID(),
-		// getUserInfoBuilder.build().toByteArray()));
-		// } catch (IOException e) {
-		// logger.error("Server_Friend.getUserInfo deal with user:" +
-		// ServerModel.getIoSessionKey(networkPacket.ioSession)
-		// + " Send result Fail!");
-		// logger.error(e.getStackTrace());
-		// }
 	}
 
 	/**
@@ -127,6 +105,7 @@ public class Server_Friend {
 	public void addFriend(NetworkPacket networkPacket) throws NoIpException {
 		logger.info("Server_Friend.addFriend:begin to add friend!");
 		AddFriendMsg.AddFriendRsp.Builder addFriendBuilder = AddFriendMsg.AddFriendRsp.newBuilder();
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			AddFriendMsg.AddFriendReq addFriendObject = AddFriendMsg.AddFriendReq.parseFrom(networkPacket
 					.getMessageObjectBytes());
@@ -134,8 +113,9 @@ public class Server_Friend {
 			User friend = null;
 			ResultCode code1 = ResultCode.NULL;
 			ResultCode code2 = ResultCode.NULL;
-			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1);
-			List list2 = HibernateDataOperation.query("userId", addFriendObject.getFriendUserId(), User.class, code2);
+			
+			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1,session);
+			List list2 = HibernateDataOperation.query("userId", addFriendObject.getFriendUserId(), User.class, code2,session);
 			User u = (User) list1.get(0);
 			friend = (User) list2.get(0);
 			if (code1.getCode().equals(ResultCode.FAIL) || code2.getCode().equals(ResultCode.FAIL)) {
@@ -160,19 +140,6 @@ public class Server_Friend {
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.ADD_FRIEND_RSP_VALUE, addFriendBuilder.build().toByteArray())));
-		// try {
-		// // 回复客户端
-		// serverNetwork.sendMessageToClient(
-		// networkPacket.ioSession,
-		// networkPacket.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
-		// networkPacket.getMessageID(),
-		// addFriendBuilder.build().toByteArray()));
-		// } catch (IOException e) {
-		// logger.error("Server_Friend.addFriend: deal with user:" +
-		// ServerModel.getIoSessionKey(networkPacket.ioSession)
-		// + " Send result Fail!");
-		// logger.error(e.getStackTrace());
-		// }
 
 	}
 
@@ -228,7 +195,7 @@ public class Server_Friend {
 	public void deleteFriend(NetworkPacket networkPacket) throws NoIpException {
 		logger.info("Server_Friend.deleteFriend:begin to delete friend!");
 		DeleteFriendMsg.DeleteFriendRsp.Builder deleteFriendBuilder = DeleteFriendMsg.DeleteFriendRsp.newBuilder();
-		deleteFriendBuilder.setResultCode(DeleteFriendRsp.ResultCode.FAIL);
+		Session session = HibernateSessionFactory.getSession();
 		try {
 			DeleteFriendMsg.DeleteFriendReq deleteFriendObject = DeleteFriendMsg.DeleteFriendReq.parseFrom(networkPacket
 					.getMessageObjectBytes());
@@ -237,8 +204,8 @@ public class Server_Friend {
 			User friend = null;
 			ResultCode code1 = ResultCode.NULL;
 			ResultCode code2 = ResultCode.NULL;
-			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1);
-			List list2 = HibernateDataOperation.query("userId", deleteFriendObject.getFriendUserId(), User.class, code2);
+			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1,session);
+			List list2 = HibernateDataOperation.query("userId", deleteFriendObject.getFriendUserId(), User.class, code2,session);
 			User u = (User) list1.get(0);
 			friend = (User) list2.get(0);
 
@@ -262,19 +229,7 @@ public class Server_Friend {
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP_VALUE, deleteFriendBuilder.build().toByteArray())));
-		// try {
-		// // 回复客户端
-		// ServerNetwork.instance.sendMessageToClient(
-		// networkPacket.ioSession,
-		// networkPacket.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
-		// networkPacket.getMessageID(),
-		// deleteFriendBuilder.build().toByteArray()));
-		// } catch (IOException e) {
-		// logger.error("Server_Friend.deleteFriend: deal with user:" +
-		// ServerModel.getIoSessionKey(networkPacket.ioSession)
-		// + " Send result Fail!");
-		// logger.error(e.getStackTrace());
-		// }
+		
 	}
 
 	private void delete(User u, User friend, ClientUser clientUser, DeleteFriendMsg.DeleteFriendRsp.Builder deleteFriendBuilder) {
@@ -323,23 +278,6 @@ public class Server_Friend {
 		// 向客户端发送消息
 		serverNetwork.sendToClient(new WaitClientResponse(clientUser.ioSession, new PacketFromServer(
 				ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC_VALUE, cfb.build().toByteArray())));
-
-		// byte[] messageBytes;
-		// try {
-		// messageBytes =
-		// networkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(),
-		// cfb.build()
-		// .toByteArray());
-		// ServerNetwork.instance.sendMessageToClient(clientUser.ioSession,
-		// messageBytes);
-		// // 添加等待回复
-		// serverModel.addClientResponseListener(clientUser.ioSession,
-		// networkPacket.getMessageID(messageBytes),
-		// messageBytes, null);
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 	}
 
 }

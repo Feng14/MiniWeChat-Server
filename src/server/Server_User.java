@@ -341,6 +341,7 @@ public class Server_User {
 
 			ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
 			ResultCode code = ResultCode.NULL;
+			System.out.println("-----------------------------"+clientUser.userId);
 			List list = HibernateDataOperation.query("userId", clientUser.userId, User.class, code);
 			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
 				User user = (User) list.get(0);
@@ -557,6 +558,7 @@ public class Server_User {
 		logger.info("Server_User.getPersonalInfo:");
 		GetPersonalInfoMsg.GetPersonalInfoRsp.Builder getPersonalInfoBuilder = GetPersonalInfoMsg.GetPersonalInfoRsp.newBuilder();
 		getPersonalInfoBuilder.setResultCode(GetPersonalInfoRsp.ResultCode.FAIL);
+		Session session = HibernateSessionFactory.getSession();
 		try {
 
 			GetPersonalInfoMsg.GetPersonalInfoReq getPersonalInfoObject = GetPersonalInfoMsg.GetPersonalInfoReq
@@ -565,7 +567,7 @@ public class Server_User {
 			ClientUser user = serverModel.getClientUserFromTable(packetFromServer.ioSession);
 
 			ResultCode code = ResultCode.NULL;
-			List list = HibernateDataOperation.query("userId", user.userId, User.class, code);
+			List list = HibernateDataOperation.query("userId", user.userId, User.class, code,session);
 			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
 				// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
 				User u = (User) list.get(0);
@@ -606,19 +608,5 @@ public class Server_User {
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(
 				ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP_VALUE, getPersonalInfoBuilder.build().toByteArray())));
-		// try {
-		// // 回复客户端
-		// serverNetwork.sendMessageToClient(
-		// packetFromServer.ioSession,
-		// networkPacket.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP.getNumber(),
-		// packetFromServer.getMessageID(),
-		// getPersonalInfoBuilder.build().toByteArray()));
-		// } catch (IOException e) {
-		// // 回复客户端出错
-		// logger.error("Server_User.getPersonalInfo deal with user:" +
-		// ServerModel.getIoSessionKey(packetFromServer.ioSession)
-		// + " Send result Fail!");
-		// logger.error(e.getStackTrace());
-		// }
 	}
 }

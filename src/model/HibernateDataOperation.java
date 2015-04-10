@@ -55,6 +55,30 @@ public class HibernateDataOperation {
 		}
 	}
 	
+	//重载query方法 增加Session参数  当需要使用延迟加载的时候 Session不能提前关闭
+	public static List query(String s,Object o,Class c,ResultCode code,Session session){
+		logger.info("Hibernate:start query from database");
+		logger.info("Hibernate:query parameters:"+s+" , "+o.toString());
+		try{
+			Criteria criteria = session.createCriteria(c);
+			//使用缓存
+			criteria.setCacheable(true);
+			criteria.add(Restrictions.eq(s, o));
+			List list = criteria.list();
+			
+			logger.info("Hibernate:query from database success");
+			logger.info("Hibernate:query result list size:"+list.size());
+			code.setCode(ResultCode.SUCCESS);
+			
+			return list;
+		}catch(Exception e){
+			code.setCode(ResultCode.FAIL);
+			logger.error("Hibernate:query from database fail");
+			logger.error("Hibernate error:"+e.getStackTrace());
+			return null;
+		}
+	}
+	
 	public static void update(Object o,ResultCode code){
 		logger.info("Hibernate:start update database");
 		logger.info("Hibernate:update Object:"+o.getClass()+":"+o.toString());

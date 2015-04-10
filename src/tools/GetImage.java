@@ -16,6 +16,7 @@ public class GetImage {
 		BufferedImage image = null;
 		try{
 			String urlStr=ResourcePath.getHeadDefaultPath()+imageName;
+			logger.info("GetImage:imageUrl:"+urlStr);
 			URL url = new URL(urlStr);  
 			HttpURLConnection connection2 = (HttpURLConnection) url.openConnection();  
 			String cookieVal=null;
@@ -30,12 +31,15 @@ public class GetImage {
 		      }
 			connection2.connect();
 			image = ImageIO.read(connection2.getInputStream()); 
+			logger.info("GetImage.getImage:get default image:"+imageName+" success!");
+			return image;
 		}catch(Exception e){
 			logger.error("GetImage.getImage:get default image:"+imageName+" fail!");
 			logger.error(e.getStackTrace());
+			return null;
 		}
-		logger.info("GetImage.getImage:get default image:"+imageName+" success!");
-		return image;
+		
+		
 	}
 	
 	
