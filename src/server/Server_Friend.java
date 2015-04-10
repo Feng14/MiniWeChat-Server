@@ -59,17 +59,17 @@ public class Server_Friend {
 	/**
 	 * 搜索用户
 	 * 
-	 * @param packetFromClient
+	 * @param networkPacket
 	 * @author wangfei
 	 * @throws NoIpException
 	 * @time 2015-03-23
 	 */
-	public void getUserInfo(PacketFromClient packetFromClient) throws NoIpException {
+	public void getUserInfo(NetworkPacket networkPacket) throws NoIpException {
 		logger.info("Server_Friend.getUserInfo:begin to getUserInfo!");
 		GetUserInfoMsg.GetUserInfoRsp.Builder getUserInfoBuilder = GetUserInfoMsg.GetUserInfoRsp.newBuilder();
 		getUserInfoBuilder.setResultCode(GetUserInfoRsp.ResultCode.FAIL);
 		try {
-			GetUserInfoMsg.GetUserInfoReq getUserInfoObject = GetUserInfoMsg.GetUserInfoReq.parseFrom(packetFromClient
+			GetUserInfoMsg.GetUserInfoReq getUserInfoObject = GetUserInfoMsg.GetUserInfoReq.parseFrom(networkPacket
 					.getMessageObjectBytes());
 
 			ResultCode code = ResultCode.NULL;
@@ -88,29 +88,29 @@ public class Server_Friend {
 				logger.error("Server_Friend.getUserInfo: Hibernate error");
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
 			} else if (list.size() < 1) {
-				logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(packetFromClient.ioSession)
+				logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(networkPacket.ioSession)
 						+ " not exist!");
 				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
 			}
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_Friend.getUserInfo:Error was found when using Protobuf to deserialization "
-					+ ServerModel.getIoSessionKey(packetFromClient.ioSession) + " packet！");
+					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
 			getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.GET_USERINFO_RSP_VALUE, getUserInfoBuilder.build().toByteArray())));
 		// try {
 		// // 回复客户端
 		// serverNetwork.sendMessageToClient(
-		// packetFromClient.ioSession,
-		// PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),
-		// packetFromClient.getMessageID(),
+		// networkPacket.ioSession,
+		// networkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_RSP.getNumber(),
+		// networkPacket.getMessageID(),
 		// getUserInfoBuilder.build().toByteArray()));
 		// } catch (IOException e) {
 		// logger.error("Server_Friend.getUserInfo deal with user:" +
-		// ServerModel.getIoSessionKey(packetFromClient.ioSession)
+		// ServerModel.getIoSessionKey(networkPacket.ioSession)
 		// + " Send result Fail!");
 		// logger.error(e.getStackTrace());
 		// }
@@ -119,18 +119,18 @@ public class Server_Friend {
 	/**
 	 * 添加好友
 	 * 
-	 * @param packetFromClient
+	 * @param networkPacket
 	 * @author wangfei
 	 * @throws NoIpException
 	 * @time 2015-03-24
 	 */
-	public void addFriend(PacketFromClient packetFromClient) throws NoIpException {
+	public void addFriend(NetworkPacket networkPacket) throws NoIpException {
 		logger.info("Server_Friend.addFriend:begin to add friend!");
 		AddFriendMsg.AddFriendRsp.Builder addFriendBuilder = AddFriendMsg.AddFriendRsp.newBuilder();
 		try {
-			AddFriendMsg.AddFriendReq addFriendObject = AddFriendMsg.AddFriendReq.parseFrom(packetFromClient
+			AddFriendMsg.AddFriendReq addFriendObject = AddFriendMsg.AddFriendReq.parseFrom(networkPacket
 					.getMessageObjectBytes());
-			ClientUser clientUser = serverModel.getClientUserFromTable(packetFromClient.ioSession.getRemoteAddress().toString());
+			ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession.getRemoteAddress().toString());
 			User friend = null;
 			ResultCode code1 = ResultCode.NULL;
 			ResultCode code2 = ResultCode.NULL;
@@ -153,23 +153,23 @@ public class Server_Friend {
 
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_Friend.addFriend:Error was found when using Protobuf to deserialization "
-					+ ServerModel.getIoSessionKey(packetFromClient.ioSession) + " packet！");
+					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
 			addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.ADD_FRIEND_RSP_VALUE, addFriendBuilder.build().toByteArray())));
 		// try {
 		// // 回复客户端
 		// serverNetwork.sendMessageToClient(
-		// packetFromClient.ioSession,
-		// packetFromClient.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
-		// packetFromClient.getMessageID(),
+		// networkPacket.ioSession,
+		// networkPacket.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_RSP.getNumber(),
+		// networkPacket.getMessageID(),
 		// addFriendBuilder.build().toByteArray()));
 		// } catch (IOException e) {
 		// logger.error("Server_Friend.addFriend: deal with user:" +
-		// ServerModel.getIoSessionKey(packetFromClient.ioSession)
+		// ServerModel.getIoSessionKey(networkPacket.ioSession)
 		// + " Send result Fail!");
 		// logger.error(e.getStackTrace());
 		// }
@@ -220,20 +220,20 @@ public class Server_Friend {
 	/**
 	 * 删除好友
 	 * 
-	 * @param packetFromClient
+	 * @param networkPacket
 	 * @author wangfei
 	 * @throws NoIpException
 	 * @time 2015-03-24
 	 */
-	public void deleteFriend(PacketFromClient packetFromClient) throws NoIpException {
+	public void deleteFriend(NetworkPacket networkPacket) throws NoIpException {
 		logger.info("Server_Friend.deleteFriend:begin to delete friend!");
 		DeleteFriendMsg.DeleteFriendRsp.Builder deleteFriendBuilder = DeleteFriendMsg.DeleteFriendRsp.newBuilder();
 		deleteFriendBuilder.setResultCode(DeleteFriendRsp.ResultCode.FAIL);
 		try {
-			DeleteFriendMsg.DeleteFriendReq deleteFriendObject = DeleteFriendMsg.DeleteFriendReq.parseFrom(packetFromClient
+			DeleteFriendMsg.DeleteFriendReq deleteFriendObject = DeleteFriendMsg.DeleteFriendReq.parseFrom(networkPacket
 					.getMessageObjectBytes());
 
-			ClientUser clientUser = serverModel.getClientUserFromTable(packetFromClient.ioSession.getRemoteAddress().toString());
+			ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession.getRemoteAddress().toString());
 			User friend = null;
 			ResultCode code1 = ResultCode.NULL;
 			ResultCode code2 = ResultCode.NULL;
@@ -255,23 +255,23 @@ public class Server_Friend {
 			}
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_Friend.deleteFriend:Error was found when using Protobuf to deserialization "
-					+ ServerModel.getIoSessionKey(packetFromClient.ioSession) + " packet！");
+					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
 			deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromClient.ioSession, new PacketFromServer(packetFromClient
+		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP_VALUE, deleteFriendBuilder.build().toByteArray())));
 		// try {
 		// // 回复客户端
 		// ServerNetwork.instance.sendMessageToClient(
-		// packetFromClient.ioSession,
-		// packetFromClient.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
-		// packetFromClient.getMessageID(),
+		// networkPacket.ioSession,
+		// networkPacket.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP.getNumber(),
+		// networkPacket.getMessageID(),
 		// deleteFriendBuilder.build().toByteArray()));
 		// } catch (IOException e) {
 		// logger.error("Server_Friend.deleteFriend: deal with user:" +
-		// ServerModel.getIoSessionKey(packetFromClient.ioSession)
+		// ServerModel.getIoSessionKey(networkPacket.ioSession)
 		// + " Send result Fail!");
 		// logger.error(e.getStackTrace());
 		// }
@@ -327,14 +327,14 @@ public class Server_Friend {
 		// byte[] messageBytes;
 		// try {
 		// messageBytes =
-		// PacketFromClient.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(),
+		// networkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC.getNumber(),
 		// cfb.build()
 		// .toByteArray());
 		// ServerNetwork.instance.sendMessageToClient(clientUser.ioSession,
 		// messageBytes);
 		// // 添加等待回复
 		// serverModel.addClientResponseListener(clientUser.ioSession,
-		// packetFromClient.getMessageID(messageBytes),
+		// networkPacket.getMessageID(messageBytes),
 		// messageBytes, null);
 		// } catch (IOException e) {
 		// // TODO Auto-generated catch block

@@ -157,7 +157,7 @@ public class ServerModel_Chatting {
 //	}
 
 //	public void addListenReceiveChatting(final IoSession ioSession, final ArrayList<Chatting> chattingList, byte[] messageWillSend) {
-//		serverModel.addClientResponseListener(ioSession, PacketFromClient.getMessageID(messageWillSend), messageWillSend,
+//		serverModel.addClientResponseListener(ioSession, networkPacket.getMessageID(messageWillSend), messageWillSend,
 //				new WaitClientResponseCallBack() {
 //
 //					@Override

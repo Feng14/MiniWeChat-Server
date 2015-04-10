@@ -7,6 +7,8 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderAdapter;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
+
 import tools.DataTypeTranslater;
 
 /**
@@ -35,10 +37,11 @@ public class MinaEncoder extends ProtocolEncoderAdapter {
 			
 			// 3.加入数据包
 			byteArrayOutputStream.write(packetWillSend.getMessageBoty());
-			System.out.println("Fuck:" + byteArrayOutputStream.size());
 			
-			IoBuffer buffer = IoBuffer.allocate(byteArrayOutputStream.size() + DataTypeTranslater.INT_SIZE);
-			buffer.put(DataTypeTranslater.intToByte(byteArrayOutputStream.size())); // header  
+			int sizeOfAll = byteArrayOutputStream.size() + DataTypeTranslater.INT_SIZE;
+			
+			IoBuffer buffer = IoBuffer.allocate(sizeOfAll);
+			buffer.put(DataTypeTranslater.intToByte(sizeOfAll)); // header  
 	        buffer.put(byteArrayOutputStream.toByteArray()); // body  
 	        buffer.flip();  
 	        output.write(buffer);

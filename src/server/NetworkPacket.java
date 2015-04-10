@@ -10,7 +10,7 @@ import tools.DataTypeTranslater;
  * 
  * @author Feng
  */
-public class PacketFromClient {
+public class NetworkPacket {
 	// 信息中的int所占的字节数
 	public static final int HEAD_INT_SIZE = 4;
 	// 信息中的floats所占的字节数
@@ -19,7 +19,7 @@ public class PacketFromClient {
 	public IoSession ioSession;
 	public byte[] arrayBytes;
 
-	public PacketFromClient(IoSession ioSession, byte[] arrayBytes) {
+	public NetworkPacket(IoSession ioSession, byte[] arrayBytes) {
 		this.ioSession = ioSession;
 		this.arrayBytes = arrayBytes;
 	}
@@ -84,6 +84,7 @@ public class PacketFromClient {
 	}
 
 	public static byte[] getMessageObjectBytes(byte[] array) {
+		System.out.println(getMessageLength(array) - getMessageObjectStartIndex());
 		byte[] response = new byte[getMessageLength(array) - getMessageObjectStartIndex()];
 		for (int i = 0; i < response.length; i++)
 			response[i] = array[getMessageObjectStartIndex() + i];

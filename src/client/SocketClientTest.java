@@ -22,7 +22,7 @@ import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.PersonalSettingsMsg;
 import protocol.Msg.RegisterMsg;
-import server.PacketFromClient;
+import server.NetworkPacket;
 import tools.DataTypeTranslater;
 import tools.Debug;
 
@@ -250,9 +250,9 @@ public class SocketClientTest {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
 					.toByteArray());
-			System.out.println("MessageID : " + PacketFromClient.getMessageID(byteArray));
+			System.out.println("MessageID : " + NetworkPacket.getMessageID(byteArray));
 			writeToServer(byteArray);
 
 			while (true) {
@@ -265,15 +265,15 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.REGISTER_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 
 					RegisterMsg.RegisterRsp response = RegisterMsg.RegisterRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
 							+ RegisterMsg.RegisterRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-					System.out.println("MessageID : " + PacketFromClient.getMessageID(byteArray));
+					System.out.println("MessageID : " + NetworkPacket.getMessageID(byteArray));
 				}
 			}
 
@@ -295,7 +295,7 @@ public class SocketClientTest {
 		builder.setUserPassword(userPassword);
 		builder.setUserName(userName);
 
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.REGISTER_REQ.getNumber(), builder.build()
 				.toByteArray());
 		// System.out.println("MessageID : " +
 		// NetworkMessage.getMessageID(byteArray));
@@ -303,7 +303,7 @@ public class SocketClientTest {
 
 		while (true) {
 			byteArray = readFromServer(inputStream);
-			if (PacketFromClient.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
+			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
 				continue;
 
 			return cutResult(byteArray);
@@ -324,7 +324,7 @@ public class SocketClientTest {
 		builder.setUserId(userId);
 		builder.setUserPassword(userPassword);
 
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
 				.toByteArray());
 		// outputStream = socket.getOutputStream();
 		writeToServer(byteArray);
@@ -356,7 +356,7 @@ public class SocketClientTest {
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build()
 					.toByteArray());
 			// outputStream = socket.getOutputStream();
 			writeToServer(byteArray);
@@ -372,9 +372,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 
 					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
 
@@ -389,7 +389,7 @@ public class SocketClientTest {
 			link();
 			// 断后重测
 			System.out.println("断后重测");
-			byteArray = PacketFromClient
+			byteArray = NetworkPacket
 					.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build().toByteArray());
 			writeToServer(byteArray);
 			while (true) {
@@ -402,9 +402,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.LOGIN_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 
 					LoginMsg.LoginRsp response = LoginMsg.LoginRsp.parseFrom(objBytes);
 
@@ -413,9 +413,9 @@ public class SocketClientTest {
 
 				}
 				if (type == ProtoHead.ENetworkMessage.CHANGE_FRIEND_SYNC) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 					ChangeFriendMsg.ChangeFriendSync response = ChangeFriendMsg.ChangeFriendSync.parseFrom(objBytes);
 					System.out.println(response.getChangeType() + " " + response.getUserItem());
 				}
@@ -445,11 +445,11 @@ public class SocketClientTest {
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a3");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
 
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder
 					.build().toByteArray());
 			writeToServer(byteArray);
 			while (true) {
@@ -462,9 +462,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.PERSONALSETTINGS_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 
 					PersonalSettingsMsg.PersonalSettingsRsp response = PersonalSettingsMsg.PersonalSettingsRsp
 							.parseFrom(objBytes);
@@ -496,7 +496,7 @@ public class SocketClientTest {
 		builder.setUserName(userName);
 		builder.setUserPassword(userPassword);
 		builder.setHeadIndex(headIndex);
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.PERSONALSETTINGS_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
 		while (true) {
@@ -542,11 +542,11 @@ public class SocketClientTest {
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
 
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
 					.toByteArray());
 
 			writeToServer(byteArray);
@@ -560,9 +560,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.GET_USERINFO_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 
 					GetUserInfoMsg.GetUserInfoRsp response = GetUserInfoMsg.GetUserInfoRsp.parseFrom(objBytes);
 
@@ -590,7 +590,7 @@ public class SocketClientTest {
 	public byte[] testGetUserInfo_JUnit(String targetUserId) throws IOException {
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
 		builder.setTargetUserId(targetUserId);
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
 		while (true) {
@@ -621,11 +621,11 @@ public class SocketClientTest {
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
 
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), builder.build()
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), builder.build()
 					.toByteArray());
 
 			writeToServer(byteArray);
@@ -639,9 +639,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.ADD_FRIEND_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 					AddFriendMsg.AddFriendRsp response = AddFriendMsg.AddFriendRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
@@ -664,7 +664,7 @@ public class SocketClientTest {
 		AddFriendMsg.AddFriendReq.Builder builder = AddFriendMsg.AddFriendReq.newBuilder();
 		builder.setFriendUserId(friendUserId);
 
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.ADD_FRIEND_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
 		while (true) {
@@ -693,10 +693,10 @@ public class SocketClientTest {
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("s1234");
-			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder
 					.build().toByteArray());
 
 			writeToServer(byteArray);
@@ -710,9 +710,9 @@ public class SocketClientTest {
 				System.out.println("Type : " + type.toString());
 
 				if (type == ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 					DeleteFriendMsg.DeleteFriendRsp response = DeleteFriendMsg.DeleteFriendRsp.parseFrom(objBytes);
 
 					System.out.println("Response : "
@@ -735,7 +735,7 @@ public class SocketClientTest {
 	public byte[] testDeleteFriend_JUnit(String friendUserId) throws IOException {
 		DeleteFriendMsg.DeleteFriendReq.Builder builder = DeleteFriendMsg.DeleteFriendReq.newBuilder();
 		builder.setFriendUserId(friendUserId);
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
 		while (true) {
@@ -762,10 +762,10 @@ public class SocketClientTest {
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("aa");
-			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
 					.toByteArray());
 
 			writeToServer(byteArray);
@@ -775,9 +775,9 @@ public class SocketClientTest {
 				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 						HEAD_INT_SIZE));
 				if (type == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 					LogoutMsg.LogoutRsp response = LogoutMsg.LogoutRsp.parseFrom(objBytes);
 					System.out.println("Response : "
 							+ LogoutMsg.LogoutRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
@@ -797,7 +797,7 @@ public class SocketClientTest {
 	 */
 	public byte[] testLogout_JUnit() throws IOException {
 		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
 		while (true) {
@@ -827,10 +827,10 @@ public class SocketClientTest {
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
 			loginBuilder.setUserId("a2");
 			loginBuilder.setUserPassword("s123");
-			byte[] loginByteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
+			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder
 					.build().toByteArray());
 
 			writeToServer(byteArray);
@@ -842,9 +842,9 @@ public class SocketClientTest {
 						HEAD_INT_SIZE));
 				System.out.println(type);
 				if (type == ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP) {
-					byte[] objBytes = new byte[size - PacketFromClient.getMessageObjectStartIndex()];
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
 					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[PacketFromClient.getMessageObjectStartIndex() + i];
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
 					GetPersonalInfoMsg.GetPersonalInfoRsp response = GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(objBytes);
 					System.out.println("Response : "
 							+ GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
@@ -869,7 +869,7 @@ public class SocketClientTest {
 		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
 		builder.setUserInfo(userInfo);
 		builder.setFriendInfo(friendInfo);
-		byte[] byteArray = PacketFromClient.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder.build()
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
 		while (true) {

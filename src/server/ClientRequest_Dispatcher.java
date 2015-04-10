@@ -48,7 +48,7 @@ public class ClientRequest_Dispatcher {
 	 * @param networkMessage
 	 * @author Feng
 	 */
-	public void dispatcher(PacketFromClient packetFromClient) {
+	public void dispatcher(NetworkPacket packetFromClient) {
 		// System.out.println("IP" +
 		// networkMessage.ioSession.getRemoteAddress());
 		Debug.log("ClientRequest_Dispatcher", "Client's request type is : " + packetFromClient.getMessageType().toString());
@@ -56,10 +56,9 @@ public class ClientRequest_Dispatcher {
 		try {
 			switch (packetFromClient.getMessageType().getNumber()) {
 			// Client回复心跳包
-			case ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE:
-				System.out.println("now");
-				server_User.keepAlive(packetFromClient);
-				break;
+//			case ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE:
+//				server_User.keepAlive(packetFromClient);
+//				break;
 			case ProtoHead.ENetworkMessage.REGISTER_REQ_VALUE:
 				server_User.register(packetFromClient);
 				break;
@@ -79,9 +78,9 @@ public class ClientRequest_Dispatcher {
 				server_Friend.deleteFriend(packetFromClient);
 				break;
 			// 另一个人登陆，本用户被踢下的通知的回复
-			case ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE:
-				server_User.clientOfflineResponse(packetFromClient);
-				break;
+//			case ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE:
+//				server_User.clientOfflineResponse(packetFromClient);
+//				break;
 			case ProtoHead.ENetworkMessage.LOGOUT_REQ_VALUE:
 				server_User.logout(packetFromClient);
 				break;
@@ -93,9 +92,9 @@ public class ClientRequest_Dispatcher {
 				server_Chatting.clientSendChatting(packetFromClient);
 				break;
 			// 服务器向客户端发送未接收消息，客户端的回答
-			case ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE:
-				server_Chatting.clientReceiveChatting(packetFromClient);
-				break;
+//			case ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE:
+//				server_Chatting.clientReceiveChatting(packetFromClient);
+//				break;
 			default:
 				break;
 			}

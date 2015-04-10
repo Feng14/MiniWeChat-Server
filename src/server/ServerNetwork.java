@@ -107,7 +107,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 		// byte[] byteArray = new byte[ioBuffer.limit()];
 		// ioBuffer.get(byteArray, 0, ioBuffer.limit());
 
-		PacketFromClient packetFromClient = (PacketFromClient) message;
+		NetworkPacket packetFromClient = (NetworkPacket) message;
 		Debug.log("byteArray.length = " + packetFromClient.getMessageLength());
 		// System.out.println(DataTypeTranslater.bytesToInt(byteArray, 0));
 		// dealRequest(session, byteArray);
@@ -273,7 +273,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 			}
 			// 用户在线，重发
 			WriteFuture writeFuture = waitClientResponse.ioSession.write(waitClientResponse.packetFromServer);
-			writeFuture.awaitUninterruptibly(WAIT_CLIENT_RESPONSE_TIMEOUT);
+//			writeFuture.awaitUninterruptibly(WAIT_CLIENT_RESPONSE_TIMEOUT);
 			writeFuture.addListener(new IoFutureListener<IoFuture>() {
 				@Override
 				public void operationComplete(IoFuture future) {

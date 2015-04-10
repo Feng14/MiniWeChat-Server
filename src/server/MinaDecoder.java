@@ -45,7 +45,7 @@ public class MinaDecoder extends CumulativeProtocolDecoder {
 				byteArrayOutputStream.write(bodyBytes);
 				
 				// 创建对象
-				PacketFromClient packetFromClient = new PacketFromClient(ioSession, byteArrayOutputStream.toByteArray());
+				NetworkPacket packetFromClient = new NetworkPacket(ioSession, byteArrayOutputStream.toByteArray());
 				
 				output.write(packetFromClient); // 解析出一条消息
 				return true;

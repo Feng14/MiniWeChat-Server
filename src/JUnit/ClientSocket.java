@@ -8,10 +8,12 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import protocol.ProtoHead;
+import protocol.Msg.LogoutMsg;
 import protocol.Msg.LoginMsg.LoginReq;
 import protocol.Msg.LoginMsg.LoginRsp;
+import protocol.Msg.LogoutMsg.LogoutRsp;
 
-import server.PacketFromClient;
+import server.NetworkPacket;
 import tools.DataTypeTranslater;
 
 /**
@@ -26,8 +28,8 @@ public class ClientSocket {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
-//	 String host = "192.168.45.17"; // 要连接的服务端IP地址
-	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+	 String host = "192.168.45.17"; // 要连接的服务端IP地址
+//	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
 	// String host = "192.168.1.103"; // 要连接的服务端IP地址
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
 //	String host = "192.168.45.34"; // 要连接的服务端IP地址
@@ -108,10 +110,9 @@ public class ClientSocket {
 		while (true) {
 			byteArray = readFromServer();
 			// 不是KeepAlive（心跳包就返回）
-			if (PacketFromClient.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC)
+			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC)
 				return byteArray;
 
-			writeToServer(byteArray);
 		}
 	}
 
@@ -156,21 +157,48 @@ public class ClientSocket {
 
 		LoginReq.Builder loginBuilder = LoginReq.newBuilder();
 		loginBuilder.setUserId(userId);
-
 		loginBuilder.setUserPassword(userPassword);
 
-		writeToServer(PacketFromClient.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE, loginBuilder.build().toByteArray()));
+		writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE, loginBuilder.build().toByteArray()));
 		while (true) {
 			response = readFromServerWithoutKeepAlive();
-			if (PacketFromClient.getMessageType(response) != ProtoHead.ENetworkMessage.LOGIN_RSP)
+			if (NetworkPacket.getMessageType(response) != ProtoHead.ENetworkMessage.LOGIN_RSP)
 				continue;
 
-			LoginRsp loginResponse = LoginRsp.parseFrom(PacketFromClient.getMessageObjectBytes(response));
+			LoginRsp loginResponse = LoginRsp.parseFrom(NetworkPacket.getMessageObjectBytes(response));
 			return loginResponse.getResultCode();
 			// if (loginResponse.getResultCode() != LoginRsp.ResultCode.SUCCESS)
 			// return false;
 			//
 			// return true;
 		}
+	}
+	
+	
+	public LogoutRsp.ResultCode logout() throws IOException{
+		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
+				.toByteArray());
+
+		writeToServer(byteArray);
+		
+		for (int i=0; i<10; i++) {
+			byteArray = readFromServerWithoutKeepAlive();
+			if (NetworkPacket.getMessageType(byteArray) == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
+				return LogoutRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getResultCode();
+			}
+		}
+		return LogoutRsp.ResultCode.FAIL;
+	}
+	
+	/**
+	 * 测试用，查看收到的所有byte
+	 * @param arrayBytes
+	 * @author Feng
+	 */
+	private void showBytes(byte[] arrayBytes) {
+		for (byte b : arrayBytes)
+			System.out.print(b + "  ");
+		System.out.println();
 	}
 }
