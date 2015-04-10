@@ -40,8 +40,8 @@ public class TestSendChatting {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 		byte[] response;
-//		String userId1 = "c", userId2 = "d", message = "c fuck d";
-		String userId1 = "123", userId2 = "1234", message = "c fuck d";
+		String userId1 = "c", userId2 = "d", message = "c fuck d";
+//		String userId1 = "123", userId2 = "1234", message = "c fuck d";
 
 		// 登陆
 		if (clientSocket1.login(userId1, userId1) != LoginRsp.ResultCode.SUCCESS)
@@ -99,7 +99,7 @@ public class TestSendChatting {
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
+//	@Ignore
 	public void test2() throws UnknownHostException, IOException {
 		ClientSocket clientSocket1 = new ClientSocket();
 		byte[] response;
@@ -155,7 +155,7 @@ public class TestSendChatting {
 	 * @throws UnknownHostException
 	 */
 	@Test
-	@Ignore
+//	@Ignore
 	public void test3() throws UnknownHostException, IOException {
 		ClientSocket clientSocket1 = new ClientSocket();
 		byte[] response;
@@ -239,7 +239,7 @@ public class TestSendChatting {
 					continue;
 
 				SendChatRsp sendChattingResponse = SendChatRsp.parseFrom(NetworkPacket.getMessageObjectBytes(response));
-				Debug.log("g 向 h 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
+				System.out.println("g 向 h 发送消息的服务器回复：" + sendChattingResponse.getResultCode().toString());
 				assertEquals(sendChattingResponse.getResultCode().getNumber(), SendChatRsp.ResultCode.SUCCESS_VALUE);
 				break;
 			}
@@ -251,29 +251,30 @@ public class TestSendChatting {
 		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");
 
-		while (true) {
-			response = clientSocket2.readFromServerWithoutKeepAlive();
-			if (NetworkPacket.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
-				continue;
-
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(response));
-			ChatItem chatItem;
-			
-			for (int i = 0; i < times; i++) {
-				chatItem = receiveChatting.getChatData(i);
-				Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
-						+ chatItem.getChatBody());
-				assertEquals(chatItem.getChatBody(), message + (i + ""));
-			}
-			
-			Debug.log("接受者不回复！下线");
-			break;
-		}
-		// 等待服务器把自己踢下线
-		Thread.sleep(ServerModel.KEEP_ALIVE_PACKET_TIME + ServerModel.CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME);
+//		while (true) {
+//			response = clientSocket2.readFromServerWithoutKeepAlive();
+//			if (NetworkPacket.getMessageType(response) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+//				continue;
+//
+//			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(response));
+//			ChatItem chatItem;
+//			
+//			for (int i = 0; i < times; i++) {
+//				chatItem = receiveChatting.getChatData(i);
+//				Debug.log(chatItem.getReceiveUserId() + " 收到 " + chatItem.getSendUserId() + " 发来的消息：" + chatItem.getChatType() + "  "
+//						+ chatItem.getChatBody());
+//				assertEquals(chatItem.getChatBody(), message + (i + ""));
+//			}
+//			
+//			Debug.log("接受者不回复！下线");
+//			break;
+//		}
+//		// 等待服务器把自己踢下线
+//		Thread.sleep(ServerModel.KEEP_ALIVE_PACKET_TIME + ServerModel.CHECK_WAIT_CLIENT_RESPONSE_DELTA_TIME);
 //		Thread.sleep(9*1000);
 		
 		// 重新连接，登录，接收消息
+		clientSocket2.close();
 		clientSocket2 = new ClientSocket();
 		if (clientSocket2.login(userId2, userId2) != LoginRsp.ResultCode.SUCCESS)
 			fail("登陆结果错误！");

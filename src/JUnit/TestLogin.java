@@ -41,7 +41,6 @@ public class TestLogin {
 		
 		System.out.println("Start Test1 Login!");
 		LoginRsp.ResultCode resultCode = client.login(userId, userId);
-		System.out.println(resultCode.toString());
 		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.SUCCESS);
 
 		resultCode = client.login(userId + "error", userId);
@@ -58,7 +57,7 @@ public class TestLogin {
 	 * @throws IOException
 	 */
 	@Test
-	@Ignore
+//	@Ignore
 	public void testLogin2() throws UnknownHostException, IOException {
 		ClientSocket client = new ClientSocket();
 		

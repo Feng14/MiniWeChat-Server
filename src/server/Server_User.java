@@ -77,13 +77,20 @@ public class Server_User {
 		// serverModel.clientUserTable.containsKey(ServerModel.getIoSessionKey(packetFromServer.ioSession)));
 		// 如果ClientUser已经掉线被删除，那么就不管了
 		try {
-			Debug.log("Server_User", "Deal with user's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
+			// Debug.log("Server_User", "Deal with user's" +
+			// ServerModel.getIoSessionKey(packetFromServer.ioSession)
+			// + " 'keepAlivePacket' reply");
+			logger.info("Server_User : Deal with user's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
 					+ " 'keepAlivePacket' reply");
 
 			if (serverModel.getClientUserFromTable(packetFromServer.ioSession) == null) {
-				Debug.log(Debug.LogType.EXCEPTION, "Server_User",
-						"Can't find user in 'ClientUserTalbe'" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
-								+ "，user's 'KeepAlivePacket' reply will be ignore!");
+				// Debug.log(Debug.LogType.EXCEPTION, "Server_User",
+				// "Can't find user in 'ClientUserTalbe'" +
+				// ServerModel.getIoSessionKey(packetFromServer.ioSession)
+				// + "，user's 'KeepAlivePacket' reply will be ignore!");
+				logger.warn("Server_User : Can't find user in 'ClientUserTalbe'"
+						+ ServerModel.getIoSessionKey(packetFromServer.ioSession)
+						+ "，user's 'KeepAlivePacket' reply will be ignore!");
 				return;
 			}
 
@@ -107,7 +114,7 @@ public class Server_User {
 		logger.info("Server_User.register:begin to register");
 		RegisterMsg.RegisterRsp.Builder responseBuilder = RegisterMsg.RegisterRsp.newBuilder();
 		responseBuilder.setResultCode(RegisterRsp.ResultCode.USER_EXIST);
-		
+
 		try {
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(packetFromServer.getMessageObjectBytes());
 
@@ -117,12 +124,11 @@ public class Server_User {
 			// 查找是否存在同名用户
 			ResultCode code = ResultCode.NULL;
 			List list = HibernateDataOperation.query("userId", registerObject.getUserId(), User.class, code);
-			
-			if(code.getCode().equals(ResultCode.FAIL)){
-				//数据库查询出错
+
+			if (code.getCode().equals(ResultCode.FAIL)) {
+				// 数据库查询出错
 				logger.error("Server_User.register:query from database fail");
-			}
-			else if (list.size() > 0) { // 已存在
+			} else if (list.size() > 0) { // 已存在
 				// 已存在相同账号用户，告诉客户端
 				// System.out.println("什么鬼？");
 				logger.info("Server_User" + "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
@@ -137,9 +143,10 @@ public class Server_User {
 
 				ResultCode code2 = ResultCode.NULL;
 				HibernateDataOperation.add(user, code2);
-				if(code2.getCode().equals(ResultCode.SUCCESS)){
+				if (code2.getCode().equals(ResultCode.SUCCESS)) {
 					// 成功，设置回包码
-					logger.info("Server_User" + "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
+					logger.info("Server_User" + "'RegisterEvent'：User's"
+							+ ServerModel.getIoSessionKey(packetFromServer.ioSession)
 							+ "  Register Successful，response to Client!");
 					responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
 				}
@@ -149,8 +156,7 @@ public class Server_User {
 			logger.error("Server_User : 'RegisterEvent'： Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + "！");
 		} catch (IOException e) {
-			logger.error("Server_User : 'RegisterEvent'： " + ServerModel.getIoSessionKey(packetFromServer.ioSession)
-					+ " 返回包时异常！");
+			logger.error("Server_User : 'RegisterEvent'： " + ServerModel.getIoSessionKey(packetFromServer.ioSession) + " 返回包时异常！");
 			logger.error(e.getStackTrace());
 		} catch (NoIpException e) {
 			logger.error(e.getStackTrace());
@@ -175,28 +181,35 @@ public class Server_User {
 	public void login(NetworkPacket networkPacket) throws NoIpException {
 		boolean success = false;
 		LoginMsg.LoginReq loginObject = null;
-		
+
 		LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
 		loginBuilder.setResultCode(LoginRsp.ResultCode.FAIL);
 		try {
-			Debug.log(new String[] { "Server_User", "login" },
-					"Deal with user's" + ServerModel.getIoSessionKey(networkPacket.ioSession) + " 'Login' event");
+			// Debug.log(new String[] { "Server_User", "login" },
+			// "Deal with user's" +
+			// ServerModel.getIoSessionKey(networkPacket.ioSession) +
+			// " 'Login' event");
+			logger.debug("Server_User : login : Deal with user's" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+					+ " 'Login' event");
 
 			loginObject = LoginMsg.LoginReq.parseFrom(networkPacket.getMessageObjectBytes());
 
 			// 查找是否存在同名用户
 			ResultCode code = ResultCode.NULL;
 			List list = HibernateDataOperation.query("userId", loginObject.getUserId(), User.class, code);
-			if(code.getCode().equals(ResultCode.FAIL)){
+			if (code.getCode().equals(ResultCode.FAIL)) {
 				logger.error("Server_User.login:query from database fail");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
-			}
-			else if (list.size() > 0) { // 已存在
+			} else if (list.size() > 0) { // 已存在
 				// 用户存在，开始校验
 				User user = (User) list.get(0);
 				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // 密码正确
-					Debug.log(new String[] { "Server_User", "login" },
-							"User " + ServerModel.getIoSessionKey(networkPacket.ioSession) + " Login successful!");
+				// Debug.log(new String[] { "Server_User", "login" },
+				// "User " +
+				// ServerModel.getIoSessionKey(networkPacket.ioSession) +
+				// " Login successful!");
+					logger.debug("Server_User : login : User " + ServerModel.getIoSessionKey(networkPacket.ioSession)
+							+ " Login successful!");
 
 					// 检查是否有重复登陆
 					checkAnotherOnline(networkPacket, loginObject.getUserId());
@@ -211,23 +224,34 @@ public class Server_User {
 
 					success = true;
 				} else { // 密码错误
-					Debug.log(new String[] { "Server_User", "login" },
-							"User " + ServerModel.getIoSessionKey(networkPacket.ioSession) + " Login password Error!");
+				// Debug.log(new String[] { "Server_User", "login" },
+				// "User " +
+				// ServerModel.getIoSessionKey(networkPacket.ioSession) +
+				// " Login password Error!");
+					logger.debug("Server_User : login : User " + ServerModel.getIoSessionKey(networkPacket.ioSession)
+							+ " Login password Error!");
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 				}
 			} else { // 用户不存在
-				Debug.log(new String[] { "Server_User", "login" },
-						"User" + ServerModel.getIoSessionKey(networkPacket.ioSession) + "  UserId not exist!");
+			// Debug.log(new String[] { "Server_User", "login" },
+			// "User" + ServerModel.getIoSessionKey(networkPacket.ioSession) +
+			// "  UserId not exist!");
+				logger.debug("Server_User : login : User" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+						+ "  UserId not exist!!");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			}
 
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : 'LoginEvent'：Error was found when using Protobuf to deserialization "
-					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " ！");
+			// System.err.println("Server_User : 'LoginEvent'：Error was found when using Protobuf to deserialization "
+			// + ServerModel.getIoSessionKey(networkPacket.ioSession) + " ！");
+			logger.error("Server_User : 'LoginEvent'：Error was found when using Protobuf to deserialization "
+					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " !");
 			loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("Server_User : 'LoginEvent'： Error was found when response to client"
+			// System.err.println("Server_User : 'LoginEvent'： Error was found when response to client"
+			// + ServerModel.getIoSessionKey(networkPacket.ioSession) + " ！");
+			logger.error("Server_User : 'LoginEvent'： Error was found when response to client"
 					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " ！");
 			loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			e.printStackTrace();
@@ -237,8 +261,10 @@ public class Server_User {
 		}
 
 		// 回复给客户端
-		Debug.log(new String[] { "Server_User", "login" },
-				"Response User " + ServerModel.getIoSessionKey(networkPacket.ioSession) + " !");
+		// Debug.log(new String[] { "Server_User", "login" },
+		// "Response User " +
+		// ServerModel.getIoSessionKey(networkPacket.ioSession) + " !");
+		logger.debug("Server_User : login : Response User " + ServerModel.getIoSessionKey(networkPacket.ioSession) + " !");
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.LOGIN_RSP_VALUE, loginBuilder.build().toByteArray()), null));
 		// serverNetwork.sendMessageToClient(networkPacket.ioSession,
@@ -249,8 +275,12 @@ public class Server_User {
 
 		// 广播“由用户登陆消息"
 		if (success) {
-			Debug.log(new String[] { "Server_User", "login" },
-					"Broadcast user" + ServerModel.getIoSessionKey(networkPacket.ioSession) + " Login successful event!");
+			// Debug.log(new String[] { "Server_User", "login" },
+			// "Broadcast user" +
+			// ServerModel.getIoSessionKey(networkPacket.ioSession) +
+			// " Login successful event!");
+			logger.debug("Server_User : login : Broadcast user" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+					+ " Login successful event!");
 			serverModel.setChange();
 			serverModel.notifyObservers(new ObserverMessage_Login(networkPacket.ioSession, loginObject.getUserId()));
 		}
@@ -271,19 +301,25 @@ public class Server_User {
 			// 发送有他人登陆消息
 			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
-			byte[] objectBytes = offLineMessage.build().toByteArray();
+//			byte[] objectBytes = offLineMessage.build().toByteArray();
 
 			try {
-				Debug.log(new String[] { "Server_User", "checkAnotherOnline" }, "User " + user.userId
-						+ " has been login at other device，" + ServerModel.getIoSessionKey(user.ioSession)
-						+ "will be logout forced！");
+				// Debug.log(new String[] { "Server_User", "checkAnotherOnline"
+				// }, "User " + user.userId
+				// + " has been login at other device，" +
+				// ServerModel.getIoSessionKey(user.ioSession)
+				// + "will be logout forced！");
+				logger.info("Server_User : checkAnotherOnline : User " + user.userId + " has been login at other device，"
+						+ ServerModel.getIoSessionKey(user.ioSession) + "will be logout forced！");
 			} catch (NoIpException e) {
-				Debug.log(new String[] { "Server_User", "checkAnotherOnline" },
-						"The user has been found which was offline，ignore event！");
+				// Debug.log(new String[] { "Server_User", "checkAnotherOnline"
+				// },
+				// "The user has been found which was offline，ignore event!");
+				logger.error("Server_User : checkAnotherOnline : The user has been found which was offline，ignore event!");
 				return false;
 			}
 			// 向客户端发送消息
-			serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(
+			serverNetwork.sendToClient(new WaitClientResponse(user.ioSession, new PacketFromServer(
 					ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE, offLineMessage.build().toByteArray()), null));
 			// byte[] messageBytes =
 			// networkPacket.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(),
@@ -406,8 +442,8 @@ public class Server_User {
 	 * @param userName
 	 * @author wangfei
 	 */
-	private void changeUserName(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, NetworkPacket packetFromServer,
-			User u, String userName) {
+	private void changeUserName(PersonalSettingsMsg.PersonalSettingsRsp.Builder builder, NetworkPacket packetFromServer, User u,
+			String userName) {
 		logger.info("Server_User.changeUserName:begin to change User:" + u.getUserId() + " userName to " + userName);
 		ResultCode code = ResultCode.NULL;
 		u.setUserName(userName);

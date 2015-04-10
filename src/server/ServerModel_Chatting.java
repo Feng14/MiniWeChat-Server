@@ -123,24 +123,30 @@ public class ServerModel_Chatting {
 	 * @author Feng
 	 */
 	public void sendChatting(IoSession ioSession, final Chatting chatting) {
-		ChatItem.Builder chatItem = chatting.createChatItem();
-
-		// Debug.log(chatItem.getSendUserId() + " " +
-		// chatItem.getReceiveUserId() + " " + chatItem.getChatType() + " "
-		// + chatItem.getChatBody());
-
+		sendChatting(ioSession, new Chatting[]{chatting});
+	}
+	public void sendChatting(IoSession ioSession, final Chatting[] chattings) {
+		if (chattings.length < 1)
+			return;
+		
+		// 创建要发送的消息包
 		ReceiveChatSync.Builder receiverChatObj = ReceiveChatSync.newBuilder();
-		receiverChatObj.addChatData(chatItem);
-
-		serverNetwork.sendToClient(new WaitClientResponse(ioSession, new PacketFromServer(
+		for (Chatting chatting : chattings)
+			receiverChatObj.addChatData(chatting.createChatItem());
+		
+		// 获取接收者
+		IoSession receiverIoSession = serverModel.getClientUserByUserId(chattings[0].getReceiverUserId()).ioSession;
+		
+		serverNetwork.sendToClient(new WaitClientResponse(receiverIoSession, new PacketFromServer(
 				ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj.build().toByteArray()),
 				new WaitClientResponseCallBack() {
-					@Override
-					public void beforeDelete() {
-						// 添加发送失败时删除前的回调
-						addChatting(chatting);
-					}
-				}));
+			@Override
+			public void beforeDelete() {
+				// 添加发送失败时删除前的回调
+				for (Chatting chatting : chattings)
+					addChatting(chatting);
+			}
+		}));
 	}
 
 	/**

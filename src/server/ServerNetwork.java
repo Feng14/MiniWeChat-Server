@@ -16,6 +16,7 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import exception.NoIpException;
 import tools.DataTypeTranslater;
@@ -27,7 +28,7 @@ import tools.Debug;
  * @author Feng
  * 
  */
-public class ServerNetwork extends IoHandlerAdapter {
+public class ServerNetwork {
 	// 轮询"等待client回复"的超时时间
 	public static final long WAIT_CLIENT_RESPONSE_TIMEOUT = 3000;
 	// 轮询"等待client回复"的重发次数
@@ -36,6 +37,8 @@ public class ServerNetwork extends IoHandlerAdapter {
 	// public static ServerNetwork instance = new ServerNetwork();
 	private ServerModel serverModel;
 	private ClientRequest_Dispatcher clientRequest_Dispatcher;
+	private MinaServerHandle minaServerHandle;
+	private ProtocolCodecFilter protocolCodecFilter;
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
 
@@ -53,23 +56,28 @@ public class ServerNetwork extends IoHandlerAdapter {
 		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
-			Debug.log("IP address:" + addr.getHostAddress().toString());
-			Debug.log("Host Name:" + addr.getHostName().toString());
-			// logger.debug("IP地址:"+addr.getHostAddress().toString());
-			// logger.debug("本机名称:"+ addr.getHostName().toString());
+			logger.info("IP address:" + addr.getHostAddress().toString());
+			logger.info("Host Name:" + addr.getHostName().toString());
 
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
 		}
-		Debug.log("Port Number：8081");
-		// logger.debug("端口号：8081");
+		// Debug.log("Port Number：8081");
+		logger.debug("Port Number：8081");
 
 		acceptor = new NioSocketAcceptor();
 		// 指定编码解码器
 		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaEncoder(), new MinaDecoder()));
+		// System.out.println("codec " + (protocolCodecFilter == null));
+		// acceptor.getFilterChain().addLast("codec", protocolCodecFilter);
 		acceptor.getSessionConfig().setMaxReadBufferSize(1024 * 8);
-		acceptor.setHandler(this);
+		// System.out.println("minaServerHandle :" + (minaServerHandle ==
+		// null));
+		acceptor.setHandler(minaServerHandle);
+		// acceptor.setHandler(new MinaServerHandle());
 		acceptor.bind(new InetSocketAddress(8081));
+
+		// new ClassPathXmlApplicationContext("trapReceiverContext.xml");
 	}
 
 	public void onDestroy() {
@@ -92,159 +100,20 @@ public class ServerNetwork extends IoHandlerAdapter {
 		this.clientRequest_Dispatcher = clientRequest_Dispatcher;
 	}
 
-	private int count = 0;
-
-	/**
-	 * 接收到新的数据
-	 * 
-	 * @author Feng
-	 */
-	@Override
-	public void messageReceived(IoSession ioSession, Object message) {
-		System.out.println("received");
-		// 接收客户端的数据
-		// IoBuffer ioBuffer = (IoBuffer) message;
-		// byte[] byteArray = new byte[ioBuffer.limit()];
-		// ioBuffer.get(byteArray, 0, ioBuffer.limit());
-
-		NetworkPacket packetFromClient = (NetworkPacket) message;
-		Debug.log("byteArray.length = " + packetFromClient.getMessageLength());
-		// System.out.println(DataTypeTranslater.bytesToInt(byteArray, 0));
-		// dealRequest(session, byteArray);
-		// for (byte b : packetFromClient.arrayBytes)
-		// System.out.println(b);
-		clientRequest_Dispatcher.dispatcher(packetFromClient);
-
-		// // 大小
-		// int size;
-		// // 分割数据进行单独请求的处理
-		// byte[] oneReqBytes;
-		// int reqOffset = 0;
-		// do {
-		// Debug.log("\nServerNetwork: Start cut a new Request from Client!");
-		// size = DataTypeTranslater.bytesToInt(byteArray, reqOffset);
-		// System.out.println("size:" + size);
-		// if (size == 0)
-		// break;
-		// oneReqBytes = new byte[size];
-		// for (int i = 0; i < size; i++)
-		// oneReqBytes[i] = byteArray[reqOffset + i];
-		//
-		// dealRequest(session, size, oneReqBytes);
-		//
-		// reqOffset += size;
-		// } while (reqOffset < byteArray.length);
-
-		// new Thread(new check(session)).start();
-
+	public MinaServerHandle getMinaServerHandle() {
+		return minaServerHandle;
 	}
 
-	/**
-	 * 用于处理一个请求
-	 * 
-	 * @param session
-	 * @param size
-	 * @param byteArray
-	 * @author Feng
-	 */
-	// private void dealRequest(IoSession ioSession, byte[] byteArray) {
-	// try {
-	// ServerModel.instance.addClientRequestToQueue(ioSession, byteArray);
-	// Debug.log("ServerNetwork", "Put Client's(" +
-	// ServerModel.getIoSessionKey(ioSession) + ") Request(size="
-	// + byteArray.length + ")into Queue!");
-	// } catch (InterruptedException e) {
-	// Debug.log(Debug.LogType.FAULT, "ServerNetwork",
-	// "Put client request into queue fail!\n" + e.toString());
-	// System.err.println("ServerNetwork : 往请求队列中添加请求事件异常!");
-	// e.printStackTrace();
-	// } catch (NoIpException e) {
-	// Debug.log(Debug.LogType.FAULT, "ServerNetwork",
-	// "Put client request into queue fail!\n" + e.toString());
-	// e.printStackTrace();
-	// }
-	// }
-
-	/**
-	 * 由底层决定是否创建一个session
-	 * 
-	 * @author Feng
-	 */
-	@Override
-	public void sessionCreated(IoSession session) throws Exception {
-		Debug.log("sessionCreated");
+	public void setMinaServerHandle(MinaServerHandle minaServerHandle) {
+		this.minaServerHandle = minaServerHandle;
 	}
 
-	/**
-	 * 创建了session 后会回调sessionOpened
-	 * 
-	 * @author Feng
-	 */
-	public void sessionOpened(IoSession session) throws Exception {
-		count++;
-		Debug.log("The " + count + " client connected! address : " + session.getRemoteAddress());
-		// Debug.log("ServerNetwork",
-		// "Find a Client connected,save into table");
-		addClientUserToTable(session);
+	public ProtocolCodecFilter getProtocolCodecFilter() {
+		return protocolCodecFilter;
 	}
 
-	/**
-	 * 发送成功后会回调的方法
-	 * 
-	 * @author Feng
-	 */
-	public void messageSent(IoSession session, Object message) {
-		Debug.log("message send to client");
-	}
-
-	@Override
-	public void sessionClosed(IoSession session) throws Exception {
-		Debug.log("sessionClosed");
-
-	}
-
-	/**
-	 * session 空闲的时候调用
-	 * 
-	 * @author Feng
-	 */
-	public void sessionIdle(IoSession session, IdleStatus status) {
-		Debug.log("connect idle");
-	}
-
-	/**
-	 * 异常捕捉
-	 * 
-	 * @author Feng
-	 */
-	@Override
-	public void exceptionCaught(IoSession session, Throwable cause) {
-		Debug.log("throws exception");
-		Debug.log("session.toString()", session.toString());
-		Debug.log("cause.toString()", cause.toString());
-		Debug.log("Report Error Over!!");
-	}
-
-	/**
-	 * 将新的用户添加到“已连接用户信息表”中
-	 * 
-	 * @param ioSession
-	 * @author Feng
-	 */
-	public void addClientUserToTable(IoSession ioSession) {
-		// 已有就不加进来了
-		if (serverModel.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null) {
-			Debug.log(Debug.LogType.ERROR, "User exist when Save user into Table!");
-			System.err.println("添加时用户已存在");
-			return;
-		}
-
-		Debug.log("ServerNetwork", "Find new User(" + ioSession.getRemoteAddress() + ") connected,save into table");
-		try {
-			serverModel.addClientUserToTable(ioSession, new ClientUser(ioSession));
-		} catch (NoIpException e) {
-			e.printStackTrace();
-		}
+	public void setProtocolCodecFilter(ProtocolCodecFilter protocolCodecFilter) {
+		this.protocolCodecFilter = protocolCodecFilter;
 	}
 
 	/**
@@ -273,7 +142,7 @@ public class ServerNetwork extends IoHandlerAdapter {
 			}
 			// 用户在线，重发
 			WriteFuture writeFuture = waitClientResponse.ioSession.write(waitClientResponse.packetFromServer);
-//			writeFuture.awaitUninterruptibly(WAIT_CLIENT_RESPONSE_TIMEOUT);
+			// writeFuture.awaitUninterruptibly(WAIT_CLIENT_RESPONSE_TIMEOUT);
 			writeFuture.addListener(new IoFutureListener<IoFuture>() {
 				@Override
 				public void operationComplete(IoFuture future) {
@@ -281,26 +150,28 @@ public class ServerNetwork extends IoHandlerAdapter {
 						return;
 					else {
 						try {
-							Debug.log("ServerModel",
-									"Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
+//							Debug.log("ServerModel",
+//									"Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
+//											+ ") response timeout!");
+							logger.info("ServerModel Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
 											+ ") response timeout!");
 
 							if (times < WAIT_CLIENT_RESPONSE_TIMES) {
 								// 小于重发极限次数，重发
-								Debug.log("ServerModel", "Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
+//								Debug.log("ServerModel", "Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
+//										+ ") online,send again!");
+								logger.info("ServerModel Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
 										+ ") online,send again!");
 								sendToClient(waitClientResponse, times + 1);
 							} else {
 								// 大于重发极限次数，抛弃
-								Debug.log("To many times, abandon!");
+								logger.info("To many times, abandon!");
 								return;
 							}
 						} catch (NoIpException e) {
 							e.printStackTrace();
 						}
-
 					}
-
 				}
 			});
 		} catch (NoIpException e) {
@@ -312,20 +183,9 @@ public class ServerNetwork extends IoHandlerAdapter {
 	}
 
 	/**
-	 * 给客户端发包
+	 * Mina网络连接回调方法
 	 * 
-	 * @param ioSession
-	 * @param byteArray
 	 * @author Feng
+	 * 
 	 */
-	// public void sendMessageToClient(IoSession ioSession, byte[] byteArray) {
-	// IoBuffer responseIoBuffer = IoBuffer.allocate(byteArray.length);
-	// responseIoBuffer.put(byteArray);
-	// responseIoBuffer.flip();
-	// Debug.log(new String[] { "ServerNetwork", "sendMessageToClient" },
-	// "Send packet(" + PacketFromClient.getMessageType(byteArray).toString() +
-	// ") to client!");
-	// ioSession.write(responseIoBuffer);
-	// }
-
 }

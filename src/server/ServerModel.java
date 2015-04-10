@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Observable;
 
+import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
@@ -27,6 +28,7 @@ import tools.Debug;
 public class ServerModel extends Observable {
 	private ServerModel serverModel;
 	private ServerNetwork serverNetwork;
+	Logger logger = Logger.getLogger(this.getClass());
 
 	// 心跳包间隔(5秒)
 	public static final int KEEP_ALIVE_PACKET_TIME = 5000;
@@ -299,8 +301,10 @@ public class ServerModel extends Observable {
 					ClientUser user;
 					iterator = clientUserTable.keySet().iterator();
 
-					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserTable.size()
-							+ " user exist!");
+//					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserTable.size()
+//							+ " user exist!");
+//					logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + clientUserTable.size()
+//							+ " user exist!");
 					synchronized (clientUserTable) {
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
@@ -328,16 +332,18 @@ public class ServerModel extends Observable {
 
 							// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
 							// ，表示在线
-							Debug.log("ServerModel", " Send 'KeepAlivePacket' to Client(" + user.ioSession.getRemoteAddress()
-									+ ")");
-							// user.onLine = false;
+//							Debug.log("ServerModel", " Send 'KeepAlivePacket' to Client(" + user.ioSession.getRemoteAddress()
+//									+ ")");
+//							logger.info("ServerModel  Send 'KeepAlivePacket' to Client(" + user.ioSession.getRemoteAddress()
+//									+ ")");
 
 							WriteFuture writeFuture = user.ioSession.write(packetWillSend);
 							writeFuture.addListener(this);
 						}
 					}
 				} catch (InterruptedException e) {
-					Debug.log(Debug.LogType.FAULT, "'Send KeepAlivePacket Thread' fail at sleep module!\n" + e.toString());
+//					Debug.log(Debug.LogType.FAULT, "'Send KeepAlivePacket Thread' fail at sleep module!\n" + e.toString());
+					logger.info("'Send KeepAlivePacket Thread' fail at sleep module!\n" + e.toString());
 					System.err.println("发行心跳包线程异常! -----睡眠模块");
 					e.printStackTrace();
 				}

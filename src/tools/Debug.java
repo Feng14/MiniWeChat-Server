@@ -7,7 +7,7 @@ public class Debug {
 	public static enum LogType{NO, ERROR, FAULT, EXCEPTION};
 	public static final int ERROR=0, Fault=1, Exception=2;
 	
-	public static boolean LogSwitch = true;
+	public static boolean LogSwitch = false;
 	public static boolean LoggerSwitch = true;
 	static Logger logger = Logger.getLogger(Debug.class);
 

@@ -7,6 +7,55 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
+	<bean id="MinaServerHandle" class="server.MinaServerHandle">
+		<property name="ClientRequest_Dispatcher">
+			<ref bean="ClientRequest_Dispatcher" />
+		</property>
+		<property name="ServerModel">
+			<ref bean="ServerModel" />
+		</property>
+	</bean>
+	<!-- <bean id="MinaServerHandle" class="server.MinaServerHandle" />
+
+	<bean id="MinaEncoder" class="server.MinaEncoder" />
+	<bean id="MinaDecoder" class="server.MinaDecoder" />
+
+	<bean id="snmpCodecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+		<constructor-arg index="0" ref="MinaEncoder" />
+		<constructor-arg index="1" ref="MinaDecoder" />
+	</bean> -->
+
+	<!-- The filter chain. -->
+	<!-- <bean id="filterChainBuilder"
+		class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+		<property name="filters">
+			<map>
+				<entry key="codecFilter" value-ref="snmpCodecFilter" />
+			</map>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.net.SocketAddress">
+					<bean class="org.apache.mina.integration.beans.InetSocketAddressEditor" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	The IoAcceptor which binds to port 161
+	<bean id="ioAcceptor"
+		class="org.apache.mina.transport.socket.nio.NioSocketAcceptor"
+		init-method="bind" destroy-method="unbind">
+		<property name="defaultLocalAddress" value=":8081" />
+		<property name="handler" ref="MinaServerHandle" />
+		<property name="filterChainBuilder" ref="filterChainBuilder" />
+	</bean> -->
+
+	
+	
 	<bean id="Server" class="server.Server">
 		<property name="Server">
 			<ref bean="Server" />
@@ -21,7 +70,7 @@
 			<ref bean="ServerModel_Chatting" />
 		</property>
 	</bean>
-    
+
 	<bean id="ServerModel" class="server.ServerModel">
 		<property name="ServerNetwork">
 			<ref bean="ServerNetwork" />
@@ -35,6 +84,12 @@
 		<property name="ClientRequest_Dispatcher">
 			<ref bean="ClientRequest_Dispatcher" />
 		</property>
+		<property name="MinaServerHandle">
+			<ref bean="MinaServerHandle" />
+		</property>
+		<!-- <property name="protocolCodecFilter">
+			<ref bean="snmpCodecFilter" />
+		</property> -->
 	</bean>
 
 	<bean id="ClientRequest_Dispatcher" class="server.ClientRequest_Dispatcher">
