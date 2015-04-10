@@ -39,15 +39,16 @@ public class HibernateDataOperation {
 			//使用缓存
 			criteria.setCacheable(true);
 			criteria.add(Restrictions.eq(s, o));
-			
 			List list = criteria.list();
 			session.close();
+			
 			logger.info("Hibernate:query from database success");
 			logger.info("Hibernate:query result list size:"+list.size());
-			code = ResultCode.SUCCESS;
+			code.setCode(ResultCode.SUCCESS);
+			
 			return list;
 		}catch(Exception e){
-			code = ResultCode.FAIL;
+			code.setCode(ResultCode.FAIL);
 			logger.error("Hibernate:query from database fail");
 			logger.error("Hibernate error:"+e.getStackTrace());
 			return null;
@@ -64,10 +65,10 @@ public class HibernateDataOperation {
 		    trans.commit();
 		    session.close();
 		    
-		    code = ResultCode.SUCCESS;
+		    code.setCode(ResultCode.SUCCESS);
 		    logger.info("Hibernate:update database success");
 		}catch(Exception e){
-			code = ResultCode.FAIL;
+			code.setCode(ResultCode.FAIL);
 			logger.error("Hibernate:update database fail");
 			logger.error("Hibernate error:"+e.getStackTrace());
 		}
@@ -83,10 +84,10 @@ public class HibernateDataOperation {
 		    trans.commit();
 		    session.close();
 		    
-		    code = ResultCode.SUCCESS;
+		    code.setCode(ResultCode.SUCCESS);
 		    logger.info("Hibernate:delete database success");
 		}catch(Exception e){
-			code = ResultCode.FAIL;
+			code.setCode(ResultCode.FAIL);
 			logger.error("Hibernate:delete from database fail");
 			logger.error("Hibernate error:"+e.getStackTrace());
 		}
