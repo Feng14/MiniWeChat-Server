@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
 
@@ -21,6 +25,7 @@ import protocol.Data.ChatData.ChatItem.ChatType;
  */
 @Entity
 @Table(name="chatting_message")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Chatting {
 	public static final String TABLE_NAME = "chatting_message";
 	

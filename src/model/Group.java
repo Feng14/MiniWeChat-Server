@@ -13,6 +13,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * 聊天群
  * @author wangfei
@@ -20,6 +23,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="user_group")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Group {
 	private int groupId;
 	private String groupName;

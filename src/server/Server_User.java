@@ -104,9 +104,10 @@ public class Server_User {
 	 * @throws NoIpException
 	 */
 	public void register(PacketFromClient packetFromServer) throws NoIpException {
+		logger.info("Server_User.register:begin to register");
 		RegisterMsg.RegisterRsp.Builder responseBuilder = RegisterMsg.RegisterRsp.newBuilder();
 		responseBuilder.setResultCode(RegisterRsp.ResultCode.USER_EXIST);
-
+		
 		try {
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(packetFromServer.getMessageObjectBytes());
 
@@ -114,10 +115,14 @@ public class Server_User {
 					+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + " 'RegisterEvent'");
 
 			// 查找是否存在同名用户
-			Session session = HibernateSessionFactory.getSession();
-			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userId", registerObject.getUserId()));
-			if (criteria.list().size() > 0) { // 已存在
+			ResultCode code = ResultCode.NULL;
+			List list = HibernateDataOperation.query("userId", registerObject.getUserId(), User.class, code);
+			
+			if(code.getCode().equals(ResultCode.FAIL)){
+				//数据库查询出错
+				logger.error("Server_User.register:query from database fail");
+			}
+			else if (list.size() > 0) { // 已存在
 				// 已存在相同账号用户，告诉客户端
 				// System.out.println("什么鬼？");
 				logger.info("Server_User" + "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
@@ -130,25 +135,25 @@ public class Server_User {
 				user.setUserName(registerObject.getUserName());
 				user.setUserPassword(registerObject.getUserPassword());
 
-				session = HibernateSessionFactory.getSession();
-				session.save(user);
-				HibernateSessionFactory.commitSession(session);
-
-				// 成功，设置回包码
-				logger.info("Server_User" + "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
-						+ "  Register Successful，response to Client!");
-				responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
+				ResultCode code2 = ResultCode.NULL;
+				HibernateDataOperation.add(user, code2);
+				if(code2.getCode().equals(ResultCode.SUCCESS)){
+					// 成功，设置回包码
+					logger.info("Server_User" + "'RegisterEvent'：User's" + ServerModel.getIoSessionKey(packetFromServer.ioSession)
+							+ "  Register Successful，response to Client!");
+					responseBuilder.setResultCode(RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
+				}
 			}
 
 		} catch (InvalidProtocolBufferException e) {
-			System.err.println("Server_User : 'RegisterEvent'： Error was found when using Protobuf to deserialization "
+			logger.error("Server_User : 'RegisterEvent'： Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + "！");
 		} catch (IOException e) {
-			System.err.println("Server_User : 'RegisterEvent'： " + ServerModel.getIoSessionKey(packetFromServer.ioSession)
+			logger.error("Server_User : 'RegisterEvent'： " + ServerModel.getIoSessionKey(packetFromServer.ioSession)
 					+ " 返回包时异常！");
-			e.printStackTrace();
+			logger.error(e.getStackTrace());
 		} catch (NoIpException e) {
-			e.printStackTrace();
+			logger.error(e.getStackTrace());
 		}
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(
@@ -180,12 +185,15 @@ public class Server_User {
 			loginBuilder.setResultCode(LoginRsp.ResultCode.FAIL);
 
 			// 查找是否存在同名用户
-			Session session = HibernateSessionFactory.getSession();
-			Criteria criteria = session.createCriteria(User.class);
-			criteria.add(Restrictions.eq("userId", loginObject.getUserId()));
-			if (criteria.list().size() > 0) { // 已存在
+			ResultCode code = ResultCode.NULL;
+			List list = HibernateDataOperation.query("userId", loginObject.getUserId(), User.class, code);
+			if(code.getCode().equals(ResultCode.FAIL)){
+				logger.error("Server_User.login:query from database fail");
+				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
+			}
+			else if (list.size() > 0) { // 已存在
 				// 用户存在，开始校验
-				User user = (User) criteria.list().get(0);
+				User user = (User) list.get(0);
 				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // 密码正确
 					Debug.log(new String[] { "Server_User", "login" },
 							"User " + ServerModel.getIoSessionKey(packetFromClient.ioSession) + " Login successful!");
@@ -212,7 +220,6 @@ public class Server_User {
 						"User" + ServerModel.getIoSessionKey(packetFromClient.ioSession) + "  UserId not exist!");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			}
-			session.close();
 
 		} catch (InvalidProtocolBufferException e) {
 			System.err.println("Server_User : 'LoginEvent'：Error was found when using Protobuf to deserialization "

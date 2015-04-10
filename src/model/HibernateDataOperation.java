@@ -36,6 +36,8 @@ public class HibernateDataOperation {
 		try{
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(c.getClass());
+			//使用缓存
+			criteria.setCacheable(true);
 			criteria.add(Restrictions.eq(s, o));
 			 
 			List list = criteria.list();
