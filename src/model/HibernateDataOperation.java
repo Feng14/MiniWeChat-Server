@@ -35,11 +35,11 @@ public class HibernateDataOperation {
 		logger.info("Hibernate:query parameters:"+s+" , "+o.toString());
 		try{
 			Session session = HibernateSessionFactory.getSession();
-			Criteria criteria = session.createCriteria(c.getClass());
+			Criteria criteria = session.createCriteria(c);
 			//使用缓存
 			criteria.setCacheable(true);
 			criteria.add(Restrictions.eq(s, o));
-			 
+			
 			List list = criteria.list();
 			session.close();
 			logger.info("Hibernate:query from database success");
@@ -91,21 +91,5 @@ public class HibernateDataOperation {
 			logger.error("Hibernate error:"+e.getStackTrace());
 		}
 	}
-	
-	
-	public static void main(String args[]){
-		HibernateDataOperation test = new HibernateDataOperation();
-		
-		ResultCode code = ResultCode.NULL	 ;
-		User u = new User();
-		
-		u.setUserId("newuser1");
-		u.setUserName("username1");
-		u.setUserPassword("123");
-		test.add(u, code);
-		
-		System.out.println(code.getCode());
-	}
-	
 
 }
