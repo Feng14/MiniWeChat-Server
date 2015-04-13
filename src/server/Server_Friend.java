@@ -116,8 +116,7 @@ public class Server_Friend {
 			
 			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1,session);
 			List list2 = HibernateDataOperation.query("userId", addFriendObject.getFriendUserId(), User.class, code2,session);
-			User u = (User) list1.get(0);
-			friend = (User) list2.get(0);
+			
 			if (code1.getCode().equals(ResultCode.FAIL) || code2.getCode().equals(ResultCode.FAIL)) {
 				// 数据库查询失败 出现异常
 				logger.error("Server_Friend.addFriend:Hibernate query fail");
@@ -128,6 +127,8 @@ public class Server_Friend {
 				addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
 			} else {
 				// 查询结果正常 开始处理
+				User u = (User) list1.get(0);
+				friend = (User) list2.get(0);
 				add(u, friend, clientUser, addFriendBuilder);
 			}
 
@@ -206,8 +207,6 @@ public class Server_Friend {
 			ResultCode code2 = ResultCode.NULL;
 			List list1 = HibernateDataOperation.query("userId", clientUser.userId, User.class, code1,session);
 			List list2 = HibernateDataOperation.query("userId", deleteFriendObject.getFriendUserId(), User.class, code2,session);
-			User u = (User) list1.get(0);
-			friend = (User) list2.get(0);
 
 			if (code1.getCode().equals(ResultCode.FAIL) || code2.getCode().equals(ResultCode.FAIL)) {
 				// 数据库查询失败 出现异常
@@ -218,6 +217,9 @@ public class Server_Friend {
 				logger.error("Server_Friend.deleteFriend:user or friend not exist " + list1.size() + " " + list2.size());
 				deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
 			} else {
+				//查询结果正常 开始处理
+				User u = (User) list1.get(0);
+				friend = (User) list2.get(0);
 				delete(u, friend, clientUser, deleteFriendBuilder);
 			}
 		} catch (InvalidProtocolBufferException e) {

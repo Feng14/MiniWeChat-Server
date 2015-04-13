@@ -84,7 +84,7 @@ public class NetworkPacket {
 	}
 
 	public static byte[] getMessageObjectBytes(byte[] array) {
-		System.out.println(getMessageLength(array) - getMessageObjectStartIndex());
+		//System.out.println(getMessageLength(array) - getMessageObjectStartIndex());
 		byte[] response = new byte[getMessageLength(array) - getMessageObjectStartIndex()];
 		for (int i = 0; i < response.length; i++)
 			response[i] = array[getMessageObjectStartIndex() + i];
