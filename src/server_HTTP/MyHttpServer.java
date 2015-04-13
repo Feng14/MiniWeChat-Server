@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 public class MyHttpServer implements HttpHandler {
 	private Map<String, HttpHandler> contextMap = new HashMap<String, HttpHandler>();
@@ -30,7 +31,7 @@ public class MyHttpServer implements HttpHandler {
 			// 直接返回Hello.....
 			// httpServer.createContext("/", new HandlerTestA());
 			// 显示已经处理的请求数，采用线程池
-			httpServer.createContext("/test", this);
+			httpServer.createContext("/", this);
 			httpServer.setExecutor(null);
 			httpServer.start();
 			System.out.println("HttpServer Test Start!");
@@ -40,8 +41,13 @@ public class MyHttpServer implements HttpHandler {
 	}
 
 	@Override
-	public void handle(HttpExchange arg0) throws IOException {
-		// TODO Auto-generated method stub
-
+	public void handle(HttpExchange exchange) throws IOException {
+		System.out.println("fuck");
+		System.out.println(exchange.getRequestURI());
+		System.out.println(exchange.getRemoteAddress());
+		System.out.println(exchange.getRequestBody().toString());
+		System.out.println("shit");
+		System.out.println(exchange.getRequestMethod());
+		System.out.println(exchange.getRequestHeaders().size());
 	}
 }

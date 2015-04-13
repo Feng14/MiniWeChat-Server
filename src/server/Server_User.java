@@ -162,8 +162,9 @@ public class Server_User {
 			logger.error(e.getStackTrace());
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(
-				ProtoHead.ENetworkMessage.REGISTER_RSP_VALUE, responseBuilder.build().toByteArray())));
+		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(NetworkPacket
+				.getMessageID(packetFromServer.arrayBytes), ProtoHead.ENetworkMessage.REGISTER_RSP_VALUE, responseBuilder.build()
+				.toByteArray())));
 		// serverNetwork.sendMessageToClient(
 		// packetFromServer.ioSession,
 		// PacketFromClient.packMessage(ProtoHead.ENetworkMessage.REGISTER_RSP.getNumber(),
