@@ -1,5 +1,6 @@
 package server;
 
+import org.apache.log4j.Logger;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
@@ -9,6 +10,7 @@ import exception.NoIpException;
 import tools.Debug;
 
 public class MinaServerHandle extends IoHandlerAdapter {
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	private ServerModel serverModel;
 	private ClientRequest_Dispatcher clientRequest_Dispatcher;
@@ -115,6 +117,10 @@ public class MinaServerHandle extends IoHandlerAdapter {
 	@Override
 	public void messageSent(IoSession session, Object message) throws Exception {
 		super.messageSent(session, message);
+		try {
+			logger.info("Send Packet(" + NetworkPacket.getMessageType((byte[])message).name() + ") to Client!");
+		} catch (Exception e) {
+		}
 //		Debug.log("message send to client");
 	}
 

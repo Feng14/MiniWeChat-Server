@@ -19,7 +19,11 @@ import model.Chatting;
 public class test {
 	
 	public test(){
-		System.out.println(this.getClass().toString());
+//		System.out.println(this.getClass().toString());
+		
+		long t = Calendar.getInstance().getTimeInMillis();
+		Date date = new Date(t);
+		System.out.println(date.toString());
 	}
 
 	public static void main(String args[]) {

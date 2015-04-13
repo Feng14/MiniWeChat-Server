@@ -89,13 +89,13 @@ public class Server_Chatting {
 				serverModel_Chatting.addChatting(chatting);
 			}
 
-			// 回复客户端说发送成功(保存在服务器成功)
-			sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
-			serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
-					.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray())));
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 		}
+		// 回复客户端说发送成功(保存在服务器成功)
+		sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
+		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
+				.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray())));
 	}
 
 	/**

@@ -64,6 +64,7 @@ public class TestRegister {
 		
 		for (int i=0; i<10; i++) {
 			byteArray = client.readFromServerWithoutKeepAlive();
+			System.out.println(NetworkPacket.getMessageType(byteArray).toString());
 			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.REGISTER_RSP)
 				continue;
 

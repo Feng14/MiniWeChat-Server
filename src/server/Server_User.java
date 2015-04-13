@@ -118,7 +118,7 @@ public class Server_User {
 		try {
 			RegisterMsg.RegisterReq registerObject = RegisterMsg.RegisterReq.parseFrom(packetFromServer.getMessageObjectBytes());
 
-			logger.info("Server_User" + "'RegisterEvent'： Deal with user's"
+			logger.info("Server_User" + "'RegisterEvent': Deal with user's"
 					+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + " 'RegisterEvent'");
 
 			// 查找是否存在同名用户
@@ -204,10 +204,10 @@ public class Server_User {
 				// 用户存在，开始校验
 				User user = (User) list.get(0);
 				if (user.getUserPassword().equals(loginObject.getUserPassword())) { // 密码正确
-				// Debug.log(new String[] { "Server_User", "login" },
-				// "User " +
-				// ServerModel.getIoSessionKey(networkPacket.ioSession) +
-				// " Login successful!");
+					// Debug.log(new String[] { "Server_User", "login" },
+					// "User " +
+					// ServerModel.getIoSessionKey(networkPacket.ioSession) +
+					// " Login successful!");
 					logger.debug("Server_User : login : User " + ServerModel.getIoSessionKey(networkPacket.ioSession)
 							+ " Login successful!");
 
@@ -224,18 +224,19 @@ public class Server_User {
 
 					success = true;
 				} else { // 密码错误
-				// Debug.log(new String[] { "Server_User", "login" },
-				// "User " +
-				// ServerModel.getIoSessionKey(networkPacket.ioSession) +
-				// " Login password Error!");
+					// Debug.log(new String[] { "Server_User", "login" },
+					// "User " +
+					// ServerModel.getIoSessionKey(networkPacket.ioSession) +
+					// " Login password Error!");
 					logger.debug("Server_User : login : User " + ServerModel.getIoSessionKey(networkPacket.ioSession)
 							+ " Login password Error!");
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 				}
 			} else { // 用户不存在
-			// Debug.log(new String[] { "Server_User", "login" },
-			// "User" + ServerModel.getIoSessionKey(networkPacket.ioSession) +
-			// "  UserId not exist!");
+				// Debug.log(new String[] { "Server_User", "login" },
+				// "User" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+				// +
+				// "  UserId not exist!");
 				logger.debug("Server_User : login : User" + ServerModel.getIoSessionKey(networkPacket.ioSession)
 						+ "  UserId not exist!!");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
@@ -301,7 +302,7 @@ public class Server_User {
 			// 发送有他人登陆消息
 			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
 			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
-//			byte[] objectBytes = offLineMessage.build().toByteArray();
+			// byte[] objectBytes = offLineMessage.build().toByteArray();
 
 			try {
 				// Debug.log(new String[] { "Server_User", "checkAnotherOnline"
@@ -377,7 +378,7 @@ public class Server_User {
 
 			ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
 			ResultCode code = ResultCode.NULL;
-			System.out.println("-----------------------------"+clientUser.userId);
+			System.out.println("-----------------------------" + clientUser.userId);
 			List list = HibernateDataOperation.query("userId", clientUser.userId, User.class, code);
 			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
 				User user = (User) list.get(0);
@@ -559,7 +560,7 @@ public class Server_User {
 		logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.FAIL);
 		try {
 			user = serverModel.getClientUserFromTable(networkPacket.ioSession);
-			logger.info("Srever_User.logout:" + ServerModel.getIoSessionKey(networkPacket.ioSession) + " logout！");
+			logger.info("Srever_User.logout:" + ServerModel.getIoSessionKey(networkPacket.ioSession) + " logout!");
 			// 将登录的用户注销掉
 			user.userId = null;
 			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
@@ -603,7 +604,7 @@ public class Server_User {
 			ClientUser user = serverModel.getClientUserFromTable(packetFromServer.ioSession);
 
 			ResultCode code = ResultCode.NULL;
-			List list = HibernateDataOperation.query("userId", user.userId, User.class, code,session);
+			List list = HibernateDataOperation.query("userId", user.userId, User.class, code, session);
 			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
 				// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
 				User u = (User) list.get(0);
@@ -642,7 +643,8 @@ public class Server_User {
 			getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
 		}
 		// 回复客户端
-		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(
-				ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP_VALUE, getPersonalInfoBuilder.build().toByteArray())));
+		serverNetwork.sendToClient(new WaitClientResponse(packetFromServer.ioSession, new PacketFromServer(packetFromServer
+				.getMessageID(), ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP_VALUE, getPersonalInfoBuilder.build()
+				.toByteArray())));
 	}
 }
