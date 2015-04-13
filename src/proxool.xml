@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!-- the proxool configuration can be embedded within your own application's. 
+Anything outside the "proxool" tag is ignored. --> 
+<something-else-entirely> 
+<proxool>
+
+<!-- proxool别名 -->
+<alias>mysql</alias>
+
+<!-- 数据库连接Url -->
+<driver-url> 
+jdbc:mysql://127.0.0.1:3306/MiniWechat?useUnicode=true&amp;characterEncoding=UTF-8
+</driver-url>
+
+<!-- JDBC驱动名称 -->
+<driver-class>com.mysql.jdbc.Driver</driver-class>
+
+<!-- 数据库连接帐号 -->
+<driver-properties> 
+<property name="user" value="root" /> 
+<property name="password" value="root" />
+</driver-properties>
+
+<!-- proxool自动侦察各个连接状态的时间间隔(毫秒),侦察到空闲的连接就马上回收,超时的销毁 -->
+<house-keeping-sleep-time>90000</house-keeping-sleep-time>
+
+<!-- 指因未有空闲连接可以分配而在队列中等候的最大请求数,超过这个请求数的用户连接就不会被接受 --> 
+<maximum-new-connections>20</maximum-new-connections>
+
+<!-- 最少保持的空闲连接数 -->
+<prototype-count>3</prototype-count>
+
+<!-- 允许最大连接数,超过了这个连接，再有请求时，就排在队列中等候，最大的等待请求数由maximum-new-connections决定 -->
+<maximum-connection-count>20</maximum-connection-count>
+
+<!-- 最小连接数 -->
+<minimum-connection-count>3</minimum-connection-count>
+
+<!-- 在分配连接前后是否进行有效性测试，这个是解决本问题的关键 -->
+<test-before-use>true</test-before-use>
+<test-after-use>true</test-after-use>
+
+<!-- 用于测试的SQL语句 -->
+<house-keeping-test-sql>SELECT CURRENT_USER</house-keeping-test-sql>
+
+</proxool> 
+</something-else-entirely>
