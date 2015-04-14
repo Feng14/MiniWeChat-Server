@@ -25,7 +25,7 @@ jdbc:mysql://127.0.0.1:3306/MiniWechat?useUnicode=true&amp;characterEncoding=UTF
 <house-keeping-sleep-time>90000</house-keeping-sleep-time>
 
 <!-- 指因未有空闲连接可以分配而在队列中等候的最大请求数,超过这个请求数的用户连接就不会被接受 --> 
-<maximum-new-connections>20</maximum-new-connections>
+<simultaneous-build-throttle>20</simultaneous-build-throttle>
 
 <!-- 最少保持的空闲连接数 -->
 <prototype-count>3</prototype-count>

@@ -25,8 +25,8 @@ public class TestHibernate {
 	}
 	
 	public static void add(){
-		Group p = new Group();
-		p.setGroupName("group1");
+		Group p = new Group("group1");
+//		p.setGroupName("group1");
 		
 		User u1 = new User();
 		User u2 = new User();

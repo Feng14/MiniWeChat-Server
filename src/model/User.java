@@ -18,6 +18,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name="user")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
+//	public static final String TABLE_NAME = User.class.getSimpleName();
+	public static final String TABLE_NAME = "user";
+	public static final String TABLE_USER_ID = "user_id";
 
     /**
      * 
