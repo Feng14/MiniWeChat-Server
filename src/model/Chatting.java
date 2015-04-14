@@ -62,7 +62,7 @@ public class Chatting {
 		setReceiverUserId(receiverUserId);
 		setChattingType(chattingType);
 		setMessage(message);
-
+		setIsGroup(false);
 	}
 
 	@Id

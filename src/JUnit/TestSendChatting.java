@@ -317,6 +317,7 @@ public class TestSendChatting {
 	private void sendChatting(ClientSocket clientSocket, String senderUserId, String receiveUserId, ChatItem.ChatType type,
 			String messageBody) throws IOException {
 		ChatItem.Builder chatItem = ChatItem.newBuilder();
+		chatItem.setTargetType(ChatItem.TargetType.INDIVIDUAL);
 		chatItem.setSendUserId(senderUserId);
 		chatItem.setReceiveUserId(receiveUserId);
 		chatItem.setChatType(type);

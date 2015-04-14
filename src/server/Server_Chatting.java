@@ -17,12 +17,15 @@ import model.User;
 import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
+import protocol.Data.ChatData.ChatItem.ChatType;
 import protocol.Msg.CreateGroupChatMsg;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatRsp;
 import protocol.Msg.SendChatMsg;
+import protocol.Msg.SendGroupChatMsg.SendGroupChatReq;
+import protocol.Msg.SendGroupChatMsg.SendGroupChatRsp;
 import exception.NoIpException;
 import tools.Debug;
 
@@ -83,35 +86,91 @@ public class Server_Chatting {
 		try {
 			SendChatMsg.SendChatReq sendChattingObject = SendChatMsg.SendChatReq.parseFrom(networkPacket.getMessageObjectBytes());
 
-			// 构建消息对象
-			Chatting chatting = new Chatting(sendChattingObject.getChatData().getSendUserId(), sendChattingObject.getChatData()
-					.getReceiveUserId(), sendChattingObject.getChatData().getChatType(), sendChattingObject.getChatData()
-					.getChatBody(), Calendar.getInstance().getTimeInMillis());
+			ChatItem chatItem = sendChattingObject.getChatData();
 
-			// 设置日期
-			chatting.setTime(Calendar.getInstance().getTimeInMillis());
+			// 检查接受者是群还是个人
+			if (chatItem.getTargetType() == ChatItem.TargetType.INDIVIDUAL)
+				clientSendChatting_Individual(networkPacket, chatItem);
+			else if (chatItem.getTargetType() == ChatItem.TargetType.GROUP)
+				clientSendChatting_Group(networkPacket, chatItem);
 
-			// 若是接收者在线，则发送，否则加入队列
-			ClientUser clientUser = serverModel.getClientUserByUserId(chatting.getReceiverUserId());
-			if (clientUser != null) {
-				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver online,send to receier("
-						+ ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
-
-				// 发送给接收者
-				serverModel_Chatting.sendChatting(networkPacket.ioSession, chatting);
-			} else {
-				// 不在线，保存
-				Debug.log(new String[] { "Server_Chatting", "clientSendChatting" }, "Receiver offline,save to memory!");
-				serverModel_Chatting.addChatting(chatting);
-			}
-
+			sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
 		} catch (InvalidProtocolBufferException e) {
+			e.printStackTrace();
+			logger.error(e.toString());
+		} catch (Exception e) {
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		// 回复客户端说发送成功(保存在服务器成功)
-		sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray())));
+	}
+
+	/**
+	 * 对 用户发送(个人)微信消息 的事件进行处理 对方在线就立刻发送，不在则存如内存
+	 * 
+	 * @param networkPacket
+	 * @param chatItem
+	 * @param chatting
+	 * @throws NoIpException
+	 * @author Feng
+	 */
+	private void clientSendChatting_Individual(NetworkPacket networkPacket, ChatItem chatItem)
+			throws NoIpException {
+		Chatting chatting = new Chatting(chatItem.getSendUserId(), chatItem.getReceiveUserId(), chatItem.getChatType(),
+				chatItem.getChatBody(), Calendar.getInstance().getTimeInMillis());
+		
+		// 若是接收者在线，则发送，否则加入队列
+		ClientUser clientUser = serverModel.getClientUserByUserId(chatting.getReceiverUserId());
+		if (clientUser != null) {
+			logger.debug("Server_Chatting : clientSendChatting : Receiver online,send to receier("
+					+ ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
+			// Debug.log(new String[] { "Server_Chatting", "clientSendChatting"
+			// },
+			// "Receiver online,send to receier(" +
+			// ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
+
+			// 发送给接收者
+			serverModel_Chatting.sendChatting(chatting);
+		} else {
+			// 不在线，保存
+			logger.debug("Server_Chatting : clientSendChatting : Receiver offline,save to memory!");
+			// Debug.log(new String[] { "Server_Chatting", "clientSendChatting"
+			// }, "Receiver offline,save to memory!");
+			serverModel_Chatting.addChatting(chatting);
+		}
+	}
+
+	/**
+	 * 对 用户发送(群)微信消息 的事件进行处理, 立刻发送
+	 * 
+	 * @param networkPacket
+	 * @param chatItem
+	 * @param chatting
+	 * @author Feng
+	 * @throws Exception
+	 */
+	private void clientSendChatting_Group(NetworkPacket networkPacket, ChatItem chatItem) throws Exception {
+		ResultCode resultCode = ResultCode.FAIL;
+		Session session = HibernateSessionFactory.getSession();
+		List<User> receiverList = (List<User>) HibernateDataOperation.query(Group.GROUP_ID, chatItem.getReceiveUserId(),
+				Group.class, resultCode, session).get(0);
+
+		if (resultCode.getCode() == ResultCode.FAIL || receiverList == null) {
+			logger.error("Server_Chatting : clientSendChatting_Group : Get Group Error!");
+			throw new Exception("Server_Chatting : clientSendChatting_Group : Get Group Error!");
+		}
+
+		Chatting chatting;
+		// 给每个组员发一份
+		for (User user : receiverList) {
+			chatting = new Chatting(chatItem.getSendUserId(), user.getUserId(), chatItem.getChatType(), chatItem.getChatBody(),
+					Calendar.getInstance().getTimeInMillis(), true, Integer.parseInt(chatItem.getReceiveUserId()));
+			
+			serverModel_Chatting.sendChatting(chatting);
+		}
+
 	}
 
 	/**
@@ -169,8 +228,9 @@ public class Server_Chatting {
 					hql += ")";
 
 					Session session = HibernateSessionFactory.getSession();
-//					String hql = "from " + User.class.getName() + " where " + User.TABLE_USER_ID + " in('a','b')";
-//					List<User> userList2 = session.createQuery(hql).list();
+					// String hql = "from " + User.class.getName() + " where " +
+					// User.TABLE_USER_ID + " in('a','b')";
+					// List<User> userList2 = session.createQuery(hql).list();
 					List<User> userList = session.createQuery(hql).list();
 					group.setMemberList(userList);
 
@@ -178,7 +238,7 @@ public class Server_Chatting {
 					User selfUser2 = null;
 					for (User user : userList)
 						if (user.getUserId().equals(selfUser1.userId)) {
-							group.setCreater(selfUser1.userId);
+							group.setCreaterId(selfUser1.userId);
 							break;
 						}
 

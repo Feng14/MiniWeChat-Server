@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;
 import org.hibernate.Session;
 
@@ -39,6 +40,7 @@ public class ServerModel_Chatting {
 	public static final int INTERVAL_HOUR = 24 * 60 * 60;
 	public static final int DELETE_INTERVAL = 24 * 3 * 60 * 60;
 
+	private Logger logger = Logger.getLogger(this.getClass());
 	public Hashtable<String, LinkedBlockingQueue<Chatting>> chattingHashtable;
 	private ServerModel serverModel;
 	private ServerNetwork serverNetwork;
@@ -122,70 +124,43 @@ public class ServerModel_Chatting {
 	 * @param sendChattingBuilder
 	 * @author Feng
 	 */
-	public void sendChatting(IoSession ioSession, final Chatting chatting) {
-		sendChatting(ioSession, new Chatting[]{chatting});
+	public void sendChatting(final Chatting chatting) {
+		sendChatting(new Chatting[] { chatting });
 	}
-	public void sendChatting(IoSession ioSession, final Chatting[] chattings) {
+
+	public void sendChatting(final Chatting[] chattings) {
 		if (chattings.length < 1)
 			return;
-		
+
+		// 获取接收者
+		IoSession receiverIoSession = serverModel.getClientUserByUserId(chattings[0].getReceiverUserId()).ioSession;
+		if (receiverIoSession == null) {
+			// 接受者不在线，存入内存
+			logger.debug("ServerModel_Chatting : sendChatting : The Receiver(" + chattings[0].getReceiverUserId()
+					+ ") is offline, Chatting will be save in Server!");
+
+			for (Chatting chatting : chattings)
+				addChatting(chatting);
+
+			return;
+		}
+
 		// 创建要发送的消息包
 		ReceiveChatSync.Builder receiverChatObj = ReceiveChatSync.newBuilder();
 		for (Chatting chatting : chattings)
 			receiverChatObj.addChatData(chatting.createChatItem());
-		
-		// 获取接收者
-		IoSession receiverIoSession = serverModel.getClientUserByUserId(chattings[0].getReceiverUserId()).ioSession;
-		
+
 		serverNetwork.sendToClient(new WaitClientResponse(receiverIoSession, new PacketFromServer(
 				ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj.build().toByteArray()),
 				new WaitClientResponseCallBack() {
-			@Override
-			public void beforeDelete() {
-				// 添加发送失败时删除前的回调
-				for (Chatting chatting : chattings)
-					addChatting(chatting);
-			}
-		}));
+					@Override
+					public void beforeDelete() {
+						// 添加发送失败时删除前的回调
+						for (Chatting chatting : chattings)
+							addChatting(chatting);
+					}
+				}));
 	}
-
-	/**
-	 * 发送“未接收消息”和添加“等待客户端回复：已收到”监听
-	 * 
-	 * @author Feng
-	 * @param ioSession
-	 * @param chatting
-	 */
-//	public void addListenReceiveChatting(IoSession ioSession, Chatting chatting, byte[] messageWillSend) {
-//		ArrayList<Chatting> chattingList = new ArrayList<Chatting>(1);
-//		chattingList.add(chatting);
-//		addListenReceiveChatting(ioSession, chattingList, messageWillSend);
-//	}
-
-//	public void addListenReceiveChatting(final IoSession ioSession, final ArrayList<Chatting> chattingList, byte[] messageWillSend) {
-//		serverModel.addClientResponseListener(ioSession, networkPacket.getMessageID(messageWillSend), messageWillSend,
-//				new WaitClientResponseCallBack() {
-//
-//					@Override
-//					public void beforeDelete() {
-//						// 保存回未发送队列
-//						Debug.log(Debug.LogType.ERROR, new String[] { "ServerModel_Chatting", "addListenReceiveChatting" },
-//								" 'Chatting' send fail，save to Memory！");
-//						if (chattingList.size() == 0)
-//							return;
-//						String key = chattingList.get(0).getReceiverUserId();
-//						LinkedBlockingQueue<Chatting> chattingQueue;
-//						if (!chattingHashtable.containsKey(key)) {
-//							chattingQueue = new LinkedBlockingQueue<Chatting>();
-//							chattingHashtable.put(key, chattingQueue);
-//						} else
-//							chattingQueue = chattingHashtable.get(key);
-//
-//						for (Chatting chatting : chattingList)
-//							chattingQueue.add(chatting);
-//					}
-//				});
-//	}
 
 	/**
 	 * 往消息队列中添加一条未接收的消息
@@ -198,13 +173,20 @@ public class ServerModel_Chatting {
 
 		if (!chattingHashtable.containsKey(chatting.getReceiverUserId())) {
 			chattingQueue = new LinkedBlockingQueue<Chatting>();
-			chattingHashtable.put(chatting.getReceiverUserId(), chattingQueue);
+			chattingHashtable.put(chatting.getReceiverUserId() + "", chattingQueue);
 		} else
 			chattingQueue = chattingHashtable.get(chatting.getReceiverUserId());
 
 		chattingQueue.add(chatting);
 	}
 
+	/**
+	 * 获取未被接收的聊天消息
+	 * 
+	 * @param receiveUserId
+	 * @return
+	 * @author Feng
+	 */
 	public ArrayList<Chatting> getChattingNotReceive(String receiveUserId) {
 		if (chattingHashtable.containsKey(receiveUserId)) {
 			LinkedBlockingQueue<Chatting> chattingQueue = chattingHashtable.get(receiveUserId);

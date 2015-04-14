@@ -3,16 +3,16 @@ package protocol;
 option java_package = "protocol.Msg";
 import "ChatData.proto";
 
-message CreateGroupChatReq{
-	repeated string userId = 1;
+message SendGroupChatReq{
+	required ChatItem chatData = 1;
+	required int32 groupId = 2;
 
 }
-message CreateGroupChatRsp{
+message SendGroupChatRsp{
 	enum ResultCode{
     	SUCCESS = 0;
 		FAIL = 1;
 	}
 
 	required ResultCode resultCode = 1;
-	required int32 groupChatId = 2;
 }

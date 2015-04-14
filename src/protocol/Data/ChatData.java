@@ -11,68 +11,78 @@ public final class ChatData {
   public interface ChatItemOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required string sendUserId = 1;
+    // required .protocol.ChatItem.TargetType targetType = 1;
     /**
-     * <code>required string sendUserId = 1;</code>
+     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     */
+    boolean hasTargetType();
+    /**
+     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     */
+    protocol.Data.ChatData.ChatItem.TargetType getTargetType();
+
+    // required string sendUserId = 2;
+    /**
+     * <code>required string sendUserId = 2;</code>
      */
     boolean hasSendUserId();
     /**
-     * <code>required string sendUserId = 1;</code>
+     * <code>required string sendUserId = 2;</code>
      */
     java.lang.String getSendUserId();
     /**
-     * <code>required string sendUserId = 1;</code>
+     * <code>required string sendUserId = 2;</code>
      */
     com.google.protobuf.ByteString
         getSendUserIdBytes();
 
-    // required string receiveUserId = 2;
+    // required string receiveUserId = 3;
     /**
-     * <code>required string receiveUserId = 2;</code>
+     * <code>required string receiveUserId = 3;</code>
      */
     boolean hasReceiveUserId();
     /**
-     * <code>required string receiveUserId = 2;</code>
+     * <code>required string receiveUserId = 3;</code>
      */
     java.lang.String getReceiveUserId();
     /**
-     * <code>required string receiveUserId = 2;</code>
+     * <code>required string receiveUserId = 3;</code>
      */
     com.google.protobuf.ByteString
         getReceiveUserIdBytes();
 
-    // required .protocol.ChatItem.ChatType chatType = 3;
+    // required .protocol.ChatItem.ChatType chatType = 4;
     /**
-     * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+     * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
      */
     boolean hasChatType();
     /**
-     * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+     * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
      */
     protocol.Data.ChatData.ChatItem.ChatType getChatType();
 
-    // required string chatBody = 4;
+    // required string chatBody = 5;
     /**
-     * <code>required string chatBody = 4;</code>
+     * <code>required string chatBody = 5;</code>
      */
     boolean hasChatBody();
     /**
-     * <code>required string chatBody = 4;</code>
+     * <code>required string chatBody = 5;</code>
      */
     java.lang.String getChatBody();
     /**
-     * <code>required string chatBody = 4;</code>
+     * <code>required string chatBody = 5;</code>
      */
     com.google.protobuf.ByteString
         getChatBodyBytes();
 
-    // optional int64 date = 5;
+    // optional int64 date = 6;
     /**
-     * <code>optional int64 date = 5;</code>
+     * <code>optional int64 date = 6;</code>
      */
     boolean hasDate();
     /**
-     * <code>optional int64 date = 5;</code>
+     * <code>optional int64 date = 6;</code>
      */
     long getDate();
   }
@@ -127,34 +137,45 @@ public final class ChatData {
               }
               break;
             }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              sendUserId_ = input.readBytes();
+            case 8: {
+              int rawValue = input.readEnum();
+              protocol.Data.ChatData.ChatItem.TargetType value = protocol.Data.ChatData.ChatItem.TargetType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                targetType_ = value;
+              }
               break;
             }
             case 18: {
               bitField0_ |= 0x00000002;
+              sendUserId_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
               receiveUserId_ = input.readBytes();
               break;
             }
-            case 24: {
+            case 32: {
               int rawValue = input.readEnum();
               protocol.Data.ChatData.ChatItem.ChatType value = protocol.Data.ChatData.ChatItem.ChatType.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(3, rawValue);
+                unknownFields.mergeVarintField(4, rawValue);
               } else {
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 chatType_ = value;
               }
               break;
             }
-            case 34: {
-              bitField0_ |= 0x00000008;
+            case 42: {
+              bitField0_ |= 0x00000010;
               chatBody_ = input.readBytes();
               break;
             }
-            case 40: {
-              bitField0_ |= 0x00000010;
+            case 48: {
+              bitField0_ |= 0x00000020;
               date_ = input.readInt64();
               break;
             }
@@ -279,18 +300,116 @@ public final class ChatData {
       // @@protoc_insertion_point(enum_scope:protocol.ChatItem.ChatType)
     }
 
-    private int bitField0_;
-    // required string sendUserId = 1;
-    public static final int SENDUSERID_FIELD_NUMBER = 1;
-    private java.lang.Object sendUserId_;
     /**
-     * <code>required string sendUserId = 1;</code>
+     * Protobuf enum {@code protocol.ChatItem.TargetType}
      */
-    public boolean hasSendUserId() {
+    public enum TargetType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>INDIVIDUAL = 0;</code>
+       */
+      INDIVIDUAL(0, 0),
+      /**
+       * <code>GROUP = 1;</code>
+       */
+      GROUP(1, 1),
+      ;
+
+      /**
+       * <code>INDIVIDUAL = 0;</code>
+       */
+      public static final int INDIVIDUAL_VALUE = 0;
+      /**
+       * <code>GROUP = 1;</code>
+       */
+      public static final int GROUP_VALUE = 1;
+
+
+      public final int getNumber() { return value; }
+
+      public static TargetType valueOf(int value) {
+        switch (value) {
+          case 0: return INDIVIDUAL;
+          case 1: return GROUP;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<TargetType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<TargetType>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<TargetType>() {
+              public TargetType findValueByNumber(int number) {
+                return TargetType.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return protocol.Data.ChatData.ChatItem.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final TargetType[] VALUES = values();
+
+      public static TargetType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private TargetType(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:protocol.ChatItem.TargetType)
+    }
+
+    private int bitField0_;
+    // required .protocol.ChatItem.TargetType targetType = 1;
+    public static final int TARGETTYPE_FIELD_NUMBER = 1;
+    private protocol.Data.ChatData.ChatItem.TargetType targetType_;
+    /**
+     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     */
+    public boolean hasTargetType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string sendUserId = 1;</code>
+     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     */
+    public protocol.Data.ChatData.ChatItem.TargetType getTargetType() {
+      return targetType_;
+    }
+
+    // required string sendUserId = 2;
+    public static final int SENDUSERID_FIELD_NUMBER = 2;
+    private java.lang.Object sendUserId_;
+    /**
+     * <code>required string sendUserId = 2;</code>
+     */
+    public boolean hasSendUserId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string sendUserId = 2;</code>
      */
     public java.lang.String getSendUserId() {
       java.lang.Object ref = sendUserId_;
@@ -307,7 +426,7 @@ public final class ChatData {
       }
     }
     /**
-     * <code>required string sendUserId = 1;</code>
+     * <code>required string sendUserId = 2;</code>
      */
     public com.google.protobuf.ByteString
         getSendUserIdBytes() {
@@ -323,17 +442,17 @@ public final class ChatData {
       }
     }
 
-    // required string receiveUserId = 2;
-    public static final int RECEIVEUSERID_FIELD_NUMBER = 2;
+    // required string receiveUserId = 3;
+    public static final int RECEIVEUSERID_FIELD_NUMBER = 3;
     private java.lang.Object receiveUserId_;
     /**
-     * <code>required string receiveUserId = 2;</code>
+     * <code>required string receiveUserId = 3;</code>
      */
     public boolean hasReceiveUserId() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required string receiveUserId = 2;</code>
+     * <code>required string receiveUserId = 3;</code>
      */
     public java.lang.String getReceiveUserId() {
       java.lang.Object ref = receiveUserId_;
@@ -350,7 +469,7 @@ public final class ChatData {
       }
     }
     /**
-     * <code>required string receiveUserId = 2;</code>
+     * <code>required string receiveUserId = 3;</code>
      */
     public com.google.protobuf.ByteString
         getReceiveUserIdBytes() {
@@ -366,33 +485,33 @@ public final class ChatData {
       }
     }
 
-    // required .protocol.ChatItem.ChatType chatType = 3;
-    public static final int CHATTYPE_FIELD_NUMBER = 3;
+    // required .protocol.ChatItem.ChatType chatType = 4;
+    public static final int CHATTYPE_FIELD_NUMBER = 4;
     private protocol.Data.ChatData.ChatItem.ChatType chatType_;
     /**
-     * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+     * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
      */
     public boolean hasChatType() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+     * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
      */
     public protocol.Data.ChatData.ChatItem.ChatType getChatType() {
       return chatType_;
     }
 
-    // required string chatBody = 4;
-    public static final int CHATBODY_FIELD_NUMBER = 4;
+    // required string chatBody = 5;
+    public static final int CHATBODY_FIELD_NUMBER = 5;
     private java.lang.Object chatBody_;
     /**
-     * <code>required string chatBody = 4;</code>
+     * <code>required string chatBody = 5;</code>
      */
     public boolean hasChatBody() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>required string chatBody = 4;</code>
+     * <code>required string chatBody = 5;</code>
      */
     public java.lang.String getChatBody() {
       java.lang.Object ref = chatBody_;
@@ -409,7 +528,7 @@ public final class ChatData {
       }
     }
     /**
-     * <code>required string chatBody = 4;</code>
+     * <code>required string chatBody = 5;</code>
      */
     public com.google.protobuf.ByteString
         getChatBodyBytes() {
@@ -425,23 +544,24 @@ public final class ChatData {
       }
     }
 
-    // optional int64 date = 5;
-    public static final int DATE_FIELD_NUMBER = 5;
+    // optional int64 date = 6;
+    public static final int DATE_FIELD_NUMBER = 6;
     private long date_;
     /**
-     * <code>optional int64 date = 5;</code>
+     * <code>optional int64 date = 6;</code>
      */
     public boolean hasDate() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional int64 date = 5;</code>
+     * <code>optional int64 date = 6;</code>
      */
     public long getDate() {
       return date_;
     }
 
     private void initFields() {
+      targetType_ = protocol.Data.ChatData.ChatItem.TargetType.INDIVIDUAL;
       sendUserId_ = "";
       receiveUserId_ = "";
       chatType_ = protocol.Data.ChatData.ChatItem.ChatType.TEXT;
@@ -453,6 +573,10 @@ public final class ChatData {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
+      if (!hasTargetType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasSendUserId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -477,19 +601,22 @@ public final class ChatData {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getSendUserIdBytes());
+        output.writeEnum(1, targetType_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getReceiveUserIdBytes());
+        output.writeBytes(2, getSendUserIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(3, chatType_.getNumber());
+        output.writeBytes(3, getReceiveUserIdBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, getChatBodyBytes());
+        output.writeEnum(4, chatType_.getNumber());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt64(5, date_);
+        output.writeBytes(5, getChatBodyBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeInt64(6, date_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -502,23 +629,27 @@ public final class ChatData {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getSendUserIdBytes());
+          .computeEnumSize(1, targetType_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getReceiveUserIdBytes());
+          .computeBytesSize(2, getSendUserIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, chatType_.getNumber());
+          .computeBytesSize(3, getReceiveUserIdBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, getChatBodyBytes());
+          .computeEnumSize(4, chatType_.getNumber());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, date_);
+          .computeBytesSize(5, getChatBodyBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(6, date_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -636,16 +767,18 @@ public final class ChatData {
 
       public Builder clear() {
         super.clear();
-        sendUserId_ = "";
+        targetType_ = protocol.Data.ChatData.ChatItem.TargetType.INDIVIDUAL;
         bitField0_ = (bitField0_ & ~0x00000001);
-        receiveUserId_ = "";
+        sendUserId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        chatType_ = protocol.Data.ChatData.ChatItem.ChatType.TEXT;
+        receiveUserId_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        chatBody_ = "";
+        chatType_ = protocol.Data.ChatData.ChatItem.ChatType.TEXT;
         bitField0_ = (bitField0_ & ~0x00000008);
-        date_ = 0L;
+        chatBody_ = "";
         bitField0_ = (bitField0_ & ~0x00000010);
+        date_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -677,21 +810,25 @@ public final class ChatData {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.sendUserId_ = sendUserId_;
+        result.targetType_ = targetType_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.receiveUserId_ = receiveUserId_;
+        result.sendUserId_ = sendUserId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.chatType_ = chatType_;
+        result.receiveUserId_ = receiveUserId_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.chatBody_ = chatBody_;
+        result.chatType_ = chatType_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
+        }
+        result.chatBody_ = chatBody_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
         }
         result.date_ = date_;
         result.bitField0_ = to_bitField0_;
@@ -710,13 +847,16 @@ public final class ChatData {
 
       public Builder mergeFrom(protocol.Data.ChatData.ChatItem other) {
         if (other == protocol.Data.ChatData.ChatItem.getDefaultInstance()) return this;
+        if (other.hasTargetType()) {
+          setTargetType(other.getTargetType());
+        }
         if (other.hasSendUserId()) {
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
           sendUserId_ = other.sendUserId_;
           onChanged();
         }
         if (other.hasReceiveUserId()) {
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
           receiveUserId_ = other.receiveUserId_;
           onChanged();
         }
@@ -724,7 +864,7 @@ public final class ChatData {
           setChatType(other.getChatType());
         }
         if (other.hasChatBody()) {
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
           chatBody_ = other.chatBody_;
           onChanged();
         }
@@ -736,6 +876,10 @@ public final class ChatData {
       }
 
       public final boolean isInitialized() {
+        if (!hasTargetType()) {
+          
+          return false;
+        }
         if (!hasSendUserId()) {
           
           return false;
@@ -774,16 +918,52 @@ public final class ChatData {
       }
       private int bitField0_;
 
-      // required string sendUserId = 1;
-      private java.lang.Object sendUserId_ = "";
+      // required .protocol.ChatItem.TargetType targetType = 1;
+      private protocol.Data.ChatData.ChatItem.TargetType targetType_ = protocol.Data.ChatData.ChatItem.TargetType.INDIVIDUAL;
       /**
-       * <code>required string sendUserId = 1;</code>
+       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
        */
-      public boolean hasSendUserId() {
+      public boolean hasTargetType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string sendUserId = 1;</code>
+       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       */
+      public protocol.Data.ChatData.ChatItem.TargetType getTargetType() {
+        return targetType_;
+      }
+      /**
+       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       */
+      public Builder setTargetType(protocol.Data.ChatData.ChatItem.TargetType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        targetType_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       */
+      public Builder clearTargetType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        targetType_ = protocol.Data.ChatData.ChatItem.TargetType.INDIVIDUAL;
+        onChanged();
+        return this;
+      }
+
+      // required string sendUserId = 2;
+      private java.lang.Object sendUserId_ = "";
+      /**
+       * <code>required string sendUserId = 2;</code>
+       */
+      public boolean hasSendUserId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string sendUserId = 2;</code>
        */
       public java.lang.String getSendUserId() {
         java.lang.Object ref = sendUserId_;
@@ -797,7 +977,7 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string sendUserId = 1;</code>
+       * <code>required string sendUserId = 2;</code>
        */
       public com.google.protobuf.ByteString
           getSendUserIdBytes() {
@@ -813,51 +993,51 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string sendUserId = 1;</code>
+       * <code>required string sendUserId = 2;</code>
        */
       public Builder setSendUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         sendUserId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string sendUserId = 1;</code>
+       * <code>required string sendUserId = 2;</code>
        */
       public Builder clearSendUserId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         sendUserId_ = getDefaultInstance().getSendUserId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string sendUserId = 1;</code>
+       * <code>required string sendUserId = 2;</code>
        */
       public Builder setSendUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         sendUserId_ = value;
         onChanged();
         return this;
       }
 
-      // required string receiveUserId = 2;
+      // required string receiveUserId = 3;
       private java.lang.Object receiveUserId_ = "";
       /**
-       * <code>required string receiveUserId = 2;</code>
+       * <code>required string receiveUserId = 3;</code>
        */
       public boolean hasReceiveUserId() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required string receiveUserId = 2;</code>
+       * <code>required string receiveUserId = 3;</code>
        */
       public java.lang.String getReceiveUserId() {
         java.lang.Object ref = receiveUserId_;
@@ -871,7 +1051,7 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string receiveUserId = 2;</code>
+       * <code>required string receiveUserId = 3;</code>
        */
       public com.google.protobuf.ByteString
           getReceiveUserIdBytes() {
@@ -887,87 +1067,87 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string receiveUserId = 2;</code>
+       * <code>required string receiveUserId = 3;</code>
        */
       public Builder setReceiveUserId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         receiveUserId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string receiveUserId = 2;</code>
+       * <code>required string receiveUserId = 3;</code>
        */
       public Builder clearReceiveUserId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         receiveUserId_ = getDefaultInstance().getReceiveUserId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string receiveUserId = 2;</code>
+       * <code>required string receiveUserId = 3;</code>
        */
       public Builder setReceiveUserIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         receiveUserId_ = value;
         onChanged();
         return this;
       }
 
-      // required .protocol.ChatItem.ChatType chatType = 3;
+      // required .protocol.ChatItem.ChatType chatType = 4;
       private protocol.Data.ChatData.ChatItem.ChatType chatType_ = protocol.Data.ChatData.ChatItem.ChatType.TEXT;
       /**
-       * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+       * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
        */
       public boolean hasChatType() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+       * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
        */
       public protocol.Data.ChatData.ChatItem.ChatType getChatType() {
         return chatType_;
       }
       /**
-       * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+       * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
        */
       public Builder setChatType(protocol.Data.ChatData.ChatItem.ChatType value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         chatType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required .protocol.ChatItem.ChatType chatType = 3;</code>
+       * <code>required .protocol.ChatItem.ChatType chatType = 4;</code>
        */
       public Builder clearChatType() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         chatType_ = protocol.Data.ChatData.ChatItem.ChatType.TEXT;
         onChanged();
         return this;
       }
 
-      // required string chatBody = 4;
+      // required string chatBody = 5;
       private java.lang.Object chatBody_ = "";
       /**
-       * <code>required string chatBody = 4;</code>
+       * <code>required string chatBody = 5;</code>
        */
       public boolean hasChatBody() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>required string chatBody = 4;</code>
+       * <code>required string chatBody = 5;</code>
        */
       public java.lang.String getChatBody() {
         java.lang.Object ref = chatBody_;
@@ -981,7 +1161,7 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string chatBody = 4;</code>
+       * <code>required string chatBody = 5;</code>
        */
       public com.google.protobuf.ByteString
           getChatBodyBytes() {
@@ -997,69 +1177,69 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string chatBody = 4;</code>
+       * <code>required string chatBody = 5;</code>
        */
       public Builder setChatBody(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         chatBody_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string chatBody = 4;</code>
+       * <code>required string chatBody = 5;</code>
        */
       public Builder clearChatBody() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         chatBody_ = getDefaultInstance().getChatBody();
         onChanged();
         return this;
       }
       /**
-       * <code>required string chatBody = 4;</code>
+       * <code>required string chatBody = 5;</code>
        */
       public Builder setChatBodyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         chatBody_ = value;
         onChanged();
         return this;
       }
 
-      // optional int64 date = 5;
+      // optional int64 date = 6;
       private long date_ ;
       /**
-       * <code>optional int64 date = 5;</code>
+       * <code>optional int64 date = 6;</code>
        */
       public boolean hasDate() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional int64 date = 5;</code>
+       * <code>optional int64 date = 6;</code>
        */
       public long getDate() {
         return date_;
       }
       /**
-       * <code>optional int64 date = 5;</code>
+       * <code>optional int64 date = 6;</code>
        */
       public Builder setDate(long value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         date_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 date = 5;</code>
+       * <code>optional int64 date = 6;</code>
        */
       public Builder clearDate() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         date_ = 0L;
         onChanged();
         return this;
@@ -1090,12 +1270,14 @@ public final class ChatData {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016ChatData.proto\022\010protocol\"\245\001\n\010ChatItem\022" +
-      "\022\n\nsendUserId\030\001 \002(\t\022\025\n\rreceiveUserId\030\002 \002" +
-      "(\t\022-\n\010chatType\030\003 \002(\0162\033.protocol.ChatItem" +
-      ".ChatType\022\020\n\010chatBody\030\004 \002(\t\022\014\n\004date\030\005 \001(" +
-      "\003\"\037\n\010ChatType\022\010\n\004TEXT\020\000\022\t\n\005IMAGE\020\001B\017\n\rpr" +
-      "otocol.Data"
+      "\n\016ChatData.proto\022\010protocol\"\201\002\n\010ChatItem\022" +
+      "1\n\ntargetType\030\001 \002(\0162\035.protocol.ChatItem." +
+      "TargetType\022\022\n\nsendUserId\030\002 \002(\t\022\025\n\rreceiv" +
+      "eUserId\030\003 \002(\t\022-\n\010chatType\030\004 \002(\0162\033.protoc" +
+      "ol.ChatItem.ChatType\022\020\n\010chatBody\030\005 \002(\t\022\014" +
+      "\n\004date\030\006 \001(\003\"\037\n\010ChatType\022\010\n\004TEXT\020\000\022\t\n\005IM" +
+      "AGE\020\001\"\'\n\nTargetType\022\016\n\nINDIVIDUAL\020\000\022\t\n\005G" +
+      "ROUP\020\001B\017\n\rprotocol.Data"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1107,7 +1289,7 @@ public final class ChatData {
           internal_static_protocol_ChatItem_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_ChatItem_descriptor,
-              new java.lang.String[] { "SendUserId", "ReceiveUserId", "ChatType", "ChatBody", "Date", });
+              new java.lang.String[] { "TargetType", "SendUserId", "ReceiveUserId", "ChatType", "ChatBody", "Date", });
           return null;
         }
       };
