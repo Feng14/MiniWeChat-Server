@@ -8,6 +8,8 @@ alter table user_friends drop foreign key fk_4;
 alter table chatting_message drop foreign key fk_5;
 alter table chatting_message drop foreign key fk_6;
 alter table chatting_message drop foreign key fk_7;
+#删除表user_group中的外键
+alter table user_group drop foreign key fk_8;
 
 #删除表chatting_message
 drop table if exists chatting_message;

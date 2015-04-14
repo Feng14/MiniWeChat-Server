@@ -7,7 +7,7 @@ create table user (user_id char(20)  COMMENT '微信号' not null, user_headInde
 #创建表user——friends
 create table user_friends (user_id char(20)  COMMENT '微信号' not null, friend_id char(20)  COMMENT '微信号' not null);
 #创建表user_group
-create table user_group (group_id int(8)  COMMENT '聊天群Id' not null auto_increment, group_name char(20)  COMMENT '聊天群昵称', primary key (group_id));
+create table user_group (group_id int(8)  COMMENT '聊天群Id' not null auto_increment, group_name char(20)  COMMENT '聊天群昵称',create_id char(20) COMMENT '创建者微信号', primary key (group_id));
 #新增联合主键
 alter table user_friends add primary key (user_id, friend_id);
 alter table group_members add primary key (user_id, group_id);
@@ -21,3 +21,5 @@ alter table user_friends add constraint fk_4 foreign key (user_id) references us
 alter table chatting_message add constraint fk_5 foreign key (receiver_user_id) references user (user_id);
 alter table chatting_message add constraint fk_6 foreign key (sender_user_id) references user (user_id);
 alter table chatting_message add constraint fk_7 foreign key (group_id) references user_group (group_id);
+#user_group新增外键
+alter table user_group add constraint fk_8 foreign key (create_id) references user (user_id) ;
