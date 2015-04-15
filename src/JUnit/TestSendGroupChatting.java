@@ -53,11 +53,12 @@ public class TestSendGroupChatting {
 		ClientSocket clientSocket2 = new ClientSocket();
 		ClientSocket clientSocket3;
 		byte[] response;
-		String userId1 = "a", userId2 = "b", user3 = "c", message = "a fuck b and c", groupId = "1";
+		String userId1 = "a", userId2 = "b", user3 = "c", message = "a fuck b and c", groupId = "13";
 
 		// a，b 登陆
 		assertEquals(clientSocket1.login(userId1, userId1), LoginRsp.ResultCode.SUCCESS);
 		assertEquals(clientSocket2.login(userId2, userId2), LoginRsp.ResultCode.SUCCESS);
+		System.out.println("User1 , User2 Login Over!");
 
 		// 构建消息对象
 		ChatItem.Builder chatItem = ChatItem.newBuilder();
@@ -69,19 +70,25 @@ public class TestSendGroupChatting {
 
 		// userId1发送
 		assertEquals(sendChatting(clientSocket1, chatItem), SendChatRsp.ResultCode.SUCCESS);
+		System.out.println("User1 Send Chatting Over!");
 		
 		// userId2接收
 		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(receiveChatting.getChatData(0).getChatBody(), message);
+		System.out.println("User2 Get Chatting");
 		
 		// user3接收
 		clientSocket3 = new ClientSocket();
+		// user3登陆
+		assertEquals(clientSocket3.login(user3, user3), LoginRsp.ResultCode.SUCCESS);
+		
 		byteArray = clientSocket3.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(receiveChatting.getChatData(0).getChatBody(), message);
+		System.out.println("User3 Get Chatting");
 		
 	}
 

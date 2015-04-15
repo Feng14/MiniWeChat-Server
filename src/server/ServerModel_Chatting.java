@@ -131,35 +131,53 @@ public class ServerModel_Chatting {
 	public void sendChatting(final Chatting[] chattings) {
 		if (chattings.length < 1)
 			return;
+		
+		IoSession receiverIoSession;
+		ReceiveChatSync.Builder receiverChatObj;
+		ClientUser clientUser;
+		Chatting chatting;
 
 		// 获取接收者
-		IoSession receiverIoSession = serverModel.getClientUserByUserId(chattings[0].getReceiverUserId()).ioSession;
-		if (receiverIoSession == null) {
+		for (int i=0; i<chattings.length; i++) {
+			chatting = chattings[i];
+			clientUser = serverModel.getClientUserByUserId(chattings[0].getReceiverUserId());
 			// 接受者不在线，存入内存
-			logger.debug("ServerModel_Chatting : sendChatting : The Receiver(" + chattings[0].getReceiverUserId()
-					+ ") is offline, Chatting will be save in Server!");
-
-			for (Chatting chatting : chattings)
+			if (clientUser == null) {
+				logger.debug("ServerModel_Chatting : sendChatting : The Receiver(" + chattings[0].getReceiverUserId()
+						+ ") is offline, Chatting will be save in Server!");
+				
 				addChatting(chatting);
-
-			return;
-		}
-
-		// 创建要发送的消息包
-		ReceiveChatSync.Builder receiverChatObj = ReceiveChatSync.newBuilder();
-		for (Chatting chatting : chattings)
+				return;
+			}
+			receiverIoSession = clientUser.ioSession;
+			
+			// 创建要发送的消息包
+			receiverChatObj = ReceiveChatSync.newBuilder();
 			receiverChatObj.addChatData(chatting.createChatItem());
-
-		serverNetwork.sendToClient(new WaitClientResponse(receiverIoSession, new PacketFromServer(
-				ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj.build().toByteArray()),
-				new WaitClientResponseCallBack() {
-					@Override
-					public void beforeDelete() {
-						// 添加发送失败时删除前的回调
-						for (Chatting chatting : chattings)
-							addChatting(chatting);
-					}
-				}));
+			
+			serverNetwork.sendToClient(new WaitClientResponse(receiverIoSession, new PacketFromServer(
+					ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE, receiverChatObj.build().toByteArray()),
+					new SendChattingHandle(chatting)));
+		}
+	}
+	
+	/**
+	 * 发送微信消息失败处理
+	 * @author Feng
+	 *
+	 */
+	private class SendChattingHandle implements WaitClientResponseCallBack{
+		private Chatting chatting;
+		
+		public SendChattingHandle(Chatting chatting) {
+			this.chatting = chatting;
+		}
+		
+		@Override
+		public void beforeDelete() {
+			// 添加发送失败时删除前的回调
+			addChatting(chatting);
+		}
 	}
 
 	/**

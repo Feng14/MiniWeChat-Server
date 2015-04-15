@@ -11,13 +11,13 @@ public final class ChatData {
   public interface ChatItemOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ChatItem.TargetType targetType = 1;
+    // optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];
     /**
-     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
      */
     boolean hasTargetType();
     /**
-     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
      */
     protocol.Data.ChatData.ChatItem.TargetType getTargetType();
 
@@ -383,17 +383,17 @@ public final class ChatData {
     }
 
     private int bitField0_;
-    // required .protocol.ChatItem.TargetType targetType = 1;
+    // optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];
     public static final int TARGETTYPE_FIELD_NUMBER = 1;
     private protocol.Data.ChatData.ChatItem.TargetType targetType_;
     /**
-     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
      */
     public boolean hasTargetType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+     * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
      */
     public protocol.Data.ChatData.ChatItem.TargetType getTargetType() {
       return targetType_;
@@ -573,10 +573,6 @@ public final class ChatData {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasTargetType()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasSendUserId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -876,10 +872,6 @@ public final class ChatData {
       }
 
       public final boolean isInitialized() {
-        if (!hasTargetType()) {
-          
-          return false;
-        }
         if (!hasSendUserId()) {
           
           return false;
@@ -918,22 +910,22 @@ public final class ChatData {
       }
       private int bitField0_;
 
-      // required .protocol.ChatItem.TargetType targetType = 1;
+      // optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];
       private protocol.Data.ChatData.ChatItem.TargetType targetType_ = protocol.Data.ChatData.ChatItem.TargetType.INDIVIDUAL;
       /**
-       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
        */
       public boolean hasTargetType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
        */
       public protocol.Data.ChatData.ChatItem.TargetType getTargetType() {
         return targetType_;
       }
       /**
-       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
        */
       public Builder setTargetType(protocol.Data.ChatData.ChatItem.TargetType value) {
         if (value == null) {
@@ -945,7 +937,7 @@ public final class ChatData {
         return this;
       }
       /**
-       * <code>required .protocol.ChatItem.TargetType targetType = 1;</code>
+       * <code>optional .protocol.ChatItem.TargetType targetType = 1 [default = INDIVIDUAL];</code>
        */
       public Builder clearTargetType() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -1270,14 +1262,14 @@ public final class ChatData {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016ChatData.proto\022\010protocol\"\201\002\n\010ChatItem\022" +
-      "1\n\ntargetType\030\001 \002(\0162\035.protocol.ChatItem." +
-      "TargetType\022\022\n\nsendUserId\030\002 \002(\t\022\025\n\rreceiv" +
-      "eUserId\030\003 \002(\t\022-\n\010chatType\030\004 \002(\0162\033.protoc" +
-      "ol.ChatItem.ChatType\022\020\n\010chatBody\030\005 \002(\t\022\014" +
-      "\n\004date\030\006 \001(\003\"\037\n\010ChatType\022\010\n\004TEXT\020\000\022\t\n\005IM" +
-      "AGE\020\001\"\'\n\nTargetType\022\016\n\nINDIVIDUAL\020\000\022\t\n\005G" +
-      "ROUP\020\001B\017\n\rprotocol.Data"
+      "\n\016ChatData.proto\022\010protocol\"\215\002\n\010ChatItem\022" +
+      "=\n\ntargetType\030\001 \001(\0162\035.protocol.ChatItem." +
+      "TargetType:\nINDIVIDUAL\022\022\n\nsendUserId\030\002 \002" +
+      "(\t\022\025\n\rreceiveUserId\030\003 \002(\t\022-\n\010chatType\030\004 " +
+      "\002(\0162\033.protocol.ChatItem.ChatType\022\020\n\010chat" +
+      "Body\030\005 \002(\t\022\014\n\004date\030\006 \001(\003\"\037\n\010ChatType\022\010\n\004" +
+      "TEXT\020\000\022\t\n\005IMAGE\020\001\"\'\n\nTargetType\022\016\n\nINDIV" +
+      "IDUAL\020\000\022\t\n\005GROUP\020\001B\017\n\rprotocol.Data"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

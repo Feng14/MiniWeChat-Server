@@ -152,9 +152,13 @@ public class Server_Chatting {
 	private void clientSendChatting_Group(NetworkPacket networkPacket, ChatItem chatItem) throws Exception {
 		ResultCode resultCode = ResultCode.FAIL;
 		Session session = HibernateSessionFactory.getSession();
-//		List<Gr>
-		List<User> receiverList = (List<User>) HibernateDataOperation.query(Group.GROUP_ID, chatItem.getReceiveUserId(),
-				Group.class, resultCode, session).get(0);
+		
+		List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, Integer.parseInt(chatItem.getReceiveUserId()),
+				Group.class, resultCode, session);
+		Group group = groupList.get(0);
+		List<User> receiverList = group.getMemberList();
+//		List<User> receiverList = ((List<User>) HibernateDataOperation.query(Group.GROUP_ID, Integer.parseInt(chatItem.getReceiveUserId()),
+//				Group.class, resultCode, session).get(0));
 
 		if (resultCode.getCode() == ResultCode.FAIL || receiverList == null) {
 			logger.error("Server_Chatting : clientSendChatting_Group : Get Group Error!");
@@ -244,8 +248,11 @@ public class Server_Chatting {
 					// 保存
 					HibernateSessionFactory.commitSession(session);
 					session = HibernateSessionFactory.getSession();
+					
 					ResultCode resultCode = ResultCode.NULL;
 					HibernateDataOperation.add(group, resultCode, session);
+					if (resultCode.getCode() != ResultCode.SUCCESS)
+						throw new Exception("Server_Chatting : createGroupChatting : save newGroup Objcet Error!");
 					HibernateSessionFactory.commitSession(session);
 
 					// 设置回复的群号
@@ -256,11 +263,15 @@ public class Server_Chatting {
 					if (resultCode.getCode() == ResultCode.SUCCESS)
 						createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
 
-					session.close();
+//					session.close();
 				}
 			}
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
+			logger.error(e.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.toString());
 		}
 		// 回复客户端说发送成功(保存在服务器成功)
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket

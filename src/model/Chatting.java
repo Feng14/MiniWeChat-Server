@@ -17,6 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
+import protocol.Data.ChatData.ChatItem.TargetType;
 
 /**
  * 聊天消息对象
@@ -138,6 +139,11 @@ public class Chatting {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+//	public void createFromChatItem(ChatItem chatItem) {
+//		setSenderUserId(chatItem.getSendUserId());
+//		setReceiverUserId(chatItem.getReceiveUserId());
+//	}
 
 	public ChatItem.Builder createChatItem() {
 		return createChatItem(this);
@@ -145,8 +151,9 @@ public class Chatting {
 
 	public static ChatItem.Builder createChatItem(Chatting chatting) {
 		ChatItem.Builder chatItem = ChatItem.newBuilder();
+		chatItem.setTargetType(chatting.isGroup ? TargetType.GROUP : TargetType.INDIVIDUAL);
 		chatItem.setSendUserId(chatting.getSenderUserId());
-		chatItem.setReceiveUserId(chatting.getReceiverUserId());
+		chatItem.setReceiveUserId(chatting.isGroup ? (chatting.getGroupId()+"") : chatting.getReceiverUserId());
 		chatItem.setChatType(chatting.getChattingType());
 		chatItem.setChatBody(chatting.getMessage());
 		chatItem.setDate(new Date().getTime());

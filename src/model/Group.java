@@ -26,7 +26,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "user_group")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Group {
-	public static final String GROUP_ID = "group_id";
+	public static final String GROUP_ID = "groupId";
 	
 	private int groupId;
 	private String createrId;
@@ -41,7 +41,7 @@ public class Group {
 	}
 
 	@Id
-	@Column(name = GROUP_ID, columnDefinition = "int(8)  COMMENT '聊天群Id'")
+	@Column(name = "group_id", columnDefinition = "int(8)  COMMENT '聊天群Id'")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getGroupId() {
 		return groupId;
