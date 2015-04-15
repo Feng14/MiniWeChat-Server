@@ -123,6 +123,17 @@ public class ClientSocket {
 		}
 	}
 
+	public byte[] readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage type) throws IOException {
+		byte[] byteArray; 
+		for (int i=0; i<10; i++) {
+			byteArray = readFromServerWithoutKeepAlive();
+			
+			if (NetworkPacket.getMessageType(byteArray) == type) 
+				return byteArray;
+		}
+		return null;
+	}
+
 	/**
 	 * 向服务器传输byte[]
 	 * 

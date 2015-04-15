@@ -12,7 +12,7 @@ message ChatItem{
 		GROUP = 1;
 	}
 
-	required TargetType targetType = 1;
+	optional TargetType targetType = 1[default = INDIVIDUAL];
 	required string sendUserId= 2;
 	required string receiveUserId= 3;
 	required ChatType chatType= 4;

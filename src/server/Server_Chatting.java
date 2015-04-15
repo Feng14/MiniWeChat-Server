@@ -24,8 +24,6 @@ import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatRsp;
 import protocol.Msg.SendChatMsg;
-import protocol.Msg.SendGroupChatMsg.SendGroupChatReq;
-import protocol.Msg.SendGroupChatMsg.SendGroupChatRsp;
 import exception.NoIpException;
 import tools.Debug;
 
@@ -154,6 +152,7 @@ public class Server_Chatting {
 	private void clientSendChatting_Group(NetworkPacket networkPacket, ChatItem chatItem) throws Exception {
 		ResultCode resultCode = ResultCode.FAIL;
 		Session session = HibernateSessionFactory.getSession();
+//		List<Gr>
 		List<User> receiverList = (List<User>) HibernateDataOperation.query(Group.GROUP_ID, chatItem.getReceiveUserId(),
 				Group.class, resultCode, session).get(0);
 
@@ -243,8 +242,11 @@ public class Server_Chatting {
 						}
 
 					// 保存
+					HibernateSessionFactory.commitSession(session);
+					session = HibernateSessionFactory.getSession();
 					ResultCode resultCode = ResultCode.NULL;
 					HibernateDataOperation.add(group, resultCode, session);
+					HibernateSessionFactory.commitSession(session);
 
 					// 设置回复的群号
 					createGroupChattingResponse.setGroupChatId(group.getGroupId());
