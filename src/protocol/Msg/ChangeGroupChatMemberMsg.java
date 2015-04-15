@@ -913,6 +913,10 @@ public final class ChangeGroupChatMemberMsg {
        * <code>FAIL = 1;</code>
        */
       FAIL(1, 1),
+      /**
+       * <code>NO_AUTHORITY = 2;</code>
+       */
+      NO_AUTHORITY(2, 2),
       ;
 
       /**
@@ -923,6 +927,10 @@ public final class ChangeGroupChatMemberMsg {
        * <code>FAIL = 1;</code>
        */
       public static final int FAIL_VALUE = 1;
+      /**
+       * <code>NO_AUTHORITY = 2;</code>
+       */
+      public static final int NO_AUTHORITY_VALUE = 2;
 
 
       public final int getNumber() { return value; }
@@ -931,6 +939,7 @@ public final class ChangeGroupChatMemberMsg {
         switch (value) {
           case 0: return SUCCESS;
           case 1: return FAIL;
+          case 2: return NO_AUTHORITY;
           default: return null;
         }
       }
@@ -1305,11 +1314,11 @@ public final class ChangeGroupChatMemberMsg {
       "Id\030\001 \002(\005\022A\n\nchangeType\030\002 \002(\0162-.protocol." +
       "ChangeGroupChatMemberRsq.ChangeType\022\016\n\006u" +
       "serId\030\003 \003(\t\"-\n\nChangeType\022\007\n\003ADD\020\000\022\n\n\006DE" +
-      "LETE\020\001\022\n\n\006UPDATE\020\002\"\202\001\n\030ChangeGroupChatMe" +
+      "LETE\020\001\022\n\n\006UPDATE\020\002\"\224\001\n\030ChangeGroupChatMe" +
       "mberRsp\022A\n\nresultCode\030\001 \002(\0162-.protocol.C" +
-      "hangeGroupChatMemberRsp.ResultCode\"#\n\nRe" +
-      "sultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001B\016\n\014proto" +
-      "col.Msg"
+      "hangeGroupChatMemberRsp.ResultCode\"5\n\nRe" +
+      "sultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001\022\020\n\014NO_AU" +
+      "THORITY\020\002B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

@@ -29,6 +29,7 @@ import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatRsp;
 import protocol.Msg.SendChatMsg;
+import exception.MyException;
 import exception.NoIpException;
 import tools.Debug;
 
@@ -258,7 +259,7 @@ public class Server_Chatting {
 					ResultCode resultCode = ResultCode.NULL;
 					HibernateDataOperation.add(group, resultCode, session);
 					if (resultCode.getCode() != ResultCode.SUCCESS)
-						throw new Exception("Server_Chatting : createGroupChatting : save newGroup Objcet Error!");
+						throw new MyException("Server_Chatting : createGroupChatting : save newGroup Objcet Error!");
 					HibernateSessionFactory.commitSession(session);
 
 					// 设置回复的群号
@@ -275,8 +276,7 @@ public class Server_Chatting {
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (MyException e) {
 			logger.error(e.toString());
 		}
 		// 回复客户端说发送成功(保存在服务器成功)
@@ -313,11 +313,36 @@ public class Server_Chatting {
 				hql = hql.subSequence(0, hql.length() - 1) + ")";
 				List<User> userList = session.createQuery(hql).list();
 
+				ClientUser requestUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
+				// 检查权限 (在群用户中)
+				if (requestUser == null || requestUser.userId == null || requestUser.userId.equals("")) {
+					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
+
+					throw new MyException(
+							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
+				}
+				boolean containsUser = false;
+				for (User u : group.getMemberList())
+					if (u.getUserId().equals(requestUser.userId)) {
+						containsUser = true;
+						break;
+					}
+				if (!containsUser)
+					throw new MyException(
+							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
+				
 				// 操作类型
 				if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
 					for (User user : userList)
 						group.getMemberList().add(user);
 				} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除
+					// 检查权限(只有创建者可以删除成员)
+					if (!requestUser.userId.equals(group.getCreaterId())) {
+						responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
+						throw new MyException(
+								"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to delete member!");
+					}
+
 					for (User user : userList)
 						group.getMemberList().remove(user);
 				}
@@ -329,13 +354,12 @@ public class Server_Chatting {
 					// 设置标志位
 					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
 				} else
-					throw new Exception("Server_Chatting : changGroupChattingMember : Update to database Error!");
+					throw new MyException("Server_Chatting : changGroupChattingMember : Update to database Error!");
 			}
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (MyException e) {
 			logger.error(e.toString());
 		}
 		// 回复客户端说修改成功(保存在服务器成功)

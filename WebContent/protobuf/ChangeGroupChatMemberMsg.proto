@@ -16,6 +16,7 @@ message ChangeGroupChatMemberRsp{
 	enum ResultCode{
     	SUCCESS = 0;
 		FAIL = 1;
+		NO_AUTHORITY = 2;
 	}
 
 	required ResultCode resultCode = 1;
