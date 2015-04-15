@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.criteria.From;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -18,6 +20,9 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq.ChangeType;
 import protocol.Msg.CreateGroupChatMsg;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
@@ -114,11 +119,10 @@ public class Server_Chatting {
 	 * @throws NoIpException
 	 * @author Feng
 	 */
-	private void clientSendChatting_Individual(NetworkPacket networkPacket, ChatItem chatItem)
-			throws NoIpException {
+	private void clientSendChatting_Individual(NetworkPacket networkPacket, ChatItem chatItem) throws NoIpException {
 		Chatting chatting = new Chatting(chatItem.getSendUserId(), chatItem.getReceiveUserId(), chatItem.getChatType(),
 				chatItem.getChatBody(), Calendar.getInstance().getTimeInMillis());
-		
+
 		// 若是接收者在线，则发送，否则加入队列
 		ClientUser clientUser = serverModel.getClientUserByUserId(chatting.getReceiverUserId());
 		if (clientUser != null) {
@@ -152,13 +156,15 @@ public class Server_Chatting {
 	private void clientSendChatting_Group(NetworkPacket networkPacket, ChatItem chatItem) throws Exception {
 		ResultCode resultCode = ResultCode.FAIL;
 		Session session = HibernateSessionFactory.getSession();
-		
+
 		List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, Integer.parseInt(chatItem.getReceiveUserId()),
 				Group.class, resultCode, session);
 		Group group = groupList.get(0);
 		List<User> receiverList = group.getMemberList();
-//		List<User> receiverList = ((List<User>) HibernateDataOperation.query(Group.GROUP_ID, Integer.parseInt(chatItem.getReceiveUserId()),
-//				Group.class, resultCode, session).get(0));
+		// List<User> receiverList = ((List<User>)
+		// HibernateDataOperation.query(Group.GROUP_ID,
+		// Integer.parseInt(chatItem.getReceiveUserId()),
+		// Group.class, resultCode, session).get(0));
 
 		if (resultCode.getCode() == ResultCode.FAIL || receiverList == null) {
 			logger.error("Server_Chatting : clientSendChatting_Group : Get Group Error!");
@@ -170,7 +176,7 @@ public class Server_Chatting {
 		for (User user : receiverList) {
 			chatting = new Chatting(chatItem.getSendUserId(), user.getUserId(), chatItem.getChatType(), chatItem.getChatBody(),
 					Calendar.getInstance().getTimeInMillis(), true, Integer.parseInt(chatItem.getReceiveUserId()));
-			
+
 			serverModel_Chatting.sendChatting(chatting);
 		}
 
@@ -248,7 +254,7 @@ public class Server_Chatting {
 					// 保存
 					HibernateSessionFactory.commitSession(session);
 					session = HibernateSessionFactory.getSession();
-					
+
 					ResultCode resultCode = ResultCode.NULL;
 					HibernateDataOperation.add(group, resultCode, session);
 					if (resultCode.getCode() != ResultCode.SUCCESS)
@@ -263,7 +269,7 @@ public class Server_Chatting {
 					if (resultCode.getCode() == ResultCode.SUCCESS)
 						createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
 
-//					session.close();
+					// session.close();
 				}
 			}
 		} catch (InvalidProtocolBufferException e) {
@@ -275,7 +281,66 @@ public class Server_Chatting {
 		}
 		// 回复客户端说发送成功(保存在服务器成功)
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
-				.getMessageID(), ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_VALUE, createGroupChattingResponse.build()
+				.getMessageID(), ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_RSP_VALUE, createGroupChattingResponse.build()
+				.toByteArray())));
+	}
+
+	public void changGroupChattingMember(NetworkPacket networkPacket) throws NoIpException {
+		logger.debug("Server_Chatting : changGroupChattingMember : User ChangeGroupChattingMember Event :Deal with user's "
+				+ ServerModel.getIoSessionKey(networkPacket.ioSession) + "  request");
+
+		// 构造回复对象
+		ChangeGroupChatMemberRsp.Builder responseBuilder = ChangeGroupChatMemberRsp.newBuilder();
+		responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.FAIL);
+
+		ChangeGroupChatMemberRsq changeGroupMemberObj;
+		try {
+			changeGroupMemberObj = ChangeGroupChatMemberRsq.parseFrom(networkPacket.getMessageObjectBytes());
+
+			// 获取群聊名单
+			Session session = HibernateSessionFactory.getSession();
+			ResultCode resultCode = ResultCode.NULL;
+			List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, changeGroupMemberObj.getGroupId(), Group.class,
+					resultCode, session);
+			if (resultCode.getCode() == ResultCode.SUCCESS && groupList.size() > 0) {
+				Group group = groupList.get(0);
+
+				// 获取要处理的用户名单
+				String hql = "from " + User.class.getSimpleName() + " where " + User.HQL_USER_ID + " in(";
+				for (String newUser : changeGroupMemberObj.getUserIdList())
+					hql += "'" + newUser + "',";
+
+				hql = hql.subSequence(0, hql.length() - 1) + ")";
+				List<User> userList = session.createQuery(hql).list();
+
+				// 操作类型
+				if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
+					for (User user : userList)
+						group.getMemberList().add(user);
+				} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除
+					for (User user : userList)
+						group.getMemberList().remove(user);
+				}
+
+				// 存入数据库
+				HibernateDataOperation.update(group, resultCode, session);
+				if (resultCode.getCode() == ResultCode.SUCCESS) {
+					HibernateSessionFactory.commitSession(session);
+					// 设置标志位
+					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
+				} else
+					throw new Exception("Server_Chatting : changGroupChattingMember : Update to database Error!");
+			}
+		} catch (InvalidProtocolBufferException e) {
+			e.printStackTrace();
+			logger.error(e.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(e.toString());
+		}
+		// 回复客户端说修改成功(保存在服务器成功)
+		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
+				.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP_VALUE, responseBuilder.build()
 				.toByteArray())));
 	}
 

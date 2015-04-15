@@ -104,22 +104,28 @@ public class HibernateDataOperation {
 	}
 
 	public static void update(Object o, ResultCode code) {
-		logger.info("Hibernate:start update database");
-		logger.info("Hibernate:update Object:" + o.getClass() + ":" + o.toString());
 		try {
 			Session session = HibernateSessionFactory.getSession();
 			Transaction trans = session.beginTransaction();
-			session.update(o);
+			update(session, code, session);
 			trans.commit();
 			session.close();
 
-			code.setCode(ResultCode.SUCCESS);
-			logger.info("Hibernate:update database success");
 		} catch (Exception e) {
 			code.setCode(ResultCode.FAIL);
 			logger.error("Hibernate:update database fail");
 			logger.error("Hibernate error:" + e.getStackTrace());
 		}
+	}
+
+	public static void update(Object o, ResultCode code, Session session) {
+		logger.info("Hibernate:start update database");
+		logger.info("Hibernate:update Object:" + o.getClass() + ":" + o.toString());
+		
+		session.update(o);
+		
+		code.setCode(ResultCode.SUCCESS);
+		logger.info("Hibernate:update database success");
 	}
 
 	public static void delete(Object o, ResultCode code) {

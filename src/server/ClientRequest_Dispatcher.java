@@ -96,8 +96,13 @@ public class ClientRequest_Dispatcher {
 //				server_Chatting.clientReceiveChatting(networkPacket);
 //				break;
 			// 创建群聊
-			case ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_VALUE:
+			case ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_REQ_VALUE:
 				server_Chatting.createGroupChatting(networkPacket);
+				break;
+			// 修改群聊成员
+			case ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE:
+				server_Chatting.changGroupChattingMember(networkPacket);
+				break;
 			default:
 				break;
 			}

@@ -20,14 +20,14 @@ public class TestCreateGroupChatting {
 		for (String s : userList)
 			builder.addUserId(s);
 
-		clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_VALUE, builder.build()
+		clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_REQ_VALUE, builder.build()
 				.toByteArray()));
 		
 		byte[] arrayBytes; 
 		for (int i=0; i<10; i++) {
 			arrayBytes = clientSocket.readFromServerWithoutKeepAlive();
 			
-			if (NetworkPacket.getMessageType(arrayBytes) != ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT)
+			if (NetworkPacket.getMessageType(arrayBytes) != ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_RSP)
 				continue;
 			
 			return CreateGroupChatRsp.parseFrom(NetworkPacket.getMessageObjectBytes(arrayBytes));
