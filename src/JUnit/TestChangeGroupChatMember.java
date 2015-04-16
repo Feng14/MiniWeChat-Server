@@ -30,7 +30,7 @@ public class TestChangeGroupChatMember {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-//	@Test
+	@Test
 	public void test1() throws UnknownHostException, IOException {
 		int groupId = 13;
 		ClientSocket clientSocket = new ClientSocket();

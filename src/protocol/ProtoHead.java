@@ -117,6 +117,14 @@ public final class ProtoHead {
      * <code>CHANGE_GROUP_CHAT_MEMBER__RSP = 25;</code>
      */
     CHANGE_GROUP_CHAT_MEMBER__RSP(25, 25),
+    /**
+     * <code>GET_GROUP_INFO_REQ = 26;</code>
+     */
+    GET_GROUP_INFO_REQ(26, 26),
+    /**
+     * <code>GET_GROUP_INFO_RSP = 27;</code>
+     */
+    GET_GROUP_INFO_RSP(27, 27),
     ;
 
     /**
@@ -223,6 +231,14 @@ public final class ProtoHead {
      * <code>CHANGE_GROUP_CHAT_MEMBER__RSP = 25;</code>
      */
     public static final int CHANGE_GROUP_CHAT_MEMBER__RSP_VALUE = 25;
+    /**
+     * <code>GET_GROUP_INFO_REQ = 26;</code>
+     */
+    public static final int GET_GROUP_INFO_REQ_VALUE = 26;
+    /**
+     * <code>GET_GROUP_INFO_RSP = 27;</code>
+     */
+    public static final int GET_GROUP_INFO_RSP_VALUE = 27;
 
 
     public final int getNumber() { return value; }
@@ -255,6 +271,8 @@ public final class ProtoHead {
         case 23: return CREATE_GROUP_CHAT_RSP;
         case 24: return CHANGE_GROUP_CHAT_MEMBER_REQ;
         case 25: return CHANGE_GROUP_CHAT_MEMBER__RSP;
+        case 26: return GET_GROUP_INFO_REQ;
+        case 27: return GET_GROUP_INFO_RSP;
         default: return null;
       }
     }
@@ -315,7 +333,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\324\004\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\204\005\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -330,7 +348,9 @@ public final class ProtoHead {
       "\022\025\n\021RECEIVE_CHAT_SYNC\020\025\022\031\n\025CREATE_GROUP_" +
       "CHAT_REQ\020\026\022\031\n\025CREATE_GROUP_CHAT_RSP\020\027\022 \n" +
       "\034CHANGE_GROUP_CHAT_MEMBER_REQ\020\030\022!\n\035CHANG" +
-      "E_GROUP_CHAT_MEMBER__RSP\020\031B\n\n\010protocol"
+      "E_GROUP_CHAT_MEMBER__RSP\020\031\022\026\n\022GET_GROUP_" +
+      "INFO_REQ\020\032\022\026\n\022GET_GROUP_INFO_RSP\020\033B\n\n\010pr" +
+      "otocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

@@ -21,6 +21,7 @@ import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
 import protocol.Data.GroupData.GroupItem;
+import protocol.Data.UserData.UserItem;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq.ChangeType;
@@ -219,72 +220,84 @@ public class Server_Chatting {
 			CreateGroupChatReq createGroupChattingObj = CreateGroupChatReq.parseFrom(networkPacket.getMessageObjectBytes());
 
 			List<String> userIdList = createGroupChattingObj.getUserIdList();
-			if (userIdList.size() > 0) {
-				// 创建群名
-				String groupName = "";
-				for (int i = 0; i < userIdList.size() && i < 3; i++)
-					groupName += userIdList.get(i).toString() + ",";
-				groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
+			if (userIdList.size() <= 0)
+				throw new MyException("Server_Chatting : createGroupChatting : Member Size = 0");
+			// 创建群名
+			String groupName = "";
+			for (int i = 0; i < userIdList.size() && i < 3; i++)
+				groupName += userIdList.get(i).toString() + ",";
+			groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
 
-				Group group = new Group(groupName);
+			Group group = new Group(groupName);
 
-				// 加入用户
-				String hql = "from " + User.class.getSimpleName() + " where " + User.TABLE_USER_ID + " in (";
-				boolean containSelf = false;
-				ClientUser selfUser1 = serverModel.getClientUserFromTable(networkPacket.ioSession);
-				if (selfUser1 == null) {
-					logger.error("Server_Chatting : createGroupChatting : creater is offLine!");
-				} else {
-					for (String userID : userIdList) {
-						hql += "'" + userID + "',";
-						// 看看自己有没有被加进去
-						if (userID.equals(selfUser1.userId))
-							containSelf = true;
-					}
-					// 若是列表中没有自己，则加进去
-					if (!containSelf)
-						hql += "'" + selfUser1.userId + "'";
-					else
-						hql = hql.substring(0, hql.length() - 1);
+			// String hql = "from " + User.class.getSimpleName() + " where " +
+			// User.TABLE_USER_ID + " in (";
+			// 判断本用户知否在线
+			ClientUser selfUser1 = serverModel.getClientUserFromTable(networkPacket.ioSession);
+			if (selfUser1 == null)
+				throw new MyException("Server_Chatting : createGroupChatting : creater is offLine!");
 
-					hql += ")";
+			// 加入自己
+			// boolean containSelf = false;
+			if (!userIdList.contains(selfUser1.userId))
+				userIdList.add(selfUser1.userId);
+			// for (String member : userIdList)
+			// if (member.equals(selfUser1.userId)) {
+			// containSelf = true;
+			// break;
+			// }
+			// if (!containSelf)
 
-					Session session = HibernateSessionFactory.getSession();
-					// String hql = "from " + User.class.getName() + " where " +
-					// User.TABLE_USER_ID + " in('a','b')";
-					// List<User> userList2 = session.createQuery(hql).list();
-					List<User> userList = session.createQuery(hql).list();
-					group.setMemberList(userList);
+			// } else {
+			//
+			// for (String userID : userIdList) {
+			// hql += "'" + userID + "',";
+			// // 看看自己有没有被加进去
+			// if (userID.equals(selfUser1.userId))
+			// containSelf = true;
+			// }
+			// // 若是列表中没有自己，则加进去
+			// if (!containSelf)
+			// hql += "'" + selfUser1.userId + "'";
+			// else
+			// hql = hql.substring(0, hql.length() - 1);
+			//
+			// hql += ")";
 
-					// 设置创建者
-					User selfUser2 = null;
-					for (User user : userList)
-						if (user.getUserId().equals(selfUser1.userId)) {
-							group.setCreaterId(selfUser1.userId);
-							break;
-						}
+			Session session = HibernateSessionFactory.getSession();
+			// String hql = "from " + User.class.getName() + " where " +
+			// User.TABLE_USER_ID + " in('a','b')";
+			// List<User> userList2 = session.createQuery(hql).list();
+			List<User> userList = server_User.getUsers(userIdList, session);
+			group.setMemberList(userList);
 
-					// 保存
-					HibernateSessionFactory.commitSession(session);
-					session = HibernateSessionFactory.getSession();
-
-					ResultCode resultCode = ResultCode.NULL;
-					HibernateDataOperation.add(group, resultCode, session);
-					if (resultCode.getCode() != ResultCode.SUCCESS)
-						throw new MyException("Server_Chatting : createGroupChatting : save newGroup Objcet Error!");
-					HibernateSessionFactory.commitSession(session);
-
-					// 设置回复的群号
-					createGroupChattingResponse.setGroupChatId(group.getGroupId());
-
-					// 如果成功，设置标志位
-					logger.debug("Server_Chatting : createGroupChatting : create group chatting Successful, response to client!");
-					if (resultCode.getCode() == ResultCode.SUCCESS)
-						createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
-
-					// session.close();
+			// 设置创建者
+			User selfUser2 = null;
+			for (User user : userList)
+				if (user.getUserId().equals(selfUser1.userId)) {
+					group.setCreaterId(selfUser1.userId);
+					break;
 				}
-			}
+
+			// 保存
+			HibernateSessionFactory.commitSession(session);
+			session = HibernateSessionFactory.getSession();
+
+			ResultCode resultCode = ResultCode.NULL;
+			HibernateDataOperation.add(group, resultCode, session);
+			if (resultCode.getCode() != ResultCode.SUCCESS)
+				throw new MyException("Server_Chatting : createGroupChatting : save newGroup Objcet Error!");
+			HibernateSessionFactory.commitSession(session);
+
+			// 设置回复的群号
+			createGroupChattingResponse.setGroupChatId(group.getGroupId());
+
+			// 如果成功，设置标志位
+			logger.debug("Server_Chatting : createGroupChatting : create group chatting Successful, response to client!");
+			if (resultCode.getCode() == ResultCode.SUCCESS)
+				createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
+
+			// session.close();
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
@@ -320,68 +333,27 @@ public class Server_Chatting {
 			Session session = HibernateSessionFactory.getSession();
 			ResultCode resultCode = ResultCode.NULL;
 			Group group = getGroupInfo(Integer.parseInt(requestObj.getGroupId()), session);
-			
-			if (group == null)
+
+			if (group == null) {
 				responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.GROUP_NOT_EXIST);
-			else {
-				GroupItem.Builder groupItem = GroupItem.newBuilder();
-				groupItem.setCreater(group.getCreaterId());
-				responseBuilder.setGroupItem(groupItem);
-				
-				responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.SUCCESS);
+				throw new MyException("Server_Chatting : getGroupInfo(NetworkPacket) : Can't get Group, Group = null");
 			}
 
-				// 获取要处理的用户名单
-				String hql = "from " + User.class.getSimpleName() + " where " + User.HQL_USER_ID + " in(";
-				for (String newUser : changeGroupMemberObj.getUserIdList())
-					hql += "'" + newUser + "',";
+			GroupItem.Builder groupItem = GroupItem.newBuilder();
+			UserItem.Builder userItemBuilder = UserItem.newBuilder();
 
-				hql = hql.subSequence(0, hql.length() - 1) + ")";
-				List<User> userList = session.createQuery(hql).list();
+			// 设置创建者
+			groupItem.setCreater(User.createUserItemBuilder(server_User.getUser(group.getCreaterId(), session)).build());
+			// 添加成员
+			for (User user : group.getMemberList())
+				groupItem.addMemberUser(User.createUserItemBuilder(user));
 
-				ClientUser requestUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
-				// 检查权限 (在群用户中)
-				if (requestUser == null || requestUser.userId == null || requestUser.userId.equals("")) {
-					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
+			groupItem.setGroupId(group.getGroupId() + "");
+			groupItem.setGroupName(group.getGroupName());
+			responseBuilder.setGroupItem(groupItem);
 
-					throw new MyException(
-							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
-				}
-				boolean containsUser = false;
-				for (User u : group.getMemberList())
-					if (u.getUserId().equals(requestUser.userId)) {
-						containsUser = true;
-						break;
-					}
-				if (!containsUser)
-					throw new MyException(
-							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
+			responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.SUCCESS);
 
-				// 操作类型
-				if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
-					for (User user : userList)
-						group.getMemberList().add(user);
-				} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除
-					// 检查权限(只有创建者可以删除成员)
-					if (!requestUser.userId.equals(group.getCreaterId())) {
-						responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
-						throw new MyException(
-								"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to delete member!");
-					}
-
-					for (User user : userList)
-						group.getMemberList().remove(user);
-				}
-
-				// 存入数据库
-				HibernateDataOperation.update(group, resultCode, session);
-				if (resultCode.getCode() == ResultCode.SUCCESS) {
-					HibernateSessionFactory.commitSession(session);
-					// 设置标志位
-					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
-				} else
-					throw new MyException("Server_Chatting : changGroupChattingMember : Update to database Error!");
-			}
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
@@ -390,8 +362,7 @@ public class Server_Chatting {
 		}
 		// 回复客户端说修改成功(保存在服务器成功)
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
-				.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP_VALUE, responseBuilder.build()
-				.toByteArray())));
+				.getMessageID(), ProtoHead.ENetworkMessage.GET_GROUP_INFO_RSP_VALUE, responseBuilder.build().toByteArray())));
 	}
 
 	public Group getGroupInfo(int groupId, Session session) throws NoIpException {
@@ -430,57 +401,51 @@ public class Server_Chatting {
 			ResultCode resultCode = ResultCode.NULL;
 			Group group = getGroupInfo(changeGroupMemberObj.getGroupId(), session);
 
-				// 获取要处理的用户名单
-				String hql = "from " + User.class.getSimpleName() + " where " + User.HQL_USER_ID + " in(";
-				for (String newUser : changeGroupMemberObj.getUserIdList())
-					hql += "'" + newUser + "',";
+			// 获取要处理的用户名单
+			List<User> userList = server_User.getUsers(changeGroupMemberObj.getUserIdList(), session);
 
-				hql = hql.subSequence(0, hql.length() - 1) + ")";
-				List<User> userList = session.createQuery(hql).list();
+			ClientUser requestUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
+			// 检查权限 (在群用户中)
+			if (requestUser == null || requestUser.userId == null || requestUser.userId.equals("")) {
+				responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
 
-				ClientUser requestUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
-				// 检查权限 (在群用户中)
-				if (requestUser == null || requestUser.userId == null || requestUser.userId.equals("")) {
-					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
-
-					throw new MyException(
-							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
-				}
-				boolean containsUser = false;
-				for (User u : group.getMemberList())
-					if (u.getUserId().equals(requestUser.userId)) {
-						containsUser = true;
-						break;
-					}
-				if (!containsUser)
-					throw new MyException(
-							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
-
-				// 操作类型
-				if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
-					for (User user : userList)
-						group.getMemberList().add(user);
-				} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除
-					// 检查权限(只有创建者可以删除成员)
-					if (!requestUser.userId.equals(group.getCreaterId())) {
-						responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
-						throw new MyException(
-								"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to delete member!");
-					}
-
-					for (User user : userList)
-						group.getMemberList().remove(user);
-				}
-
-				// 存入数据库
-				HibernateDataOperation.update(group, resultCode, session);
-				if (resultCode.getCode() == ResultCode.SUCCESS) {
-					HibernateSessionFactory.commitSession(session);
-					// 设置标志位
-					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
-				} else
-					throw new MyException("Server_Chatting : changGroupChattingMember : Update to database Error!");
+				throw new MyException(
+						"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
 			}
+			boolean containsUser = false;
+			for (User u : group.getMemberList())
+				if (u.getUserId().equals(requestUser.userId)) {
+					containsUser = true;
+					break;
+				}
+			if (!containsUser)
+				throw new MyException(
+						"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
+
+			// 操作类型
+			if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
+				for (User user : userList)
+					group.getMemberList().add(user);
+			} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除
+				// 检查权限(只有创建者可以删除成员)
+				if (!requestUser.userId.equals(group.getCreaterId())) {
+					responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
+					throw new MyException(
+							"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to delete member!");
+				}
+
+				for (User user : userList)
+					group.getMemberList().remove(user);
+			}
+
+			// 存入数据库
+			HibernateDataOperation.update(group, resultCode, session);
+			if (resultCode.getCode() == ResultCode.SUCCESS) {
+				HibernateSessionFactory.commitSession(session);
+				// 设置标志位
+				responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
+			} else
+				throw new MyException("Server_Chatting : changGroupChattingMember : Update to database Error!");
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());

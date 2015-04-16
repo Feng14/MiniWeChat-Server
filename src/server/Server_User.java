@@ -665,6 +665,10 @@ public class Server_User {
 	 * 获取User对象列表
 	 * @author Feng
 	 */
+	public List<User> getUsers (List<String> userIds, Session session) {
+		String[] userList = new String[userIds.size()];
+		return getUsers(userIds.toArray(userList), session);
+	}
 	public List<User> getUsers (String[] userIds, Session session) {
 		StringBuffer hqlSB = new StringBuffer("from " + User.class.getSimpleName() + " where " + User.HQL_USER_ID + " in(");
 		for (String userId : userIds)

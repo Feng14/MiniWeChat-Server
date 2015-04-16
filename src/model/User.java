@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import protocol.Data.UserData.UserItem;
+
 
 @Entity
 @Table(name="user")
@@ -96,5 +98,13 @@ public class User implements Serializable {
    
     public String toString(){
     	return this.getUserId()+" "+this.getUserName();
+    }
+    
+    public static UserItem.Builder createUserItemBuilder(User user) {
+    	UserItem.Builder builder = UserItem.newBuilder();
+    	builder.setHeadIndex(user.getHeadIndex());
+    	builder.setUserId(user.getUserId());
+    	builder.setUserName(user.getUserName());
+    	return builder;
     }
 }
