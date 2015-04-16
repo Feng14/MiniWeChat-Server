@@ -1,11 +1,13 @@
 package server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.criteria.From;
 
+import org.apache.catalina.mbeans.UserMBean;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -174,7 +176,7 @@ public class Server_Chatting {
 		List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, Integer.parseInt(chatItem.getReceiveUserId()),
 				Group.class, resultCode, session);
 		Group group = groupList.get(0);
-		List<String> receiverList = group.getMemberList();
+		List<User> receiverList = group.getMemberList();
 		// List<User> receiverList = ((List<User>)
 		// HibernateDataOperation.query(Group.GROUP_ID,
 		// Integer.parseInt(chatItem.getReceiveUserId()),
@@ -187,8 +189,8 @@ public class Server_Chatting {
 
 		Chatting chatting;
 		// 给每个组员发一份
-		for (String userId : receiverList) {
-			chatting = new Chatting(chatItem.getSendUserId(), userId, chatItem.getChatType(), chatItem.getChatBody(),
+		for (User user : receiverList) {
+			chatting = new Chatting(chatItem.getSendUserId(), user.getUserId(), chatItem.getChatType(), chatItem.getChatBody(),
 					Calendar.getInstance().getTimeInMillis(), true, Integer.parseInt(chatItem.getReceiveUserId()));
 
 			serverModel_Chatting.sendChatting(chatting);
@@ -242,7 +244,7 @@ public class Server_Chatting {
 			// 创建群对象
 			Group group = new Group(groupName);
 			// 设置成员
-			group.setMemberList(userIdList);
+			group.setMemberList(server_User.getUsers(userIdList, session));
 			// 设置创建者
 			group.setCreaterId(selfUser1.userId);
 
@@ -305,14 +307,19 @@ public class Server_Chatting {
 			UserItem.Builder userItemBuilder = UserItem.newBuilder();
 
 			// 设置创建者
-			groupItem.setCreaterId(group.getCreaterId());
+			responseBuilder.setCreaterId(group.getCreaterId());
+//			groupItem.setCreater(User.createUserItemBuilder(server_User.getUser(group.getCreaterId(), session)));
 			// 添加成员
-			groupItem.addAllMemberUserId(group.getMemberList());
+			for (User user : group.getMemberList())
+				responseBuilder.addMemberId(user.getUserId());
+//				groupItem.addMemberUser(User.createUserItemBuilder(user));
 			// 群Id
-			groupItem.setGroupId(group.getGroupId() + "");
+			responseBuilder.setGroupId(group.getGroupId()+"");
+//			groupItem.setGroupId(group.getGroupId() + "");
 			// 群名
-			groupItem.setGroupName(group.getGroupName());
-			responseBuilder.setGroupItem(groupItem);
+			responseBuilder.setGroupName(group.getGroupName());
+//			groupItem.setGroupName(group.getGroupName());
+//			responseBuilder.setGroupItem(groupItem);
 
 			responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.SUCCESS);
 
@@ -375,8 +382,8 @@ public class Server_Chatting {
 						"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
 			}
 			boolean containsUser = false;
-			for (String userId : group.getMemberList())
-				if (userId.equals(requestUser.userId)) {
+			for (User user : group.getMemberList())
+				if (user.getUserId().equals(requestUser.userId)) {
 					containsUser = true;
 					break;
 				}
@@ -385,25 +392,38 @@ public class Server_Chatting {
 						"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
 
 			// 操作类型
-			List<String> groupMemberList = group.getMemberList();
+			List<User> groupMemberList = group.getMemberList();
+			boolean containes;
 			if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
-				for (String userId : userList)
-					if (!groupMemberList.contains(userId))
-						groupMemberList.add(userId);
+				ArrayList<String> newUserList = new ArrayList<String>();
+				// 整理出未存在群内的用户
+				for (String userId : userList) {
+					containes = false;
+					for (User user : groupMemberList)
+						if (user.getUserId().equals(userId)) {
+							containes = true;
+							break;
+						}
+					if (!containes)
+						newUserList.add(userId);
+				}
+				if (newUserList.size() > 0) 
+					groupMemberList.addAll(server_User.getUsers(newUserList, session));
+				
 			} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除自己
-				groupMemberList.remove(requestUser.userId);
+				groupMemberList.remove(server_User.getUser(requestUser.userId, session));
 			}
 			
 			// 存入数据库
 			if (groupMemberList.size() == 0) {	// 如果群已经空了，则删除群
 				HibernateDataOperation.delete(group, resultCode);
-			} else {
+			} else {	// 否则，更新群
 				HibernateDataOperation.update(group, resultCode, session);
-				if (resultCode.getCode() == ResultCode.SUCCESS) {
-				} else
+				if (resultCode.getCode() == ResultCode.SUCCESS)
+					logger.debug("Server_Chatting : changGroupChattingMember(NetworkPacket) : Change member successful!");
+				else
 					throw new MyException("Server_Chatting : changGroupChattingMember : Update to database Error!");
 			}
-			
 			HibernateSessionFactory.commitSession(session);
 			// 设置标志位
 			responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);

@@ -1,5 +1,7 @@
 package server;
 
+import com.sun.swing.internal.plaf.basic.resources.basic;
+
 import exception.NoIpException;
 
 import protocol.ProtoHead;
@@ -102,6 +104,10 @@ public class ClientRequest_Dispatcher {
 			// 修改群聊成员
 			case ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE:
 				server_Chatting.changGroupChattingMember(networkPacket);
+				break;
+			// 获取群资料
+			case ProtoHead.ENetworkMessage.GET_GROUP_INFO_REQ_VALUE:
+				server_Chatting.getGroupInfo(networkPacket);
 				break;
 			default:
 				break;

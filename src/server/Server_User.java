@@ -197,8 +197,8 @@ public class Server_User {
 
 			// 查找是否存在同名用户
 			ResultCode code = ResultCode.NULL;
-			List list = HibernateDataOperation.query("userId", loginObject.getUserId(), User.class, code);
-			if (code.getCode().equals(ResultCode.FAIL)) {
+			List<User> list = HibernateDataOperation.query("userId", loginObject.getUserId(), User.class, code);
+			if (code.getCode() != ResultCode.SUCCESS) {
 				logger.error("Server_User.login:query from database fail");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			} else if (list.size() > 0) { // 已存在
@@ -379,7 +379,7 @@ public class Server_User {
 
 			ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
 			ResultCode code = ResultCode.NULL;
-			System.out.println("-----------------------------" + clientUser.userId);
+//			System.out.println("-----------------------------" + clientUser.userId);
 			List list = HibernateDataOperation.query("userId", clientUser.userId, User.class, code);
 			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
 				User user = (User) list.get(0);
@@ -648,32 +648,35 @@ public class Server_User {
 				.getMessageID(), ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP_VALUE, getPersonalInfoBuilder.build()
 				.toByteArray())));
 	}
-	
+
 	/**
 	 * 获取User对象
+	 * 
 	 * @author Feng
 	 */
-	public User getUser (String userId, Session session) {
+	public User getUser(String userId, Session session) {
 		ResultCode resultCode = ResultCode.NULL;
 		List<User> userList = HibernateDataOperation.query(User.HQL_USER_ID, userId, User.class, resultCode, session);
-		if (resultCode == resultCode.SUCCESS && userList.size() > 0)
+		if (resultCode.getCode() == resultCode.SUCCESS && userList.size() > 0)
 			return userList.get(0);
 		return null;
 	}
 
 	/**
 	 * 获取User对象列表
+	 * 
 	 * @author Feng
 	 */
-	public List<User> getUsers (List<String> userIds, Session session) {
+	public List<User> getUsers(List<String> userIds, Session session) {
 		String[] userList = new String[userIds.size()];
 		return getUsers(userIds.toArray(userList), session);
 	}
-	public List<User> getUsers (String[] userIds, Session session) {
+
+	public List<User> getUsers(String[] userIds, Session session) {
 		StringBuffer hqlSB = new StringBuffer("from " + User.class.getSimpleName() + " where " + User.HQL_USER_ID + " in(");
 		for (String userId : userIds)
 			hqlSB.append("'" + userId + "',");
-//		String hql = hqlSB.substring(0, hqlSB.length()-1) + ")";
-		return session.createQuery(hqlSB.substring(0, hqlSB.length()-1) + ")").list();
+		// String hql = hqlSB.substring(0, hqlSB.length()-1) + ")";
+		return session.createQuery(hqlSB.substring(0, hqlSB.length() - 1) + ")").list();
 	}
 }

@@ -30,9 +30,9 @@ public class TestChangeGroupChatMember {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	@Test
+//	@Test
 	public void test1() throws UnknownHostException, IOException {
-		int groupId = 13;
+		int groupId = 17;
 		ClientSocket clientSocket = new ClientSocket();
 
 		ChangeGroupChatMemberRsq.Builder builder = ChangeGroupChatMemberRsq.newBuilder();
@@ -72,14 +72,15 @@ public class TestChangeGroupChatMember {
 	 */
 	@Test
 	public void test2() throws UnknownHostException, IOException{
-		int groupId = 13;
+		int groupId = 14;
+		String user = "c";
 		ClientSocket clientSocket = new ClientSocket();
 
 		ChangeGroupChatMemberRsq.Builder builder = ChangeGroupChatMemberRsq.newBuilder();
 		builder.setChangeType(ChangeType.DELETE);
 		builder.setGroupId(groupId);
-		builder.addUserId("d");
-		builder.addUserId("e");
+//		builder.addUserId("d");
+//		builder.addUserId("e");
 
 		clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
 				.build().toByteArray()));
@@ -91,24 +92,9 @@ public class TestChangeGroupChatMember {
 		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
 		System.out.println(response.getResultCode().toString());
 		
-		// 非创建者，无权限
-		assertEquals(clientSocket.login("b", "b"), LoginRsp.ResultCode.SUCCESS);
-		System.out.println("b login");
-		
-		clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
-				.build().toByteArray()));
-		byteArray = clientSocket.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP);
-		assertNotNull(byteArray);
-		response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
-		System.out.println(response.getResultCode().toString());
-		
-		assertEquals(clientSocket.logout(), LogoutRsp.ResultCode.SUCCESS);
-		System.out.println("b logout");
-		
-		// 创建者，成功
-		assertEquals(clientSocket.login("a", "a"), LoginRsp.ResultCode.SUCCESS);
-		System.out.println("a login");
+		// 删除自己，成功
+		assertEquals(clientSocket.login(user, user), LoginRsp.ResultCode.SUCCESS);
+		System.out.println(user + " login");
 		
 		clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
 				.build().toByteArray()));

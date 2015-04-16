@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.hibernate.Session;
 import model.HibernateSessionFactory;
+import model.ResultCode;
 import model.User;
 
 public class Test {
@@ -22,12 +23,19 @@ public class Test {
 //	}
 
 	public static void main(String args[]){
-		String a = "fuck";
-		String b = "fuck";
-		ArrayList<String> list = new ArrayList<String>();
-		list.add(a);
-		System.out.println(list.contains(b));
+		ResultCode resultCode = ResultCode.NULL;
+		System.out.println(resultCode.getCode());
+		a(resultCode);
+		System.out.println(resultCode.getCode());
+		b(resultCode);
+		System.out.println(resultCode.getCode());
 		
+	}
+	public static void a(ResultCode resultCode) {
+		resultCode = ResultCode.SUCCESS;
+	}
+	public static void b(ResultCode resultCode) {
+		resultCode.setCode(ResultCode.SUCCESS);
 	}
 
 }
