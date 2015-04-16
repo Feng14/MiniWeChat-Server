@@ -31,7 +31,7 @@ public class Group {
 	private int groupId;
 	private String createrId;
 	private String groupName;
-	private List<User> memberList;
+	private List<String> memberList;
 
 	public Group() {
 	}
@@ -71,11 +71,11 @@ public class Group {
 
 	@ManyToMany(targetEntity = User.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "group_members", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-	public List<User> getMemberList() {
+	public List<String> getMemberList() {
 		return memberList;
 	}
 
-	public void setMemberList(List<User> memberList) {
+	public void setMemberList(List<String> memberList) {
 		this.memberList = memberList;
 	}
 

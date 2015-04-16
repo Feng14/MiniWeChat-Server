@@ -36,9 +36,9 @@ public class TestHibernate {
     	u2.setUserId("user2");
     	u2.setUserName("name2");
     	u2.setUserPassword("122");
-    	List<User> memberList = new ArrayList<User>();
-    	memberList.add(u1);
-    	memberList.add(u2);
+    	List<String> memberList = new ArrayList<String>();
+    	memberList.add(u1.getUserId());
+    	memberList.add(u2.getUserId());
     	p.setMemberList(memberList);
     	
     	Session session = HibernateSessionFactory.getSession();
