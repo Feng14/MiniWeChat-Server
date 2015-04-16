@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.criteria.From;
-
-import org.apache.catalina.mbeans.UserMBean;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
@@ -21,11 +18,11 @@ import model.User;
 import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
-import protocol.Data.ChatData.ChatItem.ChatType;
 import protocol.Data.GroupData.GroupItem;
 import protocol.Data.UserData.UserItem;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq.ChangeType;
 import protocol.Msg.CreateGroupChatMsg;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
@@ -37,7 +34,6 @@ import protocol.Msg.SendChatMsg.SendChatRsp;
 import protocol.Msg.SendChatMsg;
 import exception.MyException;
 import exception.NoIpException;
-import tools.Debug;
 
 /**
  * 主服务器下的子服务器，负责处理发消息相关事件
@@ -230,7 +226,6 @@ public class Server_Chatting {
 				groupName += userIdList.get(i).toString() + ",";
 			groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
 
-
 			// 判断本用户知否在线
 			ClientUser selfUser1 = serverModel.getClientUserFromTable(networkPacket.ioSession);
 			if (selfUser1 == null)
@@ -244,7 +239,8 @@ public class Server_Chatting {
 			// 创建群对象
 			Group group = new Group(groupName);
 			// 设置成员
-			group.setMemberList(server_User.getUsers(userIdList, session));
+			List<User> userList = server_User.getUsers(userIdList, session);
+			group.setMemberList(userList);
 			// 设置创建者
 			group.setCreaterId(selfUser1.userId);
 
@@ -260,8 +256,12 @@ public class Server_Chatting {
 
 			// 如果成功，设置标志位
 			logger.debug("Server_Chatting : createGroupChatting : create group chatting Successful, response to client!");
+			
 			if (resultCode.getCode() == ResultCode.SUCCESS)
 				createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
+			
+			// 通知每位群成员
+			sendChangeGroupSync(group, userList, ChangeGroupChatMemberSync.Type.REFRESH);
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
@@ -308,18 +308,19 @@ public class Server_Chatting {
 
 			// 设置创建者
 			responseBuilder.setCreaterId(group.getCreaterId());
-//			groupItem.setCreater(User.createUserItemBuilder(server_User.getUser(group.getCreaterId(), session)));
+			// groupItem.setCreater(User.createUserItemBuilder(server_User.getUser(group.getCreaterId(),
+			// session)));
 			// 添加成员
 			for (User user : group.getMemberList())
 				responseBuilder.addMemberId(user.getUserId());
-//				groupItem.addMemberUser(User.createUserItemBuilder(user));
+			// groupItem.addMemberUser(User.createUserItemBuilder(user));
 			// 群Id
-			responseBuilder.setGroupId(group.getGroupId()+"");
-//			groupItem.setGroupId(group.getGroupId() + "");
+			responseBuilder.setGroupId(group.getGroupId() + "");
+			// groupItem.setGroupId(group.getGroupId() + "");
 			// 群名
 			responseBuilder.setGroupName(group.getGroupName());
-//			groupItem.setGroupName(group.getGroupName());
-//			responseBuilder.setGroupItem(groupItem);
+			// groupItem.setGroupName(group.getGroupName());
+			// responseBuilder.setGroupItem(groupItem);
 
 			responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.SUCCESS);
 
@@ -392,10 +393,11 @@ public class Server_Chatting {
 						"Server_Chatting : changGroupChattingMember(NetworkPacket) : User has no authority to Change member!");
 
 			// 操作类型
-			List<User> groupMemberList = group.getMemberList();
 			boolean containes;
+			ArrayList<String> newUserList = new ArrayList<String>();
+			List<User> newUserList2 = new ArrayList<User>();
+			List<User> groupMemberList = group.getMemberList();
 			if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
-				ArrayList<String> newUserList = new ArrayList<String>();
 				// 整理出未存在群内的用户
 				for (String userId : userList) {
 					containes = false;
@@ -407,17 +409,20 @@ public class Server_Chatting {
 					if (!containes)
 						newUserList.add(userId);
 				}
-				if (newUserList.size() > 0) 
-					groupMemberList.addAll(server_User.getUsers(newUserList, session));
-				
+				if (newUserList.size() > 0) {
+					newUserList2 = server_User.getUsers(newUserList, session);
+					groupMemberList.addAll(newUserList2);
+				}
+
 			} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除自己
+				newUserList2.add(server_User.getUser(requestUser.userId, session));
 				groupMemberList.remove(server_User.getUser(requestUser.userId, session));
 			}
-			
+
 			// 存入数据库
-			if (groupMemberList.size() == 0) {	// 如果群已经空了，则删除群
+			if (groupMemberList.size() == 0) { // 如果群已经空了，则删除群
 				HibernateDataOperation.delete(group, resultCode);
-			} else {	// 否则，更新群
+			} else { // 否则，更新群
 				HibernateDataOperation.update(group, resultCode, session);
 				if (resultCode.getCode() == ResultCode.SUCCESS)
 					logger.debug("Server_Chatting : changGroupChattingMember(NetworkPacket) : Change member successful!");
@@ -427,6 +432,16 @@ public class Server_Chatting {
 			HibernateSessionFactory.commitSession(session);
 			// 设置标志位
 			responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
+			
+			// 通知所有用户
+			ChangeGroupChatMemberSync.Type type;
+			if (changeGroupMemberObj.getChangeType() == ChangeType.ADD)
+				type = ChangeGroupChatMemberSync.Type.ADD;
+			else if(changeGroupMemberObj.getChangeType() == ChangeType.DELETE)
+				type = ChangeGroupChatMemberSync.Type.DELETE;
+			else
+				type = ChangeGroupChatMemberSync.Type.REFRESH;
+			sendChangeGroupSync(group, newUserList2, type);
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
@@ -437,6 +452,36 @@ public class Server_Chatting {
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP_VALUE, responseBuilder.build()
 				.toByteArray())));
+	}
+
+	/**
+	 * 给用户发送群人员变更消息
+	 * 
+	 * @param userList
+	 * @param type
+	 */
+	private void sendChangeGroupSync(Group group, List<User> userList, ChangeGroupChatMemberSync.Type type) {
+		User[] userList2 = new User[userList.size()];
+		userList.toArray(userList2);
+		sendChangeGroupSync(group, userList2, type);
+	}
+	private void sendChangeGroupSync(Group group, User[] userList, ChangeGroupChatMemberSync.Type type) {
+		ChangeGroupChatMemberSync.Builder builder = ChangeGroupChatMemberSync.newBuilder();
+		builder.setType(type);
+
+		for (User user : userList)
+			builder.addUserId(user.getUserId());
+		
+		ClientUser clientUser;
+		// 对每个在线的群成员发送
+		for (User user : group.getMemberList()) {
+			clientUser = serverModel.getClientUserByUserId(user.getUserId());
+			if (clientUser == null)
+				continue;
+			
+			serverNetwork.sendToClient(clientUser.ioSession, new PacketFromServer(
+					ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__Sync_VALUE, builder.build().toByteArray()));
+		}
 	}
 
 	/**

@@ -1290,6 +1290,695 @@ public final class ChangeGroupChatMemberMsg {
     // @@protoc_insertion_point(class_scope:protocol.ChangeGroupChatMemberRsp)
   }
 
+  public interface ChangeGroupChatMemberSyncOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required .protocol.ChangeGroupChatMemberSync.Type type = 1;
+    /**
+     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     */
+    boolean hasType();
+    /**
+     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     */
+    protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type getType();
+
+    // repeated string userId = 2;
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    java.util.List<java.lang.String>
+    getUserIdList();
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    int getUserIdCount();
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    java.lang.String getUserId(int index);
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdBytes(int index);
+  }
+  /**
+   * Protobuf type {@code protocol.ChangeGroupChatMemberSync}
+   */
+  public static final class ChangeGroupChatMemberSync extends
+      com.google.protobuf.GeneratedMessage
+      implements ChangeGroupChatMemberSyncOrBuilder {
+    // Use ChangeGroupChatMemberSync.newBuilder() to construct.
+    private ChangeGroupChatMemberSync(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private ChangeGroupChatMemberSync(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final ChangeGroupChatMemberSync defaultInstance;
+    public static ChangeGroupChatMemberSync getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public ChangeGroupChatMemberSync getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private ChangeGroupChatMemberSync(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type value = protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = value;
+              }
+              break;
+            }
+            case 18: {
+              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+                userId_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000002;
+              }
+              userId_.add(input.readBytes());
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+          userId_ = new com.google.protobuf.UnmodifiableLazyStringList(userId_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return protocol.Msg.ChangeGroupChatMemberMsg.internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return protocol.Msg.ChangeGroupChatMemberMsg.internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.class, protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<ChangeGroupChatMemberSync> PARSER =
+        new com.google.protobuf.AbstractParser<ChangeGroupChatMemberSync>() {
+      public ChangeGroupChatMemberSync parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new ChangeGroupChatMemberSync(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ChangeGroupChatMemberSync> getParserForType() {
+      return PARSER;
+    }
+
+    /**
+     * Protobuf enum {@code protocol.ChangeGroupChatMemberSync.Type}
+     */
+    public enum Type
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>ADD = 0;</code>
+       */
+      ADD(0, 0),
+      /**
+       * <code>DELETE = 1;</code>
+       */
+      DELETE(1, 1),
+      /**
+       * <code>REFRESH = 2;</code>
+       */
+      REFRESH(2, 2),
+      ;
+
+      /**
+       * <code>ADD = 0;</code>
+       */
+      public static final int ADD_VALUE = 0;
+      /**
+       * <code>DELETE = 1;</code>
+       */
+      public static final int DELETE_VALUE = 1;
+      /**
+       * <code>REFRESH = 2;</code>
+       */
+      public static final int REFRESH_VALUE = 2;
+
+
+      public final int getNumber() { return value; }
+
+      public static Type valueOf(int value) {
+        switch (value) {
+          case 0: return ADD;
+          case 1: return DELETE;
+          case 2: return REFRESH;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<Type>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
+              public Type findValueByNumber(int number) {
+                return Type.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final Type[] VALUES = values();
+
+      public static Type valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private Type(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupChatMemberSync.Type)
+    }
+
+    private int bitField0_;
+    // required .protocol.ChangeGroupChatMemberSync.Type type = 1;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type type_;
+    /**
+     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     */
+    public protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type getType() {
+      return type_;
+    }
+
+    // repeated string userId = 2;
+    public static final int USERID_FIELD_NUMBER = 2;
+    private com.google.protobuf.LazyStringList userId_;
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    public java.util.List<java.lang.String>
+        getUserIdList() {
+      return userId_;
+    }
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    public int getUserIdCount() {
+      return userId_.size();
+    }
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    public java.lang.String getUserId(int index) {
+      return userId_.get(index);
+    }
+    /**
+     * <code>repeated string userId = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdBytes(int index) {
+      return userId_.getByteString(index);
+    }
+
+    private void initFields() {
+      type_ = protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type.ADD;
+      userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, type_.getNumber());
+      }
+      for (int i = 0; i < userId_.size(); i++) {
+        output.writeBytes(2, userId_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_.getNumber());
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < userId_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(userId_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getUserIdList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code protocol.ChangeGroupChatMemberSync}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSyncOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return protocol.Msg.ChangeGroupChatMemberMsg.internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return protocol.Msg.ChangeGroupChatMemberMsg.internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.class, protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Builder.class);
+      }
+
+      // Construct using protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        type_ = protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type.ADD;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return protocol.Msg.ChangeGroupChatMemberMsg.internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+      }
+
+      public protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync getDefaultInstanceForType() {
+        return protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.getDefaultInstance();
+      }
+
+      public protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync build() {
+        protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync buildPartial() {
+        protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync result = new protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+          userId_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              userId_);
+          bitField0_ = (bitField0_ & ~0x00000002);
+        }
+        result.userId_ = userId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync) {
+          return mergeFrom((protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync other) {
+        if (other == protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (!other.userId_.isEmpty()) {
+          if (userId_.isEmpty()) {
+            userId_ = other.userId_;
+            bitField0_ = (bitField0_ & ~0x00000002);
+          } else {
+            ensureUserIdIsMutable();
+            userId_.addAll(other.userId_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasType()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required .protocol.ChangeGroupChatMemberSync.Type type = 1;
+      private protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type type_ = protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type.ADD;
+      /**
+       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       */
+      public protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type getType() {
+        return type_;
+      }
+      /**
+       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       */
+      public Builder setType(protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync.Type.ADD;
+        onChanged();
+        return this;
+      }
+
+      // repeated string userId = 2;
+      private com.google.protobuf.LazyStringList userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureUserIdIsMutable() {
+        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+          userId_ = new com.google.protobuf.LazyStringArrayList(userId_);
+          bitField0_ |= 0x00000002;
+         }
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public java.util.List<java.lang.String>
+          getUserIdList() {
+        return java.util.Collections.unmodifiableList(userId_);
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public int getUserIdCount() {
+        return userId_.size();
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public java.lang.String getUserId(int index) {
+        return userId_.get(index);
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIdBytes(int index) {
+        return userId_.getByteString(index);
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public Builder setUserId(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserIdIsMutable();
+        userId_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public Builder addUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserIdIsMutable();
+        userId_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public Builder addAllUserId(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureUserIdIsMutable();
+        super.addAll(values, userId_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public Builder clearUserId() {
+        userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string userId = 2;</code>
+       */
+      public Builder addUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureUserIdIsMutable();
+        userId_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupChatMemberSync)
+    }
+
+    static {
+      defaultInstance = new ChangeGroupChatMemberSync(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupChatMemberSync)
+  }
+
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_protocol_ChangeGroupChatMemberRsq_descriptor;
   private static
@@ -1300,6 +1989,11 @@ public final class ChangeGroupChatMemberMsg {
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_protocol_ChangeGroupChatMemberRsp_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1318,7 +2012,11 @@ public final class ChangeGroupChatMemberMsg {
       "mberRsp\022A\n\nresultCode\030\001 \002(\0162-.protocol.C" +
       "hangeGroupChatMemberRsp.ResultCode\"5\n\nRe" +
       "sultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001\022\020\n\014NO_AU" +
-      "THORITY\020\002B\016\n\014protocol.Msg"
+      "THORITY\020\002\"\215\001\n\031ChangeGroupChatMemberSync\022",
+      "6\n\004type\030\001 \002(\0162(.protocol.ChangeGroupChat" +
+      "MemberSync.Type\022\016\n\006userId\030\002 \003(\t\"(\n\004Type\022" +
+      "\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022\013\n\007REFRESH\020\002B\016\n\014pro" +
+      "tocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1337,6 +2035,12 @@ public final class ChangeGroupChatMemberMsg {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_ChangeGroupChatMemberRsp_descriptor,
               new java.lang.String[] { "ResultCode", });
+          internal_static_protocol_ChangeGroupChatMemberSync_descriptor =
+            getDescriptor().getMessageTypes().get(2);
+          internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_protocol_ChangeGroupChatMemberSync_descriptor,
+              new java.lang.String[] { "Type", "UserId", });
           return null;
         }
       };

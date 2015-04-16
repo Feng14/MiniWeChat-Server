@@ -190,7 +190,7 @@ public class Server_User {
 			// "Deal with user's" +
 			// ServerModel.getIoSessionKey(networkPacket.ioSession) +
 			// " 'Login' event");
-			logger.debug("Server_User : login : Deal with user's" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+			logger.info("Server_User : login : Deal with user's" + ServerModel.getIoSessionKey(networkPacket.ioSession)
 					+ " 'Login' event");
 
 			loginObject = LoginMsg.LoginReq.parseFrom(networkPacket.getMessageObjectBytes());
