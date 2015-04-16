@@ -648,4 +648,28 @@ public class Server_User {
 				.getMessageID(), ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP_VALUE, getPersonalInfoBuilder.build()
 				.toByteArray())));
 	}
+	
+	/**
+	 * 获取User对象
+	 * @author Feng
+	 */
+	public User getUser (String userId, Session session) {
+		ResultCode resultCode = ResultCode.NULL;
+		List<User> userList = HibernateDataOperation.query(User.HQL_USER_ID, userId, User.class, resultCode, session);
+		if (resultCode == resultCode.SUCCESS && userList.size() > 0)
+			return userList.get(0);
+		return null;
+	}
+
+	/**
+	 * 获取User对象列表
+	 * @author Feng
+	 */
+	public List<User> getUsers (String[] userIds, Session session) {
+		StringBuffer hqlSB = new StringBuffer("from " + User.class.getSimpleName() + " where " + User.HQL_USER_ID + " in(");
+		for (String userId : userIds)
+			hqlSB.append("'" + userId + "',");
+//		String hql = hqlSB.substring(0, hqlSB.length()-1) + ")";
+		return session.createQuery(hqlSB.substring(0, hqlSB.length()-1) + ")").list();
+	}
 }

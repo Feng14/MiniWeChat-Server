@@ -147,6 +147,10 @@ public final class OffLineMsg {
        * </pre>
        */
       ANOTHER_LOGIN(1, 1),
+      /**
+       * <code>KEEP_ALIVE_FALSE = 2;</code>
+       */
+      KEEP_ALIVE_FALSE(2, 2),
       ;
 
       /**
@@ -165,6 +169,10 @@ public final class OffLineMsg {
        * </pre>
        */
       public static final int ANOTHER_LOGIN_VALUE = 1;
+      /**
+       * <code>KEEP_ALIVE_FALSE = 2;</code>
+       */
+      public static final int KEEP_ALIVE_FALSE_VALUE = 2;
 
 
       public final int getNumber() { return value; }
@@ -173,6 +181,7 @@ public final class OffLineMsg {
         switch (value) {
           case 0: return CHANGE_PASSWORD;
           case 1: return ANOTHER_LOGIN;
+          case 2: return KEEP_ALIVE_FALSE;
           default: return null;
         }
       }
@@ -537,11 +546,11 @@ public final class OffLineMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020OffLineMsg.proto\022\010protocol\"v\n\013OffLineS" +
-      "ync\0222\n\tcauseCode\030\001 \002(\0162\037.protocol.OffLin" +
-      "eSync.CauseCode\"3\n\tCauseCode\022\023\n\017CHANGE_P" +
-      "ASSWORD\020\000\022\021\n\rANOTHER_LOGIN\020\001B\016\n\014protocol" +
-      ".Msg"
+      "\n\020OffLineMsg.proto\022\010protocol\"\214\001\n\013OffLine" +
+      "Sync\0222\n\tcauseCode\030\001 \002(\0162\037.protocol.OffLi" +
+      "neSync.CauseCode\"I\n\tCauseCode\022\023\n\017CHANGE_" +
+      "PASSWORD\020\000\022\021\n\rANOTHER_LOGIN\020\001\022\024\n\020KEEP_AL" +
+      "IVE_FALSE\020\002B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

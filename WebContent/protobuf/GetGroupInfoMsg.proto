@@ -1,0 +1,18 @@
+package protocol;
+
+option java_package = "protocol.Msg";
+import "GroupData.proto";
+
+message GetGroupInfoReq{
+	required string groupId = 1 ;
+}
+
+message GetGroupInfoRsp{
+	enum ResultCode{
+		SUCCESS = 0;//搜索到群
+		FAIL = 1;//未搜索到群
+		GROUP_NOT_EXIST = 2;//群不存在
+	}
+	required ResultCode resultCode = 1;
+	optional GroupItem groupItem = 2;
+}

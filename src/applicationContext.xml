@@ -123,6 +123,9 @@
 		<property name="ServerNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
+		<property name="Server_User">
+			<ref bean="Server_User" />
+		</property>
 	</bean>
 
 	<bean id="Server_Friend" class="server.Server_Friend">
