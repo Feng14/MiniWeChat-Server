@@ -36,6 +36,9 @@ jdbc:mysql://127.0.0.1:3306/MiniWechat?useUnicode=true&amp;characterEncoding=UTF
 <!-- 最小连接数 -->
 <minimum-connection-count>3</minimum-connection-count>
 
+<!--一个活动连接最大活动时间默认5分钟-->
+<maximum-active-time>3600000</maximum-active-time>
+
 <!-- 在分配连接前后是否进行有效性测试，这个是解决本问题的关键 -->
 <test-before-use>true</test-before-use>
 <test-after-use>true</test-after-use>
