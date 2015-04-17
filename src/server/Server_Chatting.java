@@ -23,9 +23,9 @@ import protocol.Data.ChatData.ChatItem.TargetType;
 import protocol.Data.GroupData.GroupItem;
 import protocol.Data.UserData.UserItem;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq.ChangeType;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq.ChangeType;
 import protocol.Msg.CreateGroupChatMsg;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
@@ -314,24 +314,24 @@ public class Server_Chatting {
 			}
 
 			GroupItem.Builder groupItem = GroupItem.newBuilder();
-			UserItem.Builder userItemBuilder = UserItem.newBuilder();
-
+			
 			// 设置创建者
-			responseBuilder.setCreaterId(group.getCreaterId());
+			groupItem.setCreaterUserId(group.getCreaterId());
 			// groupItem.setCreater(User.createUserItemBuilder(server_User.getUser(group.getCreaterId(),
 			// session)));
 			// 添加成员
 			for (User user : group.getMemberList())
-				responseBuilder.addMemberId(user.getUserId());
+				groupItem.addMemberUserId(user.getUserId());
 			// groupItem.addMemberUser(User.createUserItemBuilder(user));
 			// 群Id
-			responseBuilder.setGroupId(group.getGroupId() + "");
+			groupItem.setGroupId(group.getGroupId() + "");
 			// groupItem.setGroupId(group.getGroupId() + "");
 			// 群名
-			responseBuilder.setGroupName(group.getGroupName());
+			groupItem.setGroupName(group.getGroupName());
 			// groupItem.setGroupName(group.getGroupName());
 			// responseBuilder.setGroupItem(groupItem);
 
+			responseBuilder.setGroupItem(groupItem);
 			responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.SUCCESS);
 
 		} catch (InvalidProtocolBufferException e) {
@@ -372,9 +372,9 @@ public class Server_Chatting {
 		ChangeGroupChatMemberRsp.Builder responseBuilder = ChangeGroupChatMemberRsp.newBuilder();
 		responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.FAIL);
 
-		ChangeGroupChatMemberRsq changeGroupMemberObj;
+		ChangeGroupChatMemberReq changeGroupMemberObj;
 		try {
-			changeGroupMemberObj = ChangeGroupChatMemberRsq.parseFrom(networkPacket.getMessageObjectBytes());
+			changeGroupMemberObj = ChangeGroupChatMemberReq.parseFrom(networkPacket.getMessageObjectBytes());
 
 			// 获取群聊名单
 			Session session = HibernateSessionFactory.getSession();

@@ -2,7 +2,7 @@ package protocol;
 
 option java_package = "protocol.Msg";
 
-message ChangeGroupChatMemberRsq{
+message ChangeGroupChatMemberReq{
 	enum ChangeType{
 		ADD = 0;
 		DELETE = 1;

@@ -8,10 +8,10 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 
 import protocol.ProtoHead;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq;
+import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq.ChangeType;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq.ChangeType;
 import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.LogoutMsg.LogoutRsp;
 import server.NetworkPacket;
@@ -37,7 +37,7 @@ public class TestChangeGroupChatMember {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 
-		ChangeGroupChatMemberRsq.Builder builder = ChangeGroupChatMemberRsq.newBuilder();
+		ChangeGroupChatMemberReq.Builder builder = ChangeGroupChatMemberReq.newBuilder();
 		builder.setChangeType(ChangeType.ADD);
 		builder.setGroupId(groupId);
 		builder.addUserId("d");
@@ -88,7 +88,7 @@ public class TestChangeGroupChatMember {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 
-		ChangeGroupChatMemberRsq.Builder builder = ChangeGroupChatMemberRsq.newBuilder();
+		ChangeGroupChatMemberReq.Builder builder = ChangeGroupChatMemberReq.newBuilder();
 		builder.setChangeType(ChangeType.DELETE);
 		builder.setGroupId(groupId);
 //		builder.addUserId("d");

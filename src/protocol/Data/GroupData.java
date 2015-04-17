@@ -41,44 +41,40 @@ public final class GroupData {
     com.google.protobuf.ByteString
         getGroupNameBytes();
 
-    // required .protocol.UserItem creater = 3;
+    // required string createrUserId = 3;
     /**
-     * <code>required .protocol.UserItem creater = 3;</code>
+     * <code>required string createrUserId = 3;</code>
      */
-    boolean hasCreater();
+    boolean hasCreaterUserId();
     /**
-     * <code>required .protocol.UserItem creater = 3;</code>
+     * <code>required string createrUserId = 3;</code>
      */
-    protocol.Data.UserData.UserItem getCreater();
+    java.lang.String getCreaterUserId();
     /**
-     * <code>required .protocol.UserItem creater = 3;</code>
+     * <code>required string createrUserId = 3;</code>
      */
-    protocol.Data.UserData.UserItemOrBuilder getCreaterOrBuilder();
+    com.google.protobuf.ByteString
+        getCreaterUserIdBytes();
 
-    // repeated .protocol.UserItem memberUser = 4;
+    // repeated string memberUserId = 4;
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    java.util.List<protocol.Data.UserData.UserItem> 
-        getMemberUserList();
+    java.util.List<java.lang.String>
+    getMemberUserIdList();
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    protocol.Data.UserData.UserItem getMemberUser(int index);
+    int getMemberUserIdCount();
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    int getMemberUserCount();
+    java.lang.String getMemberUserId(int index);
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-        getMemberUserOrBuilderList();
-    /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
-     */
-    protocol.Data.UserData.UserItemOrBuilder getMemberUserOrBuilder(
-        int index);
+    com.google.protobuf.ByteString
+        getMemberUserIdBytes(int index);
   }
   /**
    * Protobuf type {@code protocol.GroupItem}
@@ -142,24 +138,16 @@ public final class GroupData {
               break;
             }
             case 26: {
-              protocol.Data.UserData.UserItem.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000004) == 0x00000004)) {
-                subBuilder = creater_.toBuilder();
-              }
-              creater_ = input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry);
-              if (subBuilder != null) {
-                subBuilder.mergeFrom(creater_);
-                creater_ = subBuilder.buildPartial();
-              }
               bitField0_ |= 0x00000004;
+              createrUserId_ = input.readBytes();
               break;
             }
             case 34: {
               if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-                memberUser_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>();
+                memberUserId_ = new com.google.protobuf.LazyStringArrayList();
                 mutable_bitField0_ |= 0x00000008;
               }
-              memberUser_.add(input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry));
+              memberUserId_.add(input.readBytes());
               break;
             }
           }
@@ -171,7 +159,7 @@ public final class GroupData {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
-          memberUser_ = java.util.Collections.unmodifiableList(memberUser_);
+          memberUserId_ = new com.google.protobuf.UnmodifiableLazyStringList(memberUserId_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -291,69 +279,84 @@ public final class GroupData {
       }
     }
 
-    // required .protocol.UserItem creater = 3;
-    public static final int CREATER_FIELD_NUMBER = 3;
-    private protocol.Data.UserData.UserItem creater_;
+    // required string createrUserId = 3;
+    public static final int CREATERUSERID_FIELD_NUMBER = 3;
+    private java.lang.Object createrUserId_;
     /**
-     * <code>required .protocol.UserItem creater = 3;</code>
+     * <code>required string createrUserId = 3;</code>
      */
-    public boolean hasCreater() {
+    public boolean hasCreaterUserId() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required .protocol.UserItem creater = 3;</code>
+     * <code>required string createrUserId = 3;</code>
      */
-    public protocol.Data.UserData.UserItem getCreater() {
-      return creater_;
+    public java.lang.String getCreaterUserId() {
+      java.lang.Object ref = createrUserId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          createrUserId_ = s;
+        }
+        return s;
+      }
     }
     /**
-     * <code>required .protocol.UserItem creater = 3;</code>
+     * <code>required string createrUserId = 3;</code>
      */
-    public protocol.Data.UserData.UserItemOrBuilder getCreaterOrBuilder() {
-      return creater_;
+    public com.google.protobuf.ByteString
+        getCreaterUserIdBytes() {
+      java.lang.Object ref = createrUserId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        createrUserId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
-    // repeated .protocol.UserItem memberUser = 4;
-    public static final int MEMBERUSER_FIELD_NUMBER = 4;
-    private java.util.List<protocol.Data.UserData.UserItem> memberUser_;
+    // repeated string memberUserId = 4;
+    public static final int MEMBERUSERID_FIELD_NUMBER = 4;
+    private com.google.protobuf.LazyStringList memberUserId_;
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    public java.util.List<protocol.Data.UserData.UserItem> getMemberUserList() {
-      return memberUser_;
+    public java.util.List<java.lang.String>
+        getMemberUserIdList() {
+      return memberUserId_;
     }
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    public java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-        getMemberUserOrBuilderList() {
-      return memberUser_;
+    public int getMemberUserIdCount() {
+      return memberUserId_.size();
     }
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    public int getMemberUserCount() {
-      return memberUser_.size();
+    public java.lang.String getMemberUserId(int index) {
+      return memberUserId_.get(index);
     }
     /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
+     * <code>repeated string memberUserId = 4;</code>
      */
-    public protocol.Data.UserData.UserItem getMemberUser(int index) {
-      return memberUser_.get(index);
-    }
-    /**
-     * <code>repeated .protocol.UserItem memberUser = 4;</code>
-     */
-    public protocol.Data.UserData.UserItemOrBuilder getMemberUserOrBuilder(
-        int index) {
-      return memberUser_.get(index);
+    public com.google.protobuf.ByteString
+        getMemberUserIdBytes(int index) {
+      return memberUserId_.getByteString(index);
     }
 
     private void initFields() {
       groupId_ = "";
       groupName_ = "";
-      creater_ = protocol.Data.UserData.UserItem.getDefaultInstance();
-      memberUser_ = java.util.Collections.emptyList();
+      createrUserId_ = "";
+      memberUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -368,19 +371,9 @@ public final class GroupData {
         memoizedIsInitialized = 0;
         return false;
       }
-      if (!hasCreater()) {
+      if (!hasCreaterUserId()) {
         memoizedIsInitialized = 0;
         return false;
-      }
-      if (!getCreater().isInitialized()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      for (int i = 0; i < getMemberUserCount(); i++) {
-        if (!getMemberUser(i).isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
       }
       memoizedIsInitialized = 1;
       return true;
@@ -396,10 +389,10 @@ public final class GroupData {
         output.writeBytes(2, getGroupNameBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeMessage(3, creater_);
+        output.writeBytes(3, getCreaterUserIdBytes());
       }
-      for (int i = 0; i < memberUser_.size(); i++) {
-        output.writeMessage(4, memberUser_.get(i));
+      for (int i = 0; i < memberUserId_.size(); i++) {
+        output.writeBytes(4, memberUserId_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -420,11 +413,16 @@ public final class GroupData {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(3, creater_);
+          .computeBytesSize(3, getCreaterUserIdBytes());
       }
-      for (int i = 0; i < memberUser_.size(); i++) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(4, memberUser_.get(i));
+      {
+        int dataSize = 0;
+        for (int i = 0; i < memberUserId_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(memberUserId_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getMemberUserIdList().size();
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -534,8 +532,6 @@ public final class GroupData {
       }
       private void maybeForceBuilderInitialization() {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getCreaterFieldBuilder();
-          getMemberUserFieldBuilder();
         }
       }
       private static Builder create() {
@@ -548,18 +544,10 @@ public final class GroupData {
         bitField0_ = (bitField0_ & ~0x00000001);
         groupName_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        if (createrBuilder_ == null) {
-          creater_ = protocol.Data.UserData.UserItem.getDefaultInstance();
-        } else {
-          createrBuilder_.clear();
-        }
+        createrUserId_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        if (memberUserBuilder_ == null) {
-          memberUser_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-        } else {
-          memberUserBuilder_.clear();
-        }
+        memberUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -599,20 +587,13 @@ public final class GroupData {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        if (createrBuilder_ == null) {
-          result.creater_ = creater_;
-        } else {
-          result.creater_ = createrBuilder_.build();
+        result.createrUserId_ = createrUserId_;
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          memberUserId_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              memberUserId_);
+          bitField0_ = (bitField0_ & ~0x00000008);
         }
-        if (memberUserBuilder_ == null) {
-          if (((bitField0_ & 0x00000008) == 0x00000008)) {
-            memberUser_ = java.util.Collections.unmodifiableList(memberUser_);
-            bitField0_ = (bitField0_ & ~0x00000008);
-          }
-          result.memberUser_ = memberUser_;
-        } else {
-          result.memberUser_ = memberUserBuilder_.build();
-        }
+        result.memberUserId_ = memberUserId_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -639,34 +620,20 @@ public final class GroupData {
           groupName_ = other.groupName_;
           onChanged();
         }
-        if (other.hasCreater()) {
-          mergeCreater(other.getCreater());
+        if (other.hasCreaterUserId()) {
+          bitField0_ |= 0x00000004;
+          createrUserId_ = other.createrUserId_;
+          onChanged();
         }
-        if (memberUserBuilder_ == null) {
-          if (!other.memberUser_.isEmpty()) {
-            if (memberUser_.isEmpty()) {
-              memberUser_ = other.memberUser_;
-              bitField0_ = (bitField0_ & ~0x00000008);
-            } else {
-              ensureMemberUserIsMutable();
-              memberUser_.addAll(other.memberUser_);
-            }
-            onChanged();
+        if (!other.memberUserId_.isEmpty()) {
+          if (memberUserId_.isEmpty()) {
+            memberUserId_ = other.memberUserId_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureMemberUserIdIsMutable();
+            memberUserId_.addAll(other.memberUserId_);
           }
-        } else {
-          if (!other.memberUser_.isEmpty()) {
-            if (memberUserBuilder_.isEmpty()) {
-              memberUserBuilder_.dispose();
-              memberUserBuilder_ = null;
-              memberUser_ = other.memberUser_;
-              bitField0_ = (bitField0_ & ~0x00000008);
-              memberUserBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getMemberUserFieldBuilder() : null;
-            } else {
-              memberUserBuilder_.addAllMessages(other.memberUser_);
-            }
-          }
+          onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -681,19 +648,9 @@ public final class GroupData {
           
           return false;
         }
-        if (!hasCreater()) {
+        if (!hasCreaterUserId()) {
           
           return false;
-        }
-        if (!getCreater().isInitialized()) {
-          
-          return false;
-        }
-        for (int i = 0; i < getMemberUserCount(); i++) {
-          if (!getMemberUser(i).isInitialized()) {
-            
-            return false;
-          }
         }
         return true;
       }
@@ -865,361 +822,171 @@ public final class GroupData {
         return this;
       }
 
-      // required .protocol.UserItem creater = 3;
-      private protocol.Data.UserData.UserItem creater_ = protocol.Data.UserData.UserItem.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
-          protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> createrBuilder_;
+      // required string createrUserId = 3;
+      private java.lang.Object createrUserId_ = "";
       /**
-       * <code>required .protocol.UserItem creater = 3;</code>
+       * <code>required string createrUserId = 3;</code>
        */
-      public boolean hasCreater() {
+      public boolean hasCreaterUserId() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required .protocol.UserItem creater = 3;</code>
+       * <code>required string createrUserId = 3;</code>
        */
-      public protocol.Data.UserData.UserItem getCreater() {
-        if (createrBuilder_ == null) {
-          return creater_;
+      public java.lang.String getCreaterUserId() {
+        java.lang.Object ref = createrUserId_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          createrUserId_ = s;
+          return s;
         } else {
-          return createrBuilder_.getMessage();
+          return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required .protocol.UserItem creater = 3;</code>
+       * <code>required string createrUserId = 3;</code>
        */
-      public Builder setCreater(protocol.Data.UserData.UserItem value) {
-        if (createrBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          creater_ = value;
-          onChanged();
+      public com.google.protobuf.ByteString
+          getCreaterUserIdBytes() {
+        java.lang.Object ref = createrUserId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          createrUserId_ = b;
+          return b;
         } else {
-          createrBuilder_.setMessage(value);
+          return (com.google.protobuf.ByteString) ref;
         }
-        bitField0_ |= 0x00000004;
-        return this;
       }
       /**
-       * <code>required .protocol.UserItem creater = 3;</code>
+       * <code>required string createrUserId = 3;</code>
        */
-      public Builder setCreater(
-          protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (createrBuilder_ == null) {
-          creater_ = builderForValue.build();
-          onChanged();
-        } else {
-          createrBuilder_.setMessage(builderForValue.build());
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>required .protocol.UserItem creater = 3;</code>
-       */
-      public Builder mergeCreater(protocol.Data.UserData.UserItem value) {
-        if (createrBuilder_ == null) {
-          if (((bitField0_ & 0x00000004) == 0x00000004) &&
-              creater_ != protocol.Data.UserData.UserItem.getDefaultInstance()) {
-            creater_ =
-              protocol.Data.UserData.UserItem.newBuilder(creater_).mergeFrom(value).buildPartial();
-          } else {
-            creater_ = value;
-          }
-          onChanged();
-        } else {
-          createrBuilder_.mergeFrom(value);
-        }
-        bitField0_ |= 0x00000004;
-        return this;
-      }
-      /**
-       * <code>required .protocol.UserItem creater = 3;</code>
-       */
-      public Builder clearCreater() {
-        if (createrBuilder_ == null) {
-          creater_ = protocol.Data.UserData.UserItem.getDefaultInstance();
-          onChanged();
-        } else {
-          createrBuilder_.clear();
-        }
-        bitField0_ = (bitField0_ & ~0x00000004);
-        return this;
-      }
-      /**
-       * <code>required .protocol.UserItem creater = 3;</code>
-       */
-      public protocol.Data.UserData.UserItem.Builder getCreaterBuilder() {
-        bitField0_ |= 0x00000004;
+      public Builder setCreaterUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        createrUserId_ = value;
         onChanged();
-        return getCreaterFieldBuilder().getBuilder();
+        return this;
       }
       /**
-       * <code>required .protocol.UserItem creater = 3;</code>
+       * <code>required string createrUserId = 3;</code>
        */
-      public protocol.Data.UserData.UserItemOrBuilder getCreaterOrBuilder() {
-        if (createrBuilder_ != null) {
-          return createrBuilder_.getMessageOrBuilder();
-        } else {
-          return creater_;
-        }
+      public Builder clearCreaterUserId() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        createrUserId_ = getDefaultInstance().getCreaterUserId();
+        onChanged();
+        return this;
       }
       /**
-       * <code>required .protocol.UserItem creater = 3;</code>
+       * <code>required string createrUserId = 3;</code>
        */
-      private com.google.protobuf.SingleFieldBuilder<
-          protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> 
-          getCreaterFieldBuilder() {
-        if (createrBuilder_ == null) {
-          createrBuilder_ = new com.google.protobuf.SingleFieldBuilder<
-              protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder>(
-                  creater_,
-                  getParentForChildren(),
-                  isClean());
-          creater_ = null;
-        }
-        return createrBuilder_;
+      public Builder setCreaterUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        createrUserId_ = value;
+        onChanged();
+        return this;
       }
 
-      // repeated .protocol.UserItem memberUser = 4;
-      private java.util.List<protocol.Data.UserData.UserItem> memberUser_ =
-        java.util.Collections.emptyList();
-      private void ensureMemberUserIsMutable() {
+      // repeated string memberUserId = 4;
+      private com.google.protobuf.LazyStringList memberUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureMemberUserIdIsMutable() {
         if (!((bitField0_ & 0x00000008) == 0x00000008)) {
-          memberUser_ = new java.util.ArrayList<protocol.Data.UserData.UserItem>(memberUser_);
+          memberUserId_ = new com.google.protobuf.LazyStringArrayList(memberUserId_);
           bitField0_ |= 0x00000008;
          }
       }
-
-      private com.google.protobuf.RepeatedFieldBuilder<
-          protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> memberUserBuilder_;
-
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public java.util.List<protocol.Data.UserData.UserItem> getMemberUserList() {
-        if (memberUserBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(memberUser_);
-        } else {
-          return memberUserBuilder_.getMessageList();
-        }
+      public java.util.List<java.lang.String>
+          getMemberUserIdList() {
+        return java.util.Collections.unmodifiableList(memberUserId_);
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public int getMemberUserCount() {
-        if (memberUserBuilder_ == null) {
-          return memberUser_.size();
-        } else {
-          return memberUserBuilder_.getCount();
-        }
+      public int getMemberUserIdCount() {
+        return memberUserId_.size();
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public protocol.Data.UserData.UserItem getMemberUser(int index) {
-        if (memberUserBuilder_ == null) {
-          return memberUser_.get(index);
-        } else {
-          return memberUserBuilder_.getMessage(index);
-        }
+      public java.lang.String getMemberUserId(int index) {
+        return memberUserId_.get(index);
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public Builder setMemberUser(
-          int index, protocol.Data.UserData.UserItem value) {
-        if (memberUserBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureMemberUserIsMutable();
-          memberUser_.set(index, value);
-          onChanged();
-        } else {
-          memberUserBuilder_.setMessage(index, value);
-        }
+      public com.google.protobuf.ByteString
+          getMemberUserIdBytes(int index) {
+        return memberUserId_.getByteString(index);
+      }
+      /**
+       * <code>repeated string memberUserId = 4;</code>
+       */
+      public Builder setMemberUserId(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureMemberUserIdIsMutable();
+        memberUserId_.set(index, value);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public Builder setMemberUser(
-          int index, protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (memberUserBuilder_ == null) {
-          ensureMemberUserIsMutable();
-          memberUser_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          memberUserBuilder_.setMessage(index, builderForValue.build());
-        }
+      public Builder addMemberUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureMemberUserIdIsMutable();
+        memberUserId_.add(value);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public Builder addMemberUser(protocol.Data.UserData.UserItem value) {
-        if (memberUserBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureMemberUserIsMutable();
-          memberUser_.add(value);
-          onChanged();
-        } else {
-          memberUserBuilder_.addMessage(value);
-        }
+      public Builder addAllMemberUserId(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureMemberUserIdIsMutable();
+        super.addAll(values, memberUserId_);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public Builder addMemberUser(
-          int index, protocol.Data.UserData.UserItem value) {
-        if (memberUserBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensureMemberUserIsMutable();
-          memberUser_.add(index, value);
-          onChanged();
-        } else {
-          memberUserBuilder_.addMessage(index, value);
-        }
+      public Builder clearMemberUserId() {
+        memberUserId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
         return this;
       }
       /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
+       * <code>repeated string memberUserId = 4;</code>
        */
-      public Builder addMemberUser(
-          protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (memberUserBuilder_ == null) {
-          ensureMemberUserIsMutable();
-          memberUser_.add(builderForValue.build());
-          onChanged();
-        } else {
-          memberUserBuilder_.addMessage(builderForValue.build());
-        }
+      public Builder addMemberUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureMemberUserIdIsMutable();
+        memberUserId_.add(value);
+        onChanged();
         return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public Builder addMemberUser(
-          int index, protocol.Data.UserData.UserItem.Builder builderForValue) {
-        if (memberUserBuilder_ == null) {
-          ensureMemberUserIsMutable();
-          memberUser_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          memberUserBuilder_.addMessage(index, builderForValue.build());
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public Builder addAllMemberUser(
-          java.lang.Iterable<? extends protocol.Data.UserData.UserItem> values) {
-        if (memberUserBuilder_ == null) {
-          ensureMemberUserIsMutable();
-          super.addAll(values, memberUser_);
-          onChanged();
-        } else {
-          memberUserBuilder_.addAllMessages(values);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public Builder clearMemberUser() {
-        if (memberUserBuilder_ == null) {
-          memberUser_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000008);
-          onChanged();
-        } else {
-          memberUserBuilder_.clear();
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public Builder removeMemberUser(int index) {
-        if (memberUserBuilder_ == null) {
-          ensureMemberUserIsMutable();
-          memberUser_.remove(index);
-          onChanged();
-        } else {
-          memberUserBuilder_.remove(index);
-        }
-        return this;
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public protocol.Data.UserData.UserItem.Builder getMemberUserBuilder(
-          int index) {
-        return getMemberUserFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public protocol.Data.UserData.UserItemOrBuilder getMemberUserOrBuilder(
-          int index) {
-        if (memberUserBuilder_ == null) {
-          return memberUser_.get(index);  } else {
-          return memberUserBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public java.util.List<? extends protocol.Data.UserData.UserItemOrBuilder> 
-           getMemberUserOrBuilderList() {
-        if (memberUserBuilder_ != null) {
-          return memberUserBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(memberUser_);
-        }
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public protocol.Data.UserData.UserItem.Builder addMemberUserBuilder() {
-        return getMemberUserFieldBuilder().addBuilder(
-            protocol.Data.UserData.UserItem.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public protocol.Data.UserData.UserItem.Builder addMemberUserBuilder(
-          int index) {
-        return getMemberUserFieldBuilder().addBuilder(
-            index, protocol.Data.UserData.UserItem.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .protocol.UserItem memberUser = 4;</code>
-       */
-      public java.util.List<protocol.Data.UserData.UserItem.Builder> 
-           getMemberUserBuilderList() {
-        return getMemberUserFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder> 
-          getMemberUserFieldBuilder() {
-        if (memberUserBuilder_ == null) {
-          memberUserBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              protocol.Data.UserData.UserItem, protocol.Data.UserData.UserItem.Builder, protocol.Data.UserData.UserItemOrBuilder>(
-                  memberUser_,
-                  ((bitField0_ & 0x00000008) == 0x00000008),
-                  getParentForChildren(),
-                  isClean());
-          memberUser_ = null;
-        }
-        return memberUserBuilder_;
       }
 
       // @@protoc_insertion_point(builder_scope:protocol.GroupItem)
@@ -1248,10 +1015,9 @@ public final class GroupData {
   static {
     java.lang.String[] descriptorData = {
       "\n\017GroupData.proto\022\010protocol\032\016UserData.pr" +
-      "oto\"|\n\tGroupItem\022\017\n\007groupId\030\001 \002(\t\022\021\n\tgro" +
-      "upName\030\002 \002(\t\022#\n\007creater\030\003 \002(\0132\022.protocol" +
-      ".UserItem\022&\n\nmemberUser\030\004 \003(\0132\022.protocol" +
-      ".UserItemB\017\n\rprotocol.Data"
+      "oto\"\\\n\tGroupItem\022\017\n\007groupId\030\001 \002(\t\022\021\n\tgro" +
+      "upName\030\002 \002(\t\022\025\n\rcreaterUserId\030\003 \002(\t\022\024\n\014m" +
+      "emberUserId\030\004 \003(\tB\017\n\rprotocol.Data"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1263,7 +1029,7 @@ public final class GroupData {
           internal_static_protocol_GroupItem_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_GroupItem_descriptor,
-              new java.lang.String[] { "GroupId", "GroupName", "Creater", "MemberUser", });
+              new java.lang.String[] { "GroupId", "GroupName", "CreaterUserId", "MemberUserId", });
           return null;
         }
       };

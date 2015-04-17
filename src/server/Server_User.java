@@ -635,9 +635,9 @@ public class Server_User {
 						GroupItem.Builder groupItemBuilder = GroupItem.newBuilder();
 						groupItemBuilder.setGroupId(Integer.toString(group.getGroupId()));
 						groupItemBuilder.setGroupName(group.getGroupName());
-						groupItemBuilder.setCreater(userToUserItem(getUser(group.getCreaterId())));
+						groupItemBuilder.setCreaterUserId(group.getCreaterId());
 						for(User us:group.getMemberList()){
-							groupItemBuilder.addMemberUser(userToUserItem(us));
+							groupItemBuilder.addMemberUserId(us.getUserId());
 						}
 						getPersonalInfoBuilder.addGroups(groupItemBuilder);
 					}

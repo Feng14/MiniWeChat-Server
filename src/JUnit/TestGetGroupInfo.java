@@ -40,10 +40,10 @@ public class TestGetGroupInfo {
 		GetGroupInfoRsp getGroupInfoRsp = GetGroupInfoRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		
 		assertEquals(getGroupInfoRsp.getResultCode(), GetGroupInfoRsp.ResultCode.SUCCESS);
-		assertEquals(getGroupInfoRsp.getGroupId(), groupId);
-		assertEquals(getGroupInfoRsp.getCreaterId(), "a");
-		assertEquals(getGroupInfoRsp.getGroupName(), "a,b,c,...");
-		System.out.println("Member Count : " + getGroupInfoRsp.getMemberIdCount());
+		assertEquals(getGroupInfoRsp.getGroupItem().getGroupId(), groupId);
+		assertEquals(getGroupInfoRsp.getGroupItem().getCreaterUserId(), "a");
+		assertEquals(getGroupInfoRsp.getGroupItem().getGroupName(), "a,b,c,...");
+		System.out.println("Member Count : " + getGroupInfoRsp.getGroupItem().getMemberUserIdCount());
 	}
 
 }
