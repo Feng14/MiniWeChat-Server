@@ -53,7 +53,7 @@ public class TestGetUserInfo {
 	 */
 	public GetUserInfoMsg.GetUserInfoRsp testGetUserInfo_JUnit(ClientSocket client, String targetUserId) throws IOException {
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
-		builder.setTargetUserId(targetUserId);
+		builder.addTargetUserId(targetUserId);
 		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
 				.toByteArray());
 		client.writeToServer(byteArray);

@@ -64,24 +64,27 @@ public class Server_Friend {
 					.getMessageObjectBytes());
 
 			ResultCode code = ResultCode.NULL;
-			List list = HibernateDataOperation.query("userId", getUserInfoObject.getTargetUserId(), User.class, code);
-
-			if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
-				// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
-				User user = (User) list.get(0);
-				UserData.UserItem.Builder userBuilder = UserData.UserItem.newBuilder();
-				userBuilder.setUserId(user.getUserId());
-				userBuilder.setUserName(user.getUserName());
-				userBuilder.setHeadIndex(user.getHeadIndex());
-				getUserInfoBuilder.setUserItem(userBuilder);
-				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
-			} else if (code.getCode().equals(ResultCode.FAIL)) {
-				logger.error("Server_Friend.getUserInfo: Hibernate error");
-				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
-			} else if (list.size() < 1) {
-				logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(networkPacket.ioSession)
-						+ " not exist!");
-				getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
+			List list;
+			for (String userId : getUserInfoObject.getTargetUserIdList()) {
+				list = HibernateDataOperation.query("userId", userId, User.class, code);
+				
+				if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
+					// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
+					User user = (User) list.get(0);
+					UserData.UserItem.Builder userBuilder = UserData.UserItem.newBuilder();
+					userBuilder.setUserId(user.getUserId());
+					userBuilder.setUserName(user.getUserName());
+					userBuilder.setHeadIndex(user.getHeadIndex());
+					getUserInfoBuilder.addUserItem(userBuilder);
+					getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS);
+				} else if (code.getCode().equals(ResultCode.FAIL)) {
+					logger.error("Server_Friend.getUserInfo: Hibernate error");
+					getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
+				} else if (list.size() < 1) {
+					logger.info("Server_Friend.getUserInfo:User:" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+							+ " not exist!");
+					getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.USER_NOT_EXIST);
+				}
 			}
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_Friend.getUserInfo:Error was found when using Protobuf to deserialization "
