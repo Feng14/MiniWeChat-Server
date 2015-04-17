@@ -24,7 +24,7 @@ public class AutoResponseClient {
 
 	public AutoResponseClient() throws UnknownHostException, IOException {
 		clientSocket = new ClientSocket();
-		clientSocket.link();
+//		clientSocket.link();
 		if (clientSocket.login("AutoResponse", "AutoResponse") != LoginRsp.ResultCode.SUCCESS) {
 			// Debug.log("AutoResponseClient", "自动回复器登陆失败！");
 			System.err.println("AutoResponseClient : 自动回复器登陆失败！");
@@ -33,13 +33,9 @@ public class AutoResponseClient {
 
 		byte[] arrayBytes;
 		while (true) {
-			arrayBytes = clientSocket.readFromServerWithoutKeepAlive();
-			if (NetworkPacket.getMessageType(arrayBytes) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
-				continue;
-
-			// 回复服务器说接收成功
-			clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE,
-					NetworkPacket.getMessageID(arrayBytes), new byte[0]));
+			arrayBytes = clientSocket.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
+//			if (NetworkPacket.getMessageType(arrayBytes) != ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC)
+//				continue;
 
 			// 将同样的消息发回给发送者
 			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(arrayBytes));

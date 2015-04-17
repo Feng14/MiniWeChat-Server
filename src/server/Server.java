@@ -2,6 +2,8 @@ package server;
 
 import java.io.IOException;
 
+import tools.AutoResponseClient;
+
 /**
  * 服务器启动器
  * 
@@ -29,6 +31,9 @@ public class Server {
 	public void init(){
 		try {
 			serverNetwork.init();
+			
+			// 开启自动回复器
+			new AutoResponseClient();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -53,31 +53,31 @@ public class TestSendGroupChatting {
 		ClientSocket clientSocket2 = new ClientSocket();
 		ClientSocket clientSocket3;
 		byte[] response;
-		String userId1 = "a", userId2 = "b", user3 = "c", message = "a fuck b and c", groupId = "13";
+		String user1 = "a", user2 = "b", user3 = "c", message = "a fuck b and c", groupId = "13";
 
 		// a，b 登陆
-		assertEquals(clientSocket1.login(userId1, userId1), LoginRsp.ResultCode.SUCCESS);
-		assertEquals(clientSocket2.login(userId2, userId2), LoginRsp.ResultCode.SUCCESS);
-		System.out.println("User1 , User2 Login Over!");
+		assertEquals(clientSocket1.login(user1, user1), LoginRsp.ResultCode.SUCCESS);
+		assertEquals(clientSocket2.login(user2, user2), LoginRsp.ResultCode.SUCCESS);
+		System.out.println(user1 + " , " + user2 + " Login Over!");
 
 		// 构建消息对象
 		ChatItem.Builder chatItem = ChatItem.newBuilder();
 		chatItem.setChatBody(message);
-		chatItem.setSendUserId(userId1);
+		chatItem.setSendUserId(user1);
 		chatItem.setReceiveUserId(groupId);
 		chatItem.setChatType(ChatType.TEXT);
 		chatItem.setTargetType(TargetType.GROUP);
 
-		// userId1发送
+		// user1发送
 		assertEquals(sendChatting(clientSocket1, chatItem), SendChatRsp.ResultCode.SUCCESS);
-		System.out.println("User1 Send Chatting Over!");
+		System.out.println(user1 + " Send Chatting Over!");
 		
-		// userId2接收
+		// user2接收
 		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(receiveChatting.getChatData(0).getChatBody(), message);
-		System.out.println("User2 Get Chatting");
+		System.out.println(user2 + " Get Chatting");
 		
 		// user3接收
 		clientSocket3 = new ClientSocket();
@@ -88,7 +88,7 @@ public class TestSendGroupChatting {
 		assertNotNull(byteArray);
 		receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(receiveChatting.getChatData(0).getChatBody(), message);
-		System.out.println("User3 Get Chatting");
+		System.out.println(user3 + " Get Chatting");
 		
 	}
 
