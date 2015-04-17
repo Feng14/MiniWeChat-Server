@@ -64,6 +64,7 @@ public class Chatting {
 		setChattingType(chattingType);
 		setMessage(message);
 		setIsGroup(false);
+		setTime(time);
 	}
 
 	@Id

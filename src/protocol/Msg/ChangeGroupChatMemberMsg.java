@@ -50,6 +50,21 @@ public final class ChangeGroupChatMemberMsg {
      */
     com.google.protobuf.ByteString
         getUserIdBytes(int index);
+
+    // optional string groupName = 4;
+    /**
+     * <code>optional string groupName = 4;</code>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 4;</code>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
   }
   /**
    * Protobuf type {@code protocol.ChangeGroupChatMemberRsq}
@@ -124,6 +139,11 @@ public final class ChangeGroupChatMemberMsg {
                 mutable_bitField0_ |= 0x00000004;
               }
               userId_.add(input.readBytes());
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000004;
+              groupName_ = input.readBytes();
               break;
             }
           }
@@ -322,10 +342,54 @@ public final class ChangeGroupChatMemberMsg {
       return userId_.getByteString(index);
     }
 
+    // optional string groupName = 4;
+    public static final int GROUPNAME_FIELD_NUMBER = 4;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 4;</code>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string groupName = 4;</code>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       groupId_ = 0;
       changeType_ = protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsq.ChangeType.ADD;
       userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      groupName_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -356,6 +420,9 @@ public final class ChangeGroupChatMemberMsg {
       for (int i = 0; i < userId_.size(); i++) {
         output.writeBytes(3, userId_.getByteString(i));
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(4, getGroupNameBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -381,6 +448,10 @@ public final class ChangeGroupChatMemberMsg {
         }
         size += dataSize;
         size += 1 * getUserIdList().size();
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getGroupNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -504,6 +575,8 @@ public final class ChangeGroupChatMemberMsg {
         bitField0_ = (bitField0_ & ~0x00000002);
         userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -546,6 +619,10 @@ public final class ChangeGroupChatMemberMsg {
           bitField0_ = (bitField0_ & ~0x00000004);
         }
         result.userId_ = userId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.groupName_ = groupName_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -576,6 +653,11 @@ public final class ChangeGroupChatMemberMsg {
             ensureUserIdIsMutable();
             userId_.addAll(other.userId_);
           }
+          onChanged();
+        }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000008;
+          groupName_ = other.groupName_;
           onChanged();
         }
         this.mergeUnknownFields(other.getUnknownFields());
@@ -771,6 +853,80 @@ public final class ChangeGroupChatMemberMsg {
   }
   ensureUserIdIsMutable();
         userId_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // optional string groupName = 4;
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 4;</code>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string groupName = 4;</code>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          groupName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 4;</code>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 4;</code>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 4;</code>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        groupName_ = value;
         onChanged();
         return this;
       }
@@ -2004,19 +2160,19 @@ public final class ChangeGroupChatMemberMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\036ChangeGroupChatMemberMsg.proto\022\010protoc" +
-      "ol\"\255\001\n\030ChangeGroupChatMemberRsq\022\017\n\007group" +
+      "ol\"\300\001\n\030ChangeGroupChatMemberRsq\022\017\n\007group" +
       "Id\030\001 \002(\005\022A\n\nchangeType\030\002 \002(\0162-.protocol." +
       "ChangeGroupChatMemberRsq.ChangeType\022\016\n\006u" +
-      "serId\030\003 \003(\t\"-\n\nChangeType\022\007\n\003ADD\020\000\022\n\n\006DE" +
-      "LETE\020\001\022\n\n\006UPDATE\020\002\"\224\001\n\030ChangeGroupChatMe" +
-      "mberRsp\022A\n\nresultCode\030\001 \002(\0162-.protocol.C" +
-      "hangeGroupChatMemberRsp.ResultCode\"5\n\nRe" +
-      "sultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001\022\020\n\014NO_AU" +
-      "THORITY\020\002\"\215\001\n\031ChangeGroupChatMemberSync\022",
-      "6\n\004type\030\001 \002(\0162(.protocol.ChangeGroupChat" +
-      "MemberSync.Type\022\016\n\006userId\030\002 \003(\t\"(\n\004Type\022" +
-      "\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022\013\n\007REFRESH\020\002B\016\n\014pro" +
-      "tocol.Msg"
+      "serId\030\003 \003(\t\022\021\n\tgroupName\030\004 \001(\t\"-\n\nChange" +
+      "Type\022\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022\n\n\006UPDATE\020\002\"\224\001" +
+      "\n\030ChangeGroupChatMemberRsp\022A\n\nresultCode" +
+      "\030\001 \002(\0162-.protocol.ChangeGroupChatMemberR" +
+      "sp.ResultCode\"5\n\nResultCode\022\013\n\007SUCCESS\020\000" +
+      "\022\010\n\004FAIL\020\001\022\020\n\014NO_AUTHORITY\020\002\"\215\001\n\031ChangeG",
+      "roupChatMemberSync\0226\n\004type\030\001 \002(\0162(.proto" +
+      "col.ChangeGroupChatMemberSync.Type\022\016\n\006us" +
+      "erId\030\002 \003(\t\"(\n\004Type\022\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022" +
+      "\013\n\007REFRESH\020\002B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2028,7 +2184,7 @@ public final class ChangeGroupChatMemberMsg {
           internal_static_protocol_ChangeGroupChatMemberRsq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_ChangeGroupChatMemberRsq_descriptor,
-              new java.lang.String[] { "GroupId", "ChangeType", "UserId", });
+              new java.lang.String[] { "GroupId", "ChangeType", "UserId", "GroupName", });
           internal_static_protocol_ChangeGroupChatMemberRsp_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_protocol_ChangeGroupChatMemberRsp_fieldAccessorTable = new

@@ -18,6 +18,8 @@ import model.User;
 import com.google.protobuf.InvalidProtocolBufferException;
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
+import protocol.Data.ChatData.ChatItem.ChatType;
+import protocol.Data.ChatData.ChatItem.TargetType;
 import protocol.Data.GroupData.GroupItem;
 import protocol.Data.UserData.UserItem;
 import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
@@ -107,7 +109,7 @@ public class Server_Chatting {
 			if (chatItem.getTargetType() == ChatItem.TargetType.INDIVIDUAL)
 				clientSendChatting_Individual(networkPacket, chatItem);
 			else if (chatItem.getTargetType() == ChatItem.TargetType.GROUP)
-				clientSendChatting_Group(networkPacket, chatItem);
+				clientSendChatting_Group(chatItem);
 
 			sendChattingResponse.setResultCode(SendChatMsg.SendChatRsp.ResultCode.SUCCESS);
 		} catch (InvalidProtocolBufferException e) {
@@ -159,13 +161,12 @@ public class Server_Chatting {
 	/**
 	 * 对 用户发送(群)微信消息 的事件进行处理, 立刻发送
 	 * 
-	 * @param networkPacket
 	 * @param chatItem
 	 * @param chatting
 	 * @author Feng
 	 * @throws Exception
 	 */
-	private void clientSendChatting_Group(NetworkPacket networkPacket, ChatItem chatItem) throws Exception {
+	private void clientSendChatting_Group(ChatItem chatItem) throws Exception {
 		ResultCode resultCode = ResultCode.FAIL;
 		Session session = HibernateSessionFactory.getSession();
 
@@ -260,15 +261,24 @@ public class Server_Chatting {
 			if (resultCode.getCode() == ResultCode.SUCCESS)
 				createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
 			
-			// 通知每位群成员
+			// 回复客户端
+			serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
+					.getMessageID(), ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_RSP_VALUE, createGroupChattingResponse.build()
+					.toByteArray())));
+			// 通知每位群成员修改列表
 			sendChangeGroupSync(group, userList, ChangeGroupChatMemberSync.Type.REFRESH);
+			// 消息通知成员
+			notifyMemberJionIn1(selfUser1.userId, userList, group.getGroupId()+"");
+			
+			return;
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
 		} catch (MyException e) {
 			logger.error(e.toString());
 		}
-		// 回复客户端说发送成功(保存在服务器成功)
+		// 回复客户端
+		createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.FAIL);
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_RSP_VALUE, createGroupChattingResponse.build()
 				.toByteArray())));
@@ -417,6 +427,10 @@ public class Server_Chatting {
 			} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除自己
 				newUserList2.add(server_User.getUser(requestUser.userId, session));
 				groupMemberList.remove(server_User.getUser(requestUser.userId, session));
+			} else if (changeGroupMemberObj.getChangeType() == ChangeType.UPDATE) { // 修改群资料
+				String newGroupName = changeGroupMemberObj.getGroupName();
+				if (newGroupName != null && !newGroupName.equals(""))
+					group.setGroupName(newGroupName);
 			}
 
 			// 存入数据库
@@ -432,6 +446,9 @@ public class Server_Chatting {
 			HibernateSessionFactory.commitSession(session);
 			// 设置标志位
 			responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
+			serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
+					.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP_VALUE, responseBuilder.build()
+					.toByteArray())));
 			
 			// 通知所有用户
 			ChangeGroupChatMemberSync.Type type;
@@ -441,17 +458,62 @@ public class Server_Chatting {
 				type = ChangeGroupChatMemberSync.Type.DELETE;
 			else
 				type = ChangeGroupChatMemberSync.Type.REFRESH;
+			
+			// 通知每位群成员修改列表
 			sendChangeGroupSync(group, newUserList2, type);
+			// 消息通知成员
+			notifyMemberJionIn2(requestUser.userId, userList, group.getGroupId()+"");
+			
+			return;
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 			logger.error(e.toString());
 		} catch (MyException e) {
 			logger.error(e.toString());
 		}
-		// 回复客户端说修改成功(保存在服务器成功)
+		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP_VALUE, responseBuilder.build()
 				.toByteArray())));
+		
+		// 显示“A已经要清B，C加入
+		
+	}
+	
+	/**
+	 * 发送消息“（邀请者）已邀请（被邀请者）加入
+	 * @param inviterUserId
+	 * @param invitees
+	 */
+	private void notifyMemberJionIn1(String inviterUserId, List<User> inviteeUsers, String groupId) {
+		String[] userList = new String[inviteeUsers.size()];
+		for (int i=0; i<inviteeUsers.size(); i++)
+			userList[i]= inviteeUsers.get(i).getUserId(); 
+		notifyMemberJionIn(inviterUserId, userList, groupId);
+	}
+	private void notifyMemberJionIn2(String inviterUserId, List<String> inviteeUserIds, String groupId) {
+		String[] userList = new String[inviteeUserIds.size()];
+		inviteeUserIds.toArray(userList);
+		notifyMemberJionIn(inviterUserId, userList, groupId);
+	}
+	private void notifyMemberJionIn(String inviterUserId, String[] inviteeUserIds, String groupId) {
+		StringBuffer message = new StringBuffer("我已邀请");
+		for (String userId : inviteeUserIds)
+			message.append("'" + userId + "',");
+		String message2 = message.subSequence(0, message.length()-1) + " 加入";
+		
+		ChatItem.Builder builder = ChatItem.newBuilder();
+		builder.setChatBody(message2);
+		builder.setChatType(ChatType.TEXT);
+		builder.setSendUserId(inviterUserId);
+		builder.setReceiveUserId(groupId);
+		builder.setTargetType(TargetType.GROUP);
+		
+		try {
+			clientSendChatting_Group(builder.build());
+		} catch (Exception e) {
+			logger.error(e.toString());
+		}
 	}
 
 	/**
