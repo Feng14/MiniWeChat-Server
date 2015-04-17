@@ -47,7 +47,7 @@ public class TestChangeGroupChatMember {
 		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
 				.build().toByteArray()));
 		
-		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP);
+		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
 		assertNotNull(byteArray);
 		ChangeGroupChatMemberRsp response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
@@ -60,13 +60,13 @@ public class TestChangeGroupChatMember {
 		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
 				.build().toByteArray()));
 		
-		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP);
+		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
 		assertNotNull(byteArray);
 		response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
 		
 		// user2上线收消息
-		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__Sync);
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupChatMemberSync sync = ChangeGroupChatMemberSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		
@@ -98,7 +98,7 @@ public class TestChangeGroupChatMember {
 				.build().toByteArray()));
 		
 		// 未登录，无权限
-		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP);
+		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
 		assertNotNull(byteArray);
 		ChangeGroupChatMemberRsp response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
@@ -111,13 +111,13 @@ public class TestChangeGroupChatMember {
 		
 		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
 				.build().toByteArray()));
-		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP);
+		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
 		assertNotNull(byteArray);
 		response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
 
 		// user2上线收消息
-		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__Sync);
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupChatMemberSync sync = ChangeGroupChatMemberSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		

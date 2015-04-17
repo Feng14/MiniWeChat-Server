@@ -450,7 +450,7 @@ public class Server_Chatting {
 		}
 		// 回复客户端说修改成功(保存在服务器成功)
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
-				.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__RSP_VALUE, responseBuilder.build()
+				.getMessageID(), ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP_VALUE, responseBuilder.build()
 				.toByteArray())));
 	}
 
@@ -480,7 +480,7 @@ public class Server_Chatting {
 				continue;
 			
 			serverNetwork.sendToClient(clientUser.ioSession, new PacketFromServer(
-					ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER__Sync_VALUE, builder.build().toByteArray()));
+					ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC_VALUE, builder.build().toByteArray()));
 		}
 	}
 
