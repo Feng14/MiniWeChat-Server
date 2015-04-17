@@ -525,7 +525,7 @@ public class SocketClientTest {
 	 */
 	public void testGetUserInfo() {
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
-		builder.setTargetUserId("Fuck");
+		builder.addTargetUserId("Fuck");
 		System.out.println("start test SearchUser! -----------------------");
 		try {
 			Socket socket = new Socket(host, port);
@@ -562,8 +562,8 @@ public class SocketClientTest {
 					System.out.println("Response : "
 							+ GetUserInfoMsg.GetUserInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 					if (response.getResultCode().equals(GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS)) {
-						System.out.println("searchResult UserId:" + response.getUserItem().getUserId() + "  UserName:"
-								+ response.getUserItem().getUserName());
+						System.out.println("searchResult UserId:" + response.getUserItem(0).getUserId() + "  UserName:"
+								+ response.getUserItem(0).getUserName());
 					}
 				}
 			}
@@ -582,7 +582,7 @@ public class SocketClientTest {
 	 */
 	public byte[] testGetUserInfo_JUnit(String targetUserId) throws IOException {
 		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
-		builder.setTargetUserId(targetUserId);
+		builder.addTargetUserId(targetUserId);
 		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
 				.toByteArray());
 		writeToServer(byteArray);
