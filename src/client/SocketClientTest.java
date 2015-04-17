@@ -11,7 +11,6 @@ import protocol.Msg.ChangeFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetPersonalInfoMsg;
 import protocol.Msg.GetUserInfoMsg;
-import protocol.Msg.LoginInitAllInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.PersonalSettingsMsg;
@@ -67,7 +66,7 @@ public class SocketClientTest {
 		// testRegister();
 
 		// 测登陆
-		 testLogin();
+		 //testLogin();
 		// 测试个人设置
 		// testPersonalSettings();
 
@@ -84,7 +83,7 @@ public class SocketClientTest {
 		// testLogout();
 
 		// 测获取个人信息
-		// testGetPersonalInfo();
+		 testGetPersonalInfo();
 
 		// new Thread(new readThread()).start();
 	}
@@ -374,15 +373,6 @@ public class SocketClientTest {
 
 					System.out
 							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
-				}
-				if(type == ProtoHead.ENetworkMessage.LOGIN_INIT_ALL_INFO_SYNC){
-					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
-					for (int i = 0; i < objBytes.length; i++)
-						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
-					LoginInitAllInfoMsg.LoginInitAllInfoSync response = LoginInitAllInfoMsg.LoginInitAllInfoSync.parseFrom(objBytes);
-					System.out.println(response.getUserInfo());
-					System.out.println(response.getFriendsList());
-					System.out.println(response.getGroupsList());
 					break;
 				}
 			}
@@ -823,13 +813,14 @@ public class SocketClientTest {
 		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
 		builder.setFriendInfo(true);
 		builder.setUserInfo(true);
+		builder.setGroupInfo(true);
 		try {
 			Socket socket = new Socket(host, port);
 			inputStream = socket.getInputStream();
 			outputStream = socket.getOutputStream();
 			LoginMsg.LoginReq.Builder loginBuilder = LoginMsg.LoginReq.newBuilder();
-			loginBuilder.setUserId("a2");
-			loginBuilder.setUserPassword("s123");
+			loginBuilder.setUserId("a3");
+			loginBuilder.setUserPassword("aa");
 			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
@@ -853,6 +844,7 @@ public class SocketClientTest {
 							+ GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
 					System.out.println(response.getUserInfo());
 					System.out.println(response.getFriendsList());
+					System.out.println(response.getGroupsList());
 				}
 			}
 		} catch (IOException e) {

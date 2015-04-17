@@ -30,6 +30,16 @@ public final class GetPersonalInfoMsg {
      * <code>optional bool friendInfo = 2 [default = false];</code>
      */
     boolean getFriendInfo();
+
+    // optional bool groupInfo = 3 [default = false];
+    /**
+     * <code>optional bool groupInfo = 3 [default = false];</code>
+     */
+    boolean hasGroupInfo();
+    /**
+     * <code>optional bool groupInfo = 3 [default = false];</code>
+     */
+    boolean getGroupInfo();
   }
   /**
    * Protobuf type {@code protocol.GetPersonalInfoReq}
@@ -90,6 +100,11 @@ public final class GetPersonalInfoMsg {
             case 16: {
               bitField0_ |= 0x00000002;
               friendInfo_ = input.readBool();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              groupInfo_ = input.readBool();
               break;
             }
           }
@@ -164,9 +179,26 @@ public final class GetPersonalInfoMsg {
       return friendInfo_;
     }
 
+    // optional bool groupInfo = 3 [default = false];
+    public static final int GROUPINFO_FIELD_NUMBER = 3;
+    private boolean groupInfo_;
+    /**
+     * <code>optional bool groupInfo = 3 [default = false];</code>
+     */
+    public boolean hasGroupInfo() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool groupInfo = 3 [default = false];</code>
+     */
+    public boolean getGroupInfo() {
+      return groupInfo_;
+    }
+
     private void initFields() {
       userInfo_ = false;
       friendInfo_ = false;
+      groupInfo_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -186,6 +218,9 @@ public final class GetPersonalInfoMsg {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBool(2, friendInfo_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(3, groupInfo_);
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -202,6 +237,10 @@ public final class GetPersonalInfoMsg {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, friendInfo_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(3, groupInfo_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -323,6 +362,8 @@ public final class GetPersonalInfoMsg {
         bitField0_ = (bitField0_ & ~0x00000001);
         friendInfo_ = false;
         bitField0_ = (bitField0_ & ~0x00000002);
+        groupInfo_ = false;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -359,6 +400,10 @@ public final class GetPersonalInfoMsg {
           to_bitField0_ |= 0x00000002;
         }
         result.friendInfo_ = friendInfo_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.groupInfo_ = groupInfo_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -380,6 +425,9 @@ public final class GetPersonalInfoMsg {
         }
         if (other.hasFriendInfo()) {
           setFriendInfo(other.getFriendInfo());
+        }
+        if (other.hasGroupInfo()) {
+          setGroupInfo(other.getGroupInfo());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
@@ -474,6 +522,39 @@ public final class GetPersonalInfoMsg {
         return this;
       }
 
+      // optional bool groupInfo = 3 [default = false];
+      private boolean groupInfo_ ;
+      /**
+       * <code>optional bool groupInfo = 3 [default = false];</code>
+       */
+      public boolean hasGroupInfo() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bool groupInfo = 3 [default = false];</code>
+       */
+      public boolean getGroupInfo() {
+        return groupInfo_;
+      }
+      /**
+       * <code>optional bool groupInfo = 3 [default = false];</code>
+       */
+      public Builder setGroupInfo(boolean value) {
+        bitField0_ |= 0x00000004;
+        groupInfo_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool groupInfo = 3 [default = false];</code>
+       */
+      public Builder clearGroupInfo() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        groupInfo_ = false;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:protocol.GetPersonalInfoReq)
     }
 
@@ -535,6 +616,31 @@ public final class GetPersonalInfoMsg {
      * <code>repeated .protocol.UserItem friends = 3;</code>
      */
     protocol.Data.UserData.UserItemOrBuilder getFriendsOrBuilder(
+        int index);
+
+    // repeated .protocol.GroupItem groups = 4;
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    java.util.List<protocol.Data.GroupData.GroupItem> 
+        getGroupsList();
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    protocol.Data.GroupData.GroupItem getGroups(int index);
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    int getGroupsCount();
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    java.util.List<? extends protocol.Data.GroupData.GroupItemOrBuilder> 
+        getGroupsOrBuilderList();
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    protocol.Data.GroupData.GroupItemOrBuilder getGroupsOrBuilder(
         int index);
   }
   /**
@@ -620,6 +726,14 @@ public final class GetPersonalInfoMsg {
               friends_.add(input.readMessage(protocol.Data.UserData.UserItem.PARSER, extensionRegistry));
               break;
             }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                groups_ = new java.util.ArrayList<protocol.Data.GroupData.GroupItem>();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              groups_.add(input.readMessage(protocol.Data.GroupData.GroupItem.PARSER, extensionRegistry));
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -630,6 +744,9 @@ public final class GetPersonalInfoMsg {
       } finally {
         if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
           friends_ = java.util.Collections.unmodifiableList(friends_);
+        }
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          groups_ = java.util.Collections.unmodifiableList(groups_);
         }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -835,10 +952,47 @@ public final class GetPersonalInfoMsg {
       return friends_.get(index);
     }
 
+    // repeated .protocol.GroupItem groups = 4;
+    public static final int GROUPS_FIELD_NUMBER = 4;
+    private java.util.List<protocol.Data.GroupData.GroupItem> groups_;
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    public java.util.List<protocol.Data.GroupData.GroupItem> getGroupsList() {
+      return groups_;
+    }
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    public java.util.List<? extends protocol.Data.GroupData.GroupItemOrBuilder> 
+        getGroupsOrBuilderList() {
+      return groups_;
+    }
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    public int getGroupsCount() {
+      return groups_.size();
+    }
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    public protocol.Data.GroupData.GroupItem getGroups(int index) {
+      return groups_.get(index);
+    }
+    /**
+     * <code>repeated .protocol.GroupItem groups = 4;</code>
+     */
+    public protocol.Data.GroupData.GroupItemOrBuilder getGroupsOrBuilder(
+        int index) {
+      return groups_.get(index);
+    }
+
     private void initFields() {
       resultCode_ = protocol.Msg.GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.SUCCESS;
       userInfo_ = protocol.Data.UserData.UserItem.getDefaultInstance();
       friends_ = java.util.Collections.emptyList();
+      groups_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -861,6 +1015,12 @@ public final class GetPersonalInfoMsg {
           return false;
         }
       }
+      for (int i = 0; i < getGroupsCount(); i++) {
+        if (!getGroups(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -876,6 +1036,9 @@ public final class GetPersonalInfoMsg {
       }
       for (int i = 0; i < friends_.size(); i++) {
         output.writeMessage(3, friends_.get(i));
+      }
+      for (int i = 0; i < groups_.size(); i++) {
+        output.writeMessage(4, groups_.get(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -897,6 +1060,10 @@ public final class GetPersonalInfoMsg {
       for (int i = 0; i < friends_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(3, friends_.get(i));
+      }
+      for (int i = 0; i < groups_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(4, groups_.get(i));
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1008,6 +1175,7 @@ public final class GetPersonalInfoMsg {
         if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
           getUserInfoFieldBuilder();
           getFriendsFieldBuilder();
+          getGroupsFieldBuilder();
         }
       }
       private static Builder create() {
@@ -1029,6 +1197,12 @@ public final class GetPersonalInfoMsg {
           bitField0_ = (bitField0_ & ~0x00000004);
         } else {
           friendsBuilder_.clear();
+        }
+        if (groupsBuilder_ == null) {
+          groups_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+        } else {
+          groupsBuilder_.clear();
         }
         return this;
       }
@@ -1079,6 +1253,15 @@ public final class GetPersonalInfoMsg {
         } else {
           result.friends_ = friendsBuilder_.build();
         }
+        if (groupsBuilder_ == null) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
+            groups_ = java.util.Collections.unmodifiableList(groups_);
+            bitField0_ = (bitField0_ & ~0x00000008);
+          }
+          result.groups_ = groups_;
+        } else {
+          result.groups_ = groupsBuilder_.build();
+        }
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1127,6 +1310,32 @@ public final class GetPersonalInfoMsg {
             }
           }
         }
+        if (groupsBuilder_ == null) {
+          if (!other.groups_.isEmpty()) {
+            if (groups_.isEmpty()) {
+              groups_ = other.groups_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+            } else {
+              ensureGroupsIsMutable();
+              groups_.addAll(other.groups_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.groups_.isEmpty()) {
+            if (groupsBuilder_.isEmpty()) {
+              groupsBuilder_.dispose();
+              groupsBuilder_ = null;
+              groups_ = other.groups_;
+              bitField0_ = (bitField0_ & ~0x00000008);
+              groupsBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getGroupsFieldBuilder() : null;
+            } else {
+              groupsBuilder_.addAllMessages(other.groups_);
+            }
+          }
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -1144,6 +1353,12 @@ public final class GetPersonalInfoMsg {
         }
         for (int i = 0; i < getFriendsCount(); i++) {
           if (!getFriends(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        for (int i = 0; i < getGroupsCount(); i++) {
+          if (!getGroups(i).isInitialized()) {
             
             return false;
           }
@@ -1563,6 +1778,246 @@ public final class GetPersonalInfoMsg {
         return friendsBuilder_;
       }
 
+      // repeated .protocol.GroupItem groups = 4;
+      private java.util.List<protocol.Data.GroupData.GroupItem> groups_ =
+        java.util.Collections.emptyList();
+      private void ensureGroupsIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          groups_ = new java.util.ArrayList<protocol.Data.GroupData.GroupItem>(groups_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          protocol.Data.GroupData.GroupItem, protocol.Data.GroupData.GroupItem.Builder, protocol.Data.GroupData.GroupItemOrBuilder> groupsBuilder_;
+
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public java.util.List<protocol.Data.GroupData.GroupItem> getGroupsList() {
+        if (groupsBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(groups_);
+        } else {
+          return groupsBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public int getGroupsCount() {
+        if (groupsBuilder_ == null) {
+          return groups_.size();
+        } else {
+          return groupsBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public protocol.Data.GroupData.GroupItem getGroups(int index) {
+        if (groupsBuilder_ == null) {
+          return groups_.get(index);
+        } else {
+          return groupsBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder setGroups(
+          int index, protocol.Data.GroupData.GroupItem value) {
+        if (groupsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGroupsIsMutable();
+          groups_.set(index, value);
+          onChanged();
+        } else {
+          groupsBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder setGroups(
+          int index, protocol.Data.GroupData.GroupItem.Builder builderForValue) {
+        if (groupsBuilder_ == null) {
+          ensureGroupsIsMutable();
+          groups_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          groupsBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder addGroups(protocol.Data.GroupData.GroupItem value) {
+        if (groupsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGroupsIsMutable();
+          groups_.add(value);
+          onChanged();
+        } else {
+          groupsBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder addGroups(
+          int index, protocol.Data.GroupData.GroupItem value) {
+        if (groupsBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureGroupsIsMutable();
+          groups_.add(index, value);
+          onChanged();
+        } else {
+          groupsBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder addGroups(
+          protocol.Data.GroupData.GroupItem.Builder builderForValue) {
+        if (groupsBuilder_ == null) {
+          ensureGroupsIsMutable();
+          groups_.add(builderForValue.build());
+          onChanged();
+        } else {
+          groupsBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder addGroups(
+          int index, protocol.Data.GroupData.GroupItem.Builder builderForValue) {
+        if (groupsBuilder_ == null) {
+          ensureGroupsIsMutable();
+          groups_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          groupsBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder addAllGroups(
+          java.lang.Iterable<? extends protocol.Data.GroupData.GroupItem> values) {
+        if (groupsBuilder_ == null) {
+          ensureGroupsIsMutable();
+          super.addAll(values, groups_);
+          onChanged();
+        } else {
+          groupsBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder clearGroups() {
+        if (groupsBuilder_ == null) {
+          groups_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000008);
+          onChanged();
+        } else {
+          groupsBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public Builder removeGroups(int index) {
+        if (groupsBuilder_ == null) {
+          ensureGroupsIsMutable();
+          groups_.remove(index);
+          onChanged();
+        } else {
+          groupsBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public protocol.Data.GroupData.GroupItem.Builder getGroupsBuilder(
+          int index) {
+        return getGroupsFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public protocol.Data.GroupData.GroupItemOrBuilder getGroupsOrBuilder(
+          int index) {
+        if (groupsBuilder_ == null) {
+          return groups_.get(index);  } else {
+          return groupsBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public java.util.List<? extends protocol.Data.GroupData.GroupItemOrBuilder> 
+           getGroupsOrBuilderList() {
+        if (groupsBuilder_ != null) {
+          return groupsBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(groups_);
+        }
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public protocol.Data.GroupData.GroupItem.Builder addGroupsBuilder() {
+        return getGroupsFieldBuilder().addBuilder(
+            protocol.Data.GroupData.GroupItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public protocol.Data.GroupData.GroupItem.Builder addGroupsBuilder(
+          int index) {
+        return getGroupsFieldBuilder().addBuilder(
+            index, protocol.Data.GroupData.GroupItem.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .protocol.GroupItem groups = 4;</code>
+       */
+      public java.util.List<protocol.Data.GroupData.GroupItem.Builder> 
+           getGroupsBuilderList() {
+        return getGroupsFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          protocol.Data.GroupData.GroupItem, protocol.Data.GroupData.GroupItem.Builder, protocol.Data.GroupData.GroupItemOrBuilder> 
+          getGroupsFieldBuilder() {
+        if (groupsBuilder_ == null) {
+          groupsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              protocol.Data.GroupData.GroupItem, protocol.Data.GroupData.GroupItem.Builder, protocol.Data.GroupData.GroupItemOrBuilder>(
+                  groups_,
+                  ((bitField0_ & 0x00000008) == 0x00000008),
+                  getParentForChildren(),
+                  isClean());
+          groups_ = null;
+        }
+        return groupsBuilder_;
+      }
+
       // @@protoc_insertion_point(builder_scope:protocol.GetPersonalInfoRsp)
     }
 
@@ -1594,13 +2049,15 @@ public final class GetPersonalInfoMsg {
   static {
     java.lang.String[] descriptorData = {
       "\n\030GetPersonalInfoMsg.proto\022\010protocol\032\016Us" +
-      "erData.proto\"H\n\022GetPersonalInfoReq\022\027\n\010us" +
-      "erInfo\030\001 \001(\010:\005false\022\031\n\nfriendInfo\030\002 \001(\010:" +
-      "\005false\"\301\001\n\022GetPersonalInfoRsp\022;\n\nresultC" +
-      "ode\030\001 \002(\0162\'.protocol.GetPersonalInfoRsp." +
-      "ResultCode\022$\n\010userInfo\030\002 \001(\0132\022.protocol." +
-      "UserItem\022#\n\007friends\030\003 \003(\0132\022.protocol.Use" +
-      "rItem\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL" +
+      "erData.proto\032\017GroupData.proto\"b\n\022GetPers" +
+      "onalInfoReq\022\027\n\010userInfo\030\001 \001(\010:\005false\022\031\n\n" +
+      "friendInfo\030\002 \001(\010:\005false\022\030\n\tgroupInfo\030\003 \001" +
+      "(\010:\005false\"\346\001\n\022GetPersonalInfoRsp\022;\n\nresu" +
+      "ltCode\030\001 \002(\0162\'.protocol.GetPersonalInfoR" +
+      "sp.ResultCode\022$\n\010userInfo\030\002 \001(\0132\022.protoc" +
+      "ol.UserItem\022#\n\007friends\030\003 \003(\0132\022.protocol." +
+      "UserItem\022#\n\006groups\030\004 \003(\0132\023.protocol.Grou" +
+      "pItem\"#\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL",
       "\020\001B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
@@ -1613,13 +2070,13 @@ public final class GetPersonalInfoMsg {
           internal_static_protocol_GetPersonalInfoReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_GetPersonalInfoReq_descriptor,
-              new java.lang.String[] { "UserInfo", "FriendInfo", });
+              new java.lang.String[] { "UserInfo", "FriendInfo", "GroupInfo", });
           internal_static_protocol_GetPersonalInfoRsp_descriptor =
             getDescriptor().getMessageTypes().get(1);
           internal_static_protocol_GetPersonalInfoRsp_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_GetPersonalInfoRsp_descriptor,
-              new java.lang.String[] { "ResultCode", "UserInfo", "Friends", });
+              new java.lang.String[] { "ResultCode", "UserInfo", "Friends", "Groups", });
           return null;
         }
       };
@@ -1627,6 +2084,7 @@ public final class GetPersonalInfoMsg {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           protocol.Data.UserData.getDescriptor(),
+          protocol.Data.GroupData.getDescriptor(),
         }, assigner);
   }
 

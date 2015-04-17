@@ -129,10 +129,6 @@ public final class ProtoHead {
      * <code>GET_GROUP_INFO_RSP = 28;</code>
      */
     GET_GROUP_INFO_RSP(28, 28),
-    /**
-     * <code>LOGIN_INIT_ALL_INFO_SYNC = 29;</code>
-     */
-    LOGIN_INIT_ALL_INFO_SYNC(29, 29),
     ;
 
     /**
@@ -251,10 +247,6 @@ public final class ProtoHead {
      * <code>GET_GROUP_INFO_RSP = 28;</code>
      */
     public static final int GET_GROUP_INFO_RSP_VALUE = 28;
-    /**
-     * <code>LOGIN_INIT_ALL_INFO_SYNC = 29;</code>
-     */
-    public static final int LOGIN_INIT_ALL_INFO_SYNC_VALUE = 29;
 
 
     public final int getNumber() { return value; }
@@ -290,7 +282,6 @@ public final class ProtoHead {
         case 26: return CHANGE_GROUP_CHAT_MEMBER_SYNC;
         case 27: return GET_GROUP_INFO_REQ;
         case 28: return GET_GROUP_INFO_RSP;
-        case 29: return LOGIN_INIT_ALL_INFO_SYNC;
         default: return null;
       }
     }
@@ -351,7 +342,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\304\005\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\246\005\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -368,8 +359,7 @@ public final class ProtoHead {
       "\034CHANGE_GROUP_CHAT_MEMBER_REQ\020\030\022 \n\034CHANG" +
       "E_GROUP_CHAT_MEMBER_RSP\020\031\022!\n\035CHANGE_GROU" +
       "P_CHAT_MEMBER_SYNC\020\032\022\026\n\022GET_GROUP_INFO_R" +
-      "EQ\020\033\022\026\n\022GET_GROUP_INFO_RSP\020\034\022\034\n\030LOGIN_IN" +
-      "IT_ALL_INFO_SYNC\020\035B\n\n\010protocol"
+      "EQ\020\033\022\026\n\022GET_GROUP_INFO_RSP\020\034B\n\n\010protocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
