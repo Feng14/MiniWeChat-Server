@@ -5,19 +5,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import javax.print.attribute.standard.Sides;
-
-import org.hibernate.Criteria;
-
-import antlr.collections.List;
-
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
 import protocol.Msg.ChangeFriendMsg;
 import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetPersonalInfoMsg;
 import protocol.Msg.GetUserInfoMsg;
+import protocol.Msg.LoginInitAllInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.PersonalSettingsMsg;
@@ -380,6 +374,15 @@ public class SocketClientTest {
 
 					System.out
 							.println("Response : " + LoginMsg.LoginRsp.ResultCode.valueOf(response.getResultCode().getNumber()));
+				}
+				if(type == ProtoHead.ENetworkMessage.LOGIN_INIT_ALL_INFO_SYNC){
+					byte[] objBytes = new byte[size - NetworkPacket.getMessageObjectStartIndex()];
+					for (int i = 0; i < objBytes.length; i++)
+						objBytes[i] = byteArray[NetworkPacket.getMessageObjectStartIndex() + i];
+					LoginInitAllInfoMsg.LoginInitAllInfoSync response = LoginInitAllInfoMsg.LoginInitAllInfoSync.parseFrom(objBytes);
+					System.out.println(response.getUserInfo());
+					System.out.println(response.getFriendsList());
+					System.out.println(response.getGroupsList());
 					break;
 				}
 			}

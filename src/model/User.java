@@ -2,6 +2,8 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
@@ -35,6 +37,7 @@ public class User implements Serializable {
     private String userPassword;
     private int headIndex;
     private List<User> friends;
+    private List<Group> groups;
     
     public User(){
         
@@ -95,8 +98,19 @@ public class User implements Serializable {
 	public void setFriends(List<User> friends) {
 		this.friends = friends;
 	}
-   
-    public String toString(){
+	
+	@ManyToMany(targetEntity = Group.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "group_members", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "group_id"))
+    public List<Group> getGroups() {
+		return groups;
+	}
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+	
+	
+
+	public String toString(){
     	return this.getUserId()+" "+this.getUserName();
     }
     

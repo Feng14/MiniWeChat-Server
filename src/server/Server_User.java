@@ -4,25 +4,24 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 
+import model.Group;
 import model.HibernateDataOperation;
 import model.HibernateSessionFactory;
 import model.ResultCode;
 import model.User;
 import observer.ObserverMessage_Login;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import com.google.protobuf.InvalidProtocolBufferException;
 import exception.NoIpException;
 import protocol.ProtoHead;
-import protocol.ProtoHead.ENetworkMessage;
+import protocol.Data.GroupData.GroupItem;
 import protocol.Data.UserData.UserItem;
 import protocol.Msg.GetPersonalInfoMsg;
+import protocol.Msg.LoginInitAllInfoMsg;
 import protocol.Msg.LoginMsg;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.OffLineMsg;
@@ -32,7 +31,6 @@ import protocol.Msg.RegisterMsg.RegisterRsp;
 import protocol.Msg.RegisterMsg;
 import protocol.Msg.GetPersonalInfoMsg.GetPersonalInfoRsp;
 import protocol.Msg.LoginMsg.LoginRsp;
-import tools.Debug;
 import tools.GetImage;
 
 /**
@@ -185,6 +183,8 @@ public class Server_User {
 
 		LoginMsg.LoginRsp.Builder loginBuilder = LoginMsg.LoginRsp.newBuilder();
 		loginBuilder.setResultCode(LoginRsp.ResultCode.FAIL);
+		ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
+		
 		try {
 			// Debug.log(new String[] { "Server_User", "login" },
 			// "Deal with user's" +
@@ -216,7 +216,6 @@ public class Server_User {
 					checkAnotherOnline(networkPacket, loginObject.getUserId());
 
 					// 记录到表中
-					ClientUser clientUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
 					if (clientUser != null)
 						clientUser.userId = loginObject.getUserId();
 
@@ -283,6 +282,7 @@ public class Server_User {
 			// " Login successful event!");
 			logger.debug("Server_User : login : Broadcast user" + ServerModel.getIoSessionKey(networkPacket.ioSession)
 					+ " Login successful event!");
+			LoginInitAllInfo(clientUser);
 			serverModel.setChange();
 			serverModel.notifyObservers(new ObserverMessage_Login(networkPacket.ioSession, loginObject.getUserId()));
 		}
@@ -598,7 +598,7 @@ public class Server_User {
 		getPersonalInfoBuilder.setResultCode(GetPersonalInfoRsp.ResultCode.FAIL);
 		Session session = HibernateSessionFactory.getSession();
 		try {
-
+//
 			GetPersonalInfoMsg.GetPersonalInfoReq getPersonalInfoObject = GetPersonalInfoMsg.GetPersonalInfoReq
 					.parseFrom(packetFromServer.getMessageObjectBytes());
 
@@ -679,4 +679,66 @@ public class Server_User {
 		// String hql = hqlSB.substring(0, hqlSB.length()-1) + ")";
 		return session.createQuery(hqlSB.substring(0, hqlSB.length() - 1) + ")").list();
 	}
+	
+	/**
+	 * 客户端登录成功后 发送用户所有信息--个人信息、好友信息、聊天群信息
+	 * @time 2015-04-17
+	 *@author wangfei 
+	 */
+	private void LoginInitAllInfo(ClientUser user)throws NoIpException{
+		logger.info("Server_User.LoginInitAllInfo:");
+		LoginInitAllInfoMsg.LoginInitAllInfoSync.Builder loginInitAllInfoBuilder = LoginInitAllInfoMsg.LoginInitAllInfoSync.newBuilder();
+		Session session = HibernateSessionFactory.sessionFactory.openSession();
+		ResultCode code = ResultCode.NULL;
+		List list = HibernateDataOperation.query("userId", user.userId, User.class, code, session);
+		if (code.getCode().equals(ResultCode.SUCCESS) && list.size() > 0) {
+			// 不支持模糊搜索 所以如果有搜索结果 只可能有一个结果
+			User u = (User) list.get(0);
+			// 获取用户的基本信息
+			loginInitAllInfoBuilder.setUserInfo(userToUserItem(u));
+			// 获取用户的好友信息
+			for (User ui : u.getFriends()) {
+				loginInitAllInfoBuilder.addFriends(userToUserItem(ui));
+			}
+			//获取用户所加入群的群信息 包括所有群成员
+			List groupList = u.getGroups();
+			for(int i=0;i<groupList.size();i++){
+				Group group =(Group) groupList.get(i);  //转型为数组
+				GroupItem.Builder groupItemBuilder = GroupItem.newBuilder();
+				groupItemBuilder.setGroupId(Integer.toString(group.getGroupId()));
+				groupItemBuilder.setGroupName(group.getGroupName());
+				groupItemBuilder.setCreater(userToUserItem(getUser(group.getCreaterId())));
+				for(User us:group.getMemberList()){
+					groupItemBuilder.addMemberUser(userToUserItem(us));
+				}
+				loginInitAllInfoBuilder.addGroups(groupItemBuilder);
+			}
+		} else if (code.getCode().equals(ResultCode.FAIL)) {
+			logger.error("Server_User.LoginInitAllInfo: Hibernate error");
+		} else if (list.size() < 1) {
+			logger.info("Server_User.LoginInitAllInfo:User not exist!");
+		}
+		session.close();
+		// 向客户端发送消息
+		serverNetwork.sendToClient(new WaitClientResponse(user.ioSession, new PacketFromServer(
+				ProtoHead.ENetworkMessage.LOGIN_INIT_ALL_INFO_SYNC_VALUE, loginInitAllInfoBuilder.build().toByteArray()), null));
+		
+	}
+	
+	private User getUser(String userId){
+		ResultCode code = ResultCode.NULL;
+		List list = HibernateDataOperation.query("userId", userId, User.class,code);
+		if(code.getCode().equals(ResultCode.SUCCESS) && list.size()>0)
+			return (User)list.get(0);
+		return null;
+	}
+	private UserItem.Builder userToUserItem(User user){
+		UserItem.Builder userItem = UserItem.newBuilder();
+		userItem.setUserId(user.getUserId());
+		userItem.setUserName(user.getUserName());
+		userItem.setHeadIndex(user.getHeadIndex());
+		
+		return userItem;
+	}
+	 
 }
