@@ -44,6 +44,15 @@ public class ServerNetwork {
 
 	private InetSocketAddress inetSocketAddress;
 	private IoAcceptor acceptor;
+	
+	public ServerNetwork(){
+		try {
+			init();
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error("ServerNetwork : init IOException!");
+		}
+	}
 
 	/**
 	 * 初始化

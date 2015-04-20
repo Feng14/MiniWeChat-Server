@@ -71,12 +71,6 @@
 		</property>
 	</bean>
 
-	<bean id="ServerModel" class="server.ServerModel">
-		<property name="ServerNetwork">
-			<ref bean="ServerNetwork" />
-		</property>
-	</bean>
-
 	<bean id="ServerNetwork" class="server.ServerNetwork">
 		<property name="ServerModel">
 			<ref bean="ServerModel" />
@@ -90,6 +84,12 @@
 		<!-- <property name="protocolCodecFilter">
 			<ref bean="snmpCodecFilter" />
 		</property> -->
+	</bean>
+
+	<bean id="ServerModel" class="server.ServerModel">
+		<property name="ServerNetwork">
+			<ref bean="ServerNetwork" />
+		</property>
 	</bean>
 
 	<bean id="ClientRequest_Dispatcher" class="server.ClientRequest_Dispatcher">

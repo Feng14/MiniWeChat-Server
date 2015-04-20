@@ -57,13 +57,13 @@ public class ServletServer extends HttpServlet {
 //			e.printStackTrace();
 //		}
 		// 初始化
-		if (Server.instance != null){
-			Server.instance.init();
-			Debug.log("ServletServer", "Initiate Mina Server Successful!");
-		}
-		else {
-			Debug.log(Debug.LogType.FAULT, "ServletServer", "Start Mina Server Fail!");
-		}
+//		if (Server.instance != null){
+//			Server.instance.init();
+//			Debug.log("ServletServer", "Initiate Mina Server Successful!");
+//		}
+//		else {
+//			Debug.log(Debug.LogType.FAULT, "ServletServer", "Start Mina Server Fail!");
+//		}
 	}
 
 	@Override

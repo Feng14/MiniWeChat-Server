@@ -45,6 +45,10 @@ public class ServerModel extends Observable {
 	// 监听客户端回复的表
 	// private Hashtable<String, WaitClientResponse> waitClientRepTable = new
 	// Hashtable<String, WaitClientResponse>();
+	
+	public ServerModel(){
+		init();
+	}
 
 	public ServerModel getServerModel() {
 		return serverModel;
