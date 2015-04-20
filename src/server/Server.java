@@ -1,7 +1,10 @@
 package server;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import javax.annotation.Resource;
 import org.apache.log4j.Logger;
@@ -89,9 +92,11 @@ public class Server {
 	}
 
 	 public static void main(String[] args) throws IOException {
-		 
+		 String path = System.getProperty("user.dir");
+		 System.out.println(path);
 		 try{
-		 	 String logConfigPath = "WebContent/WEB-INF/Log4JConfig.properties";
+		 	 String logConfigPath = "Log4JConfig.properties";
+		 	 System.out.println(logConfigPath);
 		 	 PropertyConfigurator.configure(logConfigPath);
 		 	 logger.info("log configure load success");	
 		 }catch(Exception e){
@@ -109,8 +114,7 @@ public class Server {
 		 
 //		 File file = new File("src/applicationContext.xml");
 //		 System.out.println(file.exists());
-		 ApplicationContext ctx = new FileSystemXmlApplicationContext("src/applicationContext.xml");
+		 ApplicationContext ctx = new FileSystemXmlApplicationContext("applicationContext.xml");
 //		 ServerNetwork serverNetwork = (ServerNetwork)ctx.getBean("ServerNetwork");
 	 }
-
 }

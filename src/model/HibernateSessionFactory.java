@@ -8,7 +8,7 @@ import org.hibernate.service.ServiceRegistry;
 @SuppressWarnings("deprecation")
 public class HibernateSessionFactory {
 
-	private static String CONFIG_FILE_LOCATION = "/hibernate.cfg.xml";
+	private static String CONFIG_FILE_LOCATION = "hibernate.cfg.xml";
 	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
 	private static Configuration configuration = new Configuration();
 	public static SessionFactory sessionFactory;
