@@ -30,5 +30,8 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/ehcache-core-2.4.3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate-ehcache-4.3.8.Final.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hibernate-proxool-4.3.8.Final.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/proxool-0.8.3.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/proxool-cglib.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
