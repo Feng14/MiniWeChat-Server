@@ -2,6 +2,10 @@ package server;
 
 import java.io.IOException;
 
+import javax.annotation.Resource;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import tools.AutoResponseClient;
 
 /**
@@ -11,6 +15,8 @@ import tools.AutoResponseClient;
  * 
  */
 public class Server {
+	static Logger logger = Logger.getLogger(Server.class);
+	
 	public static Server instance;
 	private ServerNetwork serverNetwork;
 	private ServerModel serverModel;
@@ -29,6 +35,9 @@ public class Server {
 	 * @author Feng
 	 */
 	public void init(){
+//		serverNetwork = new ServerNetwork();
+//		serverModel = new ServerModel();
+//		serverModel_Chatting = new ServerModel_Chatting();
 		try {
 			serverNetwork.init();
 			
@@ -78,8 +87,25 @@ public class Server {
 		serverNetwork.onDestroy();
 	}
 
-	// public static void main(String[] args) throws IOException {
-	// new Server();
-	// }
+	 public static void main(String[] args) throws IOException {
+		 
+		 try{
+		 	 String logConfigPath = "WebContent/WEB-INF/Log4JConfig.properties";
+		 	 PropertyConfigurator.configure(logConfigPath);
+		 	 logger.info("log configure load success");	
+		 }catch(Exception e){
+		 	 System.out.println("log configure load fail");
+		 	 e.printStackTrace();
+		 }
+		 try{
+			 String springConfigPath = "src/applicationContext.xml";
+			 PropertyConfigurator.configure(springConfigPath);
+			 logger.info("spring configure load success");	
+		 }catch(Exception e){
+			 System.out.println("spring configure load fail");
+			 e.printStackTrace();
+		 }
+		 new Server().init();
+	 }
 
 }

@@ -66,7 +66,7 @@ public class SocketClientTest {
 		// testRegister();
 
 		// 测登陆
-		 //testLogin();
+		testLogin();
 		// 测试个人设置
 		// testPersonalSettings();
 
@@ -83,7 +83,7 @@ public class SocketClientTest {
 		// testLogout();
 
 		// 测获取个人信息
-		 testGetPersonalInfo();
+		// testGetPersonalInfo();
 
 		// new Thread(new readThread()).start();
 	}
