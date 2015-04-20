@@ -1,7 +1,6 @@
 package protocol;
 
 option java_package = "protocol.Data";
-import "UserData.proto";
 
 message GroupItem{
 	required string groupId = 1;
