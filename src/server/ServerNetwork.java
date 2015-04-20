@@ -39,6 +39,7 @@ public class ServerNetwork {
 	private ClientRequest_Dispatcher clientRequest_Dispatcher;
 	private MinaServerHandle minaServerHandle;
 	private ProtocolCodecFilter protocolCodecFilter;
+	private InetAddress addr;
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
 
@@ -46,12 +47,6 @@ public class ServerNetwork {
 	private IoAcceptor acceptor;
 	
 	public ServerNetwork(){
-		try {
-			init();
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error("ServerNetwork : init IOException!");
-		}
 	}
 
 	/**
@@ -60,9 +55,11 @@ public class ServerNetwork {
 	 * @throws IOException
 	 * @author Feng
 	 */
-	public void init() throws IOException {
+	public void init() {
+		if (addr != null || minaServerHandle == null)
+			return;
+		
 		// 显示IP地址
-		InetAddress addr;
 		try {
 			addr = InetAddress.getLocalHost();
 			logger.info("IP address:" + addr.getHostAddress().toString());
@@ -84,7 +81,12 @@ public class ServerNetwork {
 		// null));
 		acceptor.setHandler(minaServerHandle);
 		// acceptor.setHandler(new MinaServerHandle());
-		acceptor.bind(new InetSocketAddress(8081));
+		try {
+			acceptor.bind(new InetSocketAddress(8081));
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error("ServerNetwork : Acceptor bind Exception!;\n" + e.toString());
+		}
 
 		// new ClassPathXmlApplicationContext("trapReceiverContext.xml");
 	}
@@ -115,6 +117,7 @@ public class ServerNetwork {
 
 	public void setMinaServerHandle(MinaServerHandle minaServerHandle) {
 		this.minaServerHandle = minaServerHandle;
+		init();
 	}
 
 	public ProtocolCodecFilter getProtocolCodecFilter() {

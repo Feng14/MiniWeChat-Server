@@ -48,6 +48,7 @@ public class HibernateDataOperation {
 		logger.info("Hibernate:start query from database");
 		logger.info("Hibernate:query parameters:" + paramName + " , " + paramValue.toString());
 		try {
+			System.out.println(HibernateSessionFactory.sessionFactory == null);;
 			Session session = HibernateSessionFactory.getSession();
 			Criteria criteria = session.createCriteria(outputClass);
 			// 使用缓存

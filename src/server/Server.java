@@ -107,9 +107,9 @@ public class Server {
 //			 e.printStackTrace();
 //		 }
 		 
-		 File file = new File("src/applicationContext.xml");
-		 System.out.println(file.exists());
-//		 ApplicationContext ctx = new FileSystemXmlApplicationContext("src/applicationContext.xml");
+//		 File file = new File("src/applicationContext.xml");
+//		 System.out.println(file.exists());
+		 ApplicationContext ctx = new FileSystemXmlApplicationContext("src/applicationContext.xml");
 //		 ServerNetwork serverNetwork = (ServerNetwork)ctx.getBean("ServerNetwork");
 	 }
 
