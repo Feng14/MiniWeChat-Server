@@ -8,10 +8,10 @@
            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
 	<bean id="MinaServerHandle" class="server.MinaServerHandle">
-		<property name="ClientRequest_Dispatcher">
+		<property name="clientRequest_Dispatcher">
 			<ref bean="ClientRequest_Dispatcher" />
 		</property>
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
 	</bean>
@@ -57,28 +57,25 @@
 	
 	
 	<bean id="Server" class="server.Server">
-		<property name="Server">
-			<ref bean="Server" />
-		</property>
-		<property name="ServerNetwork">
+		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
-		<property name="ServerModel_Chatting">
+		<property name="serverModel_Chatting">
 			<ref bean="ServerModel_Chatting" />
 		</property>
 	</bean>
 
 	<bean id="ServerNetwork" class="server.ServerNetwork">
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
-		<property name="ClientRequest_Dispatcher">
+		<property name="clientRequest_Dispatcher">
 			<ref bean="ClientRequest_Dispatcher" />
 		</property>
-		<property name="MinaServerHandle">
+		<property name="minaServerHandle">
 			<ref bean="MinaServerHandle" />
 		</property>
 		<!-- <property name="protocolCodecFilter">
@@ -87,61 +84,61 @@
 	</bean>
 
 	<bean id="ServerModel" class="server.ServerModel">
-		<property name="ServerNetwork">
+		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
 	</bean>
 
 	<bean id="ClientRequest_Dispatcher" class="server.ClientRequest_Dispatcher">
-		<property name="Server_User">
+		<property name="server_User">
 			<ref bean="Server_User" />
 		</property>
-		<property name="Server_Friend">
+		<property name="server_Friend">
 			<ref bean="Server_Friend" />
 		</property>
-		<property name="Server_Chatting">
+		<property name="server_Chatting">
 			<ref bean="Server_Chatting" />
 		</property>
 	</bean>
 
 	<bean id="ServerModel_Chatting" class="server.ServerModel_Chatting">
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
-		<property name="ServerNetwork">
+		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
 	</bean>
 
 	<bean id="Server_Chatting" class="server.Server_Chatting">
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
-		<property name="ServerModel_Chatting">
+		<property name="serverModel_Chatting">
 			<ref bean="ServerModel_Chatting" />
 		</property>
-		<property name="ServerNetwork">
+		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
-		<property name="Server_User">
+		<property name="server_User">
 			<ref bean="Server_User" />
 		</property>
 	</bean>
 
 	<bean id="Server_Friend" class="server.Server_Friend">
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
-		<property name="ServerNetwork">
+		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
 	</bean>
 
 	<bean id="Server_User" class="server.Server_User">
-		<property name="ServerModel">
+		<property name="serverModel">
 			<ref bean="ServerModel" />
 		</property>
-		<property name="ServerNetwork">
+		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
 	</bean>
