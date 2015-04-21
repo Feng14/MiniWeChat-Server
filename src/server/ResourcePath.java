@@ -6,10 +6,11 @@ public class ResourcePath {
 	 */
 	
 	//头像路径
-	private static String headPath_linux = "/usr/local/apache-tomcat-7.0.59/webapps/miniwechatRes/head/";
+	private static String headPath_linux = "../miniwechatRes/head/";
 	private static String headPath_windows ="d:\\miniwechatRes\\head\\";
 	//默认头像路径
-	private static String headDefaultPath_all = "http://127.0.0.1:8080/miniwechatRes/headDefault/";
+	private static String headDefaultPath_linux = "d:\\miniwechatRes\\headDefault\\";
+	private static String headDefaultPath_windows = "../miniwechatRes/headDefault/";
 	
 	public static String getHeadPath(){
 		if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0){
@@ -21,7 +22,12 @@ public class ResourcePath {
 	}
 	
 	public static String getHeadDefaultPath(){
-		return headDefaultPath_all;
+		if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0){
+			return headDefaultPath_windows;
+		}
+		else{
+			return headDefaultPath_linux;
+		}
 	}
 
 }

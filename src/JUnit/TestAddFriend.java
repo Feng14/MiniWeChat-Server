@@ -4,23 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.net.UnknownHostException;
-import org.junit.Before;
 import org.junit.Test;
 
 import protocol.ProtoHead;
 import protocol.Msg.AddFriendMsg;
-import protocol.Msg.AddFriendMsg.AddFriendReq;
 import protocol.Msg.AddFriendMsg.AddFriendRsp;
 import protocol.Msg.LoginMsg.LoginRsp;
-import protocol.Msg.SendChatMsg.SendChatRsp;
 import server.NetworkPacket;
-import tools.DataTypeTranslater;
-
-import client.SocketClientTest;
 
 /**
  * 对添加好友的测试

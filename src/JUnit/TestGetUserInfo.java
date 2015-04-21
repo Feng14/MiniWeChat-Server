@@ -1,20 +1,16 @@
 package JUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import org.junit.Before;
 import org.junit.Test;
 
 import protocol.ProtoHead;
 import protocol.Msg.GetUserInfoMsg;
+import protocol.Msg.GetUserInfoMsg.GetUserInfoRsp;
+import protocol.Msg.LoginMsg.LoginRsp;
 import server.NetworkPacket;
-import tools.DataTypeTranslater;
-
-import client.SocketClientTest;
 
 /**
  * 对获取用户信息的测试
@@ -22,53 +18,6 @@ import client.SocketClientTest;
  *
  */
 public class TestGetUserInfo {
-	private String user = "a";
-//	String host = "192.168.45.17"; // 要连接的服务端IP地址
-//	int port = 8080; // 要连接的服务端对应的监听端口
-//
-//	public Socket socket;
-//	public InputStream inputStream;
-//	public OutputStream outputStream;
-//	public SocketClientTest client;
-//
-//	@Before
-//	public void init() throws UnknownHostException, IOException {
-//		client = new SocketClientTest();
-//		client.link();
-//	}
-//
-//	private void link() throws IOException {
-//		socket = new Socket(host, port);
-//		inputStream = socket.getInputStream();
-//		outputStream = socket.getOutputStream();
-//	}
-
-	/**
-	 * 测试获取用户信息--JUnit调用
-	 * 
-	 * @param targetUserId
-	 * @return
-	 * @throws IOException
-	 * @author wangfei
-	 */
-	public GetUserInfoMsg.GetUserInfoRsp testGetUserInfo_JUnit(ClientSocket client, String targetUserId) throws IOException {
-		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
-		builder.addTargetUserId(targetUserId);
-		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
-				.toByteArray());
-		client.writeToServer(byteArray);
-		
-		for (int i=0; i<10; i++) {
-			byteArray = client.readFromServerWithoutKeepAlive();
-			ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
-					NetworkPacket.getTypeStartIndex()));
-			if (type == ProtoHead.ENetworkMessage.GET_USERINFO_RSP) {
-				return GetUserInfoMsg.GetUserInfoRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-			}
-		}
-		return null;
-	}
-	
 	/**
 	 * 测获取用户信息
 	 * @author wangfei
@@ -76,13 +25,41 @@ public class TestGetUserInfo {
 	 */
 	@Test
 	public void testGetUserInfo() throws IOException{
-		ClientSocket client = new ClientSocket();
+		String user1="a3",password1="aa",targetUserId="1";
 		
-		GetUserInfoMsg.GetUserInfoRsp responseObject = testGetUserInfo_JUnit(client, user);
-		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS.toString());
-
-		responseObject = testGetUserInfo_JUnit(client, user);
-		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL.toString());
+		System.out.println("TestGetPersonalInfo1:获取用户信息");
+		GetUserInfoRsp getUserInfoRsp1 = getResponse(user1,password1,targetUserId);
+		System.out.println("服务器返回结果:"+getUserInfoRsp1.getResultCode().toString());
+		assertEquals(getUserInfoRsp1.getResultCode().getNumber(),GetUserInfoRsp.ResultCode.SUCCESS_VALUE);
 	}
 
+	
+	
+	private GetUserInfoRsp getResponse(String user,String password,String targetUserId) throws IOException {
+		ClientSocket clientSocket = new ClientSocket();
+		byte[] response;
+		// 登陆
+		if (clientSocket.login(user, password) != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+		
+		GetUserInfoMsg.GetUserInfoReq.Builder builder = GetUserInfoMsg.GetUserInfoReq.newBuilder();
+		builder.addTargetUserId(targetUserId);
+		
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_USERINFO_REQ.getNumber(), builder.build()
+						.toByteArray());
+		//发消息
+		clientSocket.writeToServer(byteArray);
+		
+		//接收回复
+		while (true) {
+			response = clientSocket.readFromServerWithoutKeepAlive();
+			ProtoHead.ENetworkMessage type = NetworkPacket.getMessageType(response);
+			if(ProtoHead.ENetworkMessage.GET_USERINFO_RSP != type)
+				continue;
+			
+			GetUserInfoRsp getUserInfoFriendRsp = GetUserInfoRsp.parseFrom(NetworkPacket.getMessageObjectBytes(response));
+			clientSocket.close();
+			return getUserInfoFriendRsp;
+		}
+	}
 }

@@ -1,40 +1,20 @@
 package JUnit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Random;
-import org.junit.Before;
+
+import protocol.ProtoHead;
 import protocol.Msg.GetPersonalInfoMsg;
-import protocol.Msg.GetUserInfoMsg;
+import protocol.Msg.GetPersonalInfoMsg.GetPersonalInfoRsp;
+import protocol.Msg.LoginMsg.LoginRsp;
 import server.NetworkPacket;
 
-import client.SocketClientTest;
+
 
 public class TestGetPersonalInfo {
-	String host = "192.168.45.17"; // 要连接的服务端IP地址
-	int port = 8080; // 要连接的服务端对应的监听端口
-
-	public Socket socket;
-	public InputStream inputStream;
-	public OutputStream outputStream;
-	public SocketClientTest client;
-
-	@Before
-	public void init() throws UnknownHostException, IOException {
-		client = new SocketClientTest();
-		client.link();
-	}
-
-	private void link() throws IOException {
-		socket = new Socket(host, port);
-		inputStream = socket.getInputStream();
-		outputStream = socket.getOutputStream();
-	}
-	
 	/**
 	 * 测获取个人信息
 	 * @throws IOException
@@ -42,18 +22,53 @@ public class TestGetPersonalInfo {
 	 * @time 2015-03-26
 	 */
 	public void testGetPersonalInfo() throws IOException{
-		Random random = new Random();
-		boolean userInfo = random.nextBoolean();
-		boolean friendInfo = random.nextBoolean();
+		String user1="a3",password1="aa";
 		
-		byte[] resultBytes = client.testGetPersonalInfo_JUnit(userInfo,friendInfo);
-		GetPersonalInfoMsg.GetPersonalInfoRsp responseObject = 
-				GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(NetworkPacket.getMessageObjectBytes(resultBytes));
-		assertEquals(responseObject.getResultCode().toString(), GetUserInfoMsg.GetUserInfoRsp.ResultCode.SUCCESS.toString());
+		System.out.println("TestGetPersonalInfo1:只获取个人信息");
+		GetPersonalInfoRsp getPersonalInfoRsp1 = getResponse(user1,password1,true,false,false);
+		System.out.println("服务器返回结果:"+getPersonalInfoRsp1.getResultCode().toString());
+		assertEquals(getPersonalInfoRsp1.getResultCode().getNumber(),GetPersonalInfoRsp.ResultCode.SUCCESS_VALUE);
+		
+		System.out.println("TestGetPersonalInfo2:获取个人信息、好友信息");
+		GetPersonalInfoRsp getPersonalInfoRsp2 = getResponse(user1,password1,true,true,false);
+		System.out.println("服务器返回结果:"+getPersonalInfoRsp2.getResultCode().toString());
+		assertEquals(getPersonalInfoRsp2.getResultCode().getNumber(),GetPersonalInfoRsp.ResultCode.SUCCESS_VALUE);
+		
+		System.out.println("TestGetPersonalInfo3:获取个人信息、好友信息、群聊信息");
+		GetPersonalInfoRsp getPersonalInfoRsp3 = getResponse(user1,password1,true,true,true);
+		System.out.println("服务器返回结果:"+getPersonalInfoRsp3.getResultCode().toString());
+		assertEquals(getPersonalInfoRsp3.getResultCode().getNumber(),GetPersonalInfoRsp.ResultCode.SUCCESS_VALUE);
 
-		resultBytes = client.testGetPersonalInfo_JUnit(userInfo,friendInfo);
-		responseObject =GetPersonalInfoMsg.GetPersonalInfoRsp.parseFrom(NetworkPacket.getMessageObjectBytes(resultBytes));
-		assertEquals(responseObject.getResultCode().toString(), GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL.toString());
+	}
+	
+	private GetPersonalInfoRsp getResponse(String user,String password,boolean userInfo,boolean friendInfo,boolean groupInfo) throws UnknownHostException, IOException{
+		ClientSocket clientSocket = new ClientSocket();
+		byte[] response;
+		// 登陆
+		if (clientSocket.login(user, password) != LoginRsp.ResultCode.SUCCESS)
+			fail("登陆结果错误！");
+		GetPersonalInfoMsg.GetPersonalInfoReq.Builder builder = GetPersonalInfoMsg.GetPersonalInfoReq.newBuilder();
+		builder.setUserInfo(userInfo);
+		builder.setFriendInfo(friendInfo);
+		builder.setGroupInfo(groupInfo);
+		
+		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.GET_PERSONALINFO_REQ.getNumber(), builder.build()
+						.toByteArray());
+		//发消息
+		clientSocket.writeToServer(byteArray);
+		
+		//接收回复
+		while (true) {
+			response = clientSocket.readFromServerWithoutKeepAlive();
+			ProtoHead.ENetworkMessage type = NetworkPacket.getMessageType(response);
+			if(ProtoHead.ENetworkMessage.GET_PERSONALINFO_RSP != type)
+				continue;
+			
+			GetPersonalInfoRsp getPersonalInfoFriendRsp = GetPersonalInfoRsp.parseFrom(NetworkPacket.getMessageObjectBytes(response));
+			clientSocket.close();
+			return getPersonalInfoFriendRsp;
+		}
+		
 	}
 
 }
