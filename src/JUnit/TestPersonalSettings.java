@@ -28,20 +28,21 @@ public class TestPersonalSettings {
 	 */
 	@Test
 	public void testPersonalSettings() throws IOException {
-		String user1="a3",password1="aa";
-		
+		String user1="1",password1="1";
 		System.out.println("TestPersonalSettings1:只设置昵称");
 		PersonalSettingsRsp personalSettingsRsp1 = getResponse(user1,password1,"newname-test1",null,0);
 		System.out.println("服务器返回结果:"+personalSettingsRsp1.getResultCode().toString());
 		assertEquals(personalSettingsRsp1.getResultCode().getNumber(),PersonalSettingsRsp.ResultCode.SUCCESS_VALUE);
 		
+		String user2="2",password2="1";
 		System.out.println("TestPersonalSettings2:只设置密码");
-		PersonalSettingsRsp personalSettingsRsp2 = getResponse(user1,password1,null,"newpassword-test2",0);
+		PersonalSettingsRsp personalSettingsRsp2 = getResponse(user2,password2,null,"newpassword-test2",0);
 		System.out.println("服务器返回结果:"+personalSettingsRsp2.getResultCode().toString());
 		assertEquals(personalSettingsRsp2.getResultCode().getNumber(),PersonalSettingsRsp.ResultCode.SUCCESS_VALUE);
 		
+		String user3="3",password3="1";
 		System.out.println("TestPersonalSettings3:只设置头像");
-		PersonalSettingsRsp personalSettingsRsp3 = getResponse(user1,password1,null,null,1);
+		PersonalSettingsRsp personalSettingsRsp3 = getResponse(user3,password3,null,null,1);
 		System.out.println("服务器返回结果:"+personalSettingsRsp3.getResultCode().toString());
 		assertEquals(personalSettingsRsp3.getResultCode().getNumber(),PersonalSettingsRsp.ResultCode.SUCCESS_VALUE);
 	}

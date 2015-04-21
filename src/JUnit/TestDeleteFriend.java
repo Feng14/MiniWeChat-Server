@@ -28,13 +28,13 @@ public class TestDeleteFriend {
 	@Test
 	public void testDeleteFriend() throws IOException{
 		System.out.println("TestDeleteFriend1:双方已经是好友关系删除好友");
-		String user1="a3",password1="aa",friend1="a";
+		String user1="a3",password1="aa",friend1="1";
 		DeleteFriendRsp deleteFriendRsp1 = getResponse(user1,password1,friend1);
 		System.out.println("服务器返回结果:"+deleteFriendRsp1.getResultCode().toString());
 		assertEquals(deleteFriendRsp1.getResultCode().getNumber(), DeleteFriendRsp.ResultCode.SUCCESS_VALUE);
 		
 		System.out.println("TestDeleteFriend2:双方不是好友关系删除好友");
-		String user2="a3",password2="aa",friend2="2";
+		String user2="a",password2="a",friend2="2";
 		DeleteFriendRsp deleteFriendRsp2 = getResponse(user2,password2,friend2);
 		System.out.println("服务器返回结果:"+deleteFriendRsp2.getResultCode().toString());
 		assertEquals(deleteFriendRsp2.getResultCode().getNumber(), DeleteFriendRsp.ResultCode.SUCCESS_VALUE);

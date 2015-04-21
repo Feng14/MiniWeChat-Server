@@ -107,7 +107,7 @@ public class HibernateDataOperation {
 		try {
 			Session session = HibernateSessionFactory.getSession();
 			Transaction trans = session.beginTransaction();
-			update(session, code, session);
+			update(o, code, session);
 			trans.commit();
 			session.close();
 
@@ -115,6 +115,7 @@ public class HibernateDataOperation {
 			code.setCode(ResultCode.FAIL);
 			logger.error("Hibernate:update database fail");
 			logger.error("Hibernate error:" + e.getStackTrace());
+			e.printStackTrace();
 		}
 	}
 

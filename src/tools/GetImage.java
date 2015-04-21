@@ -1,6 +1,7 @@
 package tools;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import javax.imageio.ImageIO;
@@ -17,20 +18,21 @@ public class GetImage {
 		try{
 			String urlStr=ResourcePath.getHeadDefaultPath()+imageName;
 			logger.info("GetImage:imageUrl:"+urlStr);
-			URL url = new URL(urlStr);  
-			HttpURLConnection connection2 = (HttpURLConnection) url.openConnection();  
-			String cookieVal=null;
-			String key=null;
-			String cookies=null;
-			for (int i = 1; (key = connection2.getHeaderFieldKey(i)) != null; i++ ) {
-		         if (key.equalsIgnoreCase("set-cookie")) {
-		          cookieVal = connection2.getHeaderField(i);
-		          cookieVal = cookieVal.substring(0, cookieVal.indexOf(";"));
-		          cookies = cookies+cookieVal+";";
-		         }
-		      }
-			connection2.connect();
-			image = ImageIO.read(connection2.getInputStream()); 
+//			URL url = new URL(urlStr);  
+//			HttpURLConnection connection2 = (HttpURLConnection) url.openConnection();  
+//			String cookieVal=null;
+//			String key=null;
+//			String cookies=null;
+//			for (int i = 1; (key = connection2.getHeaderFieldKey(i)) != null; i++ ) {
+//		         if (key.equalsIgnoreCase("set-cookie")) {
+//		          cookieVal = connection2.getHeaderField(i);
+//		          cookieVal = cookieVal.substring(0, cookieVal.indexOf(";"));
+//		          cookies = cookies+cookieVal+";";
+//		         }
+//		      }
+//			connection2.connect();
+//			image = ImageIO.read(connection2.getInputStream()); 
+			image = ImageIO.read(new File(urlStr));
 			logger.info("GetImage.getImage:get default image:"+imageName+" success!");
 			return image;
 		}catch(Exception e){
