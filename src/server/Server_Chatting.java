@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -22,10 +23,10 @@ import protocol.Data.ChatData.ChatItem.ChatType;
 import protocol.Data.ChatData.ChatItem.TargetType;
 import protocol.Data.GroupData.GroupItem;
 import protocol.Data.UserData.UserItem;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq.ChangeType;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync;
 import protocol.Msg.CreateGroupChatMsg;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
@@ -218,19 +219,25 @@ public class Server_Chatting {
 		try {
 			CreateGroupChatReq createGroupChattingObj = CreateGroupChatReq.parseFrom(networkPacket.getMessageObjectBytes());
 
-			List<String> userIdList = createGroupChattingObj.getUserIdList();
-			if (userIdList.size() <= 0)
+			// 判断本用户知否在线
+			ClientUser selfUser1 = serverModel.getClientUserFromTable(networkPacket.ioSession);
+			if (selfUser1 == null)
+				throw new MyException("Server_Chatting : createGroupChatting : creater is offLine!");
+
+			// 获取请求中的用户列表
+			List<String> requestUserIdList = createGroupChattingObj.getUserIdList();
+			if (requestUserIdList.size() <= 0)
 				throw new MyException("Server_Chatting : createGroupChatting : Member Size = 0");
+			
+			// 创建要存储的用户列表
+			List<String> userIdList = new ArrayList<String>();
+			userIdList.addAll(requestUserIdList);
+			
 			// 创建群名
 			String groupName = "";
 			for (int i = 0; i < userIdList.size() && i < 3; i++)
 				groupName += userIdList.get(i).toString() + ",";
 			groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
-
-			// 判断本用户知否在线
-			ClientUser selfUser1 = serverModel.getClientUserFromTable(networkPacket.ioSession);
-			if (selfUser1 == null)
-				throw new MyException("Server_Chatting : createGroupChatting : creater is offLine!");
 
 			// 加入自己
 			if (!userIdList.contains(selfUser1.userId))
@@ -306,7 +313,7 @@ public class Server_Chatting {
 			// 获取群资料
 			Session session = HibernateSessionFactory.getSession();
 			ResultCode resultCode = ResultCode.NULL;
-			Group group = getGroupInfo(Integer.parseInt(requestObj.getGroupId()), session);
+			Group group = getGroupInfo(requestObj.getGroupId(), session);
 
 			if (group == null) {
 				responseBuilder.setResultCode(GetGroupInfoRsp.ResultCode.GROUP_NOT_EXIST);
@@ -345,7 +352,7 @@ public class Server_Chatting {
 				.getMessageID(), ProtoHead.ENetworkMessage.GET_GROUP_INFO_RSP_VALUE, responseBuilder.build().toByteArray())));
 	}
 
-	public Group getGroupInfo(int groupId, Session session) throws NoIpException {
+	public Group getGroupInfo(String groupId, Session session) throws NoIpException {
 		// 获取群资料
 		ResultCode resultCode = ResultCode.NULL;
 		List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, groupId, Group.class, resultCode, session);
@@ -372,17 +379,17 @@ public class Server_Chatting {
 		ChangeGroupChatMemberRsp.Builder responseBuilder = ChangeGroupChatMemberRsp.newBuilder();
 		responseBuilder.setResultCode(ChangeGroupChatMemberRsp.ResultCode.FAIL);
 
-		ChangeGroupChatMemberReq changeGroupMemberObj;
+		ChangeGroupChatMemberReq changeGroupChatMemberObj;
 		try {
-			changeGroupMemberObj = ChangeGroupChatMemberReq.parseFrom(networkPacket.getMessageObjectBytes());
+			changeGroupChatMemberObj = ChangeGroupChatMemberReq.parseFrom(networkPacket.getMessageObjectBytes());
 
 			// 获取群聊名单
 			Session session = HibernateSessionFactory.getSession();
 			ResultCode resultCode = ResultCode.NULL;
-			Group group = getGroupInfo(changeGroupMemberObj.getGroupId(), session);
+			Group group = getGroupInfo(changeGroupChatMemberObj.getGroupId(), session);
 
 			// 获取要处理的用户名单
-			List<String> userList = changeGroupMemberObj.getUserIdList();
+			List<String> userList = changeGroupChatMemberObj.getUserIdList();
 
 			ClientUser requestUser = serverModel.getClientUserFromTable(networkPacket.ioSession);
 			// 检查权限 (在群用户中)
@@ -407,7 +414,7 @@ public class Server_Chatting {
 			ArrayList<String> newUserList = new ArrayList<String>();
 			List<User> newUserList2 = new ArrayList<User>();
 			List<User> groupMemberList = group.getMemberList();
-			if (changeGroupMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
+			if (changeGroupChatMemberObj.getChangeType() == ChangeType.ADD) { // 添加新用户
 				// 整理出未存在群内的用户
 				for (String userId : userList) {
 					containes = false;
@@ -424,11 +431,11 @@ public class Server_Chatting {
 					groupMemberList.addAll(newUserList2);
 				}
 
-			} else if (changeGroupMemberObj.getChangeType() == ChangeType.DELETE) { // 删除自己
+			} else if (changeGroupChatMemberObj.getChangeType() == ChangeType.DELETE) { // 删除自己
 				newUserList2.add(server_User.getUser(requestUser.userId, session));
 				groupMemberList.remove(server_User.getUser(requestUser.userId, session));
-			} else if (changeGroupMemberObj.getChangeType() == ChangeType.UPDATE) { // 修改群资料
-				String newGroupName = changeGroupMemberObj.getGroupName();
+			} else if (changeGroupChatMemberObj.getChangeType() == ChangeType.UPDATE) { // 修改群资料
+				String newGroupName = changeGroupChatMemberObj.getGroupName();
 				if (newGroupName != null && !newGroupName.equals(""))
 					group.setGroupName(newGroupName);
 			}
@@ -452,9 +459,9 @@ public class Server_Chatting {
 			
 			// 通知所有用户
 			ChangeGroupChatMemberSync.Type type;
-			if (changeGroupMemberObj.getChangeType() == ChangeType.ADD)
+			if (changeGroupChatMemberObj.getChangeType() == ChangeType.ADD)
 				type = ChangeGroupChatMemberSync.Type.ADD;
-			else if(changeGroupMemberObj.getChangeType() == ChangeType.DELETE)
+			else if(changeGroupChatMemberObj.getChangeType() == ChangeType.DELETE)
 				type = ChangeGroupChatMemberSync.Type.DELETE;
 			else
 				type = ChangeGroupChatMemberSync.Type.REFRESH;

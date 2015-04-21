@@ -81,5 +81,7 @@ public class TestLogin {
 		// 再登录
 		resultCode = client.login(userId1, userId1);
 		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.SUCCESS);
+		
+		client.close();
 	}
 }

@@ -92,7 +92,7 @@ public class Server {
 		 String path = System.getProperty("user.dir");
 		 System.out.println(path);
 		 try{
-		 	 String logConfigPath = "WebContent/WEB-INF/Log4JConfig.properties";
+		 	 String logConfigPath = "Log4JConfig.properties";
 		 	 System.out.println(logConfigPath);
 		 	 PropertyConfigurator.configure(logConfigPath);
 		 	 logger.info("log configure load success");	
@@ -111,7 +111,7 @@ public class Server {
 		 
 //		 File file = new File("src/applicationContext.xml");
 //		 System.out.println(file.exists());
-		 ApplicationContext ctx = new FileSystemXmlApplicationContext("src/applicationContext.xml");
+		 ApplicationContext ctx = new FileSystemXmlApplicationContext("applicationContext.xml");
 //		 ServerNetwork serverNetwork = (ServerNetwork)ctx.getBean("ServerNetwork");
 	 }
 }

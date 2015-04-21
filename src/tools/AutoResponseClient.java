@@ -7,7 +7,6 @@ import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.TargetType;
 import protocol.Msg.LoginMsg.LoginRsp;
-import protocol.Msg.LoginMsg.LoginRsp.ResultCode;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import protocol.Msg.SendChatMsg.SendChatReq;
 import server.NetworkPacket;

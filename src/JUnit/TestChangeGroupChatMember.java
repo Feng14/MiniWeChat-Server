@@ -8,10 +8,10 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 
 import protocol.ProtoHead;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberReq.ChangeType;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberRsp;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync;
 import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.LogoutMsg.LogoutRsp;
 import server.NetworkPacket;
@@ -33,7 +33,7 @@ public class TestChangeGroupChatMember {
 	 */
 //	@Test
 	public void test1() throws UnknownHostException, IOException {
-		int groupId = 13;
+		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 
@@ -83,7 +83,7 @@ public class TestChangeGroupChatMember {
 	 */
 	@Test
 	public void test2() throws UnknownHostException, IOException{
-		int groupId = 13;
+		String groupId = "13";
 		String user1 = "e", user2 = "a";
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();

@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 
 import protocol.ProtoHead;
-import protocol.Msg.ChangeGroupChatMemberMsg.ChangeGroupChatMemberSync;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
 import protocol.Msg.LoginMsg.LoginRsp;
@@ -50,19 +50,23 @@ public class TestCreateGroupChatting {
 		
 
 		// user1 登陆
+		System.out.println(user1 + " login");
 		LoginRsp.ResultCode resultCode = clientSocket1.login(user1, user1);
 		assertEquals(resultCode, LoginRsp.ResultCode.SUCCESS);
 		System.out.println(resultCode);
 		
 		// user2登陆
+		System.out.println(user2 + " login");
 		assertEquals(clientSocket2.login(user2, user2), LoginRsp.ResultCode.SUCCESS);
 		
 		// 创建成功？
-		CreateGroupChatRsp response = createGroupChatting(clientSocket1, new String[]{"a", "b"});
+		System.out.println(user1 + " create Group");
+		CreateGroupChatRsp response = createGroupChatting(clientSocket1, new String[]{"b"});
 		assertEquals(response.getResultCode(), CreateGroupChatRsp.ResultCode.SUCCESS);
 		System.out.println("GroupId : " + response.getGroupChatId());
 		
 		// user2接收到有新群消息
+		System.out.println(user2 + " Wait Message");
 		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupChatMemberSync sync = ChangeGroupChatMemberSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));

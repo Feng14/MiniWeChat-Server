@@ -67,10 +67,14 @@ public class MinaServerHandle extends IoHandlerAdapter {
 	 */
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) {
-		Debug.log("throws exception");
-		Debug.log("session.toString()", session.toString());
-		Debug.log("cause.toString()", cause.toString());
-		Debug.log("Report Error Over!!");
+		logger.error("throws exception");
+		logger.error("session.toString() : " + session.toString());
+		logger.error("cause.toString() : " + cause.toString());
+		String exceptionStack = "";
+		for (StackTraceElement element : cause.getStackTrace())
+			exceptionStack += element.toString() + "\n";
+		logger.error("stack : " + exceptionStack);
+		logger.error("Report Error Over!!");
 	}
 
 	/**

@@ -83,7 +83,8 @@ public class TestRegister {
 	public void testRegister() throws IOException {
 		ClientSocket client = new ClientSocket();
 		
-		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
+//		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
+		String randomData = "d";
 		RegisterRsp.ResultCode resultCode = testRegister_JUint(client, randomData, randomData, randomData);
 		assertEquals(resultCode, RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
 

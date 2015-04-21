@@ -215,13 +215,13 @@ public class ClientSocket {
 	 * @author Feng
 	 */
 	private void showBytes(byte[] arrayBytes) {
-//		for (byte b : arrayBytes)
-//			System.out.print(b + "  ");
-//		System.out.println();
 //		System.out.println("read from Server:");
 		System.out.println("Show a Message:");
+		for (byte b : arrayBytes)
+			System.out.print(b + "  ");
+		System.out.println();
 		System.out.println("Size : " + DataTypeTranslater.bytesToInt(arrayBytes, NetworkPacket.getSizeStartIndex()));
-		System.out.println("MessageId : " + NetworkPacket.getMessageID(arrayBytes));
+		System.out.println("MessageId : " + DataTypeTranslater.bytesToInt(NetworkPacket.getMessageID(arrayBytes), 0));
 		System.out.println("Message Type : 1" + NetworkPacket.getMessageType(arrayBytes));
 		System.out.println("Message Body : " + NetworkPacket.getMessageObjectBytes(arrayBytes));
 	}
