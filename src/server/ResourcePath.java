@@ -6,11 +6,11 @@ public class ResourcePath {
 	 */
 	
 	//头像路径
-	private static String headPath_linux = "../miniwechatRes/head/";
+	private static String headPath_linux = "miniwechatRes/head/";
 	private static String headPath_windows ="d:\\miniwechatRes\\head\\";
 	//默认头像路径
 	private static String headDefaultPath_windows = "d:\\miniwechatRes\\headDefault\\";
-	private static String headDefaultPath_linux = "../miniwechatRes/headDefault/";
+	private static String headDefaultPath_linux = "miniwechatRes/headDefault/";
 	
 	public static String getHeadPath(){
 		if(System.getProperty("os.name").toLowerCase().indexOf("windows")>=0){

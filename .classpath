@@ -27,7 +27,7 @@
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/hibernate-core-4.3.8.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/javassist-3.18.1-GA.jar"/>
-	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/proxool-0.8.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/proxool-cglib.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/proxool-0.9.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
