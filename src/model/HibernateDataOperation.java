@@ -103,11 +103,11 @@ public class HibernateDataOperation {
 		}
 	}
 
-	public static void update(Object o, ResultCode code) {
+	public static void update(Object obj, ResultCode code) {
 		try {
 			Session session = HibernateSessionFactory.getSession();
 			Transaction trans = session.beginTransaction();
-			update(o, code, session);
+			update(obj, code, session);
 			trans.commit();
 			session.close();
 

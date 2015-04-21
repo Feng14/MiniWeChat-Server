@@ -504,10 +504,10 @@ public class Server_Chatting {
 		notifyMemberJionIn(inviterUserId, userList, groupId);
 	}
 	private void notifyMemberJionIn(String inviterUserId, String[] inviteeUserIds, String groupId) {
-		StringBuffer message = new StringBuffer("我已邀请");
+		StringBuffer message = new StringBuffer(inviterUserId + " 已邀请");
 		for (String userId : inviteeUserIds)
 			message.append("'" + userId + "',");
-		String message2 = message.subSequence(0, message.length()-1) + " 加入";
+		String message2 = message.subSequence(0, message.length()-1) + " 加入群聊";
 		
 		ChatItem.Builder builder = ChatItem.newBuilder();
 		builder.setChatBody(message2);
@@ -515,6 +515,7 @@ public class Server_Chatting {
 		builder.setSendUserId(inviterUserId);
 		builder.setReceiveUserId(groupId);
 		builder.setTargetType(TargetType.GROUP);
+		builder.setDate(Calendar.getInstance().getTimeInMillis());
 		
 		try {
 			clientSendChatting_Group(builder.build());

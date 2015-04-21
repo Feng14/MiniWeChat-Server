@@ -8,7 +8,7 @@ public final class ChangeGroupMsg {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface ChangeGroupChatMemberReqOrBuilder
+  public interface ChangeGroupReqOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
     // required string groupId = 1;
@@ -26,15 +26,15 @@ public final class ChangeGroupMsg {
     com.google.protobuf.ByteString
         getGroupIdBytes();
 
-    // required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;
+    // required .protocol.ChangeGroupReq.ChangeType changeType = 2;
     /**
-     * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+     * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
      */
     boolean hasChangeType();
     /**
-     * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+     * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
      */
-    protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType getChangeType();
+    protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType getChangeType();
 
     // repeated string userId = 3;
     /**
@@ -72,24 +72,24 @@ public final class ChangeGroupMsg {
         getGroupNameBytes();
   }
   /**
-   * Protobuf type {@code protocol.ChangeGroupChatMemberReq}
+   * Protobuf type {@code protocol.ChangeGroupReq}
    */
-  public static final class ChangeGroupChatMemberReq extends
+  public static final class ChangeGroupReq extends
       com.google.protobuf.GeneratedMessage
-      implements ChangeGroupChatMemberReqOrBuilder {
-    // Use ChangeGroupChatMemberReq.newBuilder() to construct.
-    private ChangeGroupChatMemberReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements ChangeGroupReqOrBuilder {
+    // Use ChangeGroupReq.newBuilder() to construct.
+    private ChangeGroupReq(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private ChangeGroupChatMemberReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private ChangeGroupReq(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final ChangeGroupChatMemberReq defaultInstance;
-    public static ChangeGroupChatMemberReq getDefaultInstance() {
+    private static final ChangeGroupReq defaultInstance;
+    public static ChangeGroupReq getDefaultInstance() {
       return defaultInstance;
     }
 
-    public ChangeGroupChatMemberReq getDefaultInstanceForType() {
+    public ChangeGroupReq getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -99,7 +99,7 @@ public final class ChangeGroupMsg {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private ChangeGroupChatMemberReq(
+    private ChangeGroupReq(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -129,7 +129,7 @@ public final class ChangeGroupMsg {
             }
             case 16: {
               int rawValue = input.readEnum();
-              protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType value = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType.valueOf(rawValue);
+              protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType value = protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(2, rawValue);
               } else {
@@ -168,33 +168,33 @@ public final class ChangeGroupMsg {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberReq_descriptor;
+      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupReq_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberReq_fieldAccessorTable
+      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupReq_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.class, protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.Builder.class);
+              protocol.Msg.ChangeGroupMsg.ChangeGroupReq.class, protocol.Msg.ChangeGroupMsg.ChangeGroupReq.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<ChangeGroupChatMemberReq> PARSER =
-        new com.google.protobuf.AbstractParser<ChangeGroupChatMemberReq>() {
-      public ChangeGroupChatMemberReq parsePartialFrom(
+    public static com.google.protobuf.Parser<ChangeGroupReq> PARSER =
+        new com.google.protobuf.AbstractParser<ChangeGroupReq>() {
+      public ChangeGroupReq parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ChangeGroupChatMemberReq(input, extensionRegistry);
+        return new ChangeGroupReq(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ChangeGroupChatMemberReq> getParserForType() {
+    public com.google.protobuf.Parser<ChangeGroupReq> getParserForType() {
       return PARSER;
     }
 
     /**
-     * Protobuf enum {@code protocol.ChangeGroupChatMemberReq.ChangeType}
+     * Protobuf enum {@code protocol.ChangeGroupReq.ChangeType}
      */
     public enum ChangeType
         implements com.google.protobuf.ProtocolMessageEnum {
@@ -207,9 +207,9 @@ public final class ChangeGroupMsg {
        */
       DELETE(1, 1),
       /**
-       * <code>UPDATE = 2;</code>
+       * <code>UPDATE_INFO = 2;</code>
        */
-      UPDATE(2, 2),
+      UPDATE_INFO(2, 2),
       ;
 
       /**
@@ -221,9 +221,9 @@ public final class ChangeGroupMsg {
        */
       public static final int DELETE_VALUE = 1;
       /**
-       * <code>UPDATE = 2;</code>
+       * <code>UPDATE_INFO = 2;</code>
        */
-      public static final int UPDATE_VALUE = 2;
+      public static final int UPDATE_INFO_VALUE = 2;
 
 
       public final int getNumber() { return value; }
@@ -232,7 +232,7 @@ public final class ChangeGroupMsg {
         switch (value) {
           case 0: return ADD;
           case 1: return DELETE;
-          case 2: return UPDATE;
+          case 2: return UPDATE_INFO;
           default: return null;
         }
       }
@@ -259,7 +259,7 @@ public final class ChangeGroupMsg {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.getDescriptor().getEnumTypes().get(0);
+        return protocol.Msg.ChangeGroupMsg.ChangeGroupReq.getDescriptor().getEnumTypes().get(0);
       }
 
       private static final ChangeType[] VALUES = values();
@@ -281,7 +281,7 @@ public final class ChangeGroupMsg {
         this.value = value;
       }
 
-      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupChatMemberReq.ChangeType)
+      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupReq.ChangeType)
     }
 
     private int bitField0_;
@@ -328,19 +328,19 @@ public final class ChangeGroupMsg {
       }
     }
 
-    // required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;
+    // required .protocol.ChangeGroupReq.ChangeType changeType = 2;
     public static final int CHANGETYPE_FIELD_NUMBER = 2;
-    private protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType changeType_;
+    private protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType changeType_;
     /**
-     * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+     * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
      */
     public boolean hasChangeType() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+     * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
      */
-    public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType getChangeType() {
+    public protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType getChangeType() {
       return changeType_;
     }
 
@@ -419,7 +419,7 @@ public final class ChangeGroupMsg {
 
     private void initFields() {
       groupId_ = "";
-      changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType.ADD;
+      changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType.ADD;
       userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       groupName_ = "";
     }
@@ -497,53 +497,53 @@ public final class ChangeGroupMsg {
       return super.writeReplace();
     }
 
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(byte[] data)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(java.io.InputStream input)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseDelimitedFrom(java.io.InputStream input)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseDelimitedFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupReq parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -552,7 +552,7 @@ public final class ChangeGroupMsg {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq prototype) {
+    public static Builder newBuilder(protocol.Msg.ChangeGroupMsg.ChangeGroupReq prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -564,24 +564,24 @@ public final class ChangeGroupMsg {
       return builder;
     }
     /**
-     * Protobuf type {@code protocol.ChangeGroupChatMemberReq}
+     * Protobuf type {@code protocol.ChangeGroupReq}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReqOrBuilder {
+       implements protocol.Msg.ChangeGroupMsg.ChangeGroupReqOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberReq_descriptor;
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupReq_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberReq_fieldAccessorTable
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupReq_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.class, protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.Builder.class);
+                protocol.Msg.ChangeGroupMsg.ChangeGroupReq.class, protocol.Msg.ChangeGroupMsg.ChangeGroupReq.Builder.class);
       }
 
-      // Construct using protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.newBuilder()
+      // Construct using protocol.Msg.ChangeGroupMsg.ChangeGroupReq.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -603,7 +603,7 @@ public final class ChangeGroupMsg {
         super.clear();
         groupId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType.ADD;
+        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType.ADD;
         bitField0_ = (bitField0_ & ~0x00000002);
         userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -618,23 +618,23 @@ public final class ChangeGroupMsg {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberReq_descriptor;
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupReq_descriptor;
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq getDefaultInstanceForType() {
-        return protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.getDefaultInstance();
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupReq getDefaultInstanceForType() {
+        return protocol.Msg.ChangeGroupMsg.ChangeGroupReq.getDefaultInstance();
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq build() {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq result = buildPartial();
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupReq build() {
+        protocol.Msg.ChangeGroupMsg.ChangeGroupReq result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq buildPartial() {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq result = new protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq(this);
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupReq buildPartial() {
+        protocol.Msg.ChangeGroupMsg.ChangeGroupReq result = new protocol.Msg.ChangeGroupMsg.ChangeGroupReq(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -661,16 +661,16 @@ public final class ChangeGroupMsg {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq) {
-          return mergeFrom((protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq)other);
+        if (other instanceof protocol.Msg.ChangeGroupMsg.ChangeGroupReq) {
+          return mergeFrom((protocol.Msg.ChangeGroupMsg.ChangeGroupReq)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq other) {
-        if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.getDefaultInstance()) return this;
+      public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupReq other) {
+        if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupReq.getDefaultInstance()) return this;
         if (other.hasGroupId()) {
           bitField0_ |= 0x00000001;
           groupId_ = other.groupId_;
@@ -714,11 +714,11 @@ public final class ChangeGroupMsg {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq parsedMessage = null;
+        protocol.Msg.ChangeGroupMsg.ChangeGroupReq parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq) e.getUnfinishedMessage();
+          parsedMessage = (protocol.Msg.ChangeGroupMsg.ChangeGroupReq) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -803,24 +803,24 @@ public final class ChangeGroupMsg {
         return this;
       }
 
-      // required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;
-      private protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType.ADD;
+      // required .protocol.ChangeGroupReq.ChangeType changeType = 2;
+      private protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType.ADD;
       /**
-       * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+       * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
        */
       public boolean hasChangeType() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+       * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
        */
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType getChangeType() {
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType getChangeType() {
         return changeType_;
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+       * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
        */
-      public Builder setChangeType(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType value) {
+      public Builder setChangeType(protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -830,11 +830,11 @@ public final class ChangeGroupMsg {
         return this;
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberReq.ChangeType changeType = 2;</code>
+       * <code>required .protocol.ChangeGroupReq.ChangeType changeType = 2;</code>
        */
       public Builder clearChangeType() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType.ADD;
+        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType.ADD;
         onChanged();
         return this;
       }
@@ -1006,49 +1006,49 @@ public final class ChangeGroupMsg {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupChatMemberReq)
+      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupReq)
     }
 
     static {
-      defaultInstance = new ChangeGroupChatMemberReq(true);
+      defaultInstance = new ChangeGroupReq(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupChatMemberReq)
+    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupReq)
   }
 
-  public interface ChangeGroupChatMemberRspOrBuilder
+  public interface ChangeGroupRspOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;
+    // required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;
     /**
-     * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
      */
     boolean hasResultCode();
     /**
-     * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
      */
-    protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode getResultCode();
+    protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode getResultCode();
   }
   /**
-   * Protobuf type {@code protocol.ChangeGroupChatMemberRsp}
+   * Protobuf type {@code protocol.ChangeGroupRsp}
    */
-  public static final class ChangeGroupChatMemberRsp extends
+  public static final class ChangeGroupRsp extends
       com.google.protobuf.GeneratedMessage
-      implements ChangeGroupChatMemberRspOrBuilder {
-    // Use ChangeGroupChatMemberRsp.newBuilder() to construct.
-    private ChangeGroupChatMemberRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements ChangeGroupRspOrBuilder {
+    // Use ChangeGroupRsp.newBuilder() to construct.
+    private ChangeGroupRsp(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private ChangeGroupChatMemberRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private ChangeGroupRsp(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final ChangeGroupChatMemberRsp defaultInstance;
-    public static ChangeGroupChatMemberRsp getDefaultInstance() {
+    private static final ChangeGroupRsp defaultInstance;
+    public static ChangeGroupRsp getDefaultInstance() {
       return defaultInstance;
     }
 
-    public ChangeGroupChatMemberRsp getDefaultInstanceForType() {
+    public ChangeGroupRsp getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -1058,7 +1058,7 @@ public final class ChangeGroupMsg {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private ChangeGroupChatMemberRsp(
+    private ChangeGroupRsp(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1083,7 +1083,7 @@ public final class ChangeGroupMsg {
             }
             case 8: {
               int rawValue = input.readEnum();
-              protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode value = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode.valueOf(rawValue);
+              protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode value = protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
@@ -1106,33 +1106,33 @@ public final class ChangeGroupMsg {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberRsp_descriptor;
+      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupRsp_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberRsp_fieldAccessorTable
+      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupRsp_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.class, protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.Builder.class);
+              protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.class, protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<ChangeGroupChatMemberRsp> PARSER =
-        new com.google.protobuf.AbstractParser<ChangeGroupChatMemberRsp>() {
-      public ChangeGroupChatMemberRsp parsePartialFrom(
+    public static com.google.protobuf.Parser<ChangeGroupRsp> PARSER =
+        new com.google.protobuf.AbstractParser<ChangeGroupRsp>() {
+      public ChangeGroupRsp parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ChangeGroupChatMemberRsp(input, extensionRegistry);
+        return new ChangeGroupRsp(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ChangeGroupChatMemberRsp> getParserForType() {
+    public com.google.protobuf.Parser<ChangeGroupRsp> getParserForType() {
       return PARSER;
     }
 
     /**
-     * Protobuf enum {@code protocol.ChangeGroupChatMemberRsp.ResultCode}
+     * Protobuf enum {@code protocol.ChangeGroupRsp.ResultCode}
      */
     public enum ResultCode
         implements com.google.protobuf.ProtocolMessageEnum {
@@ -1197,7 +1197,7 @@ public final class ChangeGroupMsg {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.getDescriptor().getEnumTypes().get(0);
+        return protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.getDescriptor().getEnumTypes().get(0);
       }
 
       private static final ResultCode[] VALUES = values();
@@ -1219,28 +1219,28 @@ public final class ChangeGroupMsg {
         this.value = value;
       }
 
-      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupChatMemberRsp.ResultCode)
+      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupRsp.ResultCode)
     }
 
     private int bitField0_;
-    // required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;
+    // required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;
     public static final int RESULTCODE_FIELD_NUMBER = 1;
-    private protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode resultCode_;
+    private protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode resultCode_;
     /**
-     * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
      */
     public boolean hasResultCode() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+     * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
      */
-    public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode getResultCode() {
+    public protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode getResultCode() {
       return resultCode_;
     }
 
     private void initFields() {
-      resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode.SUCCESS;
+      resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode.SUCCESS;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1286,53 +1286,53 @@ public final class ChangeGroupMsg {
       return super.writeReplace();
     }
 
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(byte[] data)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(java.io.InputStream input)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseDelimitedFrom(java.io.InputStream input)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseDelimitedFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1341,7 +1341,7 @@ public final class ChangeGroupMsg {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp prototype) {
+    public static Builder newBuilder(protocol.Msg.ChangeGroupMsg.ChangeGroupRsp prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -1353,24 +1353,24 @@ public final class ChangeGroupMsg {
       return builder;
     }
     /**
-     * Protobuf type {@code protocol.ChangeGroupChatMemberRsp}
+     * Protobuf type {@code protocol.ChangeGroupRsp}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRspOrBuilder {
+       implements protocol.Msg.ChangeGroupMsg.ChangeGroupRspOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberRsp_descriptor;
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupRsp_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberRsp_fieldAccessorTable
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupRsp_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.class, protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.Builder.class);
+                protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.class, protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.Builder.class);
       }
 
-      // Construct using protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.newBuilder()
+      // Construct using protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1390,7 +1390,7 @@ public final class ChangeGroupMsg {
 
       public Builder clear() {
         super.clear();
-        resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode.SUCCESS;
+        resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode.SUCCESS;
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -1401,23 +1401,23 @@ public final class ChangeGroupMsg {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberRsp_descriptor;
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupRsp_descriptor;
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp getDefaultInstanceForType() {
-        return protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.getDefaultInstance();
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupRsp getDefaultInstanceForType() {
+        return protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.getDefaultInstance();
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp build() {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp result = buildPartial();
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupRsp build() {
+        protocol.Msg.ChangeGroupMsg.ChangeGroupRsp result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp buildPartial() {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp result = new protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp(this);
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupRsp buildPartial() {
+        protocol.Msg.ChangeGroupMsg.ChangeGroupRsp result = new protocol.Msg.ChangeGroupMsg.ChangeGroupRsp(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1430,16 +1430,16 @@ public final class ChangeGroupMsg {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp) {
-          return mergeFrom((protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp)other);
+        if (other instanceof protocol.Msg.ChangeGroupMsg.ChangeGroupRsp) {
+          return mergeFrom((protocol.Msg.ChangeGroupMsg.ChangeGroupRsp)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp other) {
-        if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.getDefaultInstance()) return this;
+      public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupRsp other) {
+        if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.getDefaultInstance()) return this;
         if (other.hasResultCode()) {
           setResultCode(other.getResultCode());
         }
@@ -1459,11 +1459,11 @@ public final class ChangeGroupMsg {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp parsedMessage = null;
+        protocol.Msg.ChangeGroupMsg.ChangeGroupRsp parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp) e.getUnfinishedMessage();
+          parsedMessage = (protocol.Msg.ChangeGroupMsg.ChangeGroupRsp) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -1474,24 +1474,24 @@ public final class ChangeGroupMsg {
       }
       private int bitField0_;
 
-      // required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;
-      private protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode.SUCCESS;
+      // required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;
+      private protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode.SUCCESS;
       /**
-       * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
        */
       public boolean hasResultCode() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
        */
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode getResultCode() {
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode getResultCode() {
         return resultCode_;
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
        */
-      public Builder setResultCode(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode value) {
+      public Builder setResultCode(protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode value) {
         if (value == null) {
           throw new NullPointerException();
         }
@@ -1501,38 +1501,38 @@ public final class ChangeGroupMsg {
         return this;
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberRsp.ResultCode resultCode = 1;</code>
+       * <code>required .protocol.ChangeGroupRsp.ResultCode resultCode = 1;</code>
        */
       public Builder clearResultCode() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp.ResultCode.SUCCESS;
+        resultCode_ = protocol.Msg.ChangeGroupMsg.ChangeGroupRsp.ResultCode.SUCCESS;
         onChanged();
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupChatMemberRsp)
+      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupRsp)
     }
 
     static {
-      defaultInstance = new ChangeGroupChatMemberRsp(true);
+      defaultInstance = new ChangeGroupRsp(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupChatMemberRsp)
+    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupRsp)
   }
 
-  public interface ChangeGroupChatMemberSyncOrBuilder
+  public interface ChangeGroupSyncOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ChangeGroupChatMemberSync.Type type = 1;
+    // required .protocol.ChangeGroupSync.ChangeType changeType = 1;
     /**
-     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
      */
-    boolean hasType();
+    boolean hasChangeType();
     /**
-     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
      */
-    protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type getType();
+    protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType getChangeType();
 
     // repeated string userId = 2;
     /**
@@ -1553,26 +1553,41 @@ public final class ChangeGroupMsg {
      */
     com.google.protobuf.ByteString
         getUserIdBytes(int index);
+
+    // optional string groupName = 3;
+    /**
+     * <code>optional string groupName = 3;</code>
+     */
+    boolean hasGroupName();
+    /**
+     * <code>optional string groupName = 3;</code>
+     */
+    java.lang.String getGroupName();
+    /**
+     * <code>optional string groupName = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getGroupNameBytes();
   }
   /**
-   * Protobuf type {@code protocol.ChangeGroupChatMemberSync}
+   * Protobuf type {@code protocol.ChangeGroupSync}
    */
-  public static final class ChangeGroupChatMemberSync extends
+  public static final class ChangeGroupSync extends
       com.google.protobuf.GeneratedMessage
-      implements ChangeGroupChatMemberSyncOrBuilder {
-    // Use ChangeGroupChatMemberSync.newBuilder() to construct.
-    private ChangeGroupChatMemberSync(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements ChangeGroupSyncOrBuilder {
+    // Use ChangeGroupSync.newBuilder() to construct.
+    private ChangeGroupSync(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private ChangeGroupChatMemberSync(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private ChangeGroupSync(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final ChangeGroupChatMemberSync defaultInstance;
-    public static ChangeGroupChatMemberSync getDefaultInstance() {
+    private static final ChangeGroupSync defaultInstance;
+    public static ChangeGroupSync getDefaultInstance() {
       return defaultInstance;
     }
 
-    public ChangeGroupChatMemberSync getDefaultInstanceForType() {
+    public ChangeGroupSync getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -1582,7 +1597,7 @@ public final class ChangeGroupMsg {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private ChangeGroupChatMemberSync(
+    private ChangeGroupSync(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -1607,12 +1622,12 @@ public final class ChangeGroupMsg {
             }
             case 8: {
               int rawValue = input.readEnum();
-              protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type value = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type.valueOf(rawValue);
+              protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType value = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.valueOf(rawValue);
               if (value == null) {
                 unknownFields.mergeVarintField(1, rawValue);
               } else {
                 bitField0_ |= 0x00000001;
-                type_ = value;
+                changeType_ = value;
               }
               break;
             }
@@ -1622,6 +1637,11 @@ public final class ChangeGroupMsg {
                 mutable_bitField0_ |= 0x00000002;
               }
               userId_.add(input.readBytes());
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000002;
+              groupName_ = input.readBytes();
               break;
             }
           }
@@ -1641,35 +1661,35 @@ public final class ChangeGroupMsg {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupSync_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable
+      return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupSync_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.class, protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Builder.class);
+              protocol.Msg.ChangeGroupMsg.ChangeGroupSync.class, protocol.Msg.ChangeGroupMsg.ChangeGroupSync.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<ChangeGroupChatMemberSync> PARSER =
-        new com.google.protobuf.AbstractParser<ChangeGroupChatMemberSync>() {
-      public ChangeGroupChatMemberSync parsePartialFrom(
+    public static com.google.protobuf.Parser<ChangeGroupSync> PARSER =
+        new com.google.protobuf.AbstractParser<ChangeGroupSync>() {
+      public ChangeGroupSync parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ChangeGroupChatMemberSync(input, extensionRegistry);
+        return new ChangeGroupSync(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<ChangeGroupChatMemberSync> getParserForType() {
+    public com.google.protobuf.Parser<ChangeGroupSync> getParserForType() {
       return PARSER;
     }
 
     /**
-     * Protobuf enum {@code protocol.ChangeGroupChatMemberSync.Type}
+     * Protobuf enum {@code protocol.ChangeGroupSync.ChangeType}
      */
-    public enum Type
+    public enum ChangeType
         implements com.google.protobuf.ProtocolMessageEnum {
       /**
        * <code>ADD = 0;</code>
@@ -1680,9 +1700,13 @@ public final class ChangeGroupMsg {
        */
       DELETE(1, 1),
       /**
-       * <code>REFRESH = 2;</code>
+       * <code>UPDATE_INFO = 2;</code>
        */
-      REFRESH(2, 2),
+      UPDATE_INFO(2, 2),
+      /**
+       * <code>UPDATE_MEMBER = 3;</code>
+       */
+      UPDATE_MEMBER(3, 3),
       ;
 
       /**
@@ -1694,31 +1718,36 @@ public final class ChangeGroupMsg {
        */
       public static final int DELETE_VALUE = 1;
       /**
-       * <code>REFRESH = 2;</code>
+       * <code>UPDATE_INFO = 2;</code>
        */
-      public static final int REFRESH_VALUE = 2;
+      public static final int UPDATE_INFO_VALUE = 2;
+      /**
+       * <code>UPDATE_MEMBER = 3;</code>
+       */
+      public static final int UPDATE_MEMBER_VALUE = 3;
 
 
       public final int getNumber() { return value; }
 
-      public static Type valueOf(int value) {
+      public static ChangeType valueOf(int value) {
         switch (value) {
           case 0: return ADD;
           case 1: return DELETE;
-          case 2: return REFRESH;
+          case 2: return UPDATE_INFO;
+          case 3: return UPDATE_MEMBER;
           default: return null;
         }
       }
 
-      public static com.google.protobuf.Internal.EnumLiteMap<Type>
+      public static com.google.protobuf.Internal.EnumLiteMap<ChangeType>
           internalGetValueMap() {
         return internalValueMap;
       }
-      private static com.google.protobuf.Internal.EnumLiteMap<Type>
+      private static com.google.protobuf.Internal.EnumLiteMap<ChangeType>
           internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<Type>() {
-              public Type findValueByNumber(int number) {
-                return Type.valueOf(number);
+            new com.google.protobuf.Internal.EnumLiteMap<ChangeType>() {
+              public ChangeType findValueByNumber(int number) {
+                return ChangeType.valueOf(number);
               }
             };
 
@@ -1732,12 +1761,12 @@ public final class ChangeGroupMsg {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.getDescriptor().getEnumTypes().get(0);
+        return protocol.Msg.ChangeGroupMsg.ChangeGroupSync.getDescriptor().getEnumTypes().get(0);
       }
 
-      private static final Type[] VALUES = values();
+      private static final ChangeType[] VALUES = values();
 
-      public static Type valueOf(
+      public static ChangeType valueOf(
           com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
         if (desc.getType() != getDescriptor()) {
           throw new java.lang.IllegalArgumentException(
@@ -1749,29 +1778,29 @@ public final class ChangeGroupMsg {
       private final int index;
       private final int value;
 
-      private Type(int index, int value) {
+      private ChangeType(int index, int value) {
         this.index = index;
         this.value = value;
       }
 
-      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupChatMemberSync.Type)
+      // @@protoc_insertion_point(enum_scope:protocol.ChangeGroupSync.ChangeType)
     }
 
     private int bitField0_;
-    // required .protocol.ChangeGroupChatMemberSync.Type type = 1;
-    public static final int TYPE_FIELD_NUMBER = 1;
-    private protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type type_;
+    // required .protocol.ChangeGroupSync.ChangeType changeType = 1;
+    public static final int CHANGETYPE_FIELD_NUMBER = 1;
+    private protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType changeType_;
     /**
-     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
      */
-    public boolean hasType() {
+    public boolean hasChangeType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
      */
-    public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type getType() {
-      return type_;
+    public protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType getChangeType() {
+      return changeType_;
     }
 
     // repeated string userId = 2;
@@ -1804,16 +1833,60 @@ public final class ChangeGroupMsg {
       return userId_.getByteString(index);
     }
 
+    // optional string groupName = 3;
+    public static final int GROUPNAME_FIELD_NUMBER = 3;
+    private java.lang.Object groupName_;
+    /**
+     * <code>optional string groupName = 3;</code>
+     */
+    public boolean hasGroupName() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string groupName = 3;</code>
+     */
+    public java.lang.String getGroupName() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string groupName = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGroupNameBytes() {
+      java.lang.Object ref = groupName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
-      type_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type.ADD;
+      changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
       userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      groupName_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasType()) {
+      if (!hasChangeType()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1825,10 +1898,13 @@ public final class ChangeGroupMsg {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, type_.getNumber());
+        output.writeEnum(1, changeType_.getNumber());
       }
       for (int i = 0; i < userId_.size(); i++) {
         output.writeBytes(2, userId_.getByteString(i));
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(3, getGroupNameBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1841,7 +1917,7 @@ public final class ChangeGroupMsg {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, type_.getNumber());
+          .computeEnumSize(1, changeType_.getNumber());
       }
       {
         int dataSize = 0;
@@ -1851,6 +1927,10 @@ public final class ChangeGroupMsg {
         }
         size += dataSize;
         size += 1 * getUserIdList().size();
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getGroupNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1864,53 +1944,53 @@ public final class ChangeGroupMsg {
       return super.writeReplace();
     }
 
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(byte[] data)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(java.io.InputStream input)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseDelimitedFrom(java.io.InputStream input)
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseDelimitedFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parseFrom(
+    public static protocol.Msg.ChangeGroupMsg.ChangeGroupSync parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1919,7 +1999,7 @@ public final class ChangeGroupMsg {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync prototype) {
+    public static Builder newBuilder(protocol.Msg.ChangeGroupMsg.ChangeGroupSync prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -1931,24 +2011,24 @@ public final class ChangeGroupMsg {
       return builder;
     }
     /**
-     * Protobuf type {@code protocol.ChangeGroupChatMemberSync}
+     * Protobuf type {@code protocol.ChangeGroupSync}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSyncOrBuilder {
+       implements protocol.Msg.ChangeGroupMsg.ChangeGroupSyncOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupSync_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupSync_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.class, protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Builder.class);
+                protocol.Msg.ChangeGroupMsg.ChangeGroupSync.class, protocol.Msg.ChangeGroupMsg.ChangeGroupSync.Builder.class);
       }
 
-      // Construct using protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.newBuilder()
+      // Construct using protocol.Msg.ChangeGroupMsg.ChangeGroupSync.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1968,10 +2048,12 @@ public final class ChangeGroupMsg {
 
       public Builder clear() {
         super.clear();
-        type_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type.ADD;
+        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
         bitField0_ = (bitField0_ & ~0x00000001);
         userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1981,53 +2063,57 @@ public final class ChangeGroupMsg {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+        return protocol.Msg.ChangeGroupMsg.internal_static_protocol_ChangeGroupSync_descriptor;
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync getDefaultInstanceForType() {
-        return protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.getDefaultInstance();
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupSync getDefaultInstanceForType() {
+        return protocol.Msg.ChangeGroupMsg.ChangeGroupSync.getDefaultInstance();
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync build() {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync result = buildPartial();
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupSync build() {
+        protocol.Msg.ChangeGroupMsg.ChangeGroupSync result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync buildPartial() {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync result = new protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync(this);
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupSync buildPartial() {
+        protocol.Msg.ChangeGroupMsg.ChangeGroupSync result = new protocol.Msg.ChangeGroupMsg.ChangeGroupSync(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.type_ = type_;
+        result.changeType_ = changeType_;
         if (((bitField0_ & 0x00000002) == 0x00000002)) {
           userId_ = new com.google.protobuf.UnmodifiableLazyStringList(
               userId_);
           bitField0_ = (bitField0_ & ~0x00000002);
         }
         result.userId_ = userId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.groupName_ = groupName_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync) {
-          return mergeFrom((protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync)other);
+        if (other instanceof protocol.Msg.ChangeGroupMsg.ChangeGroupSync) {
+          return mergeFrom((protocol.Msg.ChangeGroupMsg.ChangeGroupSync)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync other) {
-        if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.getDefaultInstance()) return this;
-        if (other.hasType()) {
-          setType(other.getType());
+      public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupSync other) {
+        if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupSync.getDefaultInstance()) return this;
+        if (other.hasChangeType()) {
+          setChangeType(other.getChangeType());
         }
         if (!other.userId_.isEmpty()) {
           if (userId_.isEmpty()) {
@@ -2039,12 +2125,17 @@ public final class ChangeGroupMsg {
           }
           onChanged();
         }
+        if (other.hasGroupName()) {
+          bitField0_ |= 0x00000004;
+          groupName_ = other.groupName_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasType()) {
+        if (!hasChangeType()) {
           
           return false;
         }
@@ -2055,11 +2146,11 @@ public final class ChangeGroupMsg {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync parsedMessage = null;
+        protocol.Msg.ChangeGroupMsg.ChangeGroupSync parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync) e.getUnfinishedMessage();
+          parsedMessage = (protocol.Msg.ChangeGroupMsg.ChangeGroupSync) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -2070,38 +2161,38 @@ public final class ChangeGroupMsg {
       }
       private int bitField0_;
 
-      // required .protocol.ChangeGroupChatMemberSync.Type type = 1;
-      private protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type type_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type.ADD;
+      // required .protocol.ChangeGroupSync.ChangeType changeType = 1;
+      private protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
       /**
-       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
        */
-      public boolean hasType() {
+      public boolean hasChangeType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
        */
-      public protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type getType() {
-        return type_;
+      public protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType getChangeType() {
+        return changeType_;
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
        */
-      public Builder setType(protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type value) {
+      public Builder setChangeType(protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType value) {
         if (value == null) {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000001;
-        type_ = value;
+        changeType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required .protocol.ChangeGroupChatMemberSync.Type type = 1;</code>
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
        */
-      public Builder clearType() {
+      public Builder clearChangeType() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        type_ = protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync.Type.ADD;
+        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
         onChanged();
         return this;
       }
@@ -2199,32 +2290,106 @@ public final class ChangeGroupMsg {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupChatMemberSync)
+      // optional string groupName = 3;
+      private java.lang.Object groupName_ = "";
+      /**
+       * <code>optional string groupName = 3;</code>
+       */
+      public boolean hasGroupName() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string groupName = 3;</code>
+       */
+      public java.lang.String getGroupName() {
+        java.lang.Object ref = groupName_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          groupName_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGroupNameBytes() {
+        java.lang.Object ref = groupName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string groupName = 3;</code>
+       */
+      public Builder setGroupName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 3;</code>
+       */
+      public Builder clearGroupName() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        groupName_ = getDefaultInstance().getGroupName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string groupName = 3;</code>
+       */
+      public Builder setGroupNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        groupName_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:protocol.ChangeGroupSync)
     }
 
     static {
-      defaultInstance = new ChangeGroupChatMemberSync(true);
+      defaultInstance = new ChangeGroupSync(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupChatMemberSync)
+    // @@protoc_insertion_point(class_scope:protocol.ChangeGroupSync)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_protocol_ChangeGroupChatMemberReq_descriptor;
+    internal_static_protocol_ChangeGroupReq_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_protocol_ChangeGroupChatMemberReq_fieldAccessorTable;
+      internal_static_protocol_ChangeGroupReq_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_protocol_ChangeGroupChatMemberRsp_descriptor;
+    internal_static_protocol_ChangeGroupRsp_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_protocol_ChangeGroupChatMemberRsp_fieldAccessorTable;
+      internal_static_protocol_ChangeGroupRsp_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_protocol_ChangeGroupChatMemberSync_descriptor;
+    internal_static_protocol_ChangeGroupSync_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable;
+      internal_static_protocol_ChangeGroupSync_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2234,44 +2399,44 @@ public final class ChangeGroupMsg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\024ChangeGroupMsg.proto\022\010protocol\"\300\001\n\030Cha" +
-      "ngeGroupChatMemberReq\022\017\n\007groupId\030\001 \002(\t\022A" +
-      "\n\nchangeType\030\002 \002(\0162-.protocol.ChangeGrou" +
-      "pChatMemberReq.ChangeType\022\016\n\006userId\030\003 \003(" +
-      "\t\022\021\n\tgroupName\030\004 \001(\t\"-\n\nChangeType\022\007\n\003AD" +
-      "D\020\000\022\n\n\006DELETE\020\001\022\n\n\006UPDATE\020\002\"\224\001\n\030ChangeGr" +
-      "oupChatMemberRsp\022A\n\nresultCode\030\001 \002(\0162-.p" +
-      "rotocol.ChangeGroupChatMemberRsp.ResultC" +
-      "ode\"5\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004FAIL\020\001" +
-      "\022\020\n\014NO_AUTHORITY\020\002\"\215\001\n\031ChangeGroupChatMe",
-      "mberSync\0226\n\004type\030\001 \002(\0162(.protocol.Change" +
-      "GroupChatMemberSync.Type\022\016\n\006userId\030\002 \003(\t" +
-      "\"(\n\004Type\022\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022\013\n\007REFRESH" +
-      "\020\002B\016\n\014protocol.Msg"
+      "\n\024ChangeGroupMsg.proto\022\010protocol\"\261\001\n\016Cha" +
+      "ngeGroupReq\022\017\n\007groupId\030\001 \002(\t\0227\n\nchangeTy" +
+      "pe\030\002 \002(\0162#.protocol.ChangeGroupReq.Chang" +
+      "eType\022\016\n\006userId\030\003 \003(\t\022\021\n\tgroupName\030\004 \001(\t" +
+      "\"2\n\nChangeType\022\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022\017\n\013U" +
+      "PDATE_INFO\020\002\"\200\001\n\016ChangeGroupRsp\0227\n\nresul" +
+      "tCode\030\001 \002(\0162#.protocol.ChangeGroupRsp.Re" +
+      "sultCode\"5\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004F" +
+      "AIL\020\001\022\020\n\014NO_AUTHORITY\020\002\"\265\001\n\017ChangeGroupS" +
+      "ync\0228\n\nchangeType\030\001 \002(\0162$.protocol.Chang",
+      "eGroupSync.ChangeType\022\016\n\006userId\030\002 \003(\t\022\021\n" +
+      "\tgroupName\030\003 \001(\t\"E\n\nChangeType\022\007\n\003ADD\020\000\022" +
+      "\n\n\006DELETE\020\001\022\017\n\013UPDATE_INFO\020\002\022\021\n\rUPDATE_M" +
+      "EMBER\020\003B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_protocol_ChangeGroupChatMemberReq_descriptor =
+          internal_static_protocol_ChangeGroupReq_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_protocol_ChangeGroupChatMemberReq_fieldAccessorTable = new
+          internal_static_protocol_ChangeGroupReq_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_protocol_ChangeGroupChatMemberReq_descriptor,
+              internal_static_protocol_ChangeGroupReq_descriptor,
               new java.lang.String[] { "GroupId", "ChangeType", "UserId", "GroupName", });
-          internal_static_protocol_ChangeGroupChatMemberRsp_descriptor =
+          internal_static_protocol_ChangeGroupRsp_descriptor =
             getDescriptor().getMessageTypes().get(1);
-          internal_static_protocol_ChangeGroupChatMemberRsp_fieldAccessorTable = new
+          internal_static_protocol_ChangeGroupRsp_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_protocol_ChangeGroupChatMemberRsp_descriptor,
+              internal_static_protocol_ChangeGroupRsp_descriptor,
               new java.lang.String[] { "ResultCode", });
-          internal_static_protocol_ChangeGroupChatMemberSync_descriptor =
+          internal_static_protocol_ChangeGroupSync_descriptor =
             getDescriptor().getMessageTypes().get(2);
-          internal_static_protocol_ChangeGroupChatMemberSync_fieldAccessorTable = new
+          internal_static_protocol_ChangeGroupSync_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_protocol_ChangeGroupChatMemberSync_descriptor,
-              new java.lang.String[] { "Type", "UserId", });
+              internal_static_protocol_ChangeGroupSync_descriptor,
+              new java.lang.String[] { "ChangeType", "UserId", "GroupName", });
           return null;
         }
       };
