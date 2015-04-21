@@ -9,6 +9,13 @@ public class MyException extends Exception {
 	}
 	
 	public String toString(){
-		return message;
+		return message + "\n" + getStackStr(getStackTrace());
+	}
+	
+	public static String getStackStr(StackTraceElement[] stackTraceElements) {
+		String s = "Stack:\n";
+		for (StackTraceElement se : stackTraceElements)
+			s += se.toString() + "\n";
+		return s;
 	}
 }

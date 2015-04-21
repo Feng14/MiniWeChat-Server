@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 
 import protocol.ProtoHead;
-import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupSync;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
 import protocol.Msg.LoginMsg.LoginRsp;
@@ -69,7 +69,7 @@ public class TestCreateGroupChatting {
 		System.out.println(user2 + " Wait Message");
 		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
 		assertNotNull(byteArray);
-		ChangeGroupChatMemberSync sync = ChangeGroupChatMemberSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 //		System.out.println("Get Sycn");
 		System.out.println(sync.toString());
 		

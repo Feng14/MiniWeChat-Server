@@ -1,7 +1,12 @@
 package server;
 
 import java.io.IOException;
+
+import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;
+
+import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
+
 import protocol.ProtoHead;
 import tools.DataTypeTranslater;
 
@@ -84,7 +89,8 @@ public class NetworkPacket {
 	}
 
 	public static byte[] getMessageObjectBytes(byte[] array) {
-		//System.out.println(getMessageLength(array) - getMessageObjectStartIndex());
+		// System.out.println(getMessageLength(array) -
+		// getMessageObjectStartIndex());
 		byte[] response = new byte[getMessageLength(array) - getMessageObjectStartIndex()];
 		for (int i = 0; i < response.length; i++)
 			response[i] = array[getMessageObjectStartIndex() + i];
@@ -145,5 +151,15 @@ public class NetworkPacket {
 
 	public static int getMessageObjectStartIndex() {
 		return getMessageIdStartIndex() + HEAD_FLOAT_SIZE;
+	}
+
+	public static void showPacket(Logger logger, IoSession ioSession, byte[] byteArray) {
+		try {
+			logger.debug("Server send packet to client(" + ServerModel.getIoSessionKey(ioSession) + "); MessageType : "
+					+ NetworkPacket.getMessageType(byteArray).toString() + "; MessageId : "
+					+ NetworkPacket.getMessageID(byteArray));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

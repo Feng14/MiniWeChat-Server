@@ -1,7 +1,9 @@
 package server;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoderAdapter;
@@ -17,6 +19,7 @@ import tools.DataTypeTranslater;
  *
  */
 public class MinaEncoder extends ProtocolEncoderAdapter {
+	Logger logger = Logger.getLogger(this.getClass());
 	private ByteArrayOutputStream byteArrayOutputStream;
 	private PacketFromServer packetWillSend;
 
@@ -26,6 +29,7 @@ public class MinaEncoder extends ProtocolEncoderAdapter {
 //        byte[] bytes = msg.getBytes("UTF-8");  
 		
 		byteArrayOutputStream = new ByteArrayOutputStream();
+		byte[] byteArray;
 		if (message.getClass().equals(PacketFromServer.class)) {
 			packetWillSend = (PacketFromServer) message;
 			
@@ -39,16 +43,17 @@ public class MinaEncoder extends ProtocolEncoderAdapter {
 			byteArrayOutputStream.write(packetWillSend.getMessageBoty());
 			
 			int sizeOfAll = byteArrayOutputStream.size() + DataTypeTranslater.INT_SIZE;
+			byteArray = byteArrayOutputStream.toByteArray();
 			
 			IoBuffer buffer = IoBuffer.allocate(sizeOfAll);
 			buffer.put(DataTypeTranslater.intToByte(sizeOfAll)); // header  
-	        buffer.put(byteArrayOutputStream.toByteArray()); // body  
+	        buffer.put(byteArray); // body  
 	        buffer.flip();  
 	        output.write(buffer);
+	        
+	        showPacket(ioSession, sizeOfAll, byteArray);
 	        return;
 		}
-		
-		
 		
 		byte[] bytes = (byte[]) message;
         int length = bytes.length;  
@@ -60,6 +65,18 @@ public class MinaEncoder extends ProtocolEncoderAdapter {
         buffer.put(bytes); // body  
         buffer.flip();  
         output.write(buffer);  
+	}
+	
+	private ByteArrayOutputStream byteArrayOutputStream2;
+	private void showPacket(IoSession ioSession, int size, byte[] byteArray) {
+		byteArrayOutputStream2 = new ByteArrayOutputStream();
+		try {
+			byteArrayOutputStream2.write(DataTypeTranslater.intToByte(size));
+			byteArrayOutputStream2.write(byteArray);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		NetworkPacket.showPacket(logger, ioSession, byteArrayOutputStream2.toByteArray());
 	}
 
 }
