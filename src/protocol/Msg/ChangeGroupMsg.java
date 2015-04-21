@@ -1524,47 +1524,62 @@ public final class ChangeGroupMsg {
   public interface ChangeGroupSyncOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required .protocol.ChangeGroupSync.ChangeType changeType = 1;
+    // required string groupId = 1;
     /**
-     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+     * <code>required string groupId = 1;</code>
+     */
+    boolean hasGroupId();
+    /**
+     * <code>required string groupId = 1;</code>
+     */
+    java.lang.String getGroupId();
+    /**
+     * <code>required string groupId = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getGroupIdBytes();
+
+    // required .protocol.ChangeGroupSync.ChangeType changeType = 2;
+    /**
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
      */
     boolean hasChangeType();
     /**
-     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
      */
     protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType getChangeType();
 
-    // repeated string userId = 2;
+    // repeated string userId = 3;
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     java.util.List<java.lang.String>
     getUserIdList();
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     int getUserIdCount();
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     java.lang.String getUserId(int index);
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     com.google.protobuf.ByteString
         getUserIdBytes(int index);
 
-    // optional string groupName = 3;
+    // optional string groupName = 4;
     /**
-     * <code>optional string groupName = 3;</code>
+     * <code>optional string groupName = 4;</code>
      */
     boolean hasGroupName();
     /**
-     * <code>optional string groupName = 3;</code>
+     * <code>optional string groupName = 4;</code>
      */
     java.lang.String getGroupName();
     /**
-     * <code>optional string groupName = 3;</code>
+     * <code>optional string groupName = 4;</code>
      */
     com.google.protobuf.ByteString
         getGroupNameBytes();
@@ -1620,27 +1635,32 @@ public final class ChangeGroupMsg {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              bitField0_ |= 0x00000001;
+              groupId_ = input.readBytes();
+              break;
+            }
+            case 16: {
               int rawValue = input.readEnum();
               protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType value = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(1, rawValue);
+                unknownFields.mergeVarintField(2, rawValue);
               } else {
-                bitField0_ |= 0x00000001;
+                bitField0_ |= 0x00000002;
                 changeType_ = value;
               }
               break;
             }
-            case 18: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+            case 26: {
+              if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
                 userId_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000002;
+                mutable_bitField0_ |= 0x00000004;
               }
               userId_.add(input.readBytes());
               break;
             }
-            case 26: {
-              bitField0_ |= 0x00000002;
+            case 34: {
+              bitField0_ |= 0x00000004;
               groupName_ = input.readBytes();
               break;
             }
@@ -1652,7 +1672,7 @@ public final class ChangeGroupMsg {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+        if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
           userId_ = new com.google.protobuf.UnmodifiableLazyStringList(userId_);
         }
         this.unknownFields = unknownFields.build();
@@ -1787,63 +1807,106 @@ public final class ChangeGroupMsg {
     }
 
     private int bitField0_;
-    // required .protocol.ChangeGroupSync.ChangeType changeType = 1;
-    public static final int CHANGETYPE_FIELD_NUMBER = 1;
-    private protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType changeType_;
+    // required string groupId = 1;
+    public static final int GROUPID_FIELD_NUMBER = 1;
+    private java.lang.Object groupId_;
     /**
-     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+     * <code>required string groupId = 1;</code>
      */
-    public boolean hasChangeType() {
+    public boolean hasGroupId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+     * <code>required string groupId = 1;</code>
+     */
+    public java.lang.String getGroupId() {
+      java.lang.Object ref = groupId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          groupId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string groupId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGroupIdBytes() {
+      java.lang.Object ref = groupId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        groupId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required .protocol.ChangeGroupSync.ChangeType changeType = 2;
+    public static final int CHANGETYPE_FIELD_NUMBER = 2;
+    private protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType changeType_;
+    /**
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
+     */
+    public boolean hasChangeType() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
      */
     public protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType getChangeType() {
       return changeType_;
     }
 
-    // repeated string userId = 2;
-    public static final int USERID_FIELD_NUMBER = 2;
+    // repeated string userId = 3;
+    public static final int USERID_FIELD_NUMBER = 3;
     private com.google.protobuf.LazyStringList userId_;
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     public java.util.List<java.lang.String>
         getUserIdList() {
       return userId_;
     }
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     public int getUserIdCount() {
       return userId_.size();
     }
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     public java.lang.String getUserId(int index) {
       return userId_.get(index);
     }
     /**
-     * <code>repeated string userId = 2;</code>
+     * <code>repeated string userId = 3;</code>
      */
     public com.google.protobuf.ByteString
         getUserIdBytes(int index) {
       return userId_.getByteString(index);
     }
 
-    // optional string groupName = 3;
-    public static final int GROUPNAME_FIELD_NUMBER = 3;
+    // optional string groupName = 4;
+    public static final int GROUPNAME_FIELD_NUMBER = 4;
     private java.lang.Object groupName_;
     /**
-     * <code>optional string groupName = 3;</code>
+     * <code>optional string groupName = 4;</code>
      */
     public boolean hasGroupName() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional string groupName = 3;</code>
+     * <code>optional string groupName = 4;</code>
      */
     public java.lang.String getGroupName() {
       java.lang.Object ref = groupName_;
@@ -1860,7 +1923,7 @@ public final class ChangeGroupMsg {
       }
     }
     /**
-     * <code>optional string groupName = 3;</code>
+     * <code>optional string groupName = 4;</code>
      */
     public com.google.protobuf.ByteString
         getGroupNameBytes() {
@@ -1877,6 +1940,7 @@ public final class ChangeGroupMsg {
     }
 
     private void initFields() {
+      groupId_ = "";
       changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
       userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       groupName_ = "";
@@ -1886,6 +1950,10 @@ public final class ChangeGroupMsg {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
+      if (!hasGroupId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasChangeType()) {
         memoizedIsInitialized = 0;
         return false;
@@ -1898,13 +1966,16 @@ public final class ChangeGroupMsg {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeEnum(1, changeType_.getNumber());
-      }
-      for (int i = 0; i < userId_.size(); i++) {
-        output.writeBytes(2, userId_.getByteString(i));
+        output.writeBytes(1, getGroupIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(3, getGroupNameBytes());
+        output.writeEnum(2, changeType_.getNumber());
+      }
+      for (int i = 0; i < userId_.size(); i++) {
+        output.writeBytes(3, userId_.getByteString(i));
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(4, getGroupNameBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1917,7 +1988,11 @@ public final class ChangeGroupMsg {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(1, changeType_.getNumber());
+          .computeBytesSize(1, getGroupIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, changeType_.getNumber());
       }
       {
         int dataSize = 0;
@@ -1928,9 +2003,9 @@ public final class ChangeGroupMsg {
         size += dataSize;
         size += 1 * getUserIdList().size();
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, getGroupNameBytes());
+          .computeBytesSize(4, getGroupNameBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2048,12 +2123,14 @@ public final class ChangeGroupMsg {
 
       public Builder clear() {
         super.clear();
-        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
+        groupId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
-        userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
         bitField0_ = (bitField0_ & ~0x00000002);
-        groupName_ = "";
+        userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
+        groupName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -2085,15 +2162,19 @@ public final class ChangeGroupMsg {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
+        result.groupId_ = groupId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
         result.changeType_ = changeType_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (((bitField0_ & 0x00000004) == 0x00000004)) {
           userId_ = new com.google.protobuf.UnmodifiableLazyStringList(
               userId_);
-          bitField0_ = (bitField0_ & ~0x00000002);
+          bitField0_ = (bitField0_ & ~0x00000004);
         }
         result.userId_ = userId_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000002;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
         }
         result.groupName_ = groupName_;
         result.bitField0_ = to_bitField0_;
@@ -2112,13 +2193,18 @@ public final class ChangeGroupMsg {
 
       public Builder mergeFrom(protocol.Msg.ChangeGroupMsg.ChangeGroupSync other) {
         if (other == protocol.Msg.ChangeGroupMsg.ChangeGroupSync.getDefaultInstance()) return this;
+        if (other.hasGroupId()) {
+          bitField0_ |= 0x00000001;
+          groupId_ = other.groupId_;
+          onChanged();
+        }
         if (other.hasChangeType()) {
           setChangeType(other.getChangeType());
         }
         if (!other.userId_.isEmpty()) {
           if (userId_.isEmpty()) {
             userId_ = other.userId_;
-            bitField0_ = (bitField0_ & ~0x00000002);
+            bitField0_ = (bitField0_ & ~0x00000004);
           } else {
             ensureUserIdIsMutable();
             userId_.addAll(other.userId_);
@@ -2126,7 +2212,7 @@ public final class ChangeGroupMsg {
           onChanged();
         }
         if (other.hasGroupName()) {
-          bitField0_ |= 0x00000004;
+          bitField0_ |= 0x00000008;
           groupName_ = other.groupName_;
           onChanged();
         }
@@ -2135,6 +2221,10 @@ public final class ChangeGroupMsg {
       }
 
       public final boolean isInitialized() {
+        if (!hasGroupId()) {
+          
+          return false;
+        }
         if (!hasChangeType()) {
           
           return false;
@@ -2161,78 +2251,152 @@ public final class ChangeGroupMsg {
       }
       private int bitField0_;
 
-      // required .protocol.ChangeGroupSync.ChangeType changeType = 1;
-      private protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
+      // required string groupId = 1;
+      private java.lang.Object groupId_ = "";
       /**
-       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+       * <code>required string groupId = 1;</code>
        */
-      public boolean hasChangeType() {
+      public boolean hasGroupId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+       * <code>required string groupId = 1;</code>
+       */
+      public java.lang.String getGroupId() {
+        java.lang.Object ref = groupId_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          groupId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string groupId = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGroupIdBytes() {
+        java.lang.Object ref = groupId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          groupId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string groupId = 1;</code>
+       */
+      public Builder setGroupId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        groupId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string groupId = 1;</code>
+       */
+      public Builder clearGroupId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        groupId_ = getDefaultInstance().getGroupId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string groupId = 1;</code>
+       */
+      public Builder setGroupIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        groupId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required .protocol.ChangeGroupSync.ChangeType changeType = 2;
+      private protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
+      /**
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
+       */
+      public boolean hasChangeType() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
        */
       public protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType getChangeType() {
         return changeType_;
       }
       /**
-       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
        */
       public Builder setChangeType(protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         changeType_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 1;</code>
+       * <code>required .protocol.ChangeGroupSync.ChangeType changeType = 2;</code>
        */
       public Builder clearChangeType() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         changeType_ = protocol.Msg.ChangeGroupMsg.ChangeGroupSync.ChangeType.ADD;
         onChanged();
         return this;
       }
 
-      // repeated string userId = 2;
+      // repeated string userId = 3;
       private com.google.protobuf.LazyStringList userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureUserIdIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
+        if (!((bitField0_ & 0x00000004) == 0x00000004)) {
           userId_ = new com.google.protobuf.LazyStringArrayList(userId_);
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
          }
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public java.util.List<java.lang.String>
           getUserIdList() {
         return java.util.Collections.unmodifiableList(userId_);
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public int getUserIdCount() {
         return userId_.size();
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public java.lang.String getUserId(int index) {
         return userId_.get(index);
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public com.google.protobuf.ByteString
           getUserIdBytes(int index) {
         return userId_.getByteString(index);
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public Builder setUserId(
           int index, java.lang.String value) {
@@ -2245,7 +2409,7 @@ public final class ChangeGroupMsg {
         return this;
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public Builder addUserId(
           java.lang.String value) {
@@ -2258,7 +2422,7 @@ public final class ChangeGroupMsg {
         return this;
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public Builder addAllUserId(
           java.lang.Iterable<java.lang.String> values) {
@@ -2268,16 +2432,16 @@ public final class ChangeGroupMsg {
         return this;
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public Builder clearUserId() {
         userId_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string userId = 2;</code>
+       * <code>repeated string userId = 3;</code>
        */
       public Builder addUserIdBytes(
           com.google.protobuf.ByteString value) {
@@ -2290,16 +2454,16 @@ public final class ChangeGroupMsg {
         return this;
       }
 
-      // optional string groupName = 3;
+      // optional string groupName = 4;
       private java.lang.Object groupName_ = "";
       /**
-       * <code>optional string groupName = 3;</code>
+       * <code>optional string groupName = 4;</code>
        */
       public boolean hasGroupName() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional string groupName = 3;</code>
+       * <code>optional string groupName = 4;</code>
        */
       public java.lang.String getGroupName() {
         java.lang.Object ref = groupName_;
@@ -2313,7 +2477,7 @@ public final class ChangeGroupMsg {
         }
       }
       /**
-       * <code>optional string groupName = 3;</code>
+       * <code>optional string groupName = 4;</code>
        */
       public com.google.protobuf.ByteString
           getGroupNameBytes() {
@@ -2329,36 +2493,36 @@ public final class ChangeGroupMsg {
         }
       }
       /**
-       * <code>optional string groupName = 3;</code>
+       * <code>optional string groupName = 4;</code>
        */
       public Builder setGroupName(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         groupName_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string groupName = 3;</code>
+       * <code>optional string groupName = 4;</code>
        */
       public Builder clearGroupName() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         groupName_ = getDefaultInstance().getGroupName();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string groupName = 3;</code>
+       * <code>optional string groupName = 4;</code>
        */
       public Builder setGroupNameBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         groupName_ = value;
         onChanged();
         return this;
@@ -2407,12 +2571,12 @@ public final class ChangeGroupMsg {
       "PDATE_INFO\020\002\"\200\001\n\016ChangeGroupRsp\0227\n\nresul" +
       "tCode\030\001 \002(\0162#.protocol.ChangeGroupRsp.Re" +
       "sultCode\"5\n\nResultCode\022\013\n\007SUCCESS\020\000\022\010\n\004F" +
-      "AIL\020\001\022\020\n\014NO_AUTHORITY\020\002\"\265\001\n\017ChangeGroupS" +
-      "ync\0228\n\nchangeType\030\001 \002(\0162$.protocol.Chang",
-      "eGroupSync.ChangeType\022\016\n\006userId\030\002 \003(\t\022\021\n" +
-      "\tgroupName\030\003 \001(\t\"E\n\nChangeType\022\007\n\003ADD\020\000\022" +
-      "\n\n\006DELETE\020\001\022\017\n\013UPDATE_INFO\020\002\022\021\n\rUPDATE_M" +
-      "EMBER\020\003B\016\n\014protocol.Msg"
+      "AIL\020\001\022\020\n\014NO_AUTHORITY\020\002\"\306\001\n\017ChangeGroupS" +
+      "ync\022\017\n\007groupId\030\001 \002(\t\0228\n\nchangeType\030\002 \002(\016",
+      "2$.protocol.ChangeGroupSync.ChangeType\022\016" +
+      "\n\006userId\030\003 \003(\t\022\021\n\tgroupName\030\004 \001(\t\"E\n\nCha" +
+      "ngeType\022\007\n\003ADD\020\000\022\n\n\006DELETE\020\001\022\017\n\013UPDATE_I" +
+      "NFO\020\002\022\021\n\rUPDATE_MEMBER\020\003B\016\n\014protocol.Msg"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2436,7 +2600,7 @@ public final class ChangeGroupMsg {
           internal_static_protocol_ChangeGroupSync_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_protocol_ChangeGroupSync_descriptor,
-              new java.lang.String[] { "ChangeType", "UserId", "GroupName", });
+              new java.lang.String[] { "GroupId", "ChangeType", "UserId", "GroupName", });
           return null;
         }
       };

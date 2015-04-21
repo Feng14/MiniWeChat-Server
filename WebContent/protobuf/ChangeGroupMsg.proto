@@ -28,7 +28,8 @@ message ChangeGroupSync{
 		UPDATE_INFO = 2;
 		UPDATE_MEMBER = 3;
 	}
-	required ChangeType changeType = 1;
-	repeated string userId = 2;
-	optional string groupName = 3;
+	required string groupId = 1;
+	required ChangeType changeType = 2;
+	repeated string userId = 3;
+	optional string groupName = 4;
 }
