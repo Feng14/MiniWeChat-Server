@@ -117,8 +117,10 @@ public class ClientSocket {
 		while (true) {
 			byteArray = readFromServer();
 			// 不是KeepAlive（心跳包就返回）
-			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC)
+			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC) {
+				showBytes(byteArray);
 				return byteArray;
+			}
 
 		}
 	}
@@ -142,6 +144,7 @@ public class ClientSocket {
 	 */
 	public void writeToServer(byte[] arrayBytes) throws IOException {
 		// outputStream = socket.getOutputStream();
+		showBytes(arrayBytes);
 		outputStream.write(arrayBytes);
 		// outputStream.close();
 	}
@@ -212,8 +215,14 @@ public class ClientSocket {
 	 * @author Feng
 	 */
 	private void showBytes(byte[] arrayBytes) {
-		for (byte b : arrayBytes)
-			System.out.print(b + "  ");
-		System.out.println();
+//		for (byte b : arrayBytes)
+//			System.out.print(b + "  ");
+//		System.out.println();
+//		System.out.println("read from Server:");
+		System.out.println("Show a Message:");
+		System.out.println("Size : " + DataTypeTranslater.bytesToInt(arrayBytes, NetworkPacket.getSizeStartIndex()));
+		System.out.println("MessageId : " + NetworkPacket.getMessageID(arrayBytes));
+		System.out.println("Message Type : 1" + NetworkPacket.getMessageType(arrayBytes));
+		System.out.println("Message Body : " + NetworkPacket.getMessageObjectBytes(arrayBytes));
 	}
 }

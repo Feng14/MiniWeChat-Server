@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
+import protocol.Data.ChatData.ChatItem.TargetType;
 import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.LoginMsg.LoginRsp.ResultCode;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
@@ -23,9 +24,10 @@ public class AutoResponseClient {
 	private ClientSocket clientSocket;
 
 	public AutoResponseClient() throws UnknownHostException, IOException {
+		String user = "AutoResponse";
 		clientSocket = new ClientSocket();
 //		clientSocket.link();
-		if (clientSocket.login("AutoResponse", "AutoResponse") != LoginRsp.ResultCode.SUCCESS) {
+		if (clientSocket.login(user, user) != LoginRsp.ResultCode.SUCCESS) {
 			// Debug.log("AutoResponseClient", "自动回复器登陆失败！");
 			System.err.println("AutoResponseClient : 自动回复器登陆失败！");
 			return;
@@ -42,8 +44,12 @@ public class AutoResponseClient {
 			ChatItem receiveChatItem = receiveChatting.getChatData(0);
 
 			ChatItem.Builder sendChatItem = ChatItem.newBuilder();
-			sendChatItem.setSendUserId(receiveChatItem.getReceiveUserId());
-			sendChatItem.setReceiveUserId(receiveChatItem.getSendUserId());
+			if (receiveChatItem.getTargetType() == TargetType.INDIVIDUAL){
+				sendChatItem.setSendUserId(receiveChatItem.getReceiveUserId());
+				sendChatItem.setReceiveUserId(receiveChatItem.getSendUserId());
+			} else if (receiveChatItem.getTargetType() == TargetType.GROUP){
+				sendChatItem.setSendUserId(user);
+			} 
 			sendChatItem.setChatBody(receiveChatItem.getChatBody());
 			sendChatItem.setChatType(receiveChatItem.getChatType());
 
