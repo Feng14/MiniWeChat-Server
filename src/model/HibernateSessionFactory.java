@@ -8,16 +8,21 @@ import org.hibernate.service.ServiceRegistry;
 @SuppressWarnings("deprecation")
 public class HibernateSessionFactory {
 
-	private static String CONFIG_FILE_LOCATION = "hibernate.cfg.xml";
+	private static String CONFIG_FILE_LOCATION = "/hibernate.cfg.xml";
 	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
 	private static Configuration configuration = new Configuration();
 	public static SessionFactory sessionFactory;
 	private static String configFile = CONFIG_FILE_LOCATION;
 
 	static {
-		configuration.configure(configFile);
-		ServiceRegistry sr = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-		sessionFactory = configuration.buildSessionFactory(sr);
+		try{
+			configuration.configure(configFile);
+			ServiceRegistry sr = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+			sessionFactory = configuration.buildSessionFactory(sr);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 
 	}
 
