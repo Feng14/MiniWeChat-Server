@@ -80,10 +80,8 @@ public class TestCreateGroupChatting {
 				System.out.println("成员变化通知");
 				ChangeGroupSync changeGroupSync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 				GroupItem groupItem = changeGroupSync.getGroupItem();
-				System.out.println("GroupId : " + groupItem.getCreaterUserId()
-						+ "; Creater : " + groupItem.getCreaterUserId()
-						+ "; Member : " + groupItem.getMemberUserIdList().toString()
-						+ "; GroupName : " + groupItem.getGroupName());
+				System.out.println(ClientSocket.getGroupItemInfo(groupItem));
+				i -= groupItem.getMemberUserIdCount();
 				assertEquals(groupItem.getCreaterUserId(), user1);
 				assertEquals(groupItem.getMemberUserIdCount(), 2);
 			} else if (NetworkPacket.getMessageType(byteArray) == ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC) {
@@ -91,14 +89,7 @@ public class TestCreateGroupChatting {
 				ChatItem chatItem2 = receiveChatting.getChatData(0);
 
 				// 收到群聊消息（A 我已经把 B，C 拉入群聊）
-				System.out.println(user2 + " receive : " + chatItem2.getChatBody());
-				
-				System.out.println("Sender : " + chatItem2.getSendUserId()
-						+ ";  receiver : " + chatItem2.getReceiveUserId()
-						+ "; isGroup : " + chatItem2.getTargetType().toString()
-						+ ";  type : " + chatItem2.getChatType().toString()
-						+ "; body : " + chatItem2.getChatBody()
-						+ ";  Date : " + DataTypeTranslater.getData(chatItem2.getDate()));
+				System.out.println(ClientSocket.getChatItemInfo(chatItem2));
 			}
 		}
 

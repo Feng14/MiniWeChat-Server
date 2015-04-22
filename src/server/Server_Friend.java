@@ -36,6 +36,7 @@ public class Server_Friend {
 
 	private ServerModel serverModel;
 	private ServerNetwork serverNetwork;
+	private Server_Chatting server_Chatting;
 
 	public ServerModel getServerModel() {
 		return serverModel;
@@ -51,6 +52,14 @@ public class Server_Friend {
 
 	public void setServerNetwork(ServerNetwork serverNetwork) {
 		this.serverNetwork = serverNetwork;
+	}
+
+	public Server_Chatting getServer_Chatting() {
+		return server_Chatting;
+	}
+
+	public void setServer_Chatting(Server_Chatting server_Chatting) {
+		this.server_Chatting = server_Chatting;
 	}
 
 	/**
@@ -139,8 +148,16 @@ public class Server_Friend {
 				User u = (User) list1.get(0);
 				friend = (User) list2.get(0);
 				add(u, friend, clientUser, addFriendBuilder);
+				
+				// 回复客户端
+				serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
+						.getMessageID(), ProtoHead.ENetworkMessage.ADD_FRIEND_RSP_VALUE, addFriendBuilder.build().toByteArray())));
+				
+				// 通知系统消息
+				server_Chatting.sendSystemMessage(u.getUserId() + " 已经和您成为好友", friend.getUserId());
+				server_Chatting.sendSystemMessage(friend.getUserId() + " 已经和您成为好友", u.getUserId());
+				return;
 			}
-
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_Friend.addFriend:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");

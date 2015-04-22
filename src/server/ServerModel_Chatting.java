@@ -262,44 +262,44 @@ public class ServerModel_Chatting {
 		}
 	}
 
-	public void test2() {
-		Iterator iterator = chattingHashtable.keySet().iterator();
-		LinkedBlockingQueue<Chatting> queue;
-
-		// 删除过期消息
-		Date date = new Date();
-		date.setDate(date.getDate() - 3);
-		// date.setDate(date.getDate() + 3);
-		Session session = HibernateSessionFactory.getSession();
-		String tableName = Chatting.TABLE_NAME;
-		tableName = tableName.substring(0, 1).toUpperCase() + tableName.substring(2, tableName.length());
-		String sql = "delete from " + Chatting.class.getName() + " where time<" + date.getTime();
-		session.createQuery(sql);
-
-		HibernateSessionFactory.commitSession(session);
-		session = HibernateSessionFactory.getSession();
-
-		session = HibernateSessionFactory.getSession();
-		Chatting a = new Chatting("a3", "a4", ChatType.TEXT, "abcde", 20140526, false, 2);
-		a.setId(1);
-		session.save(a);
-
-		while (iterator.hasNext()) {
-			queue = chattingHashtable.get(iterator.next().toString());
-
-			// 读取哈希表，存入硬盘
-			for (Chatting chatting : queue) {
-				Chatting c = new Chatting(chatting.getSenderUserId(), chatting.getReceiverUserId(), chatting.getChattingType(),
-						chatting.getMessage(), Calendar.getInstance().getTimeInMillis());
-				session.save(c);
-				// session.save(chatting);
-			}
-		}
-		HibernateSessionFactory.commitSession(session);
-
-		// 清空内存
-		chattingHashtable.clear();
-	}
+//	public void test2() {
+//		Iterator iterator = chattingHashtable.keySet().iterator();
+//		LinkedBlockingQueue<Chatting> queue;
+//
+//		// 删除过期消息
+//		Date date = new Date();
+//		date.setDate(date.getDate() - 3);
+//		// date.setDate(date.getDate() + 3);
+//		Session session = HibernateSessionFactory.getSession();
+//		String tableName = Chatting.TABLE_NAME;
+//		tableName = tableName.substring(0, 1).toUpperCase() + tableName.substring(2, tableName.length());
+//		String sql = "delete from " + Chatting.class.getName() + " where time<" + date.getTime();
+//		session.createQuery(sql);
+//
+//		HibernateSessionFactory.commitSession(session);
+//		session = HibernateSessionFactory.getSession();
+//
+//		session = HibernateSessionFactory.getSession();
+//		Chatting a = new Chatting("a3", "a4", ChatType.TEXT, "abcde", 20140526, false, 2);
+//		a.setId(1);
+//		session.save(a);
+//
+//		while (iterator.hasNext()) {
+//			queue = chattingHashtable.get(iterator.next().toString());
+//
+//			// 读取哈希表，存入硬盘
+//			for (Chatting chatting : queue) {
+//				Chatting c = new Chatting(chatting.getSenderUserId(), chatting.getReceiverUserId(), chatting.getChattingType(),
+//						chatting.getMessage(), Calendar.getInstance().getTimeInMillis());
+//				session.save(c);
+//				// session.save(chatting);
+//			}
+//		}
+//		HibernateSessionFactory.commitSession(session);
+//
+//		// 清空内存
+//		chattingHashtable.clear();
+//	}
 
 	/**
 	 * 测试用

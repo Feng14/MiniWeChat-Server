@@ -92,7 +92,7 @@ public class HibernateDataOperation {
 			Criteria criteria = session.createCriteria(outputClass);
 			// 使用缓存
 			criteria.setCacheable(true);
-			criteria.add(Restrictions.eq(paramName, Integer.parseInt((String)paramValue)));
+			criteria.add(Restrictions.eq(paramName, paramValue));
 			List list = criteria.list();
 
 			logger.info("Hibernate:query from database success");

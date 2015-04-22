@@ -83,9 +83,7 @@ public class TestSendGroupChatting {
 		System.out.println(user2 + " Get Chatting");
 //		Calendar calendar = Calendar.getInstance();
 //		calendar.setTimeInMillis(chatItem2.getDate()-99999);
-		System.out.println("Sender : " + chatItem2.getSendUserId() + ";  receiver : " + chatItem2.getReceiveUserId()
-				+ ";  type : " + chatItem2.getChatType().toString() + "; body : " + chatItem2.getChatBody() + ";  Date : "
-				+ DataTypeTranslater.getData(chatItem2.getDate()));
+		System.out.println(ClientSocket.getChatItemInfo(chatItem2));
 
 		// user3接收
 		clientSocket3 = new ClientSocket();

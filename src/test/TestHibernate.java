@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import protocol.Data.ChatData.ChatItem.ChatType;
+import protocol.Data.ChatData.ChatItem.TargetType;
 
 import model.Chatting;
 import model.Group;
@@ -52,7 +53,7 @@ public class TestHibernate {
 	}
 	
 	public static void add2(){
-		Chatting chat = new Chatting("user1","user2",ChatType.TEXT,"this is a message",new Long(2015040611),true,0);
+		Chatting chat = new Chatting("user1","user2",ChatType.TEXT,"this is a message",new Long(2015040611),0, TargetType.GROUP);
 		Session session = HibernateSessionFactory.getSession();
     	Transaction trans = session.beginTransaction();
     	session.save(chat);

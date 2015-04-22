@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import protocol.ProtoHead;
+import protocol.Data.ChatData.ChatItem;
+import protocol.Data.GroupData.GroupItem;
 import protocol.Msg.LogoutMsg;
 import protocol.Msg.LoginMsg.LoginReq;
 import protocol.Msg.LoginMsg.LoginRsp;
@@ -27,16 +29,15 @@ public class ClientSocket {
 	public InputStream inputStream;
 	public OutputStream outputStream;
 
+	// String host = "192.168.45.17"; // 要连接的服务端IP地址
+	// public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
 
-//	 String host = "192.168.45.17"; // 要连接的服务端IP地址
-	//public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
-
-	String host = "127.0.0.1"; // 要连接的服务端IP地址
-//	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+//	String host = "127.0.0.1"; // 要连接的服务端IP地址
+	 public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
 
 	// String host = "192.168.1.103"; // 要连接的服务端IP地址
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
-//	String host = "192.168.45.34"; // 要连接的服务端IP地址
+	// String host = "192.168.45.34"; // 要连接的服务端IP地址
 
 	int port = 8081; // 要连接的服务端对应的监听端口
 
@@ -56,12 +57,13 @@ public class ClientSocket {
 		inputStream = socket.getInputStream();
 		outputStream = socket.getOutputStream();
 	}
-	
+
 	/**
 	 * 关闭连接
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
-	public void close() throws IOException{
+	public void close() throws IOException {
 		inputStream.close();
 		outputStream.close();
 		socket.close();
@@ -76,37 +78,37 @@ public class ClientSocket {
 	 */
 	public byte[] readFromServer() throws IOException {
 		byte[] sizebyte = new byte[4];
-		
+
 		inputStream.read(sizebyte);
 		int size = DataTypeTranslater.bytesToInt(sizebyte, 0);
 		byte[] byteArray = new byte[size];
-		for (int i=0; i<DataTypeTranslater.INT_SIZE; i++)
-			byteArray[i] = sizebyte[i]; 
+		for (int i = 0; i < DataTypeTranslater.INT_SIZE; i++)
+			byteArray[i] = sizebyte[i];
 
-		inputStream.read(byteArray, HEAD_INT_SIZE, size-HEAD_INT_SIZE);
-//		inputStream.read(byteArray);
+		inputStream.read(byteArray, HEAD_INT_SIZE, size - HEAD_INT_SIZE);
+		// inputStream.read(byteArray);
 		byteArray = cutResult(byteArray);
 		return byteArray;
-		
-		
-//		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//		int data;
-//		while (true) {
-//			if ((data = inputStream.read()) == -1)
-//				break;
-//			byteArrayOutputStream.write(data);
-//		}
-		
-//		inputStream.read(byteArray);
-//		byteArray = cutResult(byteArray);
 
-//		return byteArray;
-//		byte[] byteArray = byteArrayOutputStream.toByteArray();
-//		byteArrayOutputStream.close();
-//		System.out.println("length : " + byteArray.length);
-//		System.out.println(byteArray);
-//		
-//		return byteArray;
+		// ByteArrayOutputStream byteArrayOutputStream = new
+		// ByteArrayOutputStream();
+		// int data;
+		// while (true) {
+		// if ((data = inputStream.read()) == -1)
+		// break;
+		// byteArrayOutputStream.write(data);
+		// }
+
+		// inputStream.read(byteArray);
+		// byteArray = cutResult(byteArray);
+
+		// return byteArray;
+		// byte[] byteArray = byteArrayOutputStream.toByteArray();
+		// byteArrayOutputStream.close();
+		// System.out.println("length : " + byteArray.length);
+		// System.out.println(byteArray);
+		//
+		// return byteArray;
 	}
 
 	/**
@@ -122,7 +124,7 @@ public class ClientSocket {
 			byteArray = readFromServer();
 			// 不是KeepAlive（心跳包就返回）
 			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC) {
-//				showBytes(byteArray);
+				// showBytes(byteArray);
 				return byteArray;
 			}
 
@@ -130,11 +132,11 @@ public class ClientSocket {
 	}
 
 	public byte[] readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage type) throws IOException {
-		byte[] byteArray; 
-		for (int i=0; i<10; i++) {
+		byte[] byteArray;
+		for (int i = 0; i < 10; i++) {
 			byteArray = readFromServerWithoutKeepAlive();
-			
-			if (NetworkPacket.getMessageType(byteArray) == type) 
+
+			if (NetworkPacket.getMessageType(byteArray) == type)
 				return byteArray;
 		}
 		return null;
@@ -148,7 +150,7 @@ public class ClientSocket {
 	 */
 	public void writeToServer(byte[] arrayBytes) throws IOException {
 		// outputStream = socket.getOutputStream();
-//		showBytes(arrayBytes);
+		// showBytes(arrayBytes);
 		outputStream.write(arrayBytes);
 		// outputStream.close();
 	}
@@ -185,7 +187,7 @@ public class ClientSocket {
 		loginBuilder.setUserPassword(userPassword);
 
 		writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ_VALUE, loginBuilder.build().toByteArray()));
-		for (int i=0; i<10; i++) {
+		for (int i = 0; i < 10; i++) {
 			response = readFromServerWithoutKeepAlive();
 			if (NetworkPacket.getMessageType(response) != ProtoHead.ENetworkMessage.LOGIN_RSP)
 				continue;
@@ -195,16 +197,15 @@ public class ClientSocket {
 		}
 		return LoginRsp.ResultCode.FAIL;
 	}
-	
-	
-	public LogoutRsp.ResultCode logout() throws IOException{
+
+	public LogoutRsp.ResultCode logout() throws IOException {
 		LogoutMsg.LogoutReq.Builder builder = LogoutMsg.LogoutReq.newBuilder();
 		byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGOUT_REQ.getNumber(), builder.build()
 				.toByteArray());
 
 		writeToServer(byteArray);
-		
-		for (int i=0; i<10; i++) {
+
+		for (int i = 0; i < 10; i++) {
 			byteArray = readFromServerWithoutKeepAlive();
 			if (NetworkPacket.getMessageType(byteArray) == ProtoHead.ENetworkMessage.LOGOUT_RSP) {
 				return LogoutRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getResultCode();
@@ -212,14 +213,15 @@ public class ClientSocket {
 		}
 		return LogoutRsp.ResultCode.FAIL;
 	}
-	
+
 	/**
 	 * 测试用，查看收到的所有byte
+	 * 
 	 * @param arrayBytes
 	 * @author Feng
 	 */
 	private void showBytes(byte[] arrayBytes) {
-//		System.out.println("read from Server:");
+		// System.out.println("read from Server:");
 		System.out.println("Show a Message:");
 		for (byte b : arrayBytes)
 			System.out.print(b + "  ");
@@ -228,5 +230,19 @@ public class ClientSocket {
 		System.out.println("MessageId : " + DataTypeTranslater.bytesToInt(NetworkPacket.getMessageID(arrayBytes), 0));
 		System.out.println("Message Type : 1" + NetworkPacket.getMessageType(arrayBytes));
 		System.out.println("Message Body : " + NetworkPacket.getMessageObjectBytes(arrayBytes));
+	}
+
+	public static String getGroupItemInfo(GroupItem groupItem) {
+		return "GroupId : " + groupItem.getCreaterUserId() + "; Creater : " + groupItem.getCreaterUserId() + "; Member : "
+				+ groupItem.getMemberUserIdList().toString() + "; GroupName : " + groupItem.getGroupName();
+	}
+	
+	public static String getChatItemInfo(ChatItem chatItem) {
+		return "Sender : " + chatItem.getSendUserId()
+				+ ";  receiver : " + chatItem.getReceiveUserId()
+				+ "; TargetType : " + chatItem.getTargetType()
+				+ ";  type : " + chatItem.getChatType().toString()
+				+ "; body : " + chatItem.getChatBody()
+				+ ";  Date : " + DataTypeTranslater.getData(chatItem.getDate());
 	}
 }

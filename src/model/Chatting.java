@@ -35,8 +35,8 @@ public class Chatting {
 	private long id;
 	// 聊天类型 文字和图片
 	private ChatType chattingType;
-	// 是否群聊 true群聊 false个人聊天
-	private boolean isGroup;
+	// 是群聊?单聊？系统消息
+	private TargetType targetType;
 	// 群聊天对应的群Id
 	private int groupId;
 	// 时间
@@ -47,23 +47,24 @@ public class Chatting {
 
 	}
 
-	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message, long time,
-			boolean isGroup, int groupId) {
+	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message, long time, int groupId,
+			TargetType targetType) {
 		setSenderUserId(senderUserId);
 		setReceiverUserId(receiverUserId);
 		setChattingType(chattingType);
 		setMessage(message);
 		setTime(time);
-		setIsGroup(isGroup);
 		setGroupId(groupId);
+		setTargetType(targetType);
 	}
 
-	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message, long time) {
+	public Chatting(String senderUserId, String receiverUserId, ChatType chattingType, String message, long time,
+			TargetType targetType) {
 		setSenderUserId(senderUserId);
 		setReceiverUserId(receiverUserId);
 		setChattingType(chattingType);
 		setMessage(message);
-		setIsGroup(false);
+		setTargetType(targetType);
 		setTime(time);
 	}
 
@@ -85,15 +86,6 @@ public class Chatting {
 
 	public void setChattingType(ChatType chattingType) {
 		this.chattingType = chattingType;
-	}
-
-	@Column(name = "is_group", columnDefinition = "tinyint  COMMENT '是否群聊'")
-	public boolean getIsGroup() {
-		return isGroup;
-	}
-
-	public void setIsGroup(boolean isGroup) {
-		this.isGroup = isGroup;
 	}
 
 	@Column(name = "group_id", columnDefinition = "int(8)  COMMENT '时间'")
@@ -140,11 +132,19 @@ public class Chatting {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
-//	public void createFromChatItem(ChatItem chatItem) {
-//		setSenderUserId(chatItem.getSendUserId());
-//		setReceiverUserId(chatItem.getReceiveUserId());
-//	}
+
+	// public void createFromChatItem(ChatItem chatItem) {
+	// setSenderUserId(chatItem.getSendUserId());
+	// setReceiverUserId(chatItem.getReceiveUserId());
+	// }
+
+	public TargetType getTargetType() {
+		return targetType;
+	}
+
+	public void setTargetType(TargetType targetType) {
+		this.targetType = targetType;
+	}
 
 	public ChatItem.Builder createChatItem() {
 		return createChatItem(this);
@@ -152,9 +152,12 @@ public class Chatting {
 
 	public static ChatItem.Builder createChatItem(Chatting chatting) {
 		ChatItem.Builder chatItem = ChatItem.newBuilder();
-		chatItem.setTargetType(chatting.isGroup ? TargetType.GROUP : TargetType.INDIVIDUAL);
+		chatItem.setTargetType(chatting.targetType);
 		chatItem.setSendUserId(chatting.getSenderUserId());
-		chatItem.setReceiveUserId(chatting.isGroup ? (chatting.getGroupId()+"") : chatting.getReceiverUserId());
+		if (chatting.targetType == TargetType.INDIVIDUAL)
+			chatItem.setReceiveUserId(chatting.getReceiverUserId());
+		else
+			chatItem.setReceiveUserId(chatting.getGroupId() + "");
 		chatItem.setChatType(chatting.getChattingType());
 		chatItem.setChatBody(chatting.getMessage());
 		chatItem.setDate(new Date().getTime());
