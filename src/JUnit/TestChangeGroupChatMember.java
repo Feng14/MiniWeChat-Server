@@ -8,10 +8,10 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 
 import protocol.ProtoHead;
-import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq;
-import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberReq.ChangeType;
-import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberRsp;
-import protocol.Msg.ChangeGroupMsg.ChangeGroupChatMemberSync;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupReq;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupReq.ChangeType;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupRsp;
+import protocol.Msg.ChangeGroupMsg.ChangeGroupSync;
 import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.LogoutMsg.LogoutRsp;
 import server.NetworkPacket;
@@ -37,38 +37,38 @@ public class TestChangeGroupChatMember {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 
-		ChangeGroupChatMemberReq.Builder builder = ChangeGroupChatMemberReq.newBuilder();
+		ChangeGroupReq.Builder builder = ChangeGroupReq.newBuilder();
 		builder.setChangeType(ChangeType.ADD);
 		builder.setGroupId(groupId);
 		builder.addUserId("d");
 		builder.addUserId("e");
 
 		// 无权限添加
-		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
+		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_REQ_VALUE, builder
 				.build().toByteArray()));
 		
-		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
+		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_RSP);
 		assertNotNull(byteArray);
-		ChangeGroupChatMemberRsp response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
+		ChangeGroupRsp response = ChangeGroupRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		assertEquals(response.getResultCode(), ChangeGroupRsp.ResultCode.NO_AUTHORITY);
 //		System.out.println(response.getResultCode().toString());
 		
 		// 登陆后，有权限添加
 		assertEquals(clientSocket1.login("b", "b"), LoginRsp.ResultCode.SUCCESS);
 		assertEquals(clientSocket2.login("c", "c"), LoginRsp.ResultCode.SUCCESS);
 		
-		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
+		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_REQ_VALUE, builder
 				.build().toByteArray()));
 		
-		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
+		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_RSP);
 		assertNotNull(byteArray);
-		response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
+		response = ChangeGroupRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		assertEquals(response.getResultCode(), ChangeGroupRsp.ResultCode.SUCCESS);
 		
 		// user2上线收消息
-		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
 		assertNotNull(byteArray);
-		ChangeGroupChatMemberSync sync = ChangeGroupChatMemberSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		
 		
 		clientSocket1.close();
@@ -88,20 +88,20 @@ public class TestChangeGroupChatMember {
 		ClientSocket clientSocket1 = new ClientSocket();
 		ClientSocket clientSocket2 = new ClientSocket();
 
-		ChangeGroupChatMemberReq.Builder builder = ChangeGroupChatMemberReq.newBuilder();
+		ChangeGroupReq.Builder builder = ChangeGroupReq.newBuilder();
 		builder.setChangeType(ChangeType.DELETE);
 		builder.setGroupId(groupId);
 //		builder.addUserId("d");
 //		builder.addUserId("e");
 
-		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
+		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_REQ_VALUE, builder
 				.build().toByteArray()));
 		
 		// 未登录，无权限
-		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
+		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_RSP);
 		assertNotNull(byteArray);
-		ChangeGroupChatMemberRsp response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.NO_AUTHORITY);
+		ChangeGroupRsp response = ChangeGroupRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		assertEquals(response.getResultCode(), ChangeGroupRsp.ResultCode.NO_AUTHORITY);
 		System.out.println(response.getResultCode().toString());
 		
 		// 删除自己，成功
@@ -109,17 +109,17 @@ public class TestChangeGroupChatMember {
 		System.out.println(user1 + " login");
 		assertEquals(clientSocket2.login(user2, user2), LoginRsp.ResultCode.SUCCESS);
 		
-		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE, builder
+		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.CHANGE_GROUP_REQ_VALUE, builder
 				.build().toByteArray()));
-		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_RSP);
+		byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_RSP);
 		assertNotNull(byteArray);
-		response = ChangeGroupChatMemberRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		assertEquals(response.getResultCode(), ChangeGroupChatMemberRsp.ResultCode.SUCCESS);
+		response = ChangeGroupRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		assertEquals(response.getResultCode(), ChangeGroupRsp.ResultCode.SUCCESS);
 
 		// user2上线收消息
-		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
 		assertNotNull(byteArray);
-		ChangeGroupChatMemberSync sync = ChangeGroupChatMemberSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		
 		clientSocket1.close();
 		clientSocket2.close();

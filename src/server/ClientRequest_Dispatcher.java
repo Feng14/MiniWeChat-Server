@@ -102,8 +102,8 @@ public class ClientRequest_Dispatcher {
 				server_Chatting.createGroupChatting(networkPacket);
 				break;
 			// 修改群聊成员
-			case ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE:
-				server_Chatting.changGroupChattingMember(networkPacket);
+			case ProtoHead.ENetworkMessage.CHANGE_GROUP_REQ_VALUE:
+				server_Chatting.changeGroup(networkPacket);
 				break;
 			// 获取群资料
 			case ProtoHead.ENetworkMessage.GET_GROUP_INFO_REQ_VALUE:

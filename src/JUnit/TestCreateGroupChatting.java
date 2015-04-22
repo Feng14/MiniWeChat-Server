@@ -67,7 +67,7 @@ public class TestCreateGroupChatting {
 		
 		// user2接收到有新群消息
 		System.out.println(user2 + " Wait Message");
-		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_CHAT_MEMBER_SYNC);
+		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 //		System.out.println("Get Sycn");

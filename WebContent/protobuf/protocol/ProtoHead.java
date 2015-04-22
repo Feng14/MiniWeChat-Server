@@ -110,17 +110,17 @@ public final class ProtoHead {
      */
     CREATE_GROUP_CHAT_RSP(23, 23),
     /**
-     * <code>CHANGE_GROUP_CHAT_MEMBER_REQ = 24;</code>
+     * <code>CHANGE_GROUP_REQ = 24;</code>
      */
-    CHANGE_GROUP_CHAT_MEMBER_REQ(24, 24),
+    CHANGE_GROUP_REQ(24, 24),
     /**
-     * <code>CHANGE_GROUP_CHAT_MEMBER_RSP = 25;</code>
+     * <code>CHANGE_GROUP_RSP = 25;</code>
      */
-    CHANGE_GROUP_CHAT_MEMBER_RSP(25, 25),
+    CHANGE_GROUP_RSP(25, 25),
     /**
-     * <code>CHANGE_GROUP_CHAT_MEMBER_SYNC = 26;</code>
+     * <code>CHANGE_GROUP_SYNC = 26;</code>
      */
-    CHANGE_GROUP_CHAT_MEMBER_SYNC(26, 26),
+    CHANGE_GROUP_SYNC(26, 26),
     /**
      * <code>GET_GROUP_INFO_REQ = 27;</code>
      */
@@ -228,17 +228,17 @@ public final class ProtoHead {
      */
     public static final int CREATE_GROUP_CHAT_RSP_VALUE = 23;
     /**
-     * <code>CHANGE_GROUP_CHAT_MEMBER_REQ = 24;</code>
+     * <code>CHANGE_GROUP_REQ = 24;</code>
      */
-    public static final int CHANGE_GROUP_CHAT_MEMBER_REQ_VALUE = 24;
+    public static final int CHANGE_GROUP_REQ_VALUE = 24;
     /**
-     * <code>CHANGE_GROUP_CHAT_MEMBER_RSP = 25;</code>
+     * <code>CHANGE_GROUP_RSP = 25;</code>
      */
-    public static final int CHANGE_GROUP_CHAT_MEMBER_RSP_VALUE = 25;
+    public static final int CHANGE_GROUP_RSP_VALUE = 25;
     /**
-     * <code>CHANGE_GROUP_CHAT_MEMBER_SYNC = 26;</code>
+     * <code>CHANGE_GROUP_SYNC = 26;</code>
      */
-    public static final int CHANGE_GROUP_CHAT_MEMBER_SYNC_VALUE = 26;
+    public static final int CHANGE_GROUP_SYNC_VALUE = 26;
     /**
      * <code>GET_GROUP_INFO_REQ = 27;</code>
      */
@@ -277,9 +277,9 @@ public final class ProtoHead {
         case 21: return RECEIVE_CHAT_SYNC;
         case 22: return CREATE_GROUP_CHAT_REQ;
         case 23: return CREATE_GROUP_CHAT_RSP;
-        case 24: return CHANGE_GROUP_CHAT_MEMBER_REQ;
-        case 25: return CHANGE_GROUP_CHAT_MEMBER_RSP;
-        case 26: return CHANGE_GROUP_CHAT_MEMBER_SYNC;
+        case 24: return CHANGE_GROUP_REQ;
+        case 25: return CHANGE_GROUP_RSP;
+        case 26: return CHANGE_GROUP_SYNC;
         case 27: return GET_GROUP_INFO_REQ;
         case 28: return GET_GROUP_INFO_RSP;
         default: return null;
@@ -342,7 +342,7 @@ public final class ProtoHead {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\017ProtoHead.proto\022\010protocol*\246\005\n\017ENetwork" +
+      "\n\017ProtoHead.proto\022\010protocol*\202\005\n\017ENetwork" +
       "Message\022\023\n\017KEEP_ALIVE_SYNC\020\000\022\020\n\014REGISTER" +
       "_REQ\020\001\022\020\n\014REGISTER_RSP\020\002\022\r\n\tLOGIN_REQ\020\003\022" +
       "\r\n\tLOGIN_RSP\020\004\022\030\n\024PERSONALSETTINGS_REQ\020\005" +
@@ -355,11 +355,11 @@ public final class ProtoHead {
       "PERSONALINFO_RSP\020\021\022\026\n\022CHANGE_FRIEND_SYNC" +
       "\020\022\022\021\n\rSEND_CHAT_REQ\020\023\022\021\n\rSEND_CHAT_RSP\020\024" +
       "\022\025\n\021RECEIVE_CHAT_SYNC\020\025\022\031\n\025CREATE_GROUP_" +
-      "CHAT_REQ\020\026\022\031\n\025CREATE_GROUP_CHAT_RSP\020\027\022 \n" +
-      "\034CHANGE_GROUP_CHAT_MEMBER_REQ\020\030\022 \n\034CHANG" +
-      "E_GROUP_CHAT_MEMBER_RSP\020\031\022!\n\035CHANGE_GROU" +
-      "P_CHAT_MEMBER_SYNC\020\032\022\026\n\022GET_GROUP_INFO_R" +
-      "EQ\020\033\022\026\n\022GET_GROUP_INFO_RSP\020\034B\n\n\010protocol"
+      "CHAT_REQ\020\026\022\031\n\025CREATE_GROUP_CHAT_RSP\020\027\022\024\n" +
+      "\020CHANGE_GROUP_REQ\020\030\022\024\n\020CHANGE_GROUP_RSP\020" +
+      "\031\022\025\n\021CHANGE_GROUP_SYNC\020\032\022\026\n\022GET_GROUP_IN" +
+      "FO_REQ\020\033\022\026\n\022GET_GROUP_INFO_RSP\020\034B\n\n\010prot" +
+      "ocol"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

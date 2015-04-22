@@ -1,13 +1,10 @@
 package JUnit;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 import protocol.ProtoHead;
 import protocol.Msg.LogoutMsg;
@@ -34,8 +31,8 @@ public class ClientSocket {
 //	 String host = "192.168.45.17"; // 要连接的服务端IP地址
 	//public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
 
-//	String host = "127.0.0.1"; // 要连接的服务端IP地址
-	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+	String host = "127.0.0.1"; // 要连接的服务端IP地址
+//	public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
 
 	// String host = "192.168.1.103"; // 要连接的服务端IP地址
 	// String host = "192.168.45.11"; // 要连接的服务端IP地址
