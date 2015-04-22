@@ -5485,4 +5485,408 @@ java.lang.Thread.run(Unknown Source)
  2015-04-22 17:09:48 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : CHANGE_GROUP_REQ
  2015-04-22 17:10:02 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
  2015-04-22 17:10:02 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-22 17:43:07 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 17:43:07 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-22 17:44:08 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 17:44:08 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 17:44:08 [model.HibernateDataOperation]-[INFO] Hibernate:start update database
+ 2015-04-22 17:44:08 [model.HibernateDataOperation]-[INFO] Hibernate:update Object:class model.Group:GroupId : 13; GroupName : a,b,c,...; CreaterId : a; MemberList : [a a, b b, c c, d d, e e]
+ 2015-04-22 17:44:08 [model.HibernateDataOperation]-[INFO] Hibernate:update database success
+ 2015-04-22 17:44:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:49797)  ,Type : CHANGE_GROUP_RSP  MessageId : 1050440906
+ 2015-04-22 17:44:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:49797)  ,Type : CHANGE_GROUP_SYNC  MessageId : 1057595649
+ 2015-04-22 17:44:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:49798)  ,Type : CHANGE_GROUP_SYNC  MessageId : 1017459808
+ 2015-04-22 17:44:08 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-22 17:44:08 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-22 18:00:45 [org.logicalcobwebs.proxool.mysql]-[WARN] #0001 was active for 3636685 milliseconds and has been removed automaticaly. The Thread responsible was named 'NioProcessor-4', but the last SQL it performed is unknown because the trace property is not enabled.
+ 2015-04-22 18:03:16 [server.Server]-[INFO] log configure load success
+ 2015-04-22 18:03:16 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-22 18:03:16 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-22 18:03:16 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=1704361399]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-22 18:03:16 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=1704361399]
+ 2015-04-22 18:03:16 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@5545757a]
+ 2015-04-22 18:03:16 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@1ee4e327]
+ 2015-04-22 18:03:16 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-22 18:03:16 [server.ServerNetwork]-[INFO] IP address:192.168.45.17
+ 2015-04-22 18:03:16 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-22 18:03:16 [server.ServerNetwork]-[ERROR] ServerNetwork : Acceptor bind Exception!;
+java.net.BindException: Address already in use: bind
+ 2015-04-22 18:03:21 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-22 18:03:21 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000003: nio socket, server, /127.0.0.1:48643 => /127.0.0.1:8081)
+ 2015-04-22 18:03:21 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-22 18:03:21 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-22 18:03:21 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000004: nio socket, server, /127.0.0.1:48644 => /127.0.0.1:8081)
+ 2015-04-22 18:03:21 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-22 18:03:30 [server.Server]-[INFO] log configure load success
+ 2015-04-22 18:03:30 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-22 18:03:30 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-22 18:03:31 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=1873695721]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-22 18:03:31 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=1873695721]
+ 2015-04-22 18:03:31 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@6428c5d6]
+ 2015-04-22 18:03:31 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@7fc8a9a0]
+ 2015-04-22 18:03:31 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-22 18:03:31 [server.ServerNetwork]-[INFO] IP address:192.168.45.17
+ 2015-04-22 18:03:31 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:56281
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:56282
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:56281) connected,save into table
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:56282) connected,save into table
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-22 18:03:39 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-22 18:03:39 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:56281 'Login' event
+ 2015-04-22 18:03:39 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:03:39 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , b
+ 2015-04-22 18:03:40 [org.hibernate.annotations.common.Version]-[INFO] HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+ 2015-04-22 18:03:40 [org.hibernate.Version]-[INFO] HHH000412: Hibernate Core {4.3.8.Final}
+ 2015-04-22 18:03:40 [org.hibernate.cfg.Environment]-[INFO] HHH000206: hibernate.properties not found
+ 2015-04-22 18:03:40 [org.hibernate.cfg.Environment]-[INFO] HHH000021: Bytecode provider name : javassist
+ 2015-04-22 18:03:40 [org.hibernate.cfg.Configuration]-[INFO] HHH000043: Configuring from resource: /hibernate.cfg.xml
+ 2015-04-22 18:03:40 [org.hibernate.cfg.Configuration]-[INFO] HHH000040: Configuration resource: /hibernate.cfg.xml
+ 2015-04-22 18:03:40 [org.hibernate.internal.util.xml.DTDEntityResolver]-[WARN] HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+ 2015-04-22 18:03:40 [org.hibernate.cfg.Configuration]-[INFO] HHH000041: Configured SessionFactory: null
+ 2015-04-22 18:03:40 [org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator]-[INFO] HHH000130: Instantiating explicit connection provider: org.hibernate.connection.ProxoolConnectionProvider
+ 2015-04-22 18:03:40 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030004: Configuring Proxool Provider using JAXPConfigurator: proxool.xml
+ 2015-04-22 18:03:40 [org.logicalcobwebs.proxool.ProxoolFacade]-[INFO] Proxool 0.9.1 (23-Aug-2008 11:10)
+ 2015-04-22 18:03:40 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030002: Configuring Proxool Provider to use pool alias: proxool.mysql
+ 2015-04-22 18:03:40 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030001: Autocommit mode: false
+ 2015-04-22 18:03:41 [org.hibernate.dialect.Dialect]-[INFO] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+ 2015-04-22 18:03:41 [org.hibernate.engine.jdbc.internal.LobCreatorBuilder]-[INFO] HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+ 2015-04-22 18:03:41 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56282)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1000932131
+ 2015-04-22 18:03:41 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56281)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1045198437
+ 2015-04-22 18:03:41 [org.hibernate.engine.transaction.internal.TransactionFactoryInitiator]-[INFO] HHH000399: Using default transaction strategy (direct JDBC transactions)
+ 2015-04-22 18:03:41 [org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory]-[INFO] HHH000397: Using ASTQueryTranslatorFactory
+ 2015-04-22 18:03:41 [org.hibernate.cache.spi.UpdateTimestampsCache]-[INFO] HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+ 2015-04-22 18:03:41 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+ 2015-04-22 18:03:41 [org.hibernate.cache.internal.StandardQueryCache]-[INFO] HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+ 2015-04-22 18:03:41 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+ 2015-04-22 18:03:41 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.User]; using defaults.
+ 2015-04-22 18:03:41 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Chatting]; using defaults.
+ 2015-04-22 18:03:41 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Group]; using defaults.
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:03:41 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56281)  ,Type : LOGIN_RSP  MessageId : 1051118353
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] [18:3:41]
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] [NO]ServerModel_Chatting : ServerModel_Chatting : Catch User( b) 'LoginEvent'！
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-22 18:03:41 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:56282 'Login' event
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , c
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:03:41 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56282)  ,Type : LOGIN_RSP  MessageId : 1032755396
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] [18:3:41]
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] [NO]ServerModel_Chatting : ServerModel_Chatting : Catch User( c) 'LoginEvent'！
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] byteArray.length = 24
+ 2015-04-22 18:03:41 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : CHANGE_GROUP_REQ
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:03:41 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-22 18:03:42 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:03:42 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:03:42 [org.hibernate.hql.internal.ast.ErrorCounter]-[ERROR] line 1:32: unexpected token: )
+ 2015-04-22 18:03:42 [org.hibernate.hql.internal.ast.ErrorCounter]-[ERROR] line 1:32: unexpected token: )
+ line 1:32: unexpected token: )
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.compoundExpr(HqlBaseParser.java:3241)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.inList(HqlBaseParser.java:3020)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.relationalExpression(HqlBaseParser.java:2866)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.equalityExpression(HqlBaseParser.java:2591)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.negatedExpression(HqlBaseParser.java:2555)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.logicalAndExpression(HqlBaseParser.java:2471)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.logicalOrExpression(HqlBaseParser.java:2436)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.expression(HqlBaseParser.java:2146)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.logicalExpression(HqlBaseParser.java:1922)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.whereClause(HqlBaseParser.java:481)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.queryRule(HqlBaseParser.java:737)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.selectStatement(HqlBaseParser.java:323)
+	at org.hibernate.hql.internal.antlr.HqlBaseParser.statement(HqlBaseParser.java:186)
+	at org.hibernate.hql.internal.ast.QueryTranslatorImpl.parse(QueryTranslatorImpl.java:295)
+	at org.hibernate.hql.internal.ast.QueryTranslatorImpl.doCompile(QueryTranslatorImpl.java:203)
+	at org.hibernate.hql.internal.ast.QueryTranslatorImpl.compile(QueryTranslatorImpl.java:158)
+	at org.hibernate.engine.query.spi.HQLQueryPlan.<init>(HQLQueryPlan.java:131)
+	at org.hibernate.engine.query.spi.HQLQueryPlan.<init>(HQLQueryPlan.java:93)
+	at org.hibernate.engine.query.spi.QueryPlanCache.getHQLQueryPlan(QueryPlanCache.java:167)
+	at org.hibernate.internal.AbstractSessionImpl.getHQLQueryPlan(AbstractSessionImpl.java:301)
+	at org.hibernate.internal.AbstractSessionImpl.createQuery(AbstractSessionImpl.java:236)
+	at org.hibernate.internal.SessionImpl.createQuery(SessionImpl.java:1800)
+	at server.Server_User.getUsers(Server_User.java:695)
+	at server.Server_User.getUsers(Server_User.java:687)
+	at server.Server_Chatting.changeGroupMember(Server_Chatting.java:465)
+	at server.Server_Chatting.changeGroup(Server_Chatting.java:415)
+	at server.ClientRequest_Dispatcher.dispatcher(ClientRequest_Dispatcher.java:106)
+	at server.MinaServerHandle.messageReceived(MinaServerHandle.java:54)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain$TailFilter.messageReceived(DefaultIoFilterChain.java:690)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:417)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:47)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:765)
+	at org.apache.mina.filter.codec.ProtocolCodecFilter$ProtocolDecoderOutputImpl.flush(ProtocolCodecFilter.java:407)
+	at org.apache.mina.filter.codec.ProtocolCodecFilter.messageReceived(ProtocolCodecFilter.java:236)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:417)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:47)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:765)
+	at org.apache.mina.core.filterchain.IoFilterAdapter.messageReceived(IoFilterAdapter.java:109)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:417)
+	at org.apache.mina.core.filterchain.DefaultIoFilterChain.fireMessageReceived(DefaultIoFilterChain.java:410)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:710)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+	at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
+2015-04-22 18:03:42 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-22 18:03:42 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000001: nio socket, server, /127.0.0.1:56281 => /127.0.0.1:8081)
+ 2015-04-22 18:03:42 [server.MinaServerHandle]-[ERROR] cause.toString() : org.hibernate.hql.internal.ast.QuerySyntaxException: unexpected token: ) near line 1, column 32 [from model.User where userId in)]
+ 2015-04-22 18:03:42 [server.MinaServerHandle]-[ERROR] stack : org.hibernate.hql.internal.ast.QuerySyntaxException.convert(QuerySyntaxException.java:91)
+org.hibernate.hql.internal.ast.ErrorCounter.throwQueryException(ErrorCounter.java:109)
+org.hibernate.hql.internal.ast.QueryTranslatorImpl.parse(QueryTranslatorImpl.java:304)
+org.hibernate.hql.internal.ast.QueryTranslatorImpl.doCompile(QueryTranslatorImpl.java:203)
+org.hibernate.hql.internal.ast.QueryTranslatorImpl.compile(QueryTranslatorImpl.java:158)
+org.hibernate.engine.query.spi.HQLQueryPlan.<init>(HQLQueryPlan.java:131)
+org.hibernate.engine.query.spi.HQLQueryPlan.<init>(HQLQueryPlan.java:93)
+org.hibernate.engine.query.spi.QueryPlanCache.getHQLQueryPlan(QueryPlanCache.java:167)
+org.hibernate.internal.AbstractSessionImpl.getHQLQueryPlan(AbstractSessionImpl.java:301)
+org.hibernate.internal.AbstractSessionImpl.createQuery(AbstractSessionImpl.java:236)
+org.hibernate.internal.SessionImpl.createQuery(SessionImpl.java:1800)
+server.Server_User.getUsers(Server_User.java:695)
+server.Server_User.getUsers(Server_User.java:687)
+server.Server_Chatting.changeGroupMember(Server_Chatting.java:465)
+server.Server_Chatting.changeGroup(Server_Chatting.java:415)
+server.ClientRequest_Dispatcher.dispatcher(ClientRequest_Dispatcher.java:106)
+server.MinaServerHandle.messageReceived(MinaServerHandle.java:54)
+org.apache.mina.core.filterchain.DefaultIoFilterChain$TailFilter.messageReceived(DefaultIoFilterChain.java:690)
+org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:417)
+org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:47)
+org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:765)
+org.apache.mina.filter.codec.ProtocolCodecFilter$ProtocolDecoderOutputImpl.flush(ProtocolCodecFilter.java:407)
+org.apache.mina.filter.codec.ProtocolCodecFilter.messageReceived(ProtocolCodecFilter.java:236)
+org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:417)
+org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:47)
+org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:765)
+org.apache.mina.core.filterchain.IoFilterAdapter.messageReceived(IoFilterAdapter.java:109)
+org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:417)
+org.apache.mina.core.filterchain.DefaultIoFilterChain.fireMessageReceived(DefaultIoFilterChain.java:410)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:710)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-22 18:03:42 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-22 18:03:46 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56282)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1059249116
+ 2015-04-22 18:03:46 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56281)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1059214046
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000001: nio socket, server, /127.0.0.1:56281 => /127.0.0.1:8081)
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-22 18:03:49 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000002: nio socket, server, /127.0.0.1:56282 => /127.0.0.1:8081)
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-22 18:03:49 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-22 18:03:49 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-22 18:03:53 [server.Server]-[INFO] log configure load success
+ 2015-04-22 18:03:53 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-22 18:03:53 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-22 18:03:53 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=1669495386]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-22 18:03:53 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=1669495386]
+ 2015-04-22 18:03:53 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@14f5b942]
+ 2015-04-22 18:03:53 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@728d7e43]
+ 2015-04-22 18:03:53 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-22 18:03:53 [server.ServerNetwork]-[INFO] IP address:192.168.45.17
+ 2015-04-22 18:03:53 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:56366
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:56367
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:56367) connected,save into table
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:56366) connected,save into table
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-22 18:03:57 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-22 18:03:57 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:56366 'Login' event
+ 2015-04-22 18:03:57 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:03:57 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , b
+ 2015-04-22 18:03:57 [org.hibernate.annotations.common.Version]-[INFO] HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+ 2015-04-22 18:03:57 [org.hibernate.Version]-[INFO] HHH000412: Hibernate Core {4.3.8.Final}
+ 2015-04-22 18:03:57 [org.hibernate.cfg.Environment]-[INFO] HHH000206: hibernate.properties not found
+ 2015-04-22 18:03:57 [org.hibernate.cfg.Environment]-[INFO] HHH000021: Bytecode provider name : javassist
+ 2015-04-22 18:03:57 [org.hibernate.cfg.Configuration]-[INFO] HHH000043: Configuring from resource: /hibernate.cfg.xml
+ 2015-04-22 18:03:57 [org.hibernate.cfg.Configuration]-[INFO] HHH000040: Configuration resource: /hibernate.cfg.xml
+ 2015-04-22 18:03:57 [org.hibernate.internal.util.xml.DTDEntityResolver]-[WARN] HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+ 2015-04-22 18:03:57 [org.hibernate.cfg.Configuration]-[INFO] HHH000041: Configured SessionFactory: null
+ 2015-04-22 18:03:57 [org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator]-[INFO] HHH000130: Instantiating explicit connection provider: org.hibernate.connection.ProxoolConnectionProvider
+ 2015-04-22 18:03:57 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030004: Configuring Proxool Provider using JAXPConfigurator: proxool.xml
+ 2015-04-22 18:03:57 [org.logicalcobwebs.proxool.ProxoolFacade]-[INFO] Proxool 0.9.1 (23-Aug-2008 11:10)
+ 2015-04-22 18:03:57 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030002: Configuring Proxool Provider to use pool alias: proxool.mysql
+ 2015-04-22 18:03:57 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030001: Autocommit mode: false
+ 2015-04-22 18:03:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1037400391
+ 2015-04-22 18:03:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1058827939
+ 2015-04-22 18:03:58 [org.hibernate.dialect.Dialect]-[INFO] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+ 2015-04-22 18:03:58 [org.hibernate.engine.jdbc.internal.LobCreatorBuilder]-[INFO] HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+ 2015-04-22 18:03:58 [org.hibernate.engine.transaction.internal.TransactionFactoryInitiator]-[INFO] HHH000399: Using default transaction strategy (direct JDBC transactions)
+ 2015-04-22 18:03:58 [org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory]-[INFO] HHH000397: Using ASTQueryTranslatorFactory
+ 2015-04-22 18:03:59 [org.hibernate.cache.spi.UpdateTimestampsCache]-[INFO] HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+ 2015-04-22 18:03:59 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+ 2015-04-22 18:03:59 [org.hibernate.cache.internal.StandardQueryCache]-[INFO] HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+ 2015-04-22 18:03:59 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+ 2015-04-22 18:03:59 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.User]; using defaults.
+ 2015-04-22 18:03:59 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Chatting]; using defaults.
+ 2015-04-22 18:03:59 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Group]; using defaults.
+ 2015-04-22 18:03:59 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:03:59 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:03:59 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : LOGIN_RSP  MessageId : 1063125768
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] [18:3:59]
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] [NO]ServerModel_Chatting : ServerModel_Chatting : Catch User( b) 'LoginEvent'！
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-22 18:03:59 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:56367 'Login' event
+ 2015-04-22 18:03:59 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:03:59 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , c
+ 2015-04-22 18:03:59 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:03:59 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:03:59 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : LOGIN_RSP  MessageId : 1056714829
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] [18:3:59]
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] [NO]ServerModel_Chatting : ServerModel_Chatting : Catch User( c) 'LoginEvent'！
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] byteArray.length = 24
+ 2015-04-22 18:03:59 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : CHANGE_GROUP_REQ
+ 2015-04-22 18:04:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1042182204
+ 2015-04-22 18:04:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1057637939
+ 2015-04-22 18:04:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1011464752
+ 2015-04-22 18:04:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1012408419
+ 2015-04-22 18:04:09 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:04:09 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-22 18:04:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1044026040
+ 2015-04-22 18:04:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1065129532
+ 2015-04-22 18:04:15 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:04:16 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:04:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1027257612
+ 2015-04-22 18:04:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1063074450
+ 2015-04-22 18:04:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1014123629
+ 2015-04-22 18:04:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062941630
+ 2015-04-22 18:04:28 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1046359490
+ 2015-04-22 18:04:28 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1063478298
+ 2015-04-22 18:04:33 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1058526268
+ 2015-04-22 18:04:33 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1060412652
+ 2015-04-22 18:04:38 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1051066073
+ 2015-04-22 18:04:38 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1052927691
+ 2015-04-22 18:04:43 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1053870597
+ 2015-04-22 18:04:43 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1060103042
+ 2015-04-22 18:04:48 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1034777265
+ 2015-04-22 18:04:48 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1021737049
+ 2015-04-22 18:04:53 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062431763
+ 2015-04-22 18:04:53 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1037188962
+ 2015-04-22 18:04:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1046126915
+ 2015-04-22 18:04:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1050968219
+ 2015-04-22 18:05:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1052385977
+ 2015-04-22 18:05:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1056853095
+ 2015-04-22 18:05:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1054613008
+ 2015-04-22 18:05:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1048114716
+ 2015-04-22 18:05:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1043822149
+ 2015-04-22 18:05:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1055473032
+ 2015-04-22 18:05:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1064167032
+ 2015-04-22 18:05:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1054275461
+ 2015-04-22 18:05:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1044448078
+ 2015-04-22 18:05:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1054165504
+ 2015-04-22 18:05:28 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062258689
+ 2015-04-22 18:05:28 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1064635488
+ 2015-04-22 18:05:33 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1048003285
+ 2015-04-22 18:05:33 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1034611957
+ 2015-04-22 18:05:38 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1052042147
+ 2015-04-22 18:05:38 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1064670166
+ 2015-04-22 18:05:43 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1061017478
+ 2015-04-22 18:05:43 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1056828869
+ 2015-04-22 18:05:48 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1059810458
+ 2015-04-22 18:05:48 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1039864906
+ 2015-04-22 18:05:53 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1064308464
+ 2015-04-22 18:05:53 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1053870387
+ 2015-04-22 18:05:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1060520339
+ 2015-04-22 18:05:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062985341
+ 2015-04-22 18:06:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1063231465
+ 2015-04-22 18:06:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1053250529
+ 2015-04-22 18:06:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062861528
+ 2015-04-22 18:06:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1038892626
+ 2015-04-22 18:06:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1059308018
+ 2015-04-22 18:06:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1065196310
+ 2015-04-22 18:06:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1057155079
+ 2015-04-22 18:06:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1054753744
+ 2015-04-22 18:06:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1041387131
+ 2015-04-22 18:06:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1052803413
+ 2015-04-22 18:06:28 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1058529597
+ 2015-04-22 18:06:28 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062325195
+ 2015-04-22 18:06:31 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-22 18:06:31 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-22 18:06:31 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-22 18:06:31 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-22 18:06:33 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1033909228
+ 2015-04-22 18:06:33 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1032992829
+ 2015-04-22 18:06:38 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1049560247
+ 2015-04-22 18:06:38 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1059786956
+ 2015-04-22 18:06:43 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1043325180
+ 2015-04-22 18:06:43 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1062937421
+ 2015-04-22 18:06:48 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1065228443
+ 2015-04-22 18:06:48 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1052145863
+ 2015-04-22 18:06:52 [model.HibernateDataOperation]-[INFO] Hibernate:start update database
+ 2015-04-22 18:06:52 [model.HibernateDataOperation]-[INFO] Hibernate:update Object:class model.Group:GroupId : 13; GroupName : a,b,c,...; CreaterId : a; MemberList : [a a, b b, c c, d d, e e]
+ 2015-04-22 18:06:52 [model.HibernateDataOperation]-[INFO] Hibernate:update database success
+ 2015-04-22 18:06:53 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1027421044
+ 2015-04-22 18:06:53 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1052618895
+ 2015-04-22 18:06:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1063926902
+ 2015-04-22 18:06:58 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1033622956
+ 2015-04-22 18:07:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1048748120
+ 2015-04-22 18:07:03 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1060603168
+ 2015-04-22 18:07:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1056351163
+ 2015-04-22 18:07:08 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1042956199
+ 2015-04-22 18:07:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1040502224
+ 2015-04-22 18:07:13 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1043898239
+ 2015-04-22 18:07:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1060268224
+ 2015-04-22 18:07:18 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1056727218
+ 2015-04-22 18:07:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1035008789
+ 2015-04-22 18:07:23 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : KEEP_ALIVE_SYNC  MessageId : 1046279951
+ 2015-04-22 18:07:25 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : CHANGE_GROUP_RSP  MessageId : 1051392647
+ 2015-04-22 18:07:25 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56366)  ,Type : CHANGE_GROUP_SYNC  MessageId : 1064515552
+ 2015-04-22 18:07:25 [server.MinaEncoder]-[INFO] Server send Message to Client(/127.0.0.1:56367)  ,Type : CHANGE_GROUP_SYNC  MessageId : 1053591305
+ 2015-04-22 18:07:25 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-22 18:07:25 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-22 18:07:28 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:56367) was offline,now delete it!
+ 2015-04-22 18:07:28 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:56366) was offline,now delete it!
  

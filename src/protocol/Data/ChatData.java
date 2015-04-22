@@ -21,17 +21,17 @@ public final class ChatData {
      */
     protocol.Data.ChatData.ChatItem.TargetType getTargetType();
 
-    // required string sendUserId = 2;
+    // optional string sendUserId = 2;
     /**
-     * <code>required string sendUserId = 2;</code>
+     * <code>optional string sendUserId = 2;</code>
      */
     boolean hasSendUserId();
     /**
-     * <code>required string sendUserId = 2;</code>
+     * <code>optional string sendUserId = 2;</code>
      */
     java.lang.String getSendUserId();
     /**
-     * <code>required string sendUserId = 2;</code>
+     * <code>optional string sendUserId = 2;</code>
      */
     com.google.protobuf.ByteString
         getSendUserIdBytes();
@@ -313,6 +313,10 @@ public final class ChatData {
        * <code>GROUP = 1;</code>
        */
       GROUP(1, 1),
+      /**
+       * <code>SYSTEM = 2;</code>
+       */
+      SYSTEM(2, 2),
       ;
 
       /**
@@ -323,6 +327,10 @@ public final class ChatData {
        * <code>GROUP = 1;</code>
        */
       public static final int GROUP_VALUE = 1;
+      /**
+       * <code>SYSTEM = 2;</code>
+       */
+      public static final int SYSTEM_VALUE = 2;
 
 
       public final int getNumber() { return value; }
@@ -331,6 +339,7 @@ public final class ChatData {
         switch (value) {
           case 0: return INDIVIDUAL;
           case 1: return GROUP;
+          case 2: return SYSTEM;
           default: return null;
         }
       }
@@ -399,17 +408,17 @@ public final class ChatData {
       return targetType_;
     }
 
-    // required string sendUserId = 2;
+    // optional string sendUserId = 2;
     public static final int SENDUSERID_FIELD_NUMBER = 2;
     private java.lang.Object sendUserId_;
     /**
-     * <code>required string sendUserId = 2;</code>
+     * <code>optional string sendUserId = 2;</code>
      */
     public boolean hasSendUserId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string sendUserId = 2;</code>
+     * <code>optional string sendUserId = 2;</code>
      */
     public java.lang.String getSendUserId() {
       java.lang.Object ref = sendUserId_;
@@ -426,7 +435,7 @@ public final class ChatData {
       }
     }
     /**
-     * <code>required string sendUserId = 2;</code>
+     * <code>optional string sendUserId = 2;</code>
      */
     public com.google.protobuf.ByteString
         getSendUserIdBytes() {
@@ -573,10 +582,6 @@ public final class ChatData {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      if (!hasSendUserId()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       if (!hasReceiveUserId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -872,10 +877,6 @@ public final class ChatData {
       }
 
       public final boolean isInitialized() {
-        if (!hasSendUserId()) {
-          
-          return false;
-        }
         if (!hasReceiveUserId()) {
           
           return false;
@@ -946,16 +947,16 @@ public final class ChatData {
         return this;
       }
 
-      // required string sendUserId = 2;
+      // optional string sendUserId = 2;
       private java.lang.Object sendUserId_ = "";
       /**
-       * <code>required string sendUserId = 2;</code>
+       * <code>optional string sendUserId = 2;</code>
        */
       public boolean hasSendUserId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string sendUserId = 2;</code>
+       * <code>optional string sendUserId = 2;</code>
        */
       public java.lang.String getSendUserId() {
         java.lang.Object ref = sendUserId_;
@@ -969,7 +970,7 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string sendUserId = 2;</code>
+       * <code>optional string sendUserId = 2;</code>
        */
       public com.google.protobuf.ByteString
           getSendUserIdBytes() {
@@ -985,7 +986,7 @@ public final class ChatData {
         }
       }
       /**
-       * <code>required string sendUserId = 2;</code>
+       * <code>optional string sendUserId = 2;</code>
        */
       public Builder setSendUserId(
           java.lang.String value) {
@@ -998,7 +999,7 @@ public final class ChatData {
         return this;
       }
       /**
-       * <code>required string sendUserId = 2;</code>
+       * <code>optional string sendUserId = 2;</code>
        */
       public Builder clearSendUserId() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1007,7 +1008,7 @@ public final class ChatData {
         return this;
       }
       /**
-       * <code>required string sendUserId = 2;</code>
+       * <code>optional string sendUserId = 2;</code>
        */
       public Builder setSendUserIdBytes(
           com.google.protobuf.ByteString value) {
@@ -1262,14 +1263,15 @@ public final class ChatData {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016ChatData.proto\022\010protocol\"\215\002\n\010ChatItem\022" +
+      "\n\016ChatData.proto\022\010protocol\"\231\002\n\010ChatItem\022" +
       "=\n\ntargetType\030\001 \001(\0162\035.protocol.ChatItem." +
-      "TargetType:\nINDIVIDUAL\022\022\n\nsendUserId\030\002 \002" +
+      "TargetType:\nINDIVIDUAL\022\022\n\nsendUserId\030\002 \001" +
       "(\t\022\025\n\rreceiveUserId\030\003 \002(\t\022-\n\010chatType\030\004 " +
       "\002(\0162\033.protocol.ChatItem.ChatType\022\020\n\010chat" +
       "Body\030\005 \002(\t\022\014\n\004date\030\006 \001(\003\"\037\n\010ChatType\022\010\n\004" +
-      "TEXT\020\000\022\t\n\005IMAGE\020\001\"\'\n\nTargetType\022\016\n\nINDIV" +
-      "IDUAL\020\000\022\t\n\005GROUP\020\001B\017\n\rprotocol.Data"
+      "TEXT\020\000\022\t\n\005IMAGE\020\001\"3\n\nTargetType\022\016\n\nINDIV" +
+      "IDUAL\020\000\022\t\n\005GROUP\020\001\022\n\n\006SYSTEM\020\002B\017\n\rprotoc" +
+      "ol.Data"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

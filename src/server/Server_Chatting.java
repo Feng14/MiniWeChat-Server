@@ -461,7 +461,7 @@ public class Server_Chatting {
 					userBeAddList.add(userId);
 				}
 				// 加到新群用户表中
-				if (newUserList.size() > 0)
+				if (userBeAddList.size() > 0)
 					newUserList.addAll(server_User.getUsers(userBeAddList, session));
 
 			} else if (changeGroupObj.getChangeType() == ChangeType.DELETE) { // 删除自己
