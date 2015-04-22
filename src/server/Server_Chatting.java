@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.logicalcobwebs.proxool.ProxoolFacade;
 
 import model.Chatting;
 import model.Group;
@@ -17,6 +18,7 @@ import model.ResultCode;
 import model.User;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import protocol.ProtoHead;
 import protocol.Data.ChatData.ChatItem;
 import protocol.Data.ChatData.ChatItem.ChatType;
@@ -202,6 +204,7 @@ public class Server_Chatting {
 
 			serverModel_Chatting.sendChatting(chatting);
 		}
+		ProxoolFacade.shutdown(0);
 
 		// 回复客户端
 		if (sendChattingResponse != null) {
@@ -373,7 +376,7 @@ public class Server_Chatting {
 		Group group = null;
 		if (resultCode.getCode() == ResultCode.SUCCESS && groupList.size() > 0)
 			group = groupList.get(0);
-
+		ProxoolFacade.shutdown(0);
 		return group;
 	}
 
@@ -560,6 +563,7 @@ public class Server_Chatting {
 			logger.error(e.toString());
 			e.printStackTrace();
 		}
+		ProxoolFacade.shutdown(0);
 		// 回复客户端
 		responseBuilder.setResultCode(ChangeGroupRsp.ResultCode.FAIL);
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket

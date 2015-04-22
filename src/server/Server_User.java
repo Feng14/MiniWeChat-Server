@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
 import javax.imageio.ImageIO;
 
 import model.Group;
@@ -12,10 +13,14 @@ import model.HibernateSessionFactory;
 import model.ResultCode;
 import model.User;
 import observer.ObserverMessage_Login;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.logicalcobwebs.proxool.ProxoolFacade;
+
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import exception.NoIpException;
 import protocol.ProtoHead;
 import protocol.Data.GroupData.GroupItem;
@@ -410,6 +415,7 @@ public class Server_User {
 			logger.error("Server_User.personalSettings:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
+			logger.error(e.getMessage());
 
 			personalSettingsBuilder.setResultCode(PersonalSettingsMsg.PersonalSettingsRsp.ResultCode.FAIL);
 		}
@@ -652,10 +658,12 @@ public class Server_User {
 				getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
 			}
 			session.close();
+			ProxoolFacade.shutdown(0);
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_User.getPersonalInfo:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
+			logger.error(e.getMessage());
 			getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
 		}
 		// 回复客户端

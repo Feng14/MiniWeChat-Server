@@ -1,12 +1,15 @@
 package server;
 
 import java.util.List;
+
 import model.HibernateDataOperation;
 import model.HibernateSessionFactory;
 import model.ResultCode;
 import model.User;
+
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.logicalcobwebs.proxool.ProxoolFacade;
 
 import protocol.ProtoHead;
 import protocol.Data.UserData;
@@ -17,7 +20,9 @@ import protocol.Msg.DeleteFriendMsg;
 import protocol.Msg.GetUserInfoMsg;
 import protocol.Msg.DeleteFriendMsg.DeleteFriendRsp;
 import protocol.Msg.GetUserInfoMsg.GetUserInfoRsp;
+
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import exception.NoIpException;
 
 /**
@@ -90,6 +95,7 @@ public class Server_Friend {
 			logger.error("Server_Friend.getUserInfo:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
+			logger.error(e.getMessage());
 			getUserInfoBuilder.setResultCode(GetUserInfoMsg.GetUserInfoRsp.ResultCode.FAIL);
 		}
 		// 回复客户端
@@ -139,8 +145,10 @@ public class Server_Friend {
 			logger.error("Server_Friend.addFriend:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
+			logger.error(e.getMessage());
 			addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
 		}
+		ProxoolFacade.shutdown(0);
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.ADD_FRIEND_RSP_VALUE, addFriendBuilder.build().toByteArray())));
@@ -229,8 +237,10 @@ public class Server_Friend {
 			logger.error("Server_Friend.deleteFriend:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(networkPacket.ioSession) + " packet！");
 			logger.error(e.getStackTrace());
+			logger.error(e.getMessage());
 			deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
 		}
+		ProxoolFacade.shutdown(0);
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP_VALUE, deleteFriendBuilder.build().toByteArray())));
