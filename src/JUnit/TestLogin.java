@@ -57,30 +57,30 @@ public class TestLogin {
 	 * @throws IOException
 	 */
 	@Test
-//	@Ignore
+	@Ignore
 	public void testLogin2() throws UnknownHostException, IOException {
 		ClientSocket client = new ClientSocket();
 		
 		String userId1 = "c", userId2 = "d";
 		System.out.println("Start Test2 Login!");
 		LoginRsp.ResultCode resultCode = client.login(userId1, userId1);
-		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.SUCCESS);
+		assertEquals(LoginMsg.LoginRsp.ResultCode.SUCCESS, resultCode);
 		
 		// 下线
 		LogoutRsp.ResultCode logoutResultCode = client.logout();
-		assertEquals(logoutResultCode, LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
+		assertEquals(LogoutMsg.LogoutRsp.ResultCode.SUCCESS, logoutResultCode);
 		
 		// 再登录
 		resultCode = client.login(userId2, userId2);
-		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.SUCCESS);
+		assertEquals(LoginMsg.LoginRsp.ResultCode.SUCCESS, resultCode);
 		
 		// 下线
 		logoutResultCode = client.logout();
-		assertEquals(logoutResultCode, LogoutRsp.ResultCode.SUCCESS);
+		assertEquals(LogoutRsp.ResultCode.SUCCESS, logoutResultCode);
 		
 		// 再登录
 		resultCode = client.login(userId1, userId1);
-		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.SUCCESS);
+		assertEquals(LoginMsg.LoginRsp.ResultCode.SUCCESS, resultCode);
 		
 		client.close();
 	}

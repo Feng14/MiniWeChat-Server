@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 
 import org.junit.Test;
 
 import protocol.ProtoHead;
+import protocol.Data.ChatData.ChatItem;
 import protocol.Data.GroupData.GroupItem;
 import protocol.Msg.ChangeGroupMsg.ChangeGroupSync;
 import protocol.Msg.CreateGroupChatMsg.CreateGroupChatReq;
@@ -15,6 +17,7 @@ import protocol.Msg.CreateGroupChatMsg.CreateGroupChatRsp;
 import protocol.Msg.LoginMsg.LoginRsp;
 import protocol.Msg.ReceiveChatMsg.ReceiveChatSync;
 import server.NetworkPacket;
+import tools.DataTypeTranslater;
 
 public class TestCreateGroupChatting {
 
@@ -77,12 +80,25 @@ public class TestCreateGroupChatting {
 				System.out.println("成员变化通知");
 				ChangeGroupSync changeGroupSync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 				GroupItem groupItem = changeGroupSync.getGroupItem();
+				System.out.println("GroupId : " + groupItem.getCreaterUserId()
+						+ "; Creater : " + groupItem.getCreaterUserId()
+						+ "; Member : " + groupItem.getMemberUserIdList().toString()
+						+ "; GroupName : " + groupItem.getGroupName());
 				assertEquals(groupItem.getCreaterUserId(), user1);
 				assertEquals(groupItem.getMemberUserIdCount(), 2);
 			} else if (NetworkPacket.getMessageType(byteArray) == ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC) {
+				ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+				ChatItem chatItem2 = receiveChatting.getChatData(0);
+
 				// 收到群聊消息（A 我已经把 B，C 拉入群聊）
-				System.out.println(user2 + "receive : "
-						+ ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getChatData(0).getChatBody());
+				System.out.println(user2 + " receive : " + chatItem2.getChatBody());
+				
+				System.out.println("Sender : " + chatItem2.getSendUserId()
+						+ ";  receiver : " + chatItem2.getReceiveUserId()
+						+ "; isGroup : " + chatItem2.getTargetType().toString()
+						+ ";  type : " + chatItem2.getChatType().toString()
+						+ "; body : " + chatItem2.getChatBody()
+						+ ";  Date : " + DataTypeTranslater.getData(chatItem2.getDate()));
 			}
 		}
 

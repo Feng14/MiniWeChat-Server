@@ -193,6 +193,9 @@ public class Server_Chatting {
 		Chatting chatting;
 		// 给每个组员发一份
 		for (User user : receiverList) {
+			if (user.getUserId().equals(chatItem.getSendUserId()))
+				continue;
+			
 			chatting = new Chatting(chatItem.getSendUserId(), user.getUserId() + "", chatItem.getChatType(),
 					chatItem.getChatBody(), Calendar.getInstance().getTimeInMillis(), true, Integer.parseInt(chatItem
 							.getReceiveUserId()));
@@ -360,10 +363,12 @@ public class Server_Chatting {
 				.getMessageID(), ProtoHead.ENetworkMessage.GET_GROUP_INFO_RSP_VALUE, responseBuilder.build().toByteArray())));
 	}
 
-	public Group getGroupInfo(String groupId, Session session) throws NoIpException {
+	public Group getGroupInfo(String groupId, Session session) throws NoIpException, MyException {
 		// 获取群资料
 		ResultCode resultCode = ResultCode.NULL;
 		List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, groupId, Group.class, resultCode, session);
+		if (groupList == null)
+			throw new MyException("Server_Chatting : getGroupInfo : getGroup Fail!");
 
 		Group group = null;
 		if (resultCode.getCode() == ResultCode.SUCCESS && groupList.size() > 0)

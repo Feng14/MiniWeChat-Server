@@ -1,0 +1,411 @@
+2015-04-21 23:21:37 [server.Server]-[INFO] log configure load success
+ 2015-04-21 23:21:37 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-21 23:21:37 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-21 23:21:38 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=366564931]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-21 23:21:38 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=366564931]
+ 2015-04-21 23:21:38 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@341b8757]
+ 2015-04-21 23:21:38 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@1e3c6543]
+ 2015-04-21 23:21:38 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-21 23:21:38 [server.ServerNetwork]-[INFO] IP address:192.168.1.103
+ 2015-04-21 23:21:38 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-21 23:21:38 [server.ServerNetwork]-[ERROR] ServerNetwork : Acceptor bind Exception!;
+java.net.BindException: Address already in use: bind
+ 2015-04-21 23:22:03 [server.Server]-[INFO] log configure load success
+ 2015-04-21 23:22:03 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-21 23:22:03 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-21 23:22:03 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=503783239]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-21 23:22:03 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=503783239]
+ 2015-04-21 23:22:03 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@6428c5d6]
+ 2015-04-21 23:22:03 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@7fc8a9a0]
+ 2015-04-21 23:22:03 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-21 23:22:03 [server.ServerNetwork]-[INFO] IP address:192.168.1.103
+ 2015-04-21 23:22:03 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8020
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8020) connected,save into table
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8019
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8019) connected,save into table
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:22:14 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:22:14 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8019 'Login' event
+ 2015-04-21 23:22:14 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:22:14 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , a
+ 2015-04-21 23:22:14 [org.hibernate.annotations.common.Version]-[INFO] HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+ 2015-04-21 23:22:14 [org.hibernate.Version]-[INFO] HHH000412: Hibernate Core {4.3.8.Final}
+ 2015-04-21 23:22:14 [org.hibernate.cfg.Environment]-[INFO] HHH000206: hibernate.properties not found
+ 2015-04-21 23:22:14 [org.hibernate.cfg.Environment]-[INFO] HHH000021: Bytecode provider name : javassist
+ 2015-04-21 23:22:14 [org.hibernate.cfg.Configuration]-[INFO] HHH000043: Configuring from resource: /hibernate.cfg.xml
+ 2015-04-21 23:22:14 [org.hibernate.cfg.Configuration]-[INFO] HHH000040: Configuration resource: /hibernate.cfg.xml
+ 2015-04-21 23:22:14 [org.hibernate.internal.util.xml.DTDEntityResolver]-[WARN] HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+ 2015-04-21 23:22:14 [org.hibernate.cfg.Configuration]-[INFO] HHH000041: Configured SessionFactory: null
+ 2015-04-21 23:22:14 [org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator]-[INFO] HHH000130: Instantiating explicit connection provider: org.hibernate.connection.ProxoolConnectionProvider
+ 2015-04-21 23:22:14 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030004: Configuring Proxool Provider using JAXPConfigurator: proxool.xml
+ 2015-04-21 23:22:14 [org.logicalcobwebs.proxool.ProxoolFacade]-[INFO] Proxool 0.9.1 (23-Aug-2008 11:10)
+ 2015-04-21 23:22:14 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030002: Configuring Proxool Provider to use pool alias: proxool.mysql
+ 2015-04-21 23:22:14 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030001: Autocommit mode: false
+ 2015-04-21 23:22:15 [org.hibernate.dialect.Dialect]-[INFO] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+ 2015-04-21 23:22:15 [org.hibernate.engine.jdbc.internal.LobCreatorBuilder]-[INFO] HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+ 2015-04-21 23:22:15 [org.hibernate.engine.transaction.internal.TransactionFactoryInitiator]-[INFO] HHH000399: Using default transaction strategy (direct JDBC transactions)
+ 2015-04-21 23:22:15 [org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory]-[INFO] HHH000397: Using ASTQueryTranslatorFactory
+ 2015-04-21 23:22:15 [org.hibernate.cache.spi.UpdateTimestampsCache]-[INFO] HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+ 2015-04-21 23:22:15 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+ 2015-04-21 23:22:15 [org.hibernate.cache.internal.StandardQueryCache]-[INFO] HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+ 2015-04-21 23:22:15 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+ 2015-04-21 23:22:15 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.User]; using defaults.
+ 2015-04-21 23:22:15 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Chatting]; using defaults.
+ 2015-04-21 23:22:15 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Group]; using defaults.
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:22:16 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:22:16 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:22:16 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8020 'Login' event
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , b
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:22:16 [tools.Debug]-[INFO] byteArray.length = 41
+ 2015-04-21 23:22:16 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : SEND_CHAT_REQ
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:22:16 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:22:16 [server.Server_Chatting]-[ERROR] java.lang.NullPointerException
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000001: nio socket, server, /127.0.0.1:8019 => /127.0.0.1:8081)
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:22:16 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000002: nio socket, server, /127.0.0.1:8020 => /127.0.0.1:8081)
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:22:16 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:22:16 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:22:18 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8019) was offline,now delete it!
+ 2015-04-21 23:22:18 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8020) was offline,now delete it!
+ 2015-04-21 23:22:59 [server.Server]-[INFO] log configure load success
+ 2015-04-21 23:22:59 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-21 23:22:59 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-21 23:22:59 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=514316217]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-21 23:22:59 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=514316217]
+ 2015-04-21 23:22:59 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@1dab0214]
+ 2015-04-21 23:22:59 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@6ff501f6]
+ 2015-04-21 23:22:59 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-21 23:23:00 [server.ServerNetwork]-[INFO] IP address:192.168.1.103
+ 2015-04-21 23:23:00 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8051
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8051) connected,save into table
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8052
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8052) connected,save into table
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:23:13 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:23:13 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8051 'Login' event
+ 2015-04-21 23:23:13 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:23:13 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , a
+ 2015-04-21 23:23:13 [org.hibernate.annotations.common.Version]-[INFO] HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+ 2015-04-21 23:23:13 [org.hibernate.Version]-[INFO] HHH000412: Hibernate Core {4.3.8.Final}
+ 2015-04-21 23:23:13 [org.hibernate.cfg.Environment]-[INFO] HHH000206: hibernate.properties not found
+ 2015-04-21 23:23:13 [org.hibernate.cfg.Environment]-[INFO] HHH000021: Bytecode provider name : javassist
+ 2015-04-21 23:23:13 [org.hibernate.cfg.Configuration]-[INFO] HHH000043: Configuring from resource: /hibernate.cfg.xml
+ 2015-04-21 23:23:13 [org.hibernate.cfg.Configuration]-[INFO] HHH000040: Configuration resource: /hibernate.cfg.xml
+ 2015-04-21 23:23:13 [org.hibernate.internal.util.xml.DTDEntityResolver]-[WARN] HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+ 2015-04-21 23:23:13 [org.hibernate.cfg.Configuration]-[INFO] HHH000041: Configured SessionFactory: null
+ 2015-04-21 23:23:13 [org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator]-[INFO] HHH000130: Instantiating explicit connection provider: org.hibernate.connection.ProxoolConnectionProvider
+ 2015-04-21 23:23:13 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030004: Configuring Proxool Provider using JAXPConfigurator: proxool.xml
+ 2015-04-21 23:23:13 [org.logicalcobwebs.proxool.ProxoolFacade]-[INFO] Proxool 0.9.1 (23-Aug-2008 11:10)
+ 2015-04-21 23:23:13 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030002: Configuring Proxool Provider to use pool alias: proxool.mysql
+ 2015-04-21 23:23:13 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030001: Autocommit mode: false
+ 2015-04-21 23:23:14 [org.hibernate.dialect.Dialect]-[INFO] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+ 2015-04-21 23:23:14 [org.hibernate.engine.jdbc.internal.LobCreatorBuilder]-[INFO] HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+ 2015-04-21 23:23:14 [org.hibernate.engine.transaction.internal.TransactionFactoryInitiator]-[INFO] HHH000399: Using default transaction strategy (direct JDBC transactions)
+ 2015-04-21 23:23:14 [org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory]-[INFO] HHH000397: Using ASTQueryTranslatorFactory
+ 2015-04-21 23:23:14 [org.hibernate.cache.spi.UpdateTimestampsCache]-[INFO] HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+ 2015-04-21 23:23:14 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+ 2015-04-21 23:23:14 [org.hibernate.cache.internal.StandardQueryCache]-[INFO] HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+ 2015-04-21 23:23:14 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+ 2015-04-21 23:23:14 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.User]; using defaults.
+ 2015-04-21 23:23:14 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Chatting]; using defaults.
+ 2015-04-21 23:23:14 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Group]; using defaults.
+ 2015-04-21 23:23:15 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:23:15 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:23:15 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:23:15 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:23:15 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8052 'Login' event
+ 2015-04-21 23:23:15 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:23:15 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , b
+ 2015-04-21 23:23:15 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:23:15 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:23:15 [tools.Debug]-[INFO] byteArray.length = 41
+ 2015-04-21 23:23:15 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : SEND_CHAT_REQ
+ 2015-04-21 23:23:19 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:23:19 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-21 23:23:19 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:23:19 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:25:53 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:25:53 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-21 23:25:53 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:25:53 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:26:45 [server.Server_Chatting]-[ERROR] java.lang.NullPointerException
+ 2015-04-21 23:26:46 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:26:46 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000002: nio socket, server, /127.0.0.1:8052 => /127.0.0.1:8081)
+ 2015-04-21 23:26:46 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:26:46 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:26:46 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000001: nio socket, server, /127.0.0.1:8051 => /127.0.0.1:8081)
+ 2015-04-21 23:26:46 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:26:47 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:26:47 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:26:47 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:26:47 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:26:47 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:26:47 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:26:50 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8051) was offline,now delete it!
+ 2015-04-21 23:26:50 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8052) was offline,now delete it!
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8098
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8098) connected,save into table
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8097
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8097) connected,save into table
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:27:00 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8097 'Login' event
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , a
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:27:00 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8098 'Login' event
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , b
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] byteArray.length = 41
+ 2015-04-21 23:27:00 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : SEND_CHAT_REQ
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:27:00 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:27:01 [server.Server_Chatting]-[ERROR] java.lang.NullPointerException
+ 2015-04-21 23:27:01 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:27:01 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000004: nio socket, server, /127.0.0.1:8098 => /127.0.0.1:8081)
+ 2015-04-21 23:27:01 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:27:01 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:27:01 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000003: nio socket, server, /127.0.0.1:8097 => /127.0.0.1:8081)
+ 2015-04-21 23:27:01 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:27:02 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:27:02 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:27:02 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:27:02 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:27:02 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:27:02 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:27:05 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8098) was offline,now delete it!
+ 2015-04-21 23:27:05 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8097) was offline,now delete it!
+ 2015-04-21 23:32:13 [server.Server]-[INFO] log configure load success
+ 2015-04-21 23:32:13 [org.springframework.core.CollectionFactory]-[INFO] JDK 1.4+ collections available
+ 2015-04-21 23:32:13 [org.springframework.beans.factory.xml.XmlBeanDefinitionReader]-[INFO] Loading XML bean definitions from file [D:\Program\MiniWeChat-Server\Java\MiniWechat\applicationContext.xml]
+ 2015-04-21 23:32:13 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Bean factory for application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=503783239]: org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy
+ 2015-04-21 23:32:13 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] 9 beans defined in application context [org.springframework.context.support.FileSystemXmlApplicationContext;hashCode=503783239]
+ 2015-04-21 23:32:13 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate MessageSource with name 'messageSource': using default [org.springframework.context.support.DelegatingMessageSource@7b527b7a]
+ 2015-04-21 23:32:13 [org.springframework.context.support.FileSystemXmlApplicationContext]-[INFO] Unable to locate ApplicationEventMulticaster with name 'applicationEventMulticaster': using default [org.springframework.context.event.SimpleApplicationEventMulticaster@f1c2137]
+ 2015-04-21 23:32:13 [org.springframework.beans.factory.support.DefaultListableBeanFactory]-[INFO] Pre-instantiating singletons in factory [org.springframework.beans.factory.support.DefaultListableBeanFactory defining beans [MinaServerHandle,Server,ServerNetwork,ServerModel,ClientRequest_Dispatcher,ServerModel_Chatting,Server_Chatting,Server_Friend,Server_User]; root of BeanFactory hierarchy]
+ 2015-04-21 23:32:13 [server.ServerNetwork]-[INFO] IP address:192.168.1.103
+ 2015-04-21 23:32:13 [server.ServerNetwork]-[INFO] Host Name:PC201502181329
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8147
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8147) connected,save into table
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] sessionCreated
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] New client connected! address : /127.0.0.1:8146
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] ServerNetwork : Find new User(/127.0.0.1:8146) connected,save into table
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:32:17 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:32:17 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8146 'Login' event
+ 2015-04-21 23:32:17 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:32:17 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , a
+ 2015-04-21 23:32:17 [org.hibernate.annotations.common.Version]-[INFO] HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+ 2015-04-21 23:32:17 [org.hibernate.Version]-[INFO] HHH000412: Hibernate Core {4.3.8.Final}
+ 2015-04-21 23:32:17 [org.hibernate.cfg.Environment]-[INFO] HHH000206: hibernate.properties not found
+ 2015-04-21 23:32:17 [org.hibernate.cfg.Environment]-[INFO] HHH000021: Bytecode provider name : javassist
+ 2015-04-21 23:32:17 [org.hibernate.cfg.Configuration]-[INFO] HHH000043: Configuring from resource: /hibernate.cfg.xml
+ 2015-04-21 23:32:17 [org.hibernate.cfg.Configuration]-[INFO] HHH000040: Configuration resource: /hibernate.cfg.xml
+ 2015-04-21 23:32:17 [org.hibernate.internal.util.xml.DTDEntityResolver]-[WARN] HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+ 2015-04-21 23:32:17 [org.hibernate.cfg.Configuration]-[INFO] HHH000041: Configured SessionFactory: null
+ 2015-04-21 23:32:17 [org.hibernate.engine.jdbc.connections.internal.ConnectionProviderInitiator]-[INFO] HHH000130: Instantiating explicit connection provider: org.hibernate.connection.ProxoolConnectionProvider
+ 2015-04-21 23:32:17 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030004: Configuring Proxool Provider using JAXPConfigurator: proxool.xml
+ 2015-04-21 23:32:17 [org.logicalcobwebs.proxool.ProxoolFacade]-[INFO] Proxool 0.9.1 (23-Aug-2008 11:10)
+ 2015-04-21 23:32:17 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030002: Configuring Proxool Provider to use pool alias: proxool.mysql
+ 2015-04-21 23:32:17 [org.hibernate.proxool.internal.ProxoolConnectionProvider]-[INFO] HHH030001: Autocommit mode: false
+ 2015-04-21 23:32:17 [org.hibernate.dialect.Dialect]-[INFO] HHH000400: Using dialect: org.hibernate.dialect.MySQLDialect
+ 2015-04-21 23:32:17 [org.hibernate.engine.jdbc.internal.LobCreatorBuilder]-[INFO] HHH000423: Disabling contextual LOB creation as JDBC driver reported JDBC version [3] less than 4
+ 2015-04-21 23:32:18 [org.hibernate.engine.transaction.internal.TransactionFactoryInitiator]-[INFO] HHH000399: Using default transaction strategy (direct JDBC transactions)
+ 2015-04-21 23:32:18 [org.hibernate.hql.internal.ast.ASTQueryTranslatorFactory]-[INFO] HHH000397: Using ASTQueryTranslatorFactory
+ 2015-04-21 23:32:18 [org.hibernate.cache.spi.UpdateTimestampsCache]-[INFO] HHH000250: Starting update timestamps cache at region: org.hibernate.cache.spi.UpdateTimestampsCache
+ 2015-04-21 23:32:18 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.spi.UpdateTimestampsCache]; using defaults.
+ 2015-04-21 23:32:18 [org.hibernate.cache.internal.StandardQueryCache]-[INFO] HHH000248: Starting query cache at region: org.hibernate.cache.internal.StandardQueryCache
+ 2015-04-21 23:32:18 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [org.hibernate.cache.internal.StandardQueryCache]; using defaults.
+ 2015-04-21 23:32:18 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.User]; using defaults.
+ 2015-04-21 23:32:18 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Chatting]; using defaults.
+ 2015-04-21 23:32:18 [org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory]-[WARN] HHH020003: Could not find a specific ehcache configuration for cache named [model.Group]; using defaults.
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:32:18 [tools.Debug]-[INFO] byteArray.length = 18
+ 2015-04-21 23:32:18 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : LOGIN_REQ
+ 2015-04-21 23:32:18 [server.Server_User]-[INFO] Server_User : login : Deal with user's/127.0.0.1:8147 'Login' event
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:userId , b
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:32:18 [tools.Debug]-[INFO] byteArray.length = 41
+ 2015-04-21 23:32:18 [tools.Debug]-[INFO] ClientRequest_Dispatcher : Client's request type is : SEND_CHAT_REQ
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:start query from database
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query parameters:groupId , 13
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query from database success
+ 2015-04-21 23:32:18 [model.HibernateDataOperation]-[INFO] Hibernate:query result list size:1
+ 2015-04-21 23:32:18 [server.Server_Chatting]-[ERROR] java.lang.NullPointerException
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000001: nio socket, server, /127.0.0.1:8146 => /127.0.0.1:8081)
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] throws exception
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] session.toString() : (0x00000002: nio socket, server, /127.0.0.1:8147 => /127.0.0.1:8081)
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] cause.toString() : java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] stack : sun.nio.ch.SocketDispatcher.read0(Native Method)
+sun.nio.ch.SocketDispatcher.read(Unknown Source)
+sun.nio.ch.IOUtil.readIntoNativeBuffer(Unknown Source)
+sun.nio.ch.IOUtil.read(Unknown Source)
+sun.nio.ch.SocketChannelImpl.read(Unknown Source)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:273)
+org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:44)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:690)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:664)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:653)
+org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:67)
+org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1124)
+org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+java.lang.Thread.run(Unknown Source)
+
+ 2015-04-21 23:32:18 [server.MinaServerHandle]-[ERROR] Report Error Over!!
+ 2015-04-21 23:32:18 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:32:18 [tools.Debug]-[INFO] sessionClosed
+ 2015-04-21 23:32:23 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8146) was offline,now delete it!
+ 2015-04-21 23:32:23 [tools.Debug]-[INFO] ServerModel : Client User(/127.0.0.1:8147) was offline,now delete it!
+ 

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import protocol.Msg.SendChatMsg.SendChatRsp;
 
 import server.NetworkPacket;
 import test.Client111;
+import tools.DataTypeTranslater;
 
 /**
  * 测试群发消息
@@ -35,13 +37,13 @@ public class TestSendGroupChatting {
 		sendChattingBuilder.setChatData(chatItem);
 		clientSocket.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE, sendChattingBuilder
 				.build().toByteArray()));
-		
+
 		byte[] byteArray;
-		for (int i=0; i<10; i++){
+		for (int i = 0; i < 10; i++) {
 			byteArray = clientSocket.readFromServerWithoutKeepAlive();
 			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.SEND_CHAT_RSP)
 				continue;
-			
+
 			return SendChatRsp.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getResultCode();
 		}
 		return null;
@@ -71,25 +73,31 @@ public class TestSendGroupChatting {
 		// user1发送
 		assertEquals(sendChatting(clientSocket1, chatItem), SendChatRsp.ResultCode.SUCCESS);
 		System.out.println(user1 + " Send Chatting Over!");
-		
+
 		// user2接收
 		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		assertEquals(receiveChatting.getChatData(0).getChatBody(), message);
+		ChatItem chatItem2 = receiveChatting.getChatData(0);
+		assertEquals(chatItem2.getChatBody(), message);
 		System.out.println(user2 + " Get Chatting");
-		
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.setTimeInMillis(chatItem2.getDate()-99999);
+		System.out.println("Sender : " + chatItem2.getSendUserId() + ";  receiver : " + chatItem2.getReceiveUserId()
+				+ ";  type : " + chatItem2.getChatType().toString() + "; body : " + chatItem2.getChatBody() + ";  Date : "
+				+ DataTypeTranslater.getData(chatItem2.getDate()));
+
 		// user3接收
 		clientSocket3 = new ClientSocket();
 		// user3登陆
 		assertEquals(clientSocket3.login(user3, user3), LoginRsp.ResultCode.SUCCESS);
-		
+
 		byteArray = clientSocket3.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		assertEquals(receiveChatting.getChatData(0).getChatBody(), message);
 		System.out.println(user3 + " Get Chatting");
-		
+
 	}
 
 }

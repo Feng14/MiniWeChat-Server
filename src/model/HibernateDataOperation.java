@@ -96,6 +96,7 @@ public class HibernateDataOperation {
 
 			return list;
 		} catch (Exception e) {
+			e.printStackTrace();
 			resultCode.setCode(ResultCode.FAIL);
 			logger.error("Hibernate:query from database fail");
 			logger.error("Hibernate error:" + e.getStackTrace());

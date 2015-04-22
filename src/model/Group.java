@@ -80,7 +80,10 @@ public class Group {
 	}
 
 	public String toString() {
-		return this.groupId + " " + this.groupName+" "+this.getCreaterId();
+		return "GroupId : " + this.groupId
+				+ "; GroupName : " + this.groupName
+				+ "; CreaterId : " + this.getCreaterId()
+				+ "; MemberList : " + this.getMemberList().toString();
 	}
 
 }

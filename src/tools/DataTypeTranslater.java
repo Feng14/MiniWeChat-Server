@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Calendar;
 
 // 数据转换器
 public class DataTypeTranslater {
@@ -77,5 +78,21 @@ public class DataTypeTranslater {
 		}
 		fi.close();
 		return buffer;
+	}
+	
+	/**
+	 * 日期输出
+	 * @param time
+	 * @return
+	 * @author Feng
+	 */
+	public static String getData(long time) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(time);
+		String t = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONDAY) + "-" + calendar.get(Calendar.DAY_OF_MONTH)
+				+ " " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":"
+				+ calendar.get(Calendar.SECOND);
+		
+		return t;
 	}
 }

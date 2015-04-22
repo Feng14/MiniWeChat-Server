@@ -75,9 +75,16 @@ public class ClientSocket {
 	 * @throws IOException
 	 */
 	public byte[] readFromServer() throws IOException {
-		byte[] byteArray = new byte[500];
+		byte[] sizebyte = new byte[4];
+		
+		inputStream.read(sizebyte);
+		int size = DataTypeTranslater.bytesToInt(sizebyte, 0);
+		byte[] byteArray = new byte[size];
+		for (int i=0; i<DataTypeTranslater.INT_SIZE; i++)
+			byteArray[i] = sizebyte[i]; 
 
-		inputStream.read(byteArray);
+		inputStream.read(byteArray, HEAD_INT_SIZE, size-HEAD_INT_SIZE);
+//		inputStream.read(byteArray);
 		byteArray = cutResult(byteArray);
 		return byteArray;
 		

@@ -67,6 +67,8 @@ public class MinaServerHandle extends IoHandlerAdapter {
 	 */
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause) {
+		if (cause.toString().equals("java.io.IOException: Connection reset by peer"))
+			return;
 		logger.error("throws exception");
 		logger.error("session.toString() : " + session.toString());
 		logger.error("cause.toString() : " + cause.toString());

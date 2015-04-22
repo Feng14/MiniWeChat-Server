@@ -81,7 +81,8 @@ public class MinaEncoder extends ProtocolEncoderAdapter {
 			try {
 				System.out.println("111111111111111111111111111111111111111111111111");
 				logger.info("Server send Message to Client(" + ServerModel.getIoSessionKey(ioSession).toString() + ")  ,Type : "
-						+ NetworkPacket.getMessageType(newByteArray));
+						+ NetworkPacket.getMessageType(newByteArray) + "  MessageId : "
+						+ DataTypeTranslater.bytesToInt(NetworkPacket.getMessageID(newByteArray), 0));
 			} catch (NoIpException e) {
 				e.printStackTrace();
 			}

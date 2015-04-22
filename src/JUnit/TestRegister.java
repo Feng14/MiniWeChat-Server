@@ -84,12 +84,12 @@ public class TestRegister {
 		ClientSocket client = new ClientSocket();
 		
 //		String randomData = (((int) (Math.random() * 100000)) + "").substring(0, 5);
-		String randomData = "d";
+		String randomData = "a";
 		RegisterRsp.ResultCode resultCode = testRegister_JUint(client, randomData, randomData, randomData);
-		assertEquals(resultCode, RegisterMsg.RegisterRsp.ResultCode.SUCCESS);
+		assertEquals(RegisterMsg.RegisterRsp.ResultCode.SUCCESS, resultCode);
 
 		resultCode = testRegister_JUint(client, randomData, randomData, randomData);
-		assertEquals(resultCode, RegisterMsg.RegisterRsp.ResultCode.USER_EXIST);
+		assertEquals(RegisterMsg.RegisterRsp.ResultCode.USER_EXIST, resultCode);
 		
 		client.close();
 	}
