@@ -301,6 +301,9 @@ public class ServerModel extends Observable {
 			while (true) {
 				try {
 					Thread.sleep(KEEP_ALIVE_PACKET_TIME);
+					// 是否开启心跳检验
+					if (!Server.keepAliveSwitch)
+						continue;
 
 					ClientUser user;
 					iterator = clientUserTable.keySet().iterator();

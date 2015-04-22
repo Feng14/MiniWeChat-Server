@@ -115,7 +115,7 @@ public class ClientSocket {
 			byteArray = readFromServer();
 			// 不是KeepAlive（心跳包就返回）
 			if (NetworkPacket.getMessageType(byteArray) != ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC) {
-				showBytes(byteArray);
+//				showBytes(byteArray);
 				return byteArray;
 			}
 
@@ -141,7 +141,7 @@ public class ClientSocket {
 	 */
 	public void writeToServer(byte[] arrayBytes) throws IOException {
 		// outputStream = socket.getOutputStream();
-		showBytes(arrayBytes);
+//		showBytes(arrayBytes);
 		outputStream.write(arrayBytes);
 		// outputStream.close();
 	}

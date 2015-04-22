@@ -51,6 +51,7 @@ public class ServerModel_Chatting {
 
 	public void setServerModel(ServerModel serverModel) {
 		this.serverModel = serverModel;
+		init();
 	}
 
 	public ServerNetwork getServerNetwork() {
@@ -60,6 +61,9 @@ public class ServerModel_Chatting {
 	public void setServerNetwork(ServerNetwork serverNetwork) {
 		this.serverNetwork = serverNetwork;
 	}
+	
+	public ServerModel_Chatting(){
+	}
 
 	/**
 	 * 初始化
@@ -67,8 +71,10 @@ public class ServerModel_Chatting {
 	 * @author Feng
 	 */
 	public void init() {
+		if (chattingHashtable != null)
+			return;
+		
 		chattingHashtable = new Hashtable<String, LinkedBlockingQueue<Chatting>>();
-		System.out.println(chattingHashtable.containsKey("b"));
 
 		// 监听用户登陆事件
 		serverModel.addObserver(new Observer() {

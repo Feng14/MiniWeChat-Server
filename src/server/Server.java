@@ -18,6 +18,7 @@ import tools.AutoResponseClient;
  * 
  */
 public class Server {
+	public static boolean keepAliveSwitch = false;
 	static Logger logger = Logger.getLogger(Server.class);
 	
 	public static Server instance;

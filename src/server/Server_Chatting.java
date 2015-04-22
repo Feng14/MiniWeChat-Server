@@ -193,7 +193,7 @@ public class Server_Chatting {
 		Chatting chatting;
 		// 给每个组员发一份
 		for (User user : receiverList) {
-			chatting = new Chatting(chatItem.getSendUserId(), group.getGroupId() + "", chatItem.getChatType(),
+			chatting = new Chatting(chatItem.getSendUserId(), user.getUserId() + "", chatItem.getChatType(),
 					chatItem.getChatBody(), Calendar.getInstance().getTimeInMillis(), true, Integer.parseInt(chatItem
 							.getReceiveUserId()));
 
@@ -598,7 +598,8 @@ public class Server_Chatting {
 	private void notifyMemberJionIn(String inviterUserId, String[] inviteeUserIds, String groupId) {
 		StringBuffer message = new StringBuffer(inviterUserId + " 已邀请");
 		for (String userId : inviteeUserIds)
-			message.append("'" + userId + "',");
+			if (!userId.equals(inviteeUserIds))
+				message.append("'" + userId + "',");
 		String message2 = message.subSequence(0, message.length() - 1) + " 加入群聊";
 
 		ChatItem.Builder builder = ChatItem.newBuilder();
