@@ -12,6 +12,7 @@
 hs_err_pid*
 /WebContent/protobuf/protocol
 /build
+*.log
 src/server/tttt.java
 src/server/tttt.java.BACKUP.11432.java
 src/server/tttt.java.BACKUP.14824.java
