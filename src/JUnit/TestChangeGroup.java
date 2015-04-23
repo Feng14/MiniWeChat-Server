@@ -43,7 +43,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	@Test
+//	@Test
 	public void addMember1() throws UnknownHostException, IOException {
 		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -68,7 +68,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	// @Test
+	 @Test
 	public void addMember2() throws UnknownHostException, IOException {
 		String groupId = "13", user1 = "b", user2 = "c";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -117,7 +117,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @author Feng
 	 */
-	@Test
+//	@Test
 	public void deleteMember1() throws UnknownHostException, IOException {
 		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -191,6 +191,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
+//	@Test
 	public void reviseGroupInfo1() throws UnknownHostException, IOException {
 		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -215,7 +216,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	@Test
+//	@Test
 	public void reviseGroupInfo2() throws UnknownHostException, IOException {
 		String groupId = "13";
 		String user1 = "a", user2 = "b";
