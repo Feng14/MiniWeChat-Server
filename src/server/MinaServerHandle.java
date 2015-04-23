@@ -39,7 +39,7 @@ public class MinaServerHandle extends IoHandlerAdapter {
 	 */
 	@Override
 	public void messageReceived(IoSession ioSession, Object message) {
-		System.out.println("received");
+		logger.info("received");
 		// 接收客户端的数据
 		// IoBuffer ioBuffer = (IoBuffer) message;
 		// byte[] byteArray = new byte[ioBuffer.limit()];
@@ -140,7 +140,7 @@ public class MinaServerHandle extends IoHandlerAdapter {
 		// 已有就不加进来了
 		if (serverModel.getClientUserFromTable(ioSession.getRemoteAddress().toString()) != null) {
 			Debug.log(Debug.LogType.ERROR, "User exist when Save user into Table!");
-			System.err.println("添加时用户已存在");
+			logger.error("添加时用户已存在");
 			return;
 		}
 

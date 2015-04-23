@@ -97,7 +97,7 @@ public class Server_User {
 
 			serverModel.getClientUserFromTable(packetFromServer.ioSession).onLine = true;
 		} catch (NullPointerException e) {
-			System.out.println("Server_User: 异常，用户" + packetFromServer.ioSession + "已掉线，心跳回复不作处理!");
+			logger.error("Server_User: 异常，用户" + packetFromServer.ioSession + "已掉线，心跳回复不作处理!");
 			e.printStackTrace();
 		} catch (NoIpException e) {
 			e.printStackTrace();

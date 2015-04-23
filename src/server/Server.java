@@ -96,14 +96,14 @@ public class Server {
 
 	 public static void main(String[] args) throws IOException {
 		 String path = System.getProperty("user.dir");
-		 System.out.println(path);
+		 logger.info(path);
 		 try{
 		 	 String logConfigPath = "Log4JConfig.properties";
-		 	 System.out.println(logConfigPath);
+		 	 logger.info(logConfigPath);
 		 	 PropertyConfigurator.configure(logConfigPath);
 		 	 logger.info("log configure load success");	
 		 }catch(Exception e){
-		 	 System.out.println("log configure load fail");
+			 logger.info("log configure load fail");
 		 	 e.printStackTrace();
 		 }
 		 try{
