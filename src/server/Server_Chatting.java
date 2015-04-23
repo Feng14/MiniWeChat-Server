@@ -291,10 +291,16 @@ public class Server_Chatting {
 			// 通知每位群成员修改列表
 			sendChangeGroupSync(group);
 			// 消息通知成员
-			String message = selfUser1.userId + " 创建了群聊";
-			sendSystemMessage(message, group);
+//			String message = selfUser1.userId + " 创建了群聊";
+//			sendSystemMessage(message, group);
+			
+			String message = selfUser1.userId + " 邀请 ";
 			for (User user : userList)
-				sendSystemMessage(selfUser1.userId + " 要清 " + user.getUserId() + "加入群聊", group);
+				if (!user.getUserId().equals(selfUser1.userId))
+					message += user.getUserId() + "、";
+			message = message.substring(0, message.length() - 1) + "加入群聊";
+//			sendSystemMessage(selfUser1.userId + " 邀请 " + user.getUserId() + "加入群聊", group);
+			sendSystemMessage(message, group);
 
 			return;
 		} catch (InvalidProtocolBufferException e) {

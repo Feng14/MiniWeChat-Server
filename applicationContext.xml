@@ -132,7 +132,7 @@
 		<property name="serverNetwork">
 			<ref bean="ServerNetwork" />
 		</property>
-		<property name="Server_Chatting">
+		<property name="server_Chatting">
 			<ref bean="Server_Chatting" />
 		</property>
 	</bean>
