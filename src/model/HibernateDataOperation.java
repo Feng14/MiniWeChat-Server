@@ -7,7 +7,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import org.logicalcobwebs.proxool.ProxoolFacade;
 
 public class HibernateDataOperation {
 	static Logger logger = Logger.getLogger(HibernateDataOperation.class);
@@ -22,7 +21,6 @@ public class HibernateDataOperation {
 		add(objects, code, session);
 		trans.commit();
 		session.close();
-		ProxoolFacade.shutdown(0);
 	}
 
 	public static void add(Object object, ResultCode code, Session session) {
@@ -58,7 +56,6 @@ public class HibernateDataOperation {
 			criteria.add(Restrictions.eq(paramName, paramValue));
 			List list = criteria.list();
 			session.close();
-			ProxoolFacade.shutdown(0);
 
 			logger.info("Hibernate:query from database success");
 			logger.info("Hibernate:query result list size:" + list.size());
@@ -117,7 +114,6 @@ public class HibernateDataOperation {
 			update(obj, code, session);
 			trans.commit();
 			session.close();
-			ProxoolFacade.shutdown(0);
 
 		} catch (Exception e) {
 			code.setCode(ResultCode.FAIL);
@@ -146,7 +142,6 @@ public class HibernateDataOperation {
 			session.delete(o);
 			trans.commit();
 			session.close();
-			ProxoolFacade.shutdown(0);
 
 			code.setCode(ResultCode.SUCCESS);
 			logger.info("Hibernate:delete database success");

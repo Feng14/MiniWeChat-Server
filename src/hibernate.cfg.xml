@@ -29,9 +29,22 @@
 		<!-- <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property> -->
 		
 		<!-- Proxool连接池 -->
-		<property name="hibernate.connection.provider_class">org.hibernate.connection.ProxoolConnectionProvider</property>
+		<!--  <property name="hibernate.connection.provider_class">org.hibernate.connection.ProxoolConnectionProvider</property>
 		<property name="hibernate.proxool.xml">proxool.xml</property>
-		<property name="hibernate.proxool.pool_alias">mysql</property>
+		<property name="hibernate.proxool.pool_alias">mysql</property>-->
+		
+		<property name="c3p0.acquire_increment">1</property>
+        <property name="c3p0.idle_test_period">100</property>
+        <property name="c3p0.max_size">5</property>
+		<property name="c3p0.max_statements">0</property>
+        <property name="c3p0.min_size">2</property>
+        <property name="c3p0.timeout">90</property>
+        <property name="c3p0.preferredTestQuery ">SELECT CURRENT_USER</property>
+        <property name="c3p0.idleConnectionTestPeriod ">18000</property>           
+		<property name="c3p0.maxIdleTime">25000</property>        
+		<property name="c3p0.testConnectionOnCheckout">true</property>
+
+
 			
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">true</property>

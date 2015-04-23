@@ -52,11 +52,11 @@ public class SocketClientTest {
 		// outputStream = socket.getOutputStream();
 
 		// 测心跳
-		 testKeepAlive();
+		 //testKeepAlive();
 		// 测注册
 		// testRegister();
 		// 测登陆
-		// testLogin();
+		 testLogin();
 		// 测个人设置
 		// testPersonalSettings();
 

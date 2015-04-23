@@ -9,7 +9,6 @@ import model.User;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.logicalcobwebs.proxool.ProxoolFacade;
 
 import protocol.ProtoHead;
 import protocol.Data.UserData;
@@ -165,7 +164,6 @@ public class Server_Friend {
 			logger.error(e.getMessage());
 			addFriendBuilder.setResultCode(AddFriendMsg.AddFriendRsp.ResultCode.FAIL);
 		}
-		ProxoolFacade.shutdown(0);
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.ADD_FRIEND_RSP_VALUE, addFriendBuilder.build().toByteArray())));
@@ -257,7 +255,6 @@ public class Server_Friend {
 			logger.error(e.getMessage());
 			deleteFriendBuilder.setResultCode(DeleteFriendMsg.DeleteFriendRsp.ResultCode.FAIL);
 		}
-		ProxoolFacade.shutdown(0);
 		// 回复客户端
 		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
 				.getMessageID(), ProtoHead.ENetworkMessage.DELETE_FRIEND_RSP_VALUE, deleteFriendBuilder.build().toByteArray())));

@@ -17,7 +17,6 @@ import observer.ObserverMessage_Login;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.logicalcobwebs.proxool.ProxoolFacade;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 
@@ -658,7 +657,7 @@ public class Server_User {
 				getPersonalInfoBuilder.setResultCode(GetPersonalInfoMsg.GetPersonalInfoRsp.ResultCode.FAIL);
 			}
 			session.close();
-			ProxoolFacade.shutdown(0);
+			
 		} catch (InvalidProtocolBufferException e) {
 			logger.error("Server_User.getPersonalInfo:Error was found when using Protobuf to deserialization "
 					+ ServerModel.getIoSessionKey(packetFromServer.ioSession) + " packet！");

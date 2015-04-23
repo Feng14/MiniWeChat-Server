@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.annotation.Resource;
+
+import model.HibernateSessionFactory;
+
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
@@ -101,6 +105,13 @@ public class Server {
 		 }catch(Exception e){
 		 	 System.out.println("log configure load fail");
 		 	 e.printStackTrace();
+		 }
+		 try{
+			 Session session = HibernateSessionFactory.getSession();
+			 session.close();
+			 logger.info("数据库配置加载成功");
+		 }catch(Exception e){
+			 logger.error("数据库配置加载失败");
 		 }
 //		 try{
 //			 String springConfigPath = "src/applicationContext.xml";
