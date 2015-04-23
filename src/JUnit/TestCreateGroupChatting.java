@@ -80,8 +80,7 @@ public class TestCreateGroupChatting {
 				System.out.println("成员变化通知");
 				ChangeGroupSync changeGroupSync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 				GroupItem groupItem = changeGroupSync.getGroupItem();
-				System.out.println(ClientSocket.getGroupItemInfo(groupItem));
-				i -= groupItem.getMemberUserIdCount();
+				System.out.println("CHANGE_GROUP_SYNC : " + user2 + " : " + ClientSocket.getGroupItemInfo(groupItem));
 				assertEquals(groupItem.getCreaterUserId(), user1);
 				assertEquals(groupItem.getMemberUserIdCount(), 2);
 			} else if (NetworkPacket.getMessageType(byteArray) == ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC) {
@@ -89,7 +88,7 @@ public class TestCreateGroupChatting {
 				ChatItem chatItem2 = receiveChatting.getChatData(0);
 
 				// 收到群聊消息（A 我已经把 B，C 拉入群聊）
-				System.out.println(ClientSocket.getChatItemInfo(chatItem2));
+				System.out.println("RECEIVE_CHAT_SYNC : " + user2 + " : " + ClientSocket.getChatItemInfo(chatItem2));
 			}
 		}
 

@@ -40,7 +40,8 @@ public class ServerModel extends Observable {
 	// private LinkedBlockingQueue<NetworkMessage> requestQueue = new
 	// LinkedBlockingQueue<NetworkMessage>();
 	// 已连接用户信息表(Key 为IoSession.getRemoteAddress().toString)
-	private Hashtable<String, ClientUser> clientUserTable = new Hashtable<String, ClientUser>();
+	private Hashtable<String, ClientUser> clientUserIpTable = new Hashtable<String, ClientUser>();
+	private Hashtable<String, ClientUser> clientUserIdTable = new Hashtable<String, ClientUser>();
 
 	// 监听客户端回复的表
 	// private Hashtable<String, WaitClientResponse> waitClientRepTable = new
@@ -110,9 +111,36 @@ public class ServerModel extends Observable {
 	 * @throws NoIpException
 	 */
 	public void addClientUserToTable(IoSession ioSession, ClientUser clientUser) throws NoIpException {
-		synchronized (clientUserTable) {
+		synchronized (clientUserIpTable) {
 			clientUser.onLine = true;
-			clientUserTable.put(getIoSessionKey(ioSession), clientUser);
+			clientUserIpTable.put(getIoSessionKey(ioSession), clientUser);
+		}
+	}
+	
+	/**
+	 * 设置用户登陆
+	 * @param clientUser
+	 * @param userId
+	 * @author Feng
+	 */
+	public void clientUserLogin(ClientUser clientUser, String userId) {
+		clientUser.onLine = true;
+		clientUser.userId = userId;
+		clientUserIdTable.put(userId, clientUser);
+	}
+	
+	/**
+	 * 设置用户登陆
+	 * @param clientUser
+	 * @param userId
+	 * @author Feng
+	 */
+	public void clientUserLogout(ClientUser clientUser) {
+		clientUser.onLine = false;
+		clientUser.userId = null;
+		try {
+			clientUserIdTable.remove(clientUser.userId);
+		} catch (Exception e) {
 		}
 	}
 
@@ -139,13 +167,13 @@ public class ServerModel extends Observable {
 	 * @author Feng
 	 */
 	public ClientUser getClientUserFromTable(String key) {
-		synchronized (clientUserTable) {
-			return clientUserTable.get(key);
+		synchronized (clientUserIpTable) {
+			return clientUserIpTable.get(key);
 		}
 	}
 
 	public ClientUser getClientUserFromTable(IoSession ioSession) throws NoIpException {
-		synchronized (clientUserTable) {
+		synchronized (clientUserIpTable) {
 			return getClientUserFromTable(getIoSessionKey(ioSession));
 		}
 	}
@@ -157,28 +185,33 @@ public class ServerModel extends Observable {
 	 * @return
 	 */
 	public ClientUser getClientUserByUserId(String userId) {
-		Iterator iterator = clientUserTable.keySet().iterator();
-		String key;
-		ClientUser user;
-
-		synchronized (clientUserTable) {
-			while (iterator.hasNext()) {
-
-				key = iterator.next().toString();
-
-				if (!clientUserTable.containsKey(key))
-					continue;
-
-				user = clientUserTable.get(key);
-
-				if (user.userId == null)
-					continue;
-
-				if (user.userId.equals(userId))
-					return user;
-			}
-		}
+		ClientUser user = clientUserIdTable.get(userId);
+		if (user != null && user.userId != null && !user.userId.equals("") && user.onLine == true)
+			return clientUserIdTable.get(userId);
+		
 		return null;
+//		Iterator iterator = clientUserIpTable.keySet().iterator();
+//		String key;
+//		ClientUser user;
+//
+//		synchronized (clientUserIpTable) {
+//			while (iterator.hasNext()) {
+//
+//				key = iterator.next().toString();
+//
+//				if (!clientUserIpTable.containsKey(key))
+//					continue;
+//
+//				user = clientUserIpTable.get(key);
+//
+//				if (user.userId == null)
+//					continue;
+//
+//				if (user.userId.equals(userId))
+//					return user;
+//			}
+//		}
+//		return null;
 	}
 
 	/**
@@ -187,8 +220,8 @@ public class ServerModel extends Observable {
 	 * @param key
 	 */
 	public void removeClientUserFromTable(String key) {
-		synchronized (clientUserTable) {
-			clientUserTable.remove(key);
+		synchronized (clientUserIpTable) {
+			clientUserIpTable.remove(key);
 		}
 	}
 
@@ -306,22 +339,22 @@ public class ServerModel extends Observable {
 						continue;
 
 					ClientUser user;
-					iterator = clientUserTable.keySet().iterator();
+					iterator = clientUserIpTable.keySet().iterator();
 
-//					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserTable.size()
+//					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
 //							+ " user exist!");
-//					logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + clientUserTable.size()
+//					logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
 //							+ " user exist!");
-					synchronized (clientUserTable) {
+					synchronized (clientUserIpTable) {
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
 							// Debug.log("ServerModel", "进入发心跳包循环!");
 
 							key = iterator.next().toString();
 
-							if (!clientUserTable.containsKey(key))
+							if (!clientUserIpTable.containsKey(key))
 								continue;
-							user = clientUserTable.get(key);
+							user = clientUserIpTable.get(key);
 
 							// 将上次没有回复的干掉，从用户表中删掉
 							// if (user.onLine == false) {
@@ -418,7 +451,7 @@ public class ServerModel extends Observable {
 	// // 不在线,调用删前回调，删除
 	// try {
 	// clientUser =
-	// clientUserTable.get(ServerModel.getIoSessionKey(waitObj.ioSession));
+	// clientUserIpTable.get(ServerModel.getIoSessionKey(waitObj.ioSession));
 	// } catch (NoIpException e) {
 	// // e.printStackTrace();
 	// }

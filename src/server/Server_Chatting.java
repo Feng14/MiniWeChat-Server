@@ -188,7 +188,7 @@ public class Server_Chatting {
 		// Integer.parseInt(chatItem.getReceiveUserId()),
 		// Group.class, resultCode, session).get(0));
 
-		if (resultCode.getCode() == ResultCode.FAIL || receiverList == null) {
+		if (resultCode.getCode().equals(ResultCode.FAIL) || receiverList == null) {
 			logger.error("Server_Chatting : clientSendChatting_Group : Get Group Error!");
 			throw new Exception("Server_Chatting : clientSendChatting_Group : Get Group Error!");
 		}
@@ -270,7 +270,7 @@ public class Server_Chatting {
 			ResultCode resultCode = ResultCode.NULL;
 			HibernateDataOperation.add(group, resultCode, session);
 			HibernateSessionFactory.commitSession(session);
-			if (resultCode.getCode() != ResultCode.SUCCESS)
+			if (!resultCode.getCode().equals(ResultCode.SUCCESS))
 				throw new MyException("Server_Chatting : createGroupChatting : save newGroup Objcet Error!");
 
 			// 设置回复的群号
@@ -279,7 +279,7 @@ public class Server_Chatting {
 			// 如果成功，设置标志位
 			logger.debug("Server_Chatting : createGroupChatting : create group chatting Successful, response to client!");
 
-			if (resultCode.getCode() == ResultCode.SUCCESS)
+			if (resultCode.getCode().equals(ResultCode.SUCCESS))
 				createGroupChattingResponse.setResultCode(CreateGroupChatRsp.ResultCode.SUCCESS);
 
 			// 回复客户端
@@ -383,7 +383,7 @@ public class Server_Chatting {
 			throw new MyException("Server_Chatting : getGroupInfo : getGroup Fail!");
 
 		Group group = null;
-		if (resultCode.getCode() == ResultCode.SUCCESS && groupList.size() > 0)
+		if (resultCode.getCode().equals(ResultCode.SUCCESS) && groupList.size() > 0)
 			group = groupList.get(0);
 		return group;
 	}
@@ -421,9 +421,9 @@ public class Server_Chatting {
 		ChangeGroupReq changeGroupObj;
 		try {
 			changeGroupObj = ChangeGroupReq.parseFrom(networkPacket.getMessageObjectBytes());
-			if (changeGroupObj.getChangeType() == ChangeGroupReq.ChangeType.UPDATE_INFO)
+			if (changeGroupObj.getChangeType() == ChangeGroupReq.ChangeType.UPDATE_INFO)	// 改群信息
 				changeGroupInfo(networkPacket, changeGroupObj, requestUser, responseBuilder);
-			else
+			else	// 改人
 				changeGroupMember(networkPacket, changeGroupObj, requestUser, responseBuilder);
 		} catch (InvalidProtocolBufferException e) {
 			logger.error(e.toString());
@@ -492,7 +492,7 @@ public class Server_Chatting {
 				HibernateDataOperation.delete(group, resultCode);
 			} else { // 否则，更新群
 				HibernateDataOperation.update(group, resultCode, session);
-				if (resultCode.getCode() == ResultCode.SUCCESS)
+				if (resultCode.getCode().equals(ResultCode.SUCCESS))
 					logger.debug("Server_Chatting : changGroupChattingMember(NetworkPacket) : Change member successful!");
 				else
 					throw new MyException("Server_Chatting : changGroupChattingMember : Update to database Error!");
@@ -556,13 +556,16 @@ public class Server_Chatting {
 		Group group;
 		try {
 			group = getGroupInfo(Integer.parseInt(changeGroupObj.getGroupId()), session);
+			
+			if (group == null)
+				throw new MyException("Server_Chatting : changeGroupInfo : Group not Found!");
 
 			if (newGroupName != null && !newGroupName.equals(""))
 				group.setGroupName(newGroupName);
 
 			HibernateDataOperation.update(group, resultCode, session);
 			HibernateSessionFactory.commitSession(session);
-			if (resultCode.getCode() != ResultCode.SUCCESS)
+			if (!resultCode.getCode().equals(ResultCode.SUCCESS))
 				throw new MyException("Server_Chatting : changeGroupInfo : database Exception!");
 
 			// 回复客户端
@@ -576,7 +579,7 @@ public class Server_Chatting {
 			// 已系统消息方式通知每个用户
 			sendSystemMessage(requestUser.userId + "将群名称改为 ‘" + group.getGroupName() + "’", group);
 			
-
+			return;
 		} catch (NoIpException e) {
 			logger.error(e.toString());
 			e.printStackTrace();

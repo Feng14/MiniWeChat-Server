@@ -37,7 +37,7 @@ public class TestLogin {
 //	@Ignore
 	public void testLogin() throws UnknownHostException, IOException {
 		ClientSocket client = new ClientSocket();
-		String userId = "a";
+		String userId = "c";
 		
 		System.out.println("Start Test1 Login!");
 		LoginRsp.ResultCode resultCode = client.login(userId, userId);

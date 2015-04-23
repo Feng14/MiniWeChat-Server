@@ -53,14 +53,19 @@ public class ClientRequest_Dispatcher {
 	public void dispatcher(NetworkPacket networkPacket) {
 		// System.out.println("IP" +
 		// networkMessage.ioSession.getRemoteAddress());
-		Debug.log("ClientRequest_Dispatcher", "Client's request type is : " + networkPacket.getMessageType().toString());
+		try {
+			Debug.log("ClientRequest_Dispatcher", "Client(" + ServerModel.getIoSessionKey(networkPacket.ioSession)
+					+ ")'s request type is : " + networkPacket.getMessageType().toString());
+		} catch (NoIpException e1) {
+			e1.printStackTrace();
+		}
 
 		try {
 			switch (networkPacket.getMessageType().getNumber()) {
 			// Client回复心跳包
-//			case ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE:
-//				server_User.keepAlive(networkPacket);
-//				break;
+			// case ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE:
+			// server_User.keepAlive(networkPacket);
+			// break;
 			case ProtoHead.ENetworkMessage.REGISTER_REQ_VALUE:
 				server_User.register(networkPacket);
 				break;
@@ -80,9 +85,9 @@ public class ClientRequest_Dispatcher {
 				server_Friend.deleteFriend(networkPacket);
 				break;
 			// 另一个人登陆，本用户被踢下的通知的回复
-//			case ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE:
-//				server_User.clientOfflineResponse(networkPacket);
-//				break;
+			// case ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE:
+			// server_User.clientOfflineResponse(networkPacket);
+			// break;
 			case ProtoHead.ENetworkMessage.LOGOUT_REQ_VALUE:
 				server_User.logout(networkPacket);
 				break;
@@ -94,9 +99,9 @@ public class ClientRequest_Dispatcher {
 				server_Chatting.clientSendChatting(networkPacket);
 				break;
 			// 服务器向客户端发送未接收消息，客户端的回答
-//			case ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE:
-//				server_Chatting.clientReceiveChatting(networkPacket);
-//				break;
+			// case ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC_VALUE:
+			// server_Chatting.clientReceiveChatting(networkPacket);
+			// break;
 			// 创建群聊
 			case ProtoHead.ENetworkMessage.CREATE_GROUP_CHAT_REQ_VALUE:
 				server_Chatting.createGroupChatting(networkPacket);

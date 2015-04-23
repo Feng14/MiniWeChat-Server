@@ -201,7 +201,7 @@ public class Server_User {
 			// 查找是否存在同名用户
 			ResultCode code = ResultCode.NULL;
 			List<User> list = HibernateDataOperation.query("userId", loginObject.getUserId(), User.class, code);
-			if (code.getCode() != ResultCode.SUCCESS) {
+			if (!code.getCode().equals(ResultCode.SUCCESS)) {
 				logger.error("Server_User.login:query from database fail");
 				loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.FAIL);
 			} else if (list.size() > 0) { // 已存在
@@ -220,7 +220,7 @@ public class Server_User {
 
 					// 记录到表中
 					if (clientUser != null)
-						clientUser.userId = loginObject.getUserId();
+						serverModel.clientUserLogin(clientUser, loginObject.getUserId());
 
 					// 记录回复位
 					loginBuilder.setResultCode(LoginMsg.LoginRsp.ResultCode.SUCCESS);
@@ -298,44 +298,38 @@ public class Server_User {
 	 * @throws IOException
 	 * @throws NoIpException
 	 */
-	private boolean checkAnotherOnline(NetworkPacket networkPacket, String userId) throws IOException, NoIpException {
+	private boolean checkAnotherOnline(NetworkPacket networkPacket, String userId) {
 		ClientUser user = serverModel.getClientUserByUserId(userId);
-		if (user != null
-				&& !ServerModel.getIoSessionKey(networkPacket.ioSession).equals(ServerModel.getIoSessionKey(user.ioSession))) {
-			// 发送有他人登陆消息
-			OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
-			offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
-			// byte[] objectBytes = offLineMessage.build().toByteArray();
+		if (user == null)
+			return false;
+		
+		try {
+			if (!ServerModel.getIoSessionKey(networkPacket.ioSession).equals(ServerModel.getIoSessionKey(user.ioSession))) {
+				// 发送有他人登陆消息
+				OffLineMsg.OffLineSync.Builder offLineMessage = OffLineMsg.OffLineSync.newBuilder();
+				offLineMessage.setCauseCode(OffLineMsg.OffLineSync.CauseCode.ANOTHER_LOGIN);
+				// byte[] objectBytes = offLineMessage.build().toByteArray();
 
-			try {
-				// Debug.log(new String[] { "Server_User", "checkAnotherOnline"
-				// }, "User " + user.userId
-				// + " has been login at other device，" +
-				// ServerModel.getIoSessionKey(user.ioSession)
-				// + "will be logout forced！");
-				logger.info("Server_User : checkAnotherOnline : User " + user.userId + " has been login at other device，"
-						+ ServerModel.getIoSessionKey(user.ioSession) + "will be logout forced！");
-			} catch (NoIpException e) {
-				// Debug.log(new String[] { "Server_User", "checkAnotherOnline"
-				// },
-				// "The user has been found which was offline，ignore event!");
-				logger.error("Server_User : checkAnotherOnline : The user has been found which was offline，ignore event!");
-				return false;
+				try {
+					logger.info("Server_User : checkAnotherOnline : User " + user.userId + " has been login at other device，"
+							+ ServerModel.getIoSessionKey(user.ioSession) + "will be logout forced！");
+				} catch (NoIpException e) {
+					logger.error("Server_User : checkAnotherOnline : The user has been found which was offline，ignore event!");
+					return false;
+				}
+				// 向客户端发送消息
+				serverNetwork.sendToClient(new WaitClientResponse(user.ioSession, new PacketFromServer(
+						ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE, offLineMessage.build().toByteArray()), null));
+				
+				// 删除在线记录
+				serverModel.clientUserLogout(user);
+				user.onLine = false;
+				user.userId = null;
+
+				return true;
 			}
-			// 向客户端发送消息
-			serverNetwork.sendToClient(new WaitClientResponse(user.ioSession, new PacketFromServer(
-					ProtoHead.ENetworkMessage.OFFLINE_SYNC_VALUE, offLineMessage.build().toByteArray()), null));
-			// byte[] messageBytes =
-			// networkPacket.packMessage(ProtoHead.ENetworkMessage.OFFLINE_SYNC.getNumber(),
-			// objectBytes);
-			// serverNetwork.sendMessageToClient(user.ioSession, messageBytes);
-
-			// 添加等待回复
-			// serverModel.addClientResponseListener(networkPacket.ioSession,
-			// networkPacket.getMessageID(messageBytes),
-			// messageBytes, null);
-
-			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -566,7 +560,7 @@ public class Server_User {
 			user = serverModel.getClientUserFromTable(networkPacket.ioSession);
 			logger.info("Srever_User.logout:" + ServerModel.getIoSessionKey(networkPacket.ioSession) + " logout!");
 			// 将登录的用户注销掉
-			user.userId = null;
+			serverModel.clientUserLogout(user);
 			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.SUCCESS);
 		} catch (NoIpException e) {
 			logoutBuilder.setResultCode(LogoutMsg.LogoutRsp.ResultCode.FAIL);

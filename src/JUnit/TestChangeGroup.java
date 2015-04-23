@@ -43,7 +43,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-//	@Test
+//	 @Test
 	public void addMember1() throws UnknownHostException, IOException {
 		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -68,7 +68,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-	 @Test
+//	@Test
 	public void addMember2() throws UnknownHostException, IOException {
 		String groupId = "13", user1 = "b", user2 = "c";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -89,22 +89,29 @@ public class TestChangeGroup {
 		ChangeGroupRsp response = sendRequest(clientSocket1, builder);
 		assertEquals(response.getResultCode(), ChangeGroupRsp.ResultCode.SUCCESS);
 
-		// user2上线收消息
-		// 收取群数据更新
-		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
+		// user1 接收同步数据（CHANGE_GROUP_SYNC）包
+		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
 		GroupItem groupItem = sync.getGroupItem();
-		System.out.println(ClientSocket.getGroupItemInfo(groupItem));
+		// log
+		System.out.println("CHANGE_GROUP_SYNC : " + user1 + " : " + ClientSocket.getGroupItemInfo(groupItem));
 
-		for (int i = 0; i < builder.getUserIdCount(); i++) {
-			byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
-			ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-			ChatItem chatItem2 = receiveChatting.getChatData(0);
+		// user2上线收消息
+		// 收取群数据更新
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
+		assertNotNull(byteArray);
+		sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		groupItem = sync.getGroupItem();
+		// log
+		System.out.println("CHANGE_GROUP_SYNC : " + user2 + " : " + ClientSocket.getGroupItemInfo(groupItem));
 
-			// 收到群聊消息（A 我已经把 B，C 拉入群聊）
-			System.out.println(ClientSocket.getChatItemInfo(chatItem2));
-		}
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
+		ReceiveChatSync receiveChatting = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		ChatItem chatItem2 = receiveChatting.getChatData(0);
+		
+		// 收到群聊消息（A 我已经把 B，C 拉入群聊）
+		System.out.println("RECEIVE_CHAT_SYNC : " + user2 + " : " + ClientSocket.getChatItemInfo(chatItem2));
 
 		clientSocket1.close();
 		clientSocket2.close();
@@ -117,7 +124,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @author Feng
 	 */
-//	@Test
+	// @Test
 	public void deleteMember1() throws UnknownHostException, IOException {
 		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -146,7 +153,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @author Feng
 	 */
-	// @Test
+//	 @Test
 	public void deleteMember2() throws UnknownHostException, IOException {
 		String groupId = "13";
 		String user1 = "d", user2 = "a";
@@ -172,13 +179,13 @@ public class TestChangeGroup {
 		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		System.out.println(ClientSocket.getGroupItemInfo(sync.getGroupItem()));
+		System.out.println("CHANGE_GROUP_SYNC : " + user2 + " : " + ClientSocket.getGroupItemInfo(sync.getGroupItem()));
 
 		// 获取user1的系统退出消息
 		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		ChatItem chatItem = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getChatData(0);
-		System.out.println(ClientSocket.getChatItemInfo(chatItem));
+		System.out.println("CHANGE_GROUP_SYNC : " + user2 + " : " + ClientSocket.getChatItemInfo(chatItem));
 
 		clientSocket1.close();
 		clientSocket2.close();
@@ -191,7 +198,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-//	@Test
+	// @Test
 	public void reviseGroupInfo1() throws UnknownHostException, IOException {
 		String groupId = "13";
 		ClientSocket clientSocket1 = new ClientSocket();
@@ -216,7 +223,7 @@ public class TestChangeGroup {
 	 * @throws IOException
 	 * @throws UnknownHostException
 	 */
-//	@Test
+	 @Test
 	public void reviseGroupInfo2() throws UnknownHostException, IOException {
 		String groupId = "13";
 		String user1 = "a", user2 = "b";
@@ -229,6 +236,7 @@ public class TestChangeGroup {
 		builder.setGroupName("Fucking");
 
 		// 登陆
+//		assertEquals(clientSocket2.login(user1, user1), LoginRsp.ResultCode.SUCCESS);
 		assertEquals(clientSocket1.login(user1, user1), LoginRsp.ResultCode.SUCCESS);
 		assertEquals(clientSocket2.login(user2, user2), LoginRsp.ResultCode.SUCCESS);
 		System.out.println(user1 + " , " + user2 + " login");
@@ -236,18 +244,25 @@ public class TestChangeGroup {
 		// 请求修改
 		ChangeGroupRsp response = sendRequest(clientSocket1, builder);
 		assertEquals(response.getResultCode(), ChangeGroupRsp.ResultCode.SUCCESS);
+		System.out.println("请求完毕!");
 
-		// user2上线收同步数据包息
-		byte[] byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
+		// user1上线收同步数据包
+		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
 		assertNotNull(byteArray);
 		ChangeGroupSync sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
-		System.out.println(ClientSocket.getGroupItemInfo(sync.getGroupItem()));
+		System.out.println("CHANGE_GROUP_SYNC : " + user1 + " : " + ClientSocket.getGroupItemInfo(sync.getGroupItem()));
+
+		// user2上线收同步数据包
+		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.CHANGE_GROUP_SYNC);
+		assertNotNull(byteArray);
+		sync = ChangeGroupSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray));
+		System.out.println("CHANGE_GROUP_SYNC : " + user2 + " : " + ClientSocket.getGroupItemInfo(sync.getGroupItem()));
 
 		// 获取系统消息
 		byteArray = clientSocket2.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		ChatItem chatItem = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getChatData(0);
-		System.out.println(ClientSocket.getChatItemInfo(chatItem));
+		System.out.println("CHANGE_GROUP_SYNC : " + user2 + " : " + ClientSocket.getChatItemInfo(chatItem));
 
 		clientSocket1.close();
 		clientSocket2.close();
