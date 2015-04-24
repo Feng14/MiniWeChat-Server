@@ -329,7 +329,7 @@ public class Server_User {
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.info("can't find user!");
 		}
 		return false;
 	}

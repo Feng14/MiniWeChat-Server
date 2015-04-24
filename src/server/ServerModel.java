@@ -343,8 +343,8 @@ public class ServerModel extends Observable {
 
 //					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
 //							+ " user exist!");
-//					logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
-//							+ " user exist!");
+					logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
+							+ " user exist!");
 					synchronized (clientUserIpTable) {
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
@@ -401,6 +401,11 @@ public class ServerModel extends Observable {
 			} else {
 				// 发送失败，判定掉线
 				Debug.log("ServerModel", "Client User(" + key + ") was offline,now delete it!");
+				try {
+					String key = iterator.next().toString();
+					clientUserIpTable.get(key).ioSession.close(true);
+				} catch (Exception e) {
+				}
 				iterator.remove();
 			}
 		}
