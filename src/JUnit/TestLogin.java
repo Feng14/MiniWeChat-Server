@@ -34,7 +34,7 @@ public class TestLogin {
 	 * @throws UnknownHostException
 	 */
 	@Test
-	@Ignore
+//	@Ignore
 	public void testLogin() throws UnknownHostException, IOException {
 		ClientSocket client = new ClientSocket();
 		String userId = "a";
@@ -43,12 +43,12 @@ public class TestLogin {
 		LoginRsp.ResultCode resultCode = client.login(userId, userId);
 		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.SUCCESS);
 
-//		resultCode = client.login(userId + "error", userId);
-//		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.FAIL);
-//
-//		resultCode = client.login(userId, userId + "error");
-//		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.FAIL);
-//		client.close();
+		resultCode = client.login(userId + "error", userId);
+		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.FAIL);
+
+		resultCode = client.login(userId, userId + "error");
+		assertEquals(resultCode, LoginMsg.LoginRsp.ResultCode.FAIL);
+		client.close();
 	}
 	
 	/**

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Observable;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
@@ -46,8 +47,8 @@ public class ServerModel extends Observable {
 	// 监听客户端回复的表
 	// private Hashtable<String, WaitClientResponse> waitClientRepTable = new
 	// Hashtable<String, WaitClientResponse>();
-	
-	public ServerModel(){
+
+	public ServerModel() {
 		init();
 	}
 
@@ -116,9 +117,10 @@ public class ServerModel extends Observable {
 			clientUserIpTable.put(getIoSessionKey(ioSession), clientUser);
 		}
 	}
-	
+
 	/**
 	 * 设置用户登陆
+	 * 
 	 * @param clientUser
 	 * @param userId
 	 * @author Feng
@@ -128,9 +130,10 @@ public class ServerModel extends Observable {
 		clientUser.userId = userId;
 		clientUserIdTable.put(userId, clientUser);
 	}
-	
+
 	/**
 	 * 设置用户登陆
+	 * 
 	 * @param clientUser
 	 * @param userId
 	 * @author Feng
@@ -188,30 +191,30 @@ public class ServerModel extends Observable {
 		ClientUser user = clientUserIdTable.get(userId);
 		if (user != null && user.userId != null && !user.userId.equals("") && user.onLine == true)
 			return clientUserIdTable.get(userId);
-		
+
 		return null;
-//		Iterator iterator = clientUserIpTable.keySet().iterator();
-//		String key;
-//		ClientUser user;
-//
-//		synchronized (clientUserIpTable) {
-//			while (iterator.hasNext()) {
-//
-//				key = iterator.next().toString();
-//
-//				if (!clientUserIpTable.containsKey(key))
-//					continue;
-//
-//				user = clientUserIpTable.get(key);
-//
-//				if (user.userId == null)
-//					continue;
-//
-//				if (user.userId.equals(userId))
-//					return user;
-//			}
-//		}
-//		return null;
+		// Iterator iterator = clientUserIpTable.keySet().iterator();
+		// String key;
+		// ClientUser user;
+		//
+		// synchronized (clientUserIpTable) {
+		// while (iterator.hasNext()) {
+		//
+		// key = iterator.next().toString();
+		//
+		// if (!clientUserIpTable.containsKey(key))
+		// continue;
+		//
+		// user = clientUserIpTable.get(key);
+		//
+		// if (user.userId == null)
+		// continue;
+		//
+		// if (user.userId.equals(userId))
+		// return user;
+		// }
+		// }
+		// return null;
 	}
 
 	/**
@@ -320,6 +323,7 @@ public class ServerModel extends Observable {
 	private class KeepAlivePacketSenser implements Runnable, IoFutureListener<IoFuture> {
 		private Iterator iterator;
 		private String key;
+		private Set<String> keySet;
 
 		@Override
 		public void run() {
@@ -339,13 +343,13 @@ public class ServerModel extends Observable {
 						continue;
 
 					ClientUser user;
-					iterator = clientUserIpTable.keySet().iterator();
 
-//					Debug.log("ServerModel", "Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
-//							+ " user exist!");
-					logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + clientUserIpTable.size()
-							+ " user exist!");
 					synchronized (clientUserIpTable) {
+						keySet = clientUserIpTable.keySet();
+						logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! "
+								+ keySet.size() + " user exist!");
+						
+						iterator = keySet.iterator();
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
 							// Debug.log("ServerModel", "进入发心跳包循环!");
@@ -372,17 +376,22 @@ public class ServerModel extends Observable {
 
 							// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
 							// ，表示在线
-//							Debug.log("ServerModel", " Send 'KeepAlivePacket' to Client(" + user.ioSession.getRemoteAddress()
-//									+ ")");
-//							logger.info("ServerModel  Send 'KeepAlivePacket' to Client(" + user.ioSession.getRemoteAddress()
-//									+ ")");
+							// Debug.log("ServerModel",
+							// " Send 'KeepAlivePacket' to Client(" +
+							// user.ioSession.getRemoteAddress()
+							// + ")");
+							// logger.info("ServerModel  Send 'KeepAlivePacket' to Client("
+							// + user.ioSession.getRemoteAddress()
+							// + ")");
 
 							WriteFuture writeFuture = user.ioSession.write(packetWillSend);
 							writeFuture.addListener(this);
 						}
 					}
 				} catch (InterruptedException e) {
-//					Debug.log(Debug.LogType.FAULT, "'Send KeepAlivePacket Thread' fail at sleep module!\n" + e.toString());
+					// Debug.log(Debug.LogType.FAULT,
+					// "'Send KeepAlivePacket Thread' fail at sleep module!\n" +
+					// e.toString());
 					logger.info("'Send KeepAlivePacket Thread' fail at sleep module!\n" + e.toString());
 					System.err.println("发行心跳包线程异常! -----睡眠模块");
 					e.printStackTrace();

@@ -28,10 +28,10 @@ public class SocketClientTest {
 
 	// String host = "192.168.45.17"; // 要连接的服务端IP地址
 
-	 //public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+//	 public static final String host = "104.224.165.21"; // 要连接的服务端IP地址
+	public static final String host = "127.0.0.1"; // 要连接的服务端IP地址
 	// public static final String host = "192.168.1.103"; // 要连接的服务端IP地址
-//	public static final String host = "192.168.45.17"; // 要连接的服务端IP地址
-	 public static final String host = "127.0.0.1"; // 要连接的服务端IP地址
+	// public static final String host = "192.168.45.17"; // 要连接的服务端IP地址
 
 	int port = 8081; // 要连接的服务端对应的监听端口
 
@@ -41,32 +41,30 @@ public class SocketClientTest {
 
 	public SocketClientTest() throws UnknownHostException, IOException {
 		// 为了简单起见，所有的异常都直接往外抛
-		// String host = "192.168.45.34"; // 要连接的服务端IP地址
-		// String host = "192.168.45.37"; // 要连接的服务端IP地址
 		// int port = 8080; // 要连接的服务端对应的监听端口
 		// 与服务端建立连接
 		// 测心跳
-		 //testKeepAlive();
+		// testKeepAlive();
 		// socket = new Socket(host, port);
 		// inputStream = socket.getInputStream();
 		// outputStream = socket.getOutputStream();
 
 		// 测心跳
-		 //testKeepAlive();
+		testKeepAlive();
 		// 测注册
 		// testRegister();
 		// 测登陆
-		 testLogin();
+		// testLogin();
 		// 测个人设置
 		// testPersonalSettings();
 
 		// 测心跳
-		//testKeepAlive();
+		// testKeepAlive();
 		// 测注册
 		// testRegister();
 
 		// 测登陆
-//		testLogin();
+		// testLogin();
 		// 测试个人设置
 		// testPersonalSettings();
 
@@ -206,16 +204,17 @@ public class SocketClientTest {
 				ProtoHead.ENetworkMessage type = ProtoHead.ENetworkMessage.valueOf(DataTypeTranslater.bytesToInt(byteArray,
 						HEAD_INT_SIZE));
 				System.out.println("Type : " + type.toString());
-				
-//				for (byte b : byteArray)
-//					System.out.println(b);
+
+				// for (byte b : byteArray)
+				// System.out.println(b);
 
 				if (type == ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC) {
-//					byteArray2 = NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE,
-//							NetworkMessage.getMessageID(byteArray), new byte[0]);
-//					byteArray2 = new byte[size];
-//					for (int i = 0; i < size; i++)
-//						byteArray2[i] = byteArray[i];
+					// byteArray2 =
+					// NetworkMessage.packMessage(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC_VALUE,
+					// NetworkMessage.getMessageID(byteArray), new byte[0]);
+					// byteArray2 = new byte[size];
+					// for (int i = 0; i < size; i++)
+					// byteArray2[i] = byteArray[i];
 
 					Debug.log("Response 'keepAlivePacket'");
 					writeToServer(byteArray);
@@ -382,8 +381,7 @@ public class SocketClientTest {
 			link();
 			// 断后重测
 			System.out.println("断后重测");
-			byteArray = NetworkPacket
-					.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build().toByteArray());
+			byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), builder.build().toByteArray());
 			writeToServer(byteArray);
 			while (true) {
 				byteArray = readFromServer();
@@ -689,8 +687,8 @@ public class SocketClientTest {
 			byte[] loginByteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.LOGIN_REQ.getNumber(), loginBuilder
 					.build().toByteArray());
 			writeToServer(loginByteArray);
-			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder
-					.build().toByteArray());
+			byte[] byteArray = NetworkPacket.packMessage(ProtoHead.ENetworkMessage.DELETE_FRIEND_REQ.getNumber(), builder.build()
+					.toByteArray());
 
 			writeToServer(byteArray);
 			while (true) {
