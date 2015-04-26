@@ -7,8 +7,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import protocol.Data.ChatData.ChatItem.ChatType;
 
 import server.ServerModel;

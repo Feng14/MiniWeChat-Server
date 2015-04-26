@@ -91,7 +91,7 @@ public class ServerModel_Chatting {
 
 					ArrayList<Chatting> chattingList = getChattingNotReceive(oml.userId);
 					if (chattingList != null && chattingList.size() > 0) {
-						Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "User(" + oml.userId + ") has"
+						Debug.log(new String[] { "ServerModel_Chatting", "ServerModel_Chatting" }, "User(" + oml.userId + ") has "
 								+ chattingList.size() + " 'Chattings' doesn't be received，Start transmit！");
 
 						ReceiveChatSync.Builder receiveChatting = ReceiveChatSync.newBuilder();

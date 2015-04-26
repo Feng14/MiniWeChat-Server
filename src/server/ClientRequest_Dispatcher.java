@@ -1,6 +1,5 @@
 package server;
 
-import com.sun.swing.internal.plaf.basic.resources.basic;
 
 import exception.NoIpException;
 
@@ -56,8 +55,7 @@ public class ClientRequest_Dispatcher {
 		try {
 			Debug.log("ClientRequest_Dispatcher", "Client(" + ServerModel.getIoSessionKey(networkPacket.ioSession)
 					+ ")'s request type is : " + networkPacket.getMessageType().toString());
-		} catch (NoIpException e1) {
-			e1.printStackTrace();
+		} catch (Exception e1) {
 		}
 
 		try {

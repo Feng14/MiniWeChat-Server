@@ -139,11 +139,14 @@ public class ServerModel extends Observable {
 	 * @author Feng
 	 */
 	public void clientUserLogout(ClientUser clientUser) {
-		clientUser.onLine = false;
-		clientUser.userId = null;
 		try {
+			System.out.println(clientUserIdTable.containsKey(clientUser.userId));
+			clientUser.onLine = false;
 			clientUserIdTable.remove(clientUser.userId);
+//			clientUser.userId = null;
 		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Logout Error!");
 		}
 	}
 
@@ -154,10 +157,11 @@ public class ServerModel extends Observable {
 	 * @return
 	 * @throws NoIpException
 	 */
-	public static String getIoSessionKey(IoSession ioSession) throws NoIpException {
+	public static String getIoSessionKey(IoSession ioSession) throws NoIpException  {
 		// System.err.println("1.2  " + (ioSession.getRemoteAddress() == null));
 		if (ioSession.getRemoteAddress() == null)
 			throw new NoIpException();
+		
 		return ((InetSocketAddress) ioSession.getRemoteAddress()).getAddress().toString() + ":"
 				+ ((InetSocketAddress) ioSession.getRemoteAddress()).getPort();
 	}
@@ -189,10 +193,14 @@ public class ServerModel extends Observable {
 	 */
 	public ClientUser getClientUserByUserId(String userId) {
 		ClientUser user = clientUserIdTable.get(userId);
-		if (user != null && user.userId != null && !user.userId.equals("") && user.onLine == true)
-			return clientUserIdTable.get(userId);
+		try {
+			if (user == null || user.userId == null && user.userId.equals("") || user.onLine == false || !user.ioSession.isConnected())
+				clientUserIdTable.remove(userId);
+		} catch (Exception e) {
+			return null;
+		}
 
-		return null;
+		return user;
 		// Iterator iterator = clientUserIpTable.keySet().iterator();
 		// String key;
 		// ClientUser user;
@@ -346,9 +354,9 @@ public class ServerModel extends Observable {
 
 					synchronized (clientUserIpTable) {
 						keySet = clientUserIpTable.keySet();
-						logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! "
-								+ keySet.size() + " user exist!");
-						
+						logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + keySet.size()
+								+ " user exist!");
+
 						iterator = keySet.iterator();
 						while (iterator.hasNext()) {
 							// for (String key : keyIterators) {
@@ -360,29 +368,9 @@ public class ServerModel extends Observable {
 								continue;
 							user = clientUserIpTable.get(key);
 
-							// 将上次没有回复的干掉，从用户表中删掉
-							// if (user.onLine == false) {
-							// Debug.log("ServerModel", "Client User(" +
-							// user.ioSession.getRemoteAddress()
-							// + ") was offline,now delete it!");
-							// user.ioSession.close(false);
-							// iterator.remove();
-							// continue;
-							// }
-
 							// 创建要发送的包
 							packetWillSend = new PacketFromServer(ProtoHead.ENetworkMessage.KEEP_ALIVE_SYNC.getNumber(),
 									packetBytes);
-
-							// 发送心跳包之前先将online设为False表示不在线，若是Client回复，则重新设为True
-							// ，表示在线
-							// Debug.log("ServerModel",
-							// " Send 'KeepAlivePacket' to Client(" +
-							// user.ioSession.getRemoteAddress()
-							// + ")");
-							// logger.info("ServerModel  Send 'KeepAlivePacket' to Client("
-							// + user.ioSession.getRemoteAddress()
-							// + ")");
 
 							WriteFuture writeFuture = user.ioSession.write(packetWillSend);
 							writeFuture.addListener(this);

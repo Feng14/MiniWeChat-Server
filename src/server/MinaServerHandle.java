@@ -72,6 +72,13 @@ public class MinaServerHandle extends IoHandlerAdapter {
 		logger.error("throws exception");
 		logger.error("session.toString() : " + session.toString());
 		logger.error("cause.toString() : " + cause.toString());
+		
+		if (cause.toString().equals("java.io.IOException: 远程主机强迫关闭了一个现有的连接。")) {
+			try {
+				session.close();
+			} catch (Exception e) {}
+			return;
+		}
 		String exceptionStack = "";
 		for (StackTraceElement element : cause.getStackTrace())
 			exceptionStack += element.toString() + "\n";

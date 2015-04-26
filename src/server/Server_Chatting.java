@@ -91,7 +91,7 @@ public class Server_Chatting {
 	 * @author Feng
 	 */
 	public void clientSendChatting(NetworkPacket networkPacket) throws NoIpException {
-		logger.debug("Server_Chatting : clientSendChatting : User sendChatting Event :Deal with user's "
+		logger.info("Server_Chatting : clientSendChatting : User sendChatting Event :Deal with user's "
 				+ ServerModel.getIoSessionKey(networkPacket.ioSession) + "  request");
 		// Debug.log(new String[] { "Server_Chatting", "clientSendChatting" },
 		// " User sendChatting Event :Deal with user's "
@@ -106,6 +106,7 @@ public class Server_Chatting {
 			SendChatMsg.SendChatReq sendChattingObject = SendChatMsg.SendChatReq.parseFrom(networkPacket.getMessageObjectBytes());
 
 			ChatItem chatItem = sendChattingObject.getChatData();
+			logger.info("Chat TargetType : " + chatItem.getTargetType().toString());
 
 			// 检查接受者是群还是个人
 			if (chatItem.getTargetType() == ChatItem.TargetType.INDIVIDUAL)
@@ -121,9 +122,9 @@ public class Server_Chatting {
 			logger.error(e.toString());
 			e.printStackTrace();
 		}
-		// 回复客户端说发送成功(保存在服务器成功)
-		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
-				.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray())));
+//		// 回复客户端说发送成功(保存在服务器成功)
+//		serverNetwork.sendToClient(new WaitClientResponse(networkPacket.ioSession, new PacketFromServer(networkPacket
+//				.getMessageID(), ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray())));
 	}
 
 	/**
@@ -142,24 +143,25 @@ public class Server_Chatting {
 
 		// 若是接收者在线，则发送，否则加入队列
 		ClientUser clientUser = serverModel.getClientUserByUserId(chatting.getReceiverUserId());
-		if (clientUser != null) {
-			logger.debug("Server_Chatting : clientSendChatting : Receiver online,send to receier("
+		boolean sendSuccess = false;
+		try {
+			logger.info("Server_Chatting : clientSendChatting : Receiver online,send to receier("
 					+ ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
-			// Debug.log(new String[] { "Server_Chatting", "clientSendChatting"
-			// },
-			// "Receiver online,send to receier(" +
-			// ServerModel.getIoSessionKey(clientUser.ioSession) + ") now!");
-
+			
 			// 发送给接收者
 			serverModel_Chatting.sendChatting(chatting);
-		} else {
+			
+			sendSuccess = true;
+		} catch (Exception e) {
+		}
+		
+		if (!sendSuccess) {
 			// 不在线，保存
-			logger.debug("Server_Chatting : clientSendChatting : Receiver offline,save to memory!");
-			// Debug.log(new String[] { "Server_Chatting", "clientSendChatting"
-			// }, "Receiver offline,save to memory!");
+			logger.info("Server_Chatting : clientSendChatting : Receiver offline,save to memory!");
 			serverModel_Chatting.addChatting(chatting);
 		}
 		if (sendChattingResponse != null) {
+			logger.info("Server response Client's SEND_PERSONAL_CHAT : SUCCESS");
 			sendChattingResponse.setResultCode(SendChatRsp.ResultCode.SUCCESS);
 			serverNetwork.sendToClient(networkPacket.ioSession, new PacketFromServer(networkPacket.getMessageID(),
 					ProtoHead.ENetworkMessage.SEND_CHAT_RSP_VALUE, sendChattingResponse.build().toByteArray()));
@@ -181,29 +183,36 @@ public class Server_Chatting {
 
 		List<Group> groupList = HibernateDataOperation.query(Group.GROUP_ID, Integer.parseInt(chatItem.getReceiveUserId()),
 				Group.class, resultCode, session);
-		Group group = groupList.get(0);
-		List<User> receiverList = group.getMemberList();
-		// List<User> receiverList = ((List<User>)
-		// HibernateDataOperation.query(Group.GROUP_ID,
-		// Integer.parseInt(chatItem.getReceiveUserId()),
-		// Group.class, resultCode, session).get(0));
+		try {
+			if (groupList.size() <=0)
+				throw new MyException("Group not Exist!");
+			Group group = groupList.get(0);
+			List<User> receiverList = group.getMemberList();
+			// List<User> receiverList = ((List<User>)
+			// HibernateDataOperation.query(Group.GROUP_ID,
+			// Integer.parseInt(chatItem.getReceiveUserId()),
+			// Group.class, resultCode, session).get(0));
 
-		if (resultCode.getCode().equals(ResultCode.FAIL) || receiverList == null) {
-			logger.error("Server_Chatting : clientSendChatting_Group : Get Group Error!");
-			throw new Exception("Server_Chatting : clientSendChatting_Group : Get Group Error!");
-		}
+			if (resultCode.getCode().equals(ResultCode.FAIL) || receiverList == null) {
+				logger.error("Server_Chatting : clientSendChatting_Group : Get Group Error!");
+				throw new Exception("Server_Chatting : clientSendChatting_Group : Get Group Error!");
+			}
 
-		Chatting chatting;
-		// 给每个组员发一份
-		for (User user : receiverList) {
-			if (user.getUserId().equals(chatItem.getSendUserId()))
-				continue;
-			
-			chatting = new Chatting(chatItem.getSendUserId(), user.getUserId() + "", chatItem.getChatType(),
-					chatItem.getChatBody(), Calendar.getInstance().getTimeInMillis(), Integer.parseInt(chatItem
-							.getReceiveUserId()), chatItem.getTargetType());
+			Chatting chatting;
+			// 给每个组员发一份
+			for (User user : receiverList) {
+				if (user.getUserId().equals(chatItem.getSendUserId()))
+					continue;
+				
+				chatting = new Chatting(chatItem.getSendUserId(), user.getUserId() + "", chatItem.getChatType(),
+						chatItem.getChatBody(), Calendar.getInstance().getTimeInMillis(), Integer.parseInt(chatItem
+								.getReceiveUserId()), chatItem.getTargetType());
 
-			serverModel_Chatting.sendChatting(chatting);
+				serverModel_Chatting.sendChatting(chatting);
+			}
+		} catch (MyException e) {
+			logger.error(this.getClass().getSimpleName() + " : Server_CHatting : " + e.toString());
+			e.printStackTrace();
 		}
 
 		// 回复客户端

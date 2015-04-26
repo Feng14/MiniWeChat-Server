@@ -29,6 +29,8 @@ import tools.DataTypeTranslater;
  * @author Administrator
  * 
  */
+
+//@FixMethodOrder(MethodSorters.DEFAULT)
 public class TestSendGroupChatting {
 
 	private SendChatRsp.ResultCode sendChatting(ClientSocket clientSocket, ChatItem.Builder chatItem) throws IOException {

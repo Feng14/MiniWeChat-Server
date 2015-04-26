@@ -45,8 +45,8 @@ public class ServerNetwork {
 
 	private InetSocketAddress inetSocketAddress;
 	private IoAcceptor acceptor;
-	
-	public ServerNetwork(){
+
+	public ServerNetwork() {
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class ServerNetwork {
 	public void init() {
 		if (addr != null || minaServerHandle == null)
 			return;
-		
+
 		// 显示IP地址
 		try {
 			addr = InetAddress.getLocalHost();
@@ -161,17 +161,19 @@ public class ServerNetwork {
 					if (((WriteFuture) future).isWritten())
 						return;
 					else {
+						// Debug.log("ServerModel",
+						// "Wait for Client(" +
+						// serverModel.getIoSessionKey(waitClientResponse.ioSession)
+						// + ") response timeout!");
 						try {
-//							Debug.log("ServerModel",
-//									"Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
-//											+ ") response timeout!");
-							logger.info("ServerModel Wait for Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
-											+ ") response timeout!");
+							logger.info("ServerModel Wait for Client("
+									+ serverModel.getIoSessionKey(waitClientResponse.ioSession) + ") response timeout!");
 
 							if (times < WAIT_CLIENT_RESPONSE_TIMES) {
 								// 小于重发极限次数，重发
-//								Debug.log("ServerModel", "Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
-//										+ ") online,send again!");
+								// Debug.log("ServerModel", "Client(" +
+								// serverModel.getIoSessionKey(waitClientResponse.ioSession)
+								// + ") online,send again!");
 								logger.info("ServerModel Client(" + serverModel.getIoSessionKey(waitClientResponse.ioSession)
 										+ ") online,send again!");
 								sendToClient(waitClientResponse, times + 1);
@@ -180,8 +182,7 @@ public class ServerNetwork {
 								logger.info("To many times, abandon!");
 								return;
 							}
-						} catch (NoIpException e) {
-							e.printStackTrace();
+						} catch (Exception e) {
 						}
 					}
 				}

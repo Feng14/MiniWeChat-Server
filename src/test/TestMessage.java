@@ -6,10 +6,6 @@ import java.util.Observer;
 
 import org.xml.sax.InputSource;
 
-import sun.net.www.content.audio.x_aiff;
-
-import com.sun.swing.internal.plaf.basic.resources.basic;
-
 public class TestMessage {
 
 	public static void main(String args[]) {

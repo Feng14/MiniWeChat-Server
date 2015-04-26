@@ -5,8 +5,6 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.apache.mina.core.session.IoSession;
 
-import com.sun.org.apache.xml.internal.resolver.helpers.Debug;
-
 import protocol.ProtoHead;
 import tools.DataTypeTranslater;
 
