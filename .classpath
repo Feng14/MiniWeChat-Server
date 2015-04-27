@@ -28,7 +28,6 @@
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/c3p0-0.9.2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/hibernate-c3p0-4.3.8.Final.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/mchange-commons-java-0.2.3.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/junit-4.10.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>

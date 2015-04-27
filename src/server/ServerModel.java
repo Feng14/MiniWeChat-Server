@@ -194,7 +194,7 @@ public class ServerModel extends Observable {
 	public ClientUser getClientUserByUserId(String userId) {
 		ClientUser user = clientUserIdTable.get(userId);
 		try {
-			if (user == null || user.userId == null && user.userId.equals("") || user.onLine == false || !user.ioSession.isConnected())
+			if (user == null || user.userId == null || user.userId.equals("") || user.onLine == false || !user.ioSession.isConnected())
 				clientUserIdTable.remove(userId);
 		} catch (Exception e) {
 			return null;
