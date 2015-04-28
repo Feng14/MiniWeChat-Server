@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 
 import org.apache.log4j.Logger;
 import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.filterchain.IoFilter;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.future.WriteFuture;
@@ -39,6 +40,7 @@ public class ServerNetwork {
 	private ClientRequest_Dispatcher clientRequest_Dispatcher;
 	private MinaServerHandle minaServerHandle;
 	private ProtocolCodecFilter protocolCodecFilter;
+	private MyLogger myLogger;
 	private InetAddress addr;
 
 	Logger logger = Logger.getLogger(ServerNetwork.class);
@@ -74,6 +76,8 @@ public class ServerNetwork {
 		acceptor = new NioSocketAcceptor();
 		// 指定编码解码器
 		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaEncoder(), new MinaDecoder()));
+		acceptor.getFilterChain().addLast("Logging", myLogger);
+//		acceptor.getFilterChain().addLast("Logging", new MyLogger());
 		// System.out.println("codec " + (protocolCodecFilter == null));
 		// acceptor.getFilterChain().addLast("codec", protocolCodecFilter);
 		acceptor.getSessionConfig().setMaxReadBufferSize(1024 * 8);
@@ -117,7 +121,6 @@ public class ServerNetwork {
 
 	public void setMinaServerHandle(MinaServerHandle minaServerHandle) {
 		this.minaServerHandle = minaServerHandle;
-		init();
 	}
 
 	public ProtocolCodecFilter getProtocolCodecFilter() {
@@ -126,6 +129,14 @@ public class ServerNetwork {
 
 	public void setProtocolCodecFilter(ProtocolCodecFilter protocolCodecFilter) {
 		this.protocolCodecFilter = protocolCodecFilter;
+	}
+
+	public MyLogger getMyLogger() {
+		return myLogger;
+	}
+
+	public void setMyLogger(MyLogger myLogger) {
+		this.myLogger = myLogger;
 	}
 
 	/**

@@ -22,8 +22,8 @@ import tools.AutoResponseClient;
  * 
  */
 public class Server {
-	public static boolean keepAliveSwitch = true;
-//	public static boolean keepAliveSwitch = false;
+//	public static boolean keepAliveSwitch = true;
+	public static boolean keepAliveSwitch = false;
 	static Logger logger = Logger.getLogger(Server.class);
 	
 	public static Server instance;
@@ -125,6 +125,8 @@ public class Server {
 //		 File file = new File("src/applicationContext.xml");
 //		 System.out.println(file.exists());
 		 ApplicationContext ctx = new FileSystemXmlApplicationContext("applicationContext.xml");
+		 ((ServerNetwork) ctx.getBean("ServerNetwork")).init();
+		 ((ServerModel)ctx.getBean("ServerModel")).init();
 //		 ServerNetwork serverNetwork = (ServerNetwork)ctx.getBean("ServerNetwork");
 	 }
 }

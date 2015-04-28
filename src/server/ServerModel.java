@@ -49,7 +49,7 @@ public class ServerModel extends Observable {
 	// Hashtable<String, WaitClientResponse>();
 
 	public ServerModel() {
-		init();
+//		init();
 	}
 
 	public ServerModel getServerModel() {

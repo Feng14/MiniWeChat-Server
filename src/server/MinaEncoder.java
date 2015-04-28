@@ -52,7 +52,7 @@ public class MinaEncoder extends ProtocolEncoderAdapter {
 			buffer.flip();
 			output.write(buffer);
 
-			showPacket(ioSession, sizeOfAll, byteArray);
+//			showPacket(ioSession, sizeOfAll, byteArray);
 			return;
 		}
 
