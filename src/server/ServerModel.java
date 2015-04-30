@@ -354,8 +354,8 @@ public class ServerModel extends Observable {
 
 					synchronized (clientUserIpTable) {
 						keySet = clientUserIpTable.keySet();
-						logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + keySet.size()
-								+ " user exist!");
+//						logger.info("ServerModel Start a new round of sending 'KeepAlivePacket'! " + keySet.size()
+//								+ " user exist!");
 
 						iterator = keySet.iterator();
 						while (iterator.hasNext()) {

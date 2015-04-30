@@ -31,6 +31,7 @@ public class TestAutoResponse {
 
 		// 登陆
 		assertEquals(clientSocket1.login(user1, user1), LoginRsp.ResultCode.SUCCESS);
+		System.out.println(user1 + " Login");
 
 		// 构造消息对象
 		ChatItem.Builder sendChatItem = ChatItem.newBuilder();
@@ -45,10 +46,12 @@ public class TestAutoResponse {
 		// 发送
 		clientSocket1.writeToServer(NetworkPacket.packMessage(ProtoHead.ENetworkMessage.SEND_CHAT_REQ_VALUE, sendChattingObj
 				.build().toByteArray()));
+		System.out.println(user1 + " send Message to " + autoResponseUser + "  : " + message);
 		
 		byte[] byteArray = clientSocket1.readFromServerWithoutKeepAlive(ProtoHead.ENetworkMessage.RECEIVE_CHAT_SYNC);
 		assertNotNull(byteArray);
 		ChatItem receiveChatItem = ReceiveChatSync.parseFrom(NetworkPacket.getMessageObjectBytes(byteArray)).getChatData(0);
+		System.out.println(user1 + " get " + ClientSocket.getChatItemInfo(receiveChatItem));
 		assertEquals(receiveChatItem.getChatBody(), message);
 		
 		clientSocket1.close();

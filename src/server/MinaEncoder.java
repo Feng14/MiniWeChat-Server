@@ -16,7 +16,7 @@ import tools.DataTypeTranslater;
 /**
  * 向客户端发数据时的组成模式
  * 
- * @author Administrator
+ * @author Feng
  * 
  */
 public class MinaEncoder extends ProtocolEncoderAdapter {

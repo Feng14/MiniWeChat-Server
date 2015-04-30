@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LoggerRule>
+	<TypeContain>False</TypeContain>
+	<TypeList>
+		<ProtoHead>KEEP_ALIVE_SYNC</ProtoHead>
+	</TypeList>
+</LoggerRule>

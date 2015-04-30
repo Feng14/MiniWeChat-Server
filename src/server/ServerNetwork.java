@@ -76,8 +76,11 @@ public class ServerNetwork {
 		acceptor = new NioSocketAcceptor();
 		// 指定编码解码器
 		acceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new MinaEncoder(), new MinaDecoder()));
-		acceptor.getFilterChain().addLast("Logging", myLogger);
-//		acceptor.getFilterChain().addLast("Logging", new MyLogger());
+//		System.out.println("22222222222222222222222222");
+		if (myLogger == null)
+			myLogger = new MyLogger();
+//		System.out.println(myLogger == null);
+		acceptor.getFilterChain().addLast("Logger", myLogger);
 		// System.out.println("codec " + (protocolCodecFilter == null));
 		// acceptor.getFilterChain().addLast("codec", protocolCodecFilter);
 		acceptor.getSessionConfig().setMaxReadBufferSize(1024 * 8);
