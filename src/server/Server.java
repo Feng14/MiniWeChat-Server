@@ -127,6 +127,7 @@ public class Server {
 		 ApplicationContext ctx = new FileSystemXmlApplicationContext("applicationContext.xml");
 		 ((ServerNetwork) ctx.getBean("ServerNetwork")).init();
 		 ((ServerModel)ctx.getBean("ServerModel")).init();
+		 ((MyLogger)ctx.getBean("MyLogger")).closeLoggerNotWant();
 		 
 		 new AutoResponseClient();
 //		 ServerNetwork serverNetwork = (ServerNetwork)ctx.getBean("ServerNetwork");

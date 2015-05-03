@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -18,6 +19,7 @@ import org.apache.mina.core.write.WriteRequest;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -35,7 +37,13 @@ public class MyLogger extends LoggingFilter {
 	private LoggerRule loggerRule;
 	
 	public MyLogger(){
-		readXML();
+		readLogRule();
+	}
+	
+	
+	public void closeLoggerNotWant(){
+		for (String className : loggerRule.logCalssList)
+			Logger.getLogger(className).setAdditivity(false);
 	}
 
 	public ServerModel getServerModel() {
@@ -93,7 +101,7 @@ public class MyLogger extends LoggingFilter {
 		}
 	}
 
-	private void readXML() {
+	private void readLogRule() {
         DocumentBuilderFactory domfac=DocumentBuilderFactory.newInstance();
 		try {
             DocumentBuilder dombuilder=domfac.newDocumentBuilder();
@@ -111,10 +119,24 @@ public class MyLogger extends LoggingFilter {
 					: LoggerType.Ignore);
 			
 			NodeList nodeList = root.getElementsByTagName("ProtoHead");
-			String nodeName;
+			Node node1, node2;
+			NamedNodeMap namedNodeMap;
+			String nodeValue;
 			for (int i=0; i<nodeList.getLength(); i++) {
-				nodeName = nodeList.item(i).getFirstChild().getNodeValue().toString();
-				loggerRule.loggerSet.add(ProtoHead.ENetworkMessage.valueOf(nodeName));
+				node1 = nodeList.item(i);
+				namedNodeMap = node1.getAttributes();
+				for (int j=0; j<namedNodeMap.getLength(); j++) {
+					node2 = namedNodeMap.item(j);
+					if (node2.getNodeName().equals("logType")) {
+						nodeValue = node1.getFirstChild().getNodeValue().toString();
+						if (node2.getNodeValue().equals("Network")) {	// 显示服务器发了什么包的Log
+							loggerRule.loggerSet.add(ProtoHead.ENetworkMessage.valueOf(nodeValue));
+						} else if (node2.getNodeValue().equals("class")) {
+							loggerRule.logCalssList.add(nodeValue);
+						}
+					}
+						
+				}
 			}
 
 		} catch (Exception e) {
@@ -131,9 +153,11 @@ class LoggerRule {
 
 	public LoggerType loggerType;
 	HashSet<ProtoHead.ENetworkMessage> loggerSet;
+	public ArrayList<String> logCalssList;
 
 	public LoggerRule(LoggerType loggerType) {
 		this.loggerType = loggerType;
 		loggerSet = new HashSet<ProtoHead.ENetworkMessage>();
+		logCalssList = new ArrayList<String>();
 	}
 }

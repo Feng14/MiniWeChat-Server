@@ -260,18 +260,30 @@ public class Server_Chatting {
 			if (!userIdList.contains(selfUser1.userId))
 				userIdList.add(selfUser1.userId);
 
+			// 创建Session
+			Session session = HibernateSessionFactory.getSession();
+			
+			// 获取成员对象
+			List<User> userList = server_User.getUsers(userIdList, session);
+			
 			// 创建群名
 			String groupName = "";
-			for (int i = 0; i < userIdList.size() && i < 3; i++)
-				groupName += userIdList.get(i).toString() + ",";
-			groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
+			for (User user : userList) {
+				groupName += user.getUserName() + ",";
+				
+				if (groupName.length() > 15) {
+					groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
+					break;
+				}
+			}
+//			for (int i = 0; i < userIdList.size() && i < 3; i++)
+//				groupName += userIdList.get(i).toString() + ",";
+//			groupName = groupName.substring(0, (groupName.length() > 10 ? 10 : groupName.length())) + "...";
 
-			Session session = HibernateSessionFactory.getSession();
 			// 创建群对象
 			Group group = new Group(groupName);
-			// 设置成员
-			List<User> userList = server_User.getUsers(userIdList, session);
 			group.setMemberList(userList);
+			
 			// 设置创建者
 			group.setCreaterId(selfUser1.userId);
 

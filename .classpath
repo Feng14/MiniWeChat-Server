@@ -4,7 +4,7 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/log4j-1.2.17.jar"/>
+	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/log4j-1.2.17.jar" sourcepath="D:/Program/Java/k库/apache-log4j-1.2.16-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/mina-core-2.0.7.jar" sourcepath="D:/Program/Java/k库/apache-mina-2.0.7-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.2-beta-bin.jar"/>
 	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/dom4j-1.6.1.jar"/>

@@ -7,6 +7,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.apache.log4j.Logger;
+
 import protocol.Data.ChatData.ChatItem.ChatType;
 
 import server.ServerModel;
@@ -18,10 +20,10 @@ public class test {
 	
 	public test(){
 //		System.out.println(this.getClass().toString());
-		
-		long t = Calendar.getInstance().getTimeInMillis();
-		Date date = new Date(t);
-		System.out.println(date.toString());
+		Logger logger1 = Logger.getLogger(this.getClass());
+		System.out.println(logger1.getName());
+		System.out.println(this.getClass().getName().toString());
+		System.out.println(logger1 == Logger.getLogger(this.getClass().getName().toString()));
 	}
 
 	public static void main(String args[]) {

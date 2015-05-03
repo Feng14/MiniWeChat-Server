@@ -2,6 +2,7 @@
 <LoggerRule>
 	<TypeContain>False</TypeContain>
 	<TypeList>
-		<ProtoHead>KEEP_ALIVE_SYNC</ProtoHead>
+		<ProtoHead logType="Network">KEEP_ALIVE_SYNC</ProtoHead>
+		<!-- <ProtoHead logType="class">server.Server_User</ProtoHead> -->
 	</TypeList>
 </LoggerRule>
