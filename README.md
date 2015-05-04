@@ -1,4 +1,4 @@
-![项目Logo](http://images.cnblogs.com/cnblogs_com/xiaozefeng/685939/o_Logo.png)
+![项目Logo](http://images.cnblogs.com/cnblogs_com/xiaozefeng/686123/o_Logo.png)
 
 #迷你微信
 
