@@ -2,7 +2,6 @@
 
 ![项目Logo](http://images.cnblogs.com/cnblogs_com/xiaozefeng/685939/o_Logo.png)
 
-[TOC]
 
 ##简介
 《迷你微信》是一款仿制微信的手机跨平台应用，前端使用Unity3D（包括UGUI）实现，后端使用J2EE（包括Mina框架、Hibernate、Spring、Protobuf）实现，包含了通讯录，个人资料，单对单聊天，群聊等功能。
