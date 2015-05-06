@@ -18,10 +18,12 @@ JDK版本 = 1.7 MySql版本 = 5.1
 在hibernat.cfg.xml中查看、更改数据库连接的端口号、数据库名、用户名和密码
 ```
 <!-- Database connection settings -->
-		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://127.0.0.1:3306/MiniWechat?useUnicode=true&amp;characterEncoding=UTF-8</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password">root</property>
+<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+<property name="connection.url">
+	jdbc:mysql://127.0.0.1:3306/MiniWechat?useUnicode=true&amp;characterEncoding=UTF-8
+</property>
+<property name="connection.username">root</property>
+<property name="connection.password">root</property>
 ```
 - 创建数据库
 
