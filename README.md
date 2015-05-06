@@ -27,11 +27,13 @@ JDK版本 = 1.7 MySql版本 = 5.1
 ```
 - 创建数据库
 
-在/WebContent/WEB-INF路径下有createTable.sql和dropTable两个建表和删表的sql语句，直接运行即可
+在Java项目中的/WebContent/WEB-INF路径下有createTable.sql和dropTable两个建表和删表的sql语句，直接运行即可
 
 - 启动服务器端程序
 
-将项目代码打jar包，并把根目录下的applicationContext.xml和Log4JConfig.properties两个配置文件放在jar包相同路径下。
+将项目代码打jar包（要将第三方包一起打入），并把根目录下的applicationContext.xml和Log4JConfig.properties和LoggerRule.xml三个配置文件放在jar包相同路径下。
+
+接着，在控制台中输入启动Java项目指令：
 
 ```
 	java -jar MiniwWeChat.jar
