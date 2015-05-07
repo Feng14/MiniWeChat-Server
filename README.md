@@ -5,6 +5,8 @@
 
 迷你微信客户端：[MiniWeChat-Client](https://github.com/MrNerverDie/MiniWeChat-Client)
 
+后端介绍博客：http://www.cnblogs.com/xiaozefeng/p/mina_wechat_Java.html
+
 《迷你微信》是一款仿制微信的手机跨平台应用，服务器端使用J2EE（包括Mina框架、Hibernate、Spring、Protobuf）实现，包含了通讯录，个人资料，单对单聊天，群聊等功能。
 
 ###项目需求
